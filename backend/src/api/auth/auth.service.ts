@@ -15,6 +15,8 @@ import { CreateUserDto } from './dtos/create-user.dto';
 import { LoginUserDto } from './dtos/login-user.dto';
 import { ConfirmVerificationDto } from './dtos/confirm-verification.dto';
 import { EmailDto } from './dtos/email.dto';
+import { ResetPasswordDto } from './dtos/reset-password.dto';
+import { ChangePasswordDto } from './dtos/change-password.dto';
 
 @Injectable()
 export class AuthService {
@@ -252,6 +254,135 @@ export class AuthService {
         err,
         false,
         'An error occurred while sending the verification code.',
+      );
+    }
+  }
+
+  public async forgotPassword(param: EmailDto) {
+    try {
+      const user = await this._userRepo.findOne({
+        where: {
+          email: param.email,
+        },
+      });
+
+      if (!user) {
+        functions.throwHttpException(
+          false,
+          'An account with this email address does not exist.',
+          HttpStatus.NOT_FOUND,
+        );
+      }
+
+      user.passwordToken = functions.generateCode(12);
+      user.passwordExpDate = moment().add(2, 'hours').toDate();
+
+      await this._userRepo.save(user);
+
+      if (
+        !(await this._emailService.sendResetPassword(
+          user.email,
+          user.passwordToken,
+        ))
+      ) {
+        functions.throwHttpException(
+          false,
+          'An error occurred while sending the password reset request.',
+          HttpStatus.FAILED_DEPENDENCY,
+        );
+      }
+    } catch (err) {
+      functions.handleHttpException(
+        err,
+        false,
+        'An error occurred while sending the password reset request.',
+      );
+    }
+  }
+
+  public async resetPassword(query: ResetPasswordDto): Promise<boolean> {
+    try {
+      const user = await this._userRepo.findOne({
+        where: {
+          email: query.email,
+          passwordToken: query.token,
+        },
+      });
+
+      if (!user) {
+        functions.throwHttpException(
+          false,
+          'Invalid password reset token. Please try again.',
+          HttpStatus.CONFLICT,
+        );
+      }
+
+      if (moment().isAfter(user.passwordExpDate)) {
+        functions.throwHttpException(
+          false,
+          'Your password reset token has expired. Please request a new one.',
+          HttpStatus.GONE,
+        );
+      }
+
+      return true;
+    } catch (err) {
+      functions.handleHttpException(
+        err,
+        false,
+        'An error occurred while verifying the password reset token.',
+      );
+    }
+  }
+
+  public async changePassword(body: ChangePasswordDto) {
+    try {
+      if (body.password !== body.confirmPassword) {
+        functions.throwHttpException(
+          false,
+          'Passwords do not match.',
+          HttpStatus.BAD_REQUEST,
+        );
+      }
+
+      const user = await this._userRepo.findOne({
+        where: {
+          email: body.email,
+          passwordToken: body.token,
+        },
+      });
+
+      if (!user) {
+        functions.throwHttpException(
+          false,
+          'Invalid password reset token. Please try again.',
+          HttpStatus.CONFLICT,
+        );
+      }
+
+      if (moment().isAfter(user.passwordExpDate)) {
+        functions.throwHttpException(
+          false,
+          'Your password reset token has expired. Please request a new one.',
+          HttpStatus.GONE,
+        );
+      }
+
+      const salt = await bcrypt.genSalt(10);
+      const password = await bcrypt.hash(body.password, salt);
+
+      user.password = password;
+      user.passwordToken = null;
+      user.passwordExpDate = null;
+
+      await this._userRepo.save(user);
+
+      return true;
+    } catch (err) {
+      functions.handleHttpException(
+        err,
+        false,
+        'An error occurred while changing the password.',
       );
     }
   }

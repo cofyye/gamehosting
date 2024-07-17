@@ -29,6 +29,9 @@ export class UserEntity {
   @Column({ name: 'password', nullable: false, length: 100 })
   public password: string;
 
+  @Column({ name: 'pin_code', nullable: false, length: 5 })
+  public pinCode: string;
+
   @Column({ name: 'verification_token', length: 6, nullable: true })
   public verificationToken: string;
 
@@ -61,7 +64,7 @@ export class UserEntity {
 
   @Column({
     name: 'avatar',
-    nullable: false,
+    nullable: true,
     default: 'default-avatar.png',
     length: 100,
   })

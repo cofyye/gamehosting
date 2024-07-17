@@ -8,8 +8,11 @@ import { PassportModule } from '@nestjs/passport';
 
 import { join } from 'path';
 
-import { UserEntity } from './shared/entities/user.entity';
 import { AuthModule } from './api/auth/auth.module';
+
+import { UserEntity } from './shared/entities/user.entity';
+import { LocationEntity } from './shared/entities/location.entity';
+import { GameEntity } from './shared/entities/game.entity';
 
 @Module({
   imports: [
@@ -28,7 +31,7 @@ import { AuthModule } from './api/auth/auth.module';
           password: configService.get<string>('DB_PASSWORD'),
           database: configService.get<string>('DB_DATABASE'),
           synchronize: true,
-          entities: [UserEntity],
+          entities: [UserEntity, LocationEntity, GameEntity],
         };
       },
     }),

@@ -5,6 +5,9 @@ import { UserEntity } from 'src/shared/entities/user.entity';
 import { EmailModule } from 'src/shared/services/email/email.module';
 import { FileUploadModule } from 'src/shared/services/file-upload/file-upload.module';
 
+import { JwtAccessStrategy } from './strategies/jwt-access.strategy';
+import { JwtRefreshStrategy } from './strategies/jwt-refresh.strategy';
+
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 
@@ -15,6 +18,6 @@ import { AuthService } from './auth.service';
     FileUploadModule,
   ],
   controllers: [AuthController],
-  providers: [AuthService],
+  providers: [JwtAccessStrategy, JwtRefreshStrategy, AuthService],
 })
 export class AuthModule {}

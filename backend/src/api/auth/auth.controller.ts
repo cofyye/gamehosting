@@ -8,6 +8,7 @@ import {
   Query,
   Req,
   Res,
+  UseGuards,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ConfigService } from '@nestjs/config';
@@ -22,6 +23,10 @@ import {
   IDataSendResponse,
   ISendResponse,
 } from 'src/shared/interfaces/response.interface';
+
+import { NotAuthenticatedGuard } from 'src/shared/guards/not-authenticated.guard';
+import { AuthenticatedGuard } from 'src/shared/guards/authenticated.guard';
+import { JwtRefreshGuard } from './guards/jwt-refresh.guard';
 
 import { CreateUserDto } from './dtos/create-user.dto';
 import { LoginUserDto } from './dtos/login-user.dto';
@@ -42,6 +47,7 @@ export class AuthController {
     private readonly _jwtService: JwtService,
   ) {}
 
+  @UseGuards(NotAuthenticatedGuard)
   @Post('/signup')
   @HttpCode(HttpStatus.CREATED)
   public async createUser(
@@ -82,6 +88,7 @@ export class AuthController {
     }
   }
 
+  @UseGuards(NotAuthenticatedGuard)
   @Post('/signin')
   @HttpCode(HttpStatus.OK)
   public async loginUser(
@@ -148,6 +155,7 @@ export class AuthController {
     }
   }
 
+  @UseGuards(NotAuthenticatedGuard)
   @Post('/verification/confirm')
   @HttpCode(HttpStatus.OK)
   public async confirmVerification(
@@ -161,6 +169,7 @@ export class AuthController {
     };
   }
 
+  @UseGuards(NotAuthenticatedGuard)
   @Post('/verification/resend/:email')
   @HttpCode(HttpStatus.OK)
   public async resendVerification(
@@ -174,6 +183,7 @@ export class AuthController {
     };
   }
 
+  @UseGuards(NotAuthenticatedGuard)
   @Post('/password/forgot/:email')
   @HttpCode(HttpStatus.OK)
   public async forgotPassword(
@@ -188,6 +198,7 @@ export class AuthController {
   }
 
   // Check if the user can access the frontend page for resetting the password
+  @UseGuards(NotAuthenticatedGuard)
   @Post('/password/reset')
   @HttpCode(HttpStatus.OK)
   public async resetPassword(
@@ -201,6 +212,7 @@ export class AuthController {
     };
   }
 
+  @UseGuards(NotAuthenticatedGuard)
   @Post('/password/change')
   @HttpCode(HttpStatus.OK)
   public async changePassword(
@@ -214,6 +226,7 @@ export class AuthController {
     };
   }
 
+  @UseGuards(AuthenticatedGuard)
   @Post('/signout')
   @HttpCode(HttpStatus.OK)
   public async signOut(
@@ -246,5 +259,44 @@ export class AuthController {
       success: true,
       message: 'Success.',
     };
+  }
+
+  @UseGuards(JwtRefreshGuard)
+  @Post('/relogin')
+  @HttpCode(HttpStatus.OK)
+  public async relogin(
+    @Req() request: Request,
+    @Res({ passthrough: true }) response: Response,
+  ): Promise<ISendResponse> {
+    try {
+      const user = request.user as UserEntity;
+
+      const payload: IJwtPayload = { id: user.id };
+
+      const accessToken = await this._jwtService.signAsync(payload);
+
+      response.cookie('access_token', accessToken, {
+        httpOnly:
+          this._configService.get<string>('APP_STATE') === 'production'
+            ? true
+            : false,
+        sameSite: 'none',
+        secure:
+          this._configService.get<string>('APP_STATE') === 'production'
+            ? true
+            : false,
+      });
+
+      return {
+        success: true,
+        message: 'Success.',
+      };
+    } catch (err) {
+      functions.handleHttpException(
+        err,
+        false,
+        'An error occurred while generating the token.',
+      );
+    }
   }
 }

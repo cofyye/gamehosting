@@ -3,6 +3,7 @@ import { NestExpressApplication } from '@nestjs/platform-express';
 import { ValidationPipe } from '@nestjs/common';
 
 import * as fileUpload from 'express-fileupload';
+import * as cookieParser from 'cookie-parser';
 
 import { ClassValidatorFilter } from './shared/filters/class-validator.filter';
 import { TrimPipe } from './shared/pipes/trim.pipe';
@@ -16,6 +17,7 @@ async function bootstrap() {
   app.useBodyParser('urlencoded', { limit: '500mb', extended: true });
 
   app.use(fileUpload());
+  app.use(cookieParser());
 
   app.enableCors({
     origin: process.env.FRONTEND_URL,

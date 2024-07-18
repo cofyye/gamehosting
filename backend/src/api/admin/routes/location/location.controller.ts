@@ -1,16 +1,16 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   HttpCode,
   HttpStatus,
   Param,
   Post,
+  Put,
   Req,
   UseGuards,
 } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
 import { Request } from 'express';
 
 import { LocationEntity } from 'src/shared/entities/location.entity';
@@ -22,20 +22,17 @@ import {
 import { functions } from 'src/shared/utils/functions';
 import { RoleGuard } from 'src/shared/guards/role.guard';
 import { UserRole } from 'src/shared/enums/role.enum';
+import { UuidDto } from 'src/shared/dtos/uuid.dto';
 
 import { CreateLocationDto } from './dtos/create-location.dto';
+import { EditLocationDto } from './dtos/edit-location.dto';
 
 import { LocationService } from './location.service';
-import { UuidDto } from 'src/shared/dtos/uuid.dto';
 
 @Controller('admin/location')
 @UseGuards(AuthenticatedGuard)
 export class LocationController {
-  constructor(
-    @InjectRepository(LocationEntity)
-    private readonly _locationRepo: Repository<LocationEntity>,
-    private readonly _locationService: LocationService,
-  ) {}
+  constructor(private readonly _locationService: LocationService) {}
 
   @UseGuards(new RoleGuard([UserRole.FOUNDER]))
   @Post('')
@@ -122,6 +119,54 @@ export class LocationController {
         err,
         false,
         'An error occurred while retrieving the location.',
+      );
+    }
+  }
+
+  @UseGuards(new RoleGuard([UserRole.FOUNDER, UserRole.ADMIN]))
+  @Put(':id')
+  @HttpCode(HttpStatus.OK)
+  public async editLocation(
+    @Param() params: UuidDto,
+    @Body() body: EditLocationDto,
+    @Req() req: Request,
+  ): Promise<ISendResponse> {
+    try {
+      let icon = req.files?.icon;
+
+      await this._locationService.editLocation(params.id, body, icon);
+
+      return {
+        success: true,
+        message: 'You have successfully updated the location.',
+      };
+    } catch (err: unknown) {
+      functions.handleHttpException(
+        err,
+        false,
+        'An error occurred while updating the location.',
+      );
+    }
+  }
+
+  @UseGuards(new RoleGuard([UserRole.FOUNDER, UserRole.ADMIN]))
+  @Delete(':id')
+  @HttpCode(HttpStatus.OK)
+  public async deleteLocation(
+    @Param() params: UuidDto,
+  ): Promise<ISendResponse> {
+    try {
+      await this._locationService.deleteLocation(params.id);
+
+      return {
+        success: true,
+        message: 'You have successfully deleted the location.',
+      };
+    } catch (err: unknown) {
+      functions.handleHttpException(
+        err,
+        false,
+        'An error occurred while deleting the location.',
       );
     }
   }

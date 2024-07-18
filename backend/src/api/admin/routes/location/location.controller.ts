@@ -24,7 +24,7 @@ import { RoleGuard } from 'src/shared/guards/role.guard';
 import { UserRole } from 'src/shared/enums/role.enum';
 import { UuidDto } from 'src/shared/dtos/uuid.dto';
 
-import { CreateLocationDto } from './dtos/create-location.dto';
+import { AddLocationDto } from './dtos/add-location.dto';
 import { EditLocationDto } from './dtos/edit-location.dto';
 
 import { LocationService } from './location.service';
@@ -37,8 +37,8 @@ export class LocationController {
   @UseGuards(new RoleGuard([UserRole.FOUNDER]))
   @Post('')
   @HttpCode(HttpStatus.CREATED)
-  public async createLocation(
-    @Body() body: CreateLocationDto,
+  public async addLocation(
+    @Body() body: AddLocationDto,
     @Req() req: Request,
   ): Promise<ISendResponse> {
     try {
@@ -52,8 +52,10 @@ export class LocationController {
         );
       }
 
-      const location: LocationEntity =
-        await this._locationService.createLocation(body, icon);
+      const location: LocationEntity = await this._locationService.addLocation(
+        body,
+        icon,
+      );
 
       if (!location) {
         functions.throwHttpException(

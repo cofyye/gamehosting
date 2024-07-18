@@ -7,7 +7,7 @@ import { LocationEntity } from 'src/shared/entities/location.entity';
 import { FileUploadService } from 'src/shared/services/file-upload/file-upload.service';
 import { functions } from 'src/shared/utils/functions';
 
-import { CreateLocationDto } from './dtos/create-location.dto';
+import { AddLocationDto } from './dtos/add-location.dto';
 import { EditLocationDto } from './dtos/edit-location.dto';
 
 @Injectable()
@@ -18,8 +18,8 @@ export class LocationService {
     private readonly _fileUploadService: FileUploadService,
   ) {}
 
-  public async createLocation(
-    body: CreateLocationDto,
+  public async addLocation(
+    body: AddLocationDto,
     icon: UploadedFile | UploadedFile[],
   ): Promise<LocationEntity> {
     let filename = '';

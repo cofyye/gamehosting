@@ -24,7 +24,7 @@ import { RoleGuard } from 'src/shared/guards/role.guard';
 import { UserRole } from 'src/shared/enums/role.enum';
 import { UuidDto } from 'src/shared/dtos/uuid.dto';
 
-import { CreateGameDto } from './dtos/create-game.dto';
+import { AddGameDto } from './dtos/add-game.dto';
 import { EditGameDto } from './dtos/edit-game.dto';
 
 import { GameService } from './game.service';
@@ -37,8 +37,8 @@ export class GameController {
   @UseGuards(new RoleGuard([UserRole.FOUNDER]))
   @Post('')
   @HttpCode(HttpStatus.CREATED)
-  public async createGame(
-    @Body() body: CreateGameDto,
+  public async addGame(
+    @Body() body: AddGameDto,
     @Req() req: Request,
   ): Promise<ISendResponse> {
     try {
@@ -52,7 +52,7 @@ export class GameController {
         );
       }
 
-      const game: GameEntity = await this._gameService.createGame(body, icon);
+      const game: GameEntity = await this._gameService.addGame(body, icon);
 
       if (!game) {
         functions.throwHttpException(

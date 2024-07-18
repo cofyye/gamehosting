@@ -7,7 +7,7 @@ import { GameEntity } from 'src/shared/entities/game.entity';
 import { FileUploadService } from 'src/shared/services/file-upload/file-upload.service';
 import { functions } from 'src/shared/utils/functions';
 
-import { CreateGameDto } from './dtos/create-game.dto';
+import { AddGameDto } from './dtos/add-game.dto';
 import { EditGameDto } from './dtos/edit-game.dto';
 
 @Injectable()
@@ -18,8 +18,8 @@ export class GameService {
     private readonly _fileUploadService: FileUploadService,
   ) {}
 
-  public async createGame(
-    body: CreateGameDto,
+  public async addGame(
+    body: AddGameDto,
     icon: UploadedFile | UploadedFile[],
   ): Promise<GameEntity> {
     let filename = '';

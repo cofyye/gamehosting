@@ -8,7 +8,7 @@ import {
   MinLength,
 } from 'class-validator';
 
-export class EditGameDto {
+export class AddGameDto {
   @IsString({ message: 'The name must contain only characters.' })
   @MaxLength(30, {
     message: 'The name must contain a maximum of 30 characters.',

@@ -1,6 +1,6 @@
 import { IsNotEmpty, IsString, MaxLength, MinLength } from 'class-validator';
 
-export class CreateLocationDto {
+export class AddLocationDto {
   @IsString({ message: 'The country must contain only characters.' })
   @MaxLength(30, {
     message: 'The country must contain a maximum of 30 characters.',

@@ -13,6 +13,7 @@ import { AuthModule } from './api/auth/auth.module';
 import { UserEntity } from './shared/entities/user.entity';
 import { LocationEntity } from './shared/entities/location.entity';
 import { GameEntity } from './shared/entities/game.entity';
+import { AdminModule } from './api/admin/admin.module';
 
 @Module({
   imports: [
@@ -68,6 +69,7 @@ import { GameEntity } from './shared/entities/game.entity';
       },
     }),
     AuthModule,
+    AdminModule,
   ],
   controllers: [],
   providers: [],

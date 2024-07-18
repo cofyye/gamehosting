@@ -12,11 +12,15 @@ export class LocationEntity {
   @PrimaryGeneratedColumn('uuid')
   public id: string;
 
-  @Column({ name: 'name', nullable: false, length: 30 })
-  public name: string;
+  @Column({ name: 'country', nullable: false, unique: true, length: 30 })
+  public country: string;
+
+  @Column({ name: 'town', nullable: false, length: 30 })
+  public town: string;
 
   @Column({
     name: 'icon',
+    unique: true,
     nullable: false,
     length: 100,
   })

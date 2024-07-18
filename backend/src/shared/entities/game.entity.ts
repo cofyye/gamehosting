@@ -12,14 +12,15 @@ export class GameEntity {
   @PrimaryGeneratedColumn('uuid')
   public id: string;
 
-  @Column({ name: 'name', nullable: false, length: 30 })
+  @Column({ name: 'name', nullable: false, unique: true, length: 30 })
   public name: string;
 
-  @Column({ name: 'tag', nullable: false, length: 10 })
+  @Column({ name: 'tag', nullable: false, unique: true, length: 10 })
   public tag: string;
 
   @Column({
     name: 'icon',
+    unique: true,
     nullable: false,
     length: 100,
   })

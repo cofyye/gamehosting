@@ -64,6 +64,7 @@ export class UserEntity {
 
   @Column({
     name: 'avatar',
+    unique: true,
     nullable: true,
     default: 'default-avatar.png',
     length: 100,

@@ -15,8 +15,8 @@ export class GameEntity {
   @Column({ name: 'name', nullable: false, unique: true, length: 30 })
   public name: string;
 
-  @Column({ name: 'tag', nullable: false, unique: true, length: 10 })
-  public tag: string;
+  @Column({ name: 'gamedig_tag', nullable: false, unique: true, length: 20 })
+  public gamedigTag: string;
 
   @Column({
     name: 'icon',

@@ -25,6 +25,7 @@ import { UserRole } from 'src/shared/enums/role.enum';
 import { UuidDto } from 'src/shared/dtos/uuid.dto';
 
 import { CreateGameDto } from './dtos/create-game.dto';
+import { EditGameDto } from './dtos/edit-game.dto';
 
 import { GameService } from './game.service';
 
@@ -114,6 +115,52 @@ export class GameController {
         err,
         false,
         'An error occurred while retrieving the game.',
+      );
+    }
+  }
+
+  @UseGuards(new RoleGuard([UserRole.FOUNDER, UserRole.ADMIN]))
+  @Put(':id')
+  @HttpCode(HttpStatus.OK)
+  public async editLocation(
+    @Param() params: UuidDto,
+    @Body() body: EditGameDto,
+    @Req() req: Request,
+  ): Promise<ISendResponse> {
+    try {
+      let icon = req.files?.icon;
+
+      await this._gameService.editGame(params.id, body, icon);
+
+      return {
+        success: true,
+        message: 'You have successfully updated the game.',
+      };
+    } catch (err: unknown) {
+      functions.handleHttpException(
+        err,
+        false,
+        'An error occurred while updating the game.',
+      );
+    }
+  }
+
+  @UseGuards(new RoleGuard([UserRole.FOUNDER, UserRole.ADMIN]))
+  @Delete(':id')
+  @HttpCode(HttpStatus.OK)
+  public async deleteGame(@Param() params: UuidDto): Promise<ISendResponse> {
+    try {
+      await this._gameService.deleteGame(params.id);
+
+      return {
+        success: true,
+        message: 'You have successfully deleted the game.',
+      };
+    } catch (err: unknown) {
+      functions.handleHttpException(
+        err,
+        false,
+        'An error occurred while deleting the game.',
       );
     }
   }

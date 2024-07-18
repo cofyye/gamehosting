@@ -8,6 +8,7 @@ import { FileUploadService } from 'src/shared/services/file-upload/file-upload.s
 import { functions } from 'src/shared/utils/functions';
 
 import { CreateGameDto } from './dtos/create-game.dto';
+import { EditGameDto } from './dtos/edit-game.dto';
 
 @Injectable()
 export class GameService {
@@ -83,6 +84,65 @@ export class GameService {
     }
   }
 
+  public async editGame(
+    id: string,
+    body: EditGameDto,
+    icon: UploadedFile | UploadedFile[],
+  ): Promise<void> {
+    let filename: string = '';
+
+    try {
+      const game = await this._gameRepo.findOne({
+        where: {
+          id,
+        },
+      });
+
+      if (!game) {
+        functions.throwHttpException(
+          false,
+          'This game does not exist.',
+          HttpStatus.NOT_FOUND,
+        );
+      }
+
+      game.name = body.name;
+      game.gamedigTag = body.gamedigTag;
+      game.pricePerSlot = body.pricePerSlot;
+      game.startPort = body.startPort;
+      game.endPort = body.endPort;
+      game.slotMin = body.slotMin;
+      game.slotMax = body.slotMax;
+      game.description = body.description;
+
+      if (icon) {
+        filename = await this._fileUploadService.uploadImage('game', icon);
+
+        if (!filename) {
+          functions.throwHttpException(
+            false,
+            'An error occurred while uploading the icon.',
+            HttpStatus.INTERNAL_SERVER_ERROR,
+          );
+        }
+
+        this._fileUploadService.deleteFile(game.icon);
+
+        game.icon = filename;
+      }
+
+      await this._gameRepo.save(game);
+    } catch (err) {
+      this._fileUploadService.deleteFile(filename);
+
+      functions.handleHttpException(
+        err,
+        false,
+        'An error occurred while deleting the games.',
+      );
+    }
+  }
+
   public async getGames(): Promise<GameEntity[]> {
     try {
       return await this._gameRepo.find();
@@ -117,6 +177,40 @@ export class GameService {
         err,
         false,
         'An error occurred while retrieving the game.',
+      );
+    }
+  }
+
+  public async deleteGame(id: string): Promise<void> {
+    try {
+      const game = await this._gameRepo.findOne({
+        where: {
+          id,
+        },
+      });
+
+      if (!game) {
+        functions.throwHttpException(
+          false,
+          'This game does not exist.',
+          HttpStatus.NOT_FOUND,
+        );
+      }
+
+      if (!(await this._gameRepo.delete({ id })).affected) {
+        functions.throwHttpException(
+          false,
+          'An error occurred while deleting the game.',
+          HttpStatus.INTERNAL_SERVER_ERROR,
+        );
+      }
+
+      this._fileUploadService.deleteFile(game.icon);
+    } catch (err) {
+      functions.handleHttpException(
+        err,
+        false,
+        'An error occurred while deleting the game.',
       );
     }
   }

@@ -7,7 +7,6 @@ import {
   UseGuards,
 } from '@nestjs/common';
 
-import { MachineEntity } from 'src/shared/entities/machine.entity';
 import { AuthenticatedGuard } from 'src/shared/guards/authenticated.guard';
 import { ISendResponse } from 'src/shared/interfaces/response.interface';
 import { functions } from 'src/shared/utils/functions';
@@ -28,16 +27,7 @@ export class MachineController {
   @HttpCode(HttpStatus.CREATED)
   public async addMachine(@Body() body: AddMachineDto): Promise<ISendResponse> {
     try {
-      const machine: MachineEntity =
-        await this._machineService.addMachine(body);
-
-      if (!machine) {
-        functions.throwHttpException(
-          false,
-          'An error occurred while adding the machine.',
-          HttpStatus.INTERNAL_SERVER_ERROR,
-        );
-      }
+      await this._machineService.addMachine(body);
 
       return {
         success: true,

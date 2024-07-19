@@ -30,10 +30,18 @@ export class AuthService {
   public async createUser(
     body: CreateUserDto,
     avatar: UploadedFile | UploadedFile[],
-  ): Promise<UserEntity> {
+  ): Promise<void> {
     let filename = '';
 
     try {
+      if (!avatar) {
+        functions.throwHttpException(
+          false,
+          'The image field must not be empty.',
+          HttpStatus.BAD_REQUEST,
+        );
+      }
+
       let user = await this._userRepo.findOne({
         where: [{ email: body.email }, { username: body.username }],
       });
@@ -92,7 +100,7 @@ export class AuthService {
         );
       }
 
-      return await this._userRepo.save(this._userRepo.create(user));
+      await this._userRepo.save(this._userRepo.create(user));
     } catch (err) {
       this._fileUploadService.deleteFile(filename);
 

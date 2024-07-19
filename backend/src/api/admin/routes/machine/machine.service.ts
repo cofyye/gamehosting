@@ -6,6 +6,7 @@ import { MachineEntity } from 'src/shared/entities/machine.entity';
 import { functions } from 'src/shared/utils/functions';
 import { Ssh2Service } from 'src/shared/services/ssh2/ssh2.service';
 import { EncryptionService } from 'src/shared/services/encryption/encryption.service';
+import { UtilsService } from 'src/shared/services/utils/utils.service';
 
 import { AddMachineDto } from './dtos/add-machine.dto';
 
@@ -16,10 +17,19 @@ export class MachineService {
     private readonly _machineRepo: Repository<MachineEntity>,
     private readonly _encryptionService: EncryptionService,
     private readonly _ssh2Service: Ssh2Service,
+    private readonly _utilsService: UtilsService,
   ) {}
 
-  public async addMachine(body: AddMachineDto): Promise<MachineEntity> {
+  public async addMachine(body: AddMachineDto): Promise<void> {
     try {
+      if (!(await this._utilsService.locationExists(body.locationId))) {
+        functions.throwHttpException(
+          false,
+          'This location does not exist.',
+          HttpStatus.CONFLICT,
+        );
+      }
+
       let machine = await this._machineRepo.findOne({
         where: [
           {
@@ -62,8 +72,9 @@ export class MachineService {
       machine.ftpPort = body.ftpPort;
       machine.maxServers = body.maxServers;
       machine.password = this._encryptionService.encrypt(body.password);
+      machine.locationId = body.locationId;
 
-      return await this._machineRepo.save(this._machineRepo.create(machine));
+      await this._machineRepo.save(this._machineRepo.create(machine));
     } catch (err: unknown) {
       functions.handleHttpException(
         err,

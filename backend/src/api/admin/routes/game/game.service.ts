@@ -21,10 +21,18 @@ export class GameService {
   public async addGame(
     body: AddGameDto,
     icon: UploadedFile | UploadedFile[],
-  ): Promise<GameEntity> {
+  ): Promise<void> {
     let filename = '';
 
     try {
+      if (!icon) {
+        functions.throwHttpException(
+          false,
+          'The icon field must not be empty.',
+          HttpStatus.BAD_REQUEST,
+        );
+      }
+
       let game = await this._gameRepo.findOne({
         where: [
           {
@@ -72,7 +80,7 @@ export class GameService {
 
       game.icon = filename;
 
-      return await this._gameRepo.save(this._gameRepo.create(game));
+      await this._gameRepo.save(this._gameRepo.create(game));
     } catch (err) {
       this._fileUploadService.deleteFile(filename);
 

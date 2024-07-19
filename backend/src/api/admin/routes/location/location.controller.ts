@@ -42,28 +42,7 @@ export class LocationController {
     @Req() req: Request,
   ): Promise<ISendResponse> {
     try {
-      let icon = req.files?.icon;
-
-      if (!icon) {
-        functions.throwHttpException(
-          false,
-          'The icon field must not be empty.',
-          HttpStatus.BAD_REQUEST,
-        );
-      }
-
-      const location: LocationEntity = await this._locationService.addLocation(
-        body,
-        icon,
-      );
-
-      if (!location) {
-        functions.throwHttpException(
-          false,
-          'An error occurred while adding the location.',
-          HttpStatus.INTERNAL_SERVER_ERROR,
-        );
-      }
+      await this._locationService.addLocation(body, req.files?.icon);
 
       return {
         success: true,
@@ -83,12 +62,9 @@ export class LocationController {
   @HttpCode(HttpStatus.OK)
   public async getLocations(): Promise<IDataSendResponse<LocationEntity[]>> {
     try {
-      const locations: LocationEntity[] =
-        await this._locationService.getLocations();
-
       return {
         success: true,
-        data: locations,
+        data: await this._locationService.getLocations(),
         message: 'Success.',
       };
     } catch (err: unknown) {
@@ -107,13 +83,9 @@ export class LocationController {
     @Param() params: UuidDto,
   ): Promise<IDataSendResponse<LocationEntity>> {
     try {
-      const location: LocationEntity = await this._locationService.getLocation(
-        params.id,
-      );
-
       return {
         success: true,
-        data: location,
+        data: await this._locationService.getLocation(params.id),
         message: 'Success.',
       };
     } catch (err: unknown) {
@@ -134,9 +106,11 @@ export class LocationController {
     @Req() req: Request,
   ): Promise<ISendResponse> {
     try {
-      let icon = req.files?.icon;
-
-      await this._locationService.editLocation(params.id, body, icon);
+      await this._locationService.editLocation(
+        params.id,
+        body,
+        req.files?.icon,
+      );
 
       return {
         success: true,

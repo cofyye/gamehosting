@@ -55,25 +55,7 @@ export class AuthController {
     @Req() req: Request,
   ): Promise<ISendResponse> {
     try {
-      let avatar = req.files?.avatar;
-
-      if (!avatar) {
-        functions.throwHttpException(
-          false,
-          'The image field must not be empty.',
-          HttpStatus.BAD_REQUEST,
-        );
-      }
-
-      const user: UserEntity = await this._authService.createUser(body, avatar);
-
-      if (!user) {
-        functions.throwHttpException(
-          false,
-          'An error occurred during registration.',
-          HttpStatus.INTERNAL_SERVER_ERROR,
-        );
-      }
+      await this._authService.createUser(body, req.files?.avatar);
 
       return {
         success: true,

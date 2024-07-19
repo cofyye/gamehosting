@@ -2,8 +2,12 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
+  ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
+
+import { LocationEntity } from './location.entity';
 
 @Entity({
   name: 'machines',
@@ -11,6 +15,9 @@ import {
 export class MachineEntity {
   @PrimaryGeneratedColumn('uuid')
   public id: string;
+
+  @Column({ name: 'location_id', nullable: false })
+  public locationId: string;
 
   @Column({ name: 'name', nullable: false, unique: true, length: 40 })
   public name: string;
@@ -39,4 +46,12 @@ export class MachineEntity {
     nullable: false,
   })
   public createdAt: Date;
+
+  @ManyToOne(() => LocationEntity, (location) => location.machines, {
+    nullable: false,
+    onUpdate: 'RESTRICT',
+    onDelete: 'RESTRICT',
+  })
+  @JoinColumn({ name: 'location_id' })
+  location?: LocationEntity;
 }

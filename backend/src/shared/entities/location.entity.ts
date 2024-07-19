@@ -2,8 +2,11 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
+
+import { MachineEntity } from './machine.entity';
 
 @Entity({
   name: 'locations',
@@ -32,4 +35,7 @@ export class LocationEntity {
     nullable: false,
   })
   public createdAt: Date;
+
+  @OneToMany(() => MachineEntity, (machine) => machine.location)
+  machines?: MachineEntity[];
 }

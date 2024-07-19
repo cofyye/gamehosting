@@ -21,10 +21,18 @@ export class LocationService {
   public async addLocation(
     body: AddLocationDto,
     icon: UploadedFile | UploadedFile[],
-  ): Promise<LocationEntity> {
+  ): Promise<void> {
     let filename = '';
 
     try {
+      if (!icon) {
+        functions.throwHttpException(
+          false,
+          'The icon field must not be empty.',
+          HttpStatus.BAD_REQUEST,
+        );
+      }
+
       let location = await this._locationRepo.findOne({
         where: {
           country: body.country,
@@ -55,7 +63,7 @@ export class LocationService {
 
       location.icon = filename;
 
-      return await this._locationRepo.save(this._locationRepo.create(location));
+      await this._locationRepo.save(this._locationRepo.create(location));
     } catch (err) {
       this._fileUploadService.deleteFile(filename);
 

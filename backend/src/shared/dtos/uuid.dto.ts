@@ -4,6 +4,6 @@ export class UuidDto {
   @IsUUID('4', {
     message: 'The ID is not valid.',
   })
-  @IsNotEmpty({ message: 'The id field must not be empty.' })
+  @IsNotEmpty({ message: 'The ID field must not be empty.' })
   public readonly id: string;
 }

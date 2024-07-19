@@ -42,25 +42,7 @@ export class GameController {
     @Req() req: Request,
   ): Promise<ISendResponse> {
     try {
-      let icon = req.files?.icon;
-
-      if (!icon) {
-        functions.throwHttpException(
-          false,
-          'The icon field must not be empty.',
-          HttpStatus.BAD_REQUEST,
-        );
-      }
-
-      const game: GameEntity = await this._gameService.addGame(body, icon);
-
-      if (!game) {
-        functions.throwHttpException(
-          false,
-          'An error occurred while adding the game.',
-          HttpStatus.INTERNAL_SERVER_ERROR,
-        );
-      }
+      await this._gameService.addGame(body, req.files?.icon);
 
       return {
         success: true,
@@ -80,11 +62,9 @@ export class GameController {
   @HttpCode(HttpStatus.OK)
   public async getLocations(): Promise<IDataSendResponse<GameEntity[]>> {
     try {
-      const games: GameEntity[] = await this._gameService.getGames();
-
       return {
         success: true,
-        data: games,
+        data: await this._gameService.getGames(),
         message: 'Success.',
       };
     } catch (err: unknown) {
@@ -103,11 +83,9 @@ export class GameController {
     @Param() params: UuidDto,
   ): Promise<IDataSendResponse<GameEntity>> {
     try {
-      const game: GameEntity = await this._gameService.getGame(params.id);
-
       return {
         success: true,
-        data: game,
+        data: await this._gameService.getGame(params.id),
         message: 'Success.',
       };
     } catch (err: unknown) {
@@ -128,9 +106,7 @@ export class GameController {
     @Req() req: Request,
   ): Promise<ISendResponse> {
     try {
-      let icon = req.files?.icon;
-
-      await this._gameService.editGame(params.id, body, icon);
+      await this._gameService.editGame(params.id, body, req.files?.icon);
 
       return {
         success: true,

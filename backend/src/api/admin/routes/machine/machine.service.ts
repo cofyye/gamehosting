@@ -4,9 +4,10 @@ import { Repository } from 'typeorm';
 
 import { MachineEntity } from 'src/shared/entities/machine.entity';
 import { functions } from 'src/shared/utils/functions';
+import { Ssh2Service } from 'src/shared/services/ssh2/ssh2.service';
+import { EncryptionService } from 'src/shared/services/encryption/encryption.service';
 
 import { AddMachineDto } from './dtos/add-machine.dto';
-import { EncryptionService } from 'src/shared/services/encryption/encryption.service';
 
 @Injectable()
 export class MachineService {
@@ -14,6 +15,7 @@ export class MachineService {
     @InjectRepository(MachineEntity)
     private readonly _machineRepo: Repository<MachineEntity>,
     private readonly _encryptionService: EncryptionService,
+    private readonly _ssh2Service: Ssh2Service,
   ) {}
 
   public async addMachine(body: AddMachineDto): Promise<MachineEntity> {
@@ -43,6 +45,15 @@ export class MachineService {
         );
       }
 
+      await this._ssh2Service.checkConnection({
+        host: body.ip,
+        port: body.sshPort,
+        username: body.username,
+        password: body.password,
+        readyTimeout: 3000,
+        retry_minTimeout: 1000,
+      });
+
       machine = new MachineEntity();
       machine.name = body.name;
       machine.username = body.username;
@@ -53,7 +64,7 @@ export class MachineService {
       machine.password = this._encryptionService.encrypt(body.password);
 
       return await this._machineRepo.save(this._machineRepo.create(machine));
-    } catch (err) {
+    } catch (err: unknown) {
       functions.handleHttpException(
         err,
         false,

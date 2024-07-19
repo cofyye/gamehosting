@@ -5,11 +5,11 @@ import * as crypto from 'crypto';
 
 @Injectable()
 export class EncryptionService {
-  constructor(private readonly _configService: ConfigService) {}
-
   private algorithm = 'aes-256-ctr';
   private secretKey = this._configService.get<string>('ENCRYPTION_KEY');
   private iv = crypto.randomBytes(16);
+
+  constructor(private readonly _configService: ConfigService) {}
 
   encrypt(text: string): string {
     const cipher = crypto.createCipheriv(

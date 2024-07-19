@@ -36,6 +36,8 @@ export class LocationEntity {
   })
   public createdAt: Date;
 
+  // Relations
+
   @OneToMany(() => MachineEntity, (machine) => machine.location)
   machines?: MachineEntity[];
 }

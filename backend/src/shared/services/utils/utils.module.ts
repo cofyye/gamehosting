@@ -5,6 +5,7 @@ import { UserEntity } from 'src/shared/entities/user.entity';
 import { LocationEntity } from 'src/shared/entities/location.entity';
 import { MachineEntity } from 'src/shared/entities/machine.entity';
 import { GameEntity } from 'src/shared/entities/game.entity';
+import { MachineGamesEntity } from 'src/shared/entities/machine-games.entity';
 
 import { UtilsService } from './utils.service';
 
@@ -14,6 +15,7 @@ import { UtilsService } from './utils.service';
       UserEntity,
       LocationEntity,
       MachineEntity,
+      MachineGamesEntity,
       GameEntity,
     ]),
   ],

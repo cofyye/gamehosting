@@ -4,10 +4,12 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
 import { LocationEntity } from './location.entity';
+import { MachineGamesEntity } from './machine-games.entity';
 
 @Entity({
   name: 'machines',
@@ -47,6 +49,8 @@ export class MachineEntity {
   })
   public createdAt: Date;
 
+  // Relations
+
   @ManyToOne(() => LocationEntity, (location) => location.machines, {
     nullable: false,
     onUpdate: 'RESTRICT',
@@ -54,4 +58,7 @@ export class MachineEntity {
   })
   @JoinColumn({ name: 'location_id' })
   location?: LocationEntity;
+
+  @OneToMany(() => MachineGamesEntity, (machineGame) => machineGame.machine)
+  public machineGames: MachineGamesEntity[];
 }

@@ -22,6 +22,10 @@ export class MachineService {
 
   public async addMachine(body: AddMachineDto): Promise<void> {
     try {
+      const games = this._utilsService.validateProvidedGamesForMachine(
+        body.games,
+      );
+
       if (!(await this._utilsService.locationExists(body.locationId))) {
         functions.throwHttpException(
           false,
@@ -74,7 +78,9 @@ export class MachineService {
       machine.password = this._encryptionService.encrypt(body.password);
       machine.locationId = body.locationId;
 
-      await this._machineRepo.save(this._machineRepo.create(machine));
+      machine = await this._machineRepo.save(this._machineRepo.create(machine));
+
+      await this._utilsService.addGamesForMachines(machine, games);
     } catch (err: unknown) {
       functions.handleHttpException(
         err,

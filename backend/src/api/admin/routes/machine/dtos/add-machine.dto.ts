@@ -67,4 +67,7 @@ export class AddMachineDto {
   @IsInt({ message: 'The maximum servers must be in numeric format.' })
   @IsNotEmpty({ message: 'The maximum servers field must not be empty.' })
   public readonly maxServers: number;
+
+  @IsNotEmpty({ message: 'The games field must not be empty.' })
+  public games: string;
 }

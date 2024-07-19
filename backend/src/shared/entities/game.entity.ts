@@ -2,8 +2,11 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
+
+import { MachineGamesEntity } from './machine-games.entity';
 
 @Entity({
   name: 'games',
@@ -79,4 +82,9 @@ export class GameEntity {
     nullable: false,
   })
   public createdAt: Date;
+
+  // Relations
+
+  @OneToMany(() => MachineGamesEntity, (machineGame) => machineGame.game)
+  public machineGames: MachineGamesEntity[];
 }

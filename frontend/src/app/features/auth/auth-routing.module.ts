@@ -3,6 +3,8 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { LoginComponent } from './pages/login/login.component';
 import { RegisterComponent } from './pages/register/register.component';
+import { ForgotPasswordComponent } from './pages/forgot-password/forgot-password.component';
+import { ResetPasswordComponent } from './pages/reset-password/reset-password.component';
 
 const routes: Routes = [
   {
@@ -20,16 +22,18 @@ const routes: Routes = [
     component: RegisterComponent,
     pathMatch: 'full',
   },
-  // {
-  //   path: 'password/forgot',
-  //   pathMatch: 'full',
-  // },
-  // {
-  //   path: 'password/reset',
-  //   pathMatch: 'full',
+  {
+    path: 'password/forgot',
+    component: ForgotPasswordComponent,
+    pathMatch: 'full',
+  },
+  {
+    path: 'password/reset',
+    component: ResetPasswordComponent,
+    pathMatch: 'full',
 
-  //   // resolve: { isAllowed: resetPasswordResolver },
-  // },
+    // resolve: { isAllowed: resetPasswordResolver },
+  },
   // {
   //   path: 'verification/confirm',
   //   pathMatch: 'full',

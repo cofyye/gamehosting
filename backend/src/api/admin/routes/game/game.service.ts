@@ -33,12 +33,20 @@ export class GameService {
         );
       }
 
+      if (!functions.checkListOfSupportedGames(body.tag)) {
+        functions.throwHttpException(
+          false,
+          'Supported tags for games currently are: counterstrike16 & counterstrike2.',
+          HttpStatus.BAD_REQUEST,
+        );
+      }
+
       let game = await this._gameRepo.findOne({
         where: [
           {
             name: body.name,
           },
-          { gamedigTag: body.gamedigTag },
+          { tag: body.tag },
         ],
       });
 
@@ -50,7 +58,7 @@ export class GameService {
         );
       }
 
-      if (game?.gamedigTag === body.gamedigTag) {
+      if (game?.tag === body.tag) {
         functions.throwHttpException(
           false,
           'A game with this gamedig tag already exists.',
@@ -60,8 +68,7 @@ export class GameService {
 
       game = new GameEntity();
       game.name = body.name;
-      game.gamedigTag = body.gamedigTag;
-      game.pricePerSlot = body.pricePerSlot;
+      game.tag = body.tag;
       game.startPort = body.startPort;
       game.endPort = body.endPort;
       game.slotMin = body.slotMin;
@@ -115,8 +122,7 @@ export class GameService {
       }
 
       game.name = body.name;
-      game.gamedigTag = body.gamedigTag;
-      game.pricePerSlot = body.pricePerSlot;
+      game.tag = body.tag;
       game.startPort = body.startPort;
       game.endPort = body.endPort;
       game.slotMin = body.slotMin;

@@ -18,8 +18,8 @@ export class GameEntity {
   @Column({ name: 'name', nullable: false, unique: true, length: 30 })
   public name: string;
 
-  @Column({ name: 'gamedig_tag', nullable: false, unique: true, length: 20 })
-  public gamedigTag: string;
+  @Column({ name: 'tag', nullable: false, unique: true, length: 20 })
+  public tag: string;
 
   @Column({
     name: 'icon',
@@ -28,15 +28,6 @@ export class GameEntity {
     length: 100,
   })
   public icon: string;
-
-  @Column({
-    name: 'price_per_slot',
-    nullable: false,
-    type: 'decimal',
-    precision: 5,
-    scale: 2,
-  })
-  public pricePerSlot: number;
 
   @Column({
     name: 'start_port',

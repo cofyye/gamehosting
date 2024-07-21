@@ -80,6 +80,16 @@ function formatBytes(bytes: number, decimals = 2): string {
   return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
 }
 
+function checkListOfSupportedGames(gameTag: string): boolean {
+  const listOfSupportedGames: string[] = ['counterstrike16', 'counterstrike2'];
+
+  if (!listOfSupportedGames.includes(gameTag)) {
+    return false;
+  } else {
+    return true;
+  }
+}
+
 export const functions = {
   handleHttpException,
   throwHttpException,
@@ -87,4 +97,5 @@ export const functions = {
   generateCode,
   generateRandomString,
   formatBytes,
+  checkListOfSupportedGames,
 };

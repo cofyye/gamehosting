@@ -31,8 +31,8 @@ export class MachineGamesEntity {
   public createdAt: Date;
 
   @ManyToOne(() => MachineEntity, (machine) => machine.machineGames, {
-    onDelete: 'RESTRICT',
-    onUpdate: 'RESTRICT',
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
   })
   @JoinColumn({ name: 'machine_id' })
   public machine: MachineEntity;

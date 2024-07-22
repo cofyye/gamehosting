@@ -22,15 +22,13 @@ export class MachineService {
 
   public async addMachine(body: AddMachineDto): Promise<void> {
     try {
-      const games = this._utilsService.validateProvidedGamesForMachine(
-        body.games,
-      );
+      const games = functions.validateProvidedGamesForMachine(body.games);
 
       if (!(await this._utilsService.locationExists(body.locationId))) {
         functions.throwHttpException(
           false,
           'This location does not exist.',
-          HttpStatus.CONFLICT,
+          HttpStatus.NOT_FOUND,
         );
       }
 

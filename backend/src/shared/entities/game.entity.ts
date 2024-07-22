@@ -7,6 +7,7 @@ import {
 } from 'typeorm';
 
 import { MachineGamesEntity } from './machine-games.entity';
+import { ModEntity } from './mod.entity';
 
 @Entity({
   name: 'games',
@@ -78,4 +79,7 @@ export class GameEntity {
 
   @OneToMany(() => MachineGamesEntity, (machineGame) => machineGame.game)
   public machineGames: MachineGamesEntity[];
+
+  @OneToMany(() => ModEntity, (mod) => mod.game)
+  mods?: ModEntity[];
 }

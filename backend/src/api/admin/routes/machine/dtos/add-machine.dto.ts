@@ -2,7 +2,6 @@ import {
   IsInt,
   IsIP,
   IsNotEmpty,
-  IsString,
   IsUUID,
   Max,
   MaxLength,
@@ -17,7 +16,6 @@ export class AddMachineDto {
   @IsNotEmpty({ message: 'The location ID field must not be empty.' })
   public readonly locationId: string;
 
-  @IsString({ message: 'The name must contain only characters.' })
   @MaxLength(40, {
     message: 'The name must contain a maximum of 40 characters.',
   })

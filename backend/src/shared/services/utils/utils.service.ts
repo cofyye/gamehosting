@@ -66,36 +66,6 @@ export class UtilsService {
     }
   }
 
-  public validateProvidedGamesForMachine(games: string): string[] {
-    try {
-      const _games = JSON.parse(games) as string[];
-
-      if (_games.length < 1) {
-        functions.throwHttpException(
-          false,
-          'You must select at least one game.',
-          HttpStatus.BAD_REQUEST,
-        );
-      }
-
-      if (_games.length > 10) {
-        functions.throwHttpException(
-          false,
-          'You can select up to 10 games.',
-          HttpStatus.BAD_REQUEST,
-        );
-      }
-
-      return _games;
-    } catch (err) {
-      functions.handleHttpException(
-        err,
-        false,
-        'The games are not provided in a valid JSON format.',
-      );
-    }
-  }
-
   public async addGamesForMachines(
     machine: MachineEntity,
     games: string[],
@@ -139,7 +109,7 @@ export class UtilsService {
           this._machineGamesRepo.create(machineGame),
         );
       }
-    } catch (err) {
+    } catch (err: unknown) {
       await this._machineRepo.delete({
         id: machine.id,
       });
@@ -148,6 +118,43 @@ export class UtilsService {
         err,
         false,
         'An error occurred while adding games for this machine.',
+      );
+    }
+  }
+
+  public async getAllMachinesFromGameId(
+    gameId: string,
+  ): Promise<MachineEntity[]> {
+    try {
+      if (!this.gameExists(gameId)) {
+        functions.throwHttpException(
+          false,
+          `Game with ID ${gameId} not found.`,
+          HttpStatus.NOT_FOUND,
+        );
+      }
+
+      const machineGames = await this._machineGamesRepo.find({
+        where: {
+          gameId,
+        },
+        relations: {
+          machine: true,
+        },
+      });
+
+      const machines: MachineEntity[] = [];
+
+      machineGames.forEach((item) => {
+        machines.push(item.machine);
+      });
+
+      return machines;
+    } catch (err: unknown) {
+      functions.handleHttpException(
+        err,
+        false,
+        'An error occurred while getting machines from game id.',
       );
     }
   }

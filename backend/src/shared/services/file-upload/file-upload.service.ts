@@ -3,13 +3,14 @@ import { ConfigService } from '@nestjs/config';
 import { UploadedFile } from 'express-fileupload';
 
 import * as path from 'path';
-import * as fs from 'fs';
+import * as fs from 'fs-extra';
 
 import { functions } from 'src/shared/utils/functions';
 
 @Injectable()
 export class FileUploadService {
   private readonly fullPath = path.join(__dirname, '../../../../uploads');
+  private readonly dockerPath = path.join(__dirname, '../../../../dockers');
 
   constructor(private readonly _configService: ConfigService) {}
 
@@ -73,6 +74,24 @@ export class FileUploadService {
     }
   }
 
+  private checkDockerInFolder(folder: string): void {
+    try {
+      if (fs.existsSync(`${this.dockerPath}/${folder}/Dockerfile`)) {
+        functions.throwHttpException(
+          false,
+          `An docker with the same name already exists on the server.`,
+          HttpStatus.CONFLICT,
+        );
+      }
+    } catch (err: unknown) {
+      functions.handleHttpException(
+        err,
+        false,
+        'An error occurred while checking for duplicate files on the server.',
+      );
+    }
+  }
+
   public async uploadImage(
     prefix: string = '',
     image: UploadedFile | UploadedFile[],
@@ -117,9 +136,61 @@ export class FileUploadService {
     }
   }
 
+  public async uploadDocker(
+    dockerFolder: string,
+    docker: UploadedFile | UploadedFile[],
+  ): Promise<void> {
+    try {
+      if (Array.isArray(docker)) {
+        functions.throwHttpException(
+          false,
+          'You can only upload one docker file at a time.',
+          HttpStatus.BAD_REQUEST,
+        );
+      } else {
+        if (docker.name !== 'Dockerfile') {
+          functions.throwHttpException(
+            false,
+            'The file name must be Dockerfile.',
+            HttpStatus.BAD_REQUEST,
+          );
+        }
+
+        this.checkDockerInFolder(dockerFolder);
+
+        try {
+          if (!fs.existsSync(`${this.dockerPath}/${dockerFolder}`)) {
+            fs.mkdirSync(`${this.dockerPath}/${dockerFolder}`);
+          }
+          await docker.mv(`${this.dockerPath}/${dockerFolder}/${docker.name}`);
+        } catch (err: unknown) {
+          functions.throwHttpException(
+            false,
+            `An error occurred while uploading ${dockerFolder}.`,
+            HttpStatus.INTERNAL_SERVER_ERROR,
+          );
+        }
+      }
+    } catch (err: unknown) {
+      functions.handleHttpException(
+        err,
+        false,
+        'An error occurred while uploading the file.',
+      );
+    }
+  }
+
   public deleteFile(filename: string): void {
     try {
       fs.unlinkSync(`${this.fullPath}/${filename}`);
+    } catch (err: unknown) {}
+  }
+
+  public deleteDocker(folder: string): void {
+    try {
+      fs.rmSync(`${this.dockerPath}/${folder}`, {
+        recursive: true,
+      });
     } catch (err: unknown) {}
   }
 }

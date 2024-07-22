@@ -60,7 +60,7 @@ export class GameController {
   @UseGuards(new RoleGuard([UserRole.FOUNDER, UserRole.ADMIN]))
   @Get('')
   @HttpCode(HttpStatus.OK)
-  public async getLocations(): Promise<IDataSendResponse<GameEntity[]>> {
+  public async getGames(): Promise<IDataSendResponse<GameEntity[]>> {
     try {
       return {
         success: true,
@@ -79,7 +79,7 @@ export class GameController {
   @UseGuards(new RoleGuard([UserRole.FOUNDER, UserRole.ADMIN]))
   @Get(':id')
   @HttpCode(HttpStatus.OK)
-  public async getLocation(
+  public async getGame(
     @Param() params: UuidDto,
   ): Promise<IDataSendResponse<GameEntity>> {
     try {
@@ -100,7 +100,7 @@ export class GameController {
   @UseGuards(new RoleGuard([UserRole.FOUNDER, UserRole.ADMIN]))
   @Put(':id')
   @HttpCode(HttpStatus.OK)
-  public async editLocation(
+  public async editGame(
     @Param() params: UuidDto,
     @Body() body: EditGameDto,
     @Req() req: Request,

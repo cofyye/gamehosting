@@ -1,8 +1,10 @@
 import { HttpException, HttpStatus } from '@nestjs/common';
+
 import {
   IDataSendResponse,
   ISendResponse,
 } from '../interfaces/response.interface';
+import { IStartupVariable } from '../interfaces/startup.interface';
 
 const handleHttpException = (
   err: unknown,
@@ -90,6 +92,136 @@ function checkListOfSupportedGames(gameTag: string): boolean {
   }
 }
 
+function validateProvidedGamesForMachine(games: string): string[] {
+  try {
+    const _games = JSON.parse(games) as string[];
+
+    if (_games.length < 1) {
+      functions.throwHttpException(
+        false,
+        'You must select at least one game.',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
+    if (_games.length > 10) {
+      functions.throwHttpException(
+        false,
+        'You can select up to 10 games.',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
+    return _games;
+  } catch (err) {
+    functions.handleHttpException(
+      err,
+      false,
+      'The games are not provided in a valid JSON format.',
+    );
+  }
+}
+
+function validateProvidedStartupVariables(
+  startupVariables: string,
+): IStartupVariable[] {
+  try {
+    const _startupVariables = JSON.parse(
+      startupVariables,
+    ) as IStartupVariable[];
+
+    if (_startupVariables.length < 1) {
+      functions.throwHttpException(
+        false,
+        'You must select at least one startup variable.',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
+    if (_startupVariables.length > 10) {
+      functions.throwHttpException(
+        false,
+        'You can select up to 10 startup variables.',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
+    _startupVariables.forEach((item) => {
+      if (!item?.name) {
+        functions.throwHttpException(
+          false,
+          'The name field must not be empty.',
+          HttpStatus.BAD_REQUEST,
+        );
+      }
+
+      if (item?.name?.length > 40) {
+        functions.throwHttpException(
+          false,
+          'The name field must be at most 40 characters long.',
+          HttpStatus.BAD_REQUEST,
+        );
+      }
+
+      if (!item?.value) {
+        functions.throwHttpException(
+          false,
+          'The value field must not be empty.',
+          HttpStatus.BAD_REQUEST,
+        );
+      }
+
+      if (item?.value?.length > 40) {
+        functions.throwHttpException(
+          false,
+          'The value field must be at most 40 characters long.',
+          HttpStatus.BAD_REQUEST,
+        );
+      }
+
+      if (!item?.default_value) {
+        functions.throwHttpException(
+          false,
+          'The default value field must not be empty.',
+          HttpStatus.BAD_REQUEST,
+        );
+      }
+
+      if (item?.default_value?.length > 40) {
+        functions.throwHttpException(
+          false,
+          'The default value field must be at most 40 characters long.',
+          HttpStatus.BAD_REQUEST,
+        );
+      }
+
+      if (!item?.show) {
+        functions.throwHttpException(
+          false,
+          'The show field must not be empty.',
+          HttpStatus.BAD_REQUEST,
+        );
+      }
+
+      if (!item?.editable) {
+        functions.throwHttpException(
+          false,
+          'The editable field must not be empty.',
+          HttpStatus.BAD_REQUEST,
+        );
+      }
+    });
+
+    return _startupVariables;
+  } catch (err) {
+    functions.handleHttpException(
+      err,
+      false,
+      'The startup variables are not provided in a valid JSON format.',
+    );
+  }
+}
+
 export const functions = {
   handleHttpException,
   throwHttpException,
@@ -98,4 +230,6 @@ export const functions = {
   generateRandomString,
   formatBytes,
   checkListOfSupportedGames,
+  validateProvidedGamesForMachine,
+  validateProvidedStartupVariables,
 };

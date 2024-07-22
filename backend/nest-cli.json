@@ -12,6 +12,11 @@
         "include": "../uploads/**",
         "outDir": "dist/uploads",
         "watchAssets": true
+      },
+      {
+        "include": "../bash/**",
+        "outDir": "dist/bash",
+        "watchAssets": true
       }
     ],
     "watchAssets": true,

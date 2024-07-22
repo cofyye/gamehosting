@@ -64,8 +64,13 @@ export class MachineService {
         port: body.sshPort,
         username: body.username,
         password: body.password,
-        readyTimeout: 3000,
-        retry_minTimeout: 1000,
+      });
+
+      await this._ssh2Service.autoInstallationWizard({
+        host: body.ip,
+        port: body.sshPort,
+        username: body.username,
+        password: body.password,
       });
 
       machine = new MachineEntity();

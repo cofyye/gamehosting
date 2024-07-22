@@ -64,6 +64,7 @@ export class MachineService {
         port: body.sshPort,
         username: body.username,
         password: body.password,
+        readyTimeout: 3000,
       });
 
       await this._ssh2Service.autoInstallationWizard({
@@ -71,6 +72,7 @@ export class MachineService {
         port: body.sshPort,
         username: body.username,
         password: body.password,
+        readyTimeout: 3000,
       });
 
       machine = new MachineEntity();
@@ -79,7 +81,6 @@ export class MachineService {
       machine.ip = body.ip;
       machine.sshPort = body.sshPort;
       machine.ftpPort = body.ftpPort;
-      machine.maxServers = body.maxServers;
       machine.password = this._encryptionService.encrypt(body.password);
       machine.locationId = body.locationId;
 

@@ -3,7 +3,7 @@
 # Check if script is run as root
 if [ "$EUID" -ne 0 ]; then
   echo "Please run the script as root."
-  exit 1
+  exit 254
 fi
 
 # Update & Upgrade VPS/Dedicated, then install vsftpd
@@ -15,7 +15,7 @@ if apt-cache show vsftpd > /dev/null 2>&1; then
   apt-get install -y vsftpd
 else
   echo "vsftpd package not found."
-  exit 1
+  exit 254
 fi
 
 # Backup original configuration
@@ -24,7 +24,7 @@ if cp /etc/vsftpd.conf /etc/vsftpd.conf.bak; then
   echo "Backup created successfully."
 else
   echo "Failed to create backup."
-  exit 1
+  exit 254
 fi
 
 # Creating a new configuration
@@ -63,7 +63,7 @@ if systemctl restart vsftpd; then
   echo "vsftpd service restarted successfully."
 else
   echo "Failed to restart vsftpd service."
-  exit 1
+  exit 254
 fi
 
 # Enabling vsftpd service to start automatically at boot
@@ -72,7 +72,7 @@ if systemctl enable vsftpd; then
   echo "vsftpd service enabled to start at boot."
 else
   echo "Failed to enable vsftpd service to start at boot."
-  exit 1
+  exit 254
 fi
 
 echo "The installation and configuration of vsftpd is complete."

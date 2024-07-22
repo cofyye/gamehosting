@@ -16,21 +16,6 @@ export class EditGameDto {
   @IsNotEmpty({ message: 'The name field must not be empty.' })
   public readonly name: string;
 
-  @MaxLength(20, {
-    message: 'The gamedig tag must contain a maximum of 10 characters.',
-  })
-  @MinLength(2, {
-    message: 'The gamedig tag must contain at least 2 characters.',
-  })
-  @IsNotEmpty({ message: 'The gamedig tag field must not be empty.' })
-  public readonly gamedigTag: string;
-
-  @Max(1000, {
-    message: 'The maximum value for the price per slot must be 1000.',
-  })
-  @IsNotEmpty({ message: 'The price per slot field must not be empty.' })
-  public readonly pricePerSlot: number;
-
   @Max(65535, {
     message: 'The maximum value for the start port must be 65535.',
   })

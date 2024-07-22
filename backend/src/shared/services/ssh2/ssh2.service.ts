@@ -1,17 +1,20 @@
 import { HttpStatus, Injectable } from '@nestjs/common';
 
 import * as Client from 'ssh2-sftp-client';
+import { NodeSSH } from 'node-ssh';
 import * as path from 'path';
 
 import { functions } from 'src/shared/utils/functions';
+import { ISSH2Connect } from 'src/shared/interfaces/ssh.interface';
 
 @Injectable()
 export class Ssh2Service {
   private readonly client = new Client();
+  private readonly ssh2 = new NodeSSH();
 
   constructor() {}
 
-  public async checkConnection(config: Client.ConnectOptions): Promise<void> {
+  public async checkConnection(config: ISSH2Connect): Promise<void> {
     try {
       await this.client.connect(config);
     } catch (err: unknown) {
@@ -26,9 +29,7 @@ export class Ssh2Service {
   }
 
   // Auto installing needed packages like vsftpd and etc while machine added
-  public async autoInstallationWizard(
-    config: Client.ConnectOptions,
-  ): Promise<void> {
+  public async autoInstallationWizard(config: ISSH2Connect): Promise<void> {
     try {
       await this.client.connect(config);
 
@@ -83,6 +84,18 @@ export class Ssh2Service {
         '/root/gamehosting/install_vsftpd_server.sh',
         '755',
       );
+
+      await this.ssh2.connect(config);
+
+      const result = await this.ssh2.execCommand(
+        'cd /root/gamehosting && sudo ./install_vsftpd_server.sh',
+      );
+
+      if (result.code === 254) {
+        throw new Error(
+          'An error occurred while installing the necessary files on the machine.',
+        );
+      }
     } catch (err: unknown) {
       functions.throwHttpException(
         false,
@@ -91,6 +104,7 @@ export class Ssh2Service {
       );
     } finally {
       await this.client.end();
+      this.ssh2.dispose();
     }
   }
 }

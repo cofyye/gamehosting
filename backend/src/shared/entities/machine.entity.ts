@@ -39,9 +39,6 @@ export class MachineEntity {
   @Column({ name: 'ftp_port', nullable: false, type: 'smallint' })
   public ftpPort: number;
 
-  @Column({ name: 'max_servers', nullable: false, type: 'smallint' })
-  public maxServers: number;
-
   @CreateDateColumn({
     name: 'created_at',
     type: 'datetime',

@@ -7,16 +7,25 @@ import { functions } from 'src/shared/utils/functions';
 import { MachineEntity } from 'src/shared/entities/machine.entity';
 import { GameEntity } from 'src/shared/entities/game.entity';
 import { MachineGamesEntity } from 'src/shared/entities/machine-games.entity';
+import { UserEntity } from 'src/shared/entities/user.entity';
+import { ModEntity } from 'src/shared/entities/mod.entity';
+import { ServerEntity } from 'src/shared/entities/server.entity';
 
 @Injectable()
 export class UtilsService {
   constructor(
+    @InjectRepository(UserEntity)
+    private readonly _userRepo: Repository<UserEntity>,
     @InjectRepository(LocationEntity)
     private readonly _locationRepo: Repository<LocationEntity>,
     @InjectRepository(MachineEntity)
     private readonly _machineRepo: Repository<MachineEntity>,
     @InjectRepository(GameEntity)
     private readonly _gameRepo: Repository<GameEntity>,
+    @InjectRepository(ModEntity)
+    private readonly _modRepo: Repository<ModEntity>,
+    @InjectRepository(ServerEntity)
+    private readonly _serverRepo: Repository<ServerEntity>,
     @InjectRepository(MachineGamesEntity)
     private readonly _machineGamesRepo: Repository<MachineGamesEntity>,
   ) {}
@@ -62,6 +71,111 @@ export class UtilsService {
         false,
         `An error occurred while checking if the game exists.`,
         HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
+
+  public async userExists(userId: string): Promise<boolean> {
+    try {
+      const count = await this._userRepo.count({
+        where: { id: userId },
+      });
+      return count > 0;
+    } catch (err: unknown) {
+      functions.throwHttpException(
+        false,
+        `An error occurred while checking if the user exists.`,
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
+
+  public async modExists(modId: string): Promise<boolean> {
+    try {
+      const count = await this._modRepo.count({
+        where: { id: modId },
+      });
+      return count > 0;
+    } catch (err: unknown) {
+      functions.throwHttpException(
+        false,
+        `An error occurred while checking if the mod exists.`,
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
+
+  public async checkIfPortExistsOnProvidedMachine(
+    machineId: string,
+    port: number,
+  ): Promise<boolean> {
+    try {
+      const count = await this._serverRepo.count({
+        where: {
+          machineId,
+          port,
+        },
+      });
+      return count > 0;
+    } catch (err: unknown) {
+      functions.throwHttpException(
+        false,
+        `An error occurred while checking if the port exists on provided machine.`,
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
+
+  public async checkIfPortIsInRange(
+    gameId: string,
+    port: number,
+  ): Promise<boolean> {
+    try {
+      const game = await this._gameRepo.findOne({
+        where: { id: gameId },
+      });
+
+      if (!game) {
+        functions.throwHttpException(
+          false,
+          `This game does not exist.`,
+          HttpStatus.NOT_FOUND,
+        );
+      }
+
+      return port >= game.startPort && port <= game.endPort;
+    } catch (err: unknown) {
+      functions.handleHttpException(
+        err,
+        false,
+        `An error occurred while checking if the port is in range.`,
+      );
+    }
+  }
+
+  public async checkIfSlotIsInRange(
+    gameId: string,
+    slot: number,
+  ): Promise<boolean> {
+    try {
+      const game = await this._gameRepo.findOne({
+        where: { id: gameId },
+      });
+
+      if (!game) {
+        functions.throwHttpException(
+          false,
+          `This game does not exist.`,
+          HttpStatus.NOT_FOUND,
+        );
+      }
+
+      return slot >= game.slotMin && slot <= game.slotMax;
+    } catch (err: unknown) {
+      functions.handleHttpException(
+        err,
+        false,
+        `An error occurred while checking if the port is in range.`,
       );
     }
   }

@@ -4,9 +4,12 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
+
 import { GameEntity } from './game.entity';
+import { ServerEntity } from './server.entity';
 
 @Entity({
   name: 'mods',
@@ -44,6 +47,7 @@ export class ModEntity {
   public createdAt: Date;
 
   // Relations
+
   @ManyToOne(() => GameEntity, (game) => game.mods, {
     nullable: false,
     onUpdate: 'RESTRICT',
@@ -51,4 +55,7 @@ export class ModEntity {
   })
   @JoinColumn({ name: 'game_id' })
   game?: GameEntity;
+
+  @OneToMany(() => ServerEntity, (server) => server.mod)
+  servers?: ServerEntity[];
 }

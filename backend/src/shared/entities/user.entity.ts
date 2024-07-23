@@ -2,8 +2,11 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
+
+import { ServerEntity } from './server.entity';
 
 import { UserRole } from '../enums/role.enum';
 
@@ -77,4 +80,9 @@ export class UserEntity {
     nullable: false,
   })
   public registrationDate: Date;
+
+  // Relations
+
+  @OneToMany(() => ServerEntity, (server) => server.user)
+  servers?: ServerEntity[];
 }

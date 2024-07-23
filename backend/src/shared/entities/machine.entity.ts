@@ -10,6 +10,7 @@ import {
 
 import { LocationEntity } from './location.entity';
 import { MachineGamesEntity } from './machine-games.entity';
+import { ServerEntity } from './server.entity';
 
 @Entity({
   name: 'machines',
@@ -58,4 +59,7 @@ export class MachineEntity {
 
   @OneToMany(() => MachineGamesEntity, (machineGame) => machineGame.machine)
   public machineGames: MachineGamesEntity[];
+
+  @OneToMany(() => ServerEntity, (server) => server.machine)
+  servers?: ServerEntity[];
 }

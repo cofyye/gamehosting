@@ -14,6 +14,7 @@ import { GameEntity } from './shared/entities/game.entity';
 import { MachineEntity } from './shared/entities/machine.entity';
 import { MachineGamesEntity } from './shared/entities/machine-games.entity';
 import { ModEntity } from './shared/entities/mod.entity';
+import { ServerEntity } from './shared/entities/server.entity';
 
 import { AuthModule } from './api/auth/auth.module';
 import { AdminModule } from './api/admin/admin.module';
@@ -42,6 +43,7 @@ import { AdminModule } from './api/admin/admin.module';
             MachineEntity,
             MachineGamesEntity,
             ModEntity,
+            ServerEntity,
           ],
         };
       },

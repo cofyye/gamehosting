@@ -3,9 +3,8 @@
 # Check if the /data directory is empty on the host
 if [ -z "$(ls -A /data | grep -v '^\..*')" ]; then
   cp -r /gamefiles/* /data/
-
-  chown -R $FTP_USER:$FTP_USER /data
-  chmod -R 755 /data
+  
+  chown -R ${HOST_UID}:${HOST_GID} /data
 fi
 
 # Start the server

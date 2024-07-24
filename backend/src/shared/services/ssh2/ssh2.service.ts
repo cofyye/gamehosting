@@ -238,7 +238,7 @@ export class Ssh2Service {
   }
 
   // Create and install game server
-  public async installGameServer(
+  public async createGameServer(
     server: ServerEntity,
     machine: MachineEntity,
     mod: ModEntity,

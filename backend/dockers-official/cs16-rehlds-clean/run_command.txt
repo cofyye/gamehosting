@@ -1,0 +1,1 @@
+docker run --name ${FTP_USER} --restart on-failure:3 --user $(id -u ${FTP_USER}):$(id -g ${FTP_USER}) -e HOST_UID=$(id -u ${FTP_USER}) -e HOST_GID=$(id -g ${FTP_USER}) -e FTP_USER=${FTP_USER} -e PORT=${PORT} -e TICKRATE=${TICKRATE} -e MAP=${MAP} -e SLOT=${SLOT} -v /home/${FTP_USER}:/data -p ${PORT}:${PORT}/udp -d cs16-rehlds-clean

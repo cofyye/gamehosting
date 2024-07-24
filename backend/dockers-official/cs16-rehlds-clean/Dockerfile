@@ -1,7 +1,5 @@
 FROM ubuntu:22.04
 
-WORKDIR /data
-
 # Define default env variables
 ENV IP=0.0.0.0
 ENV PORT=27015
@@ -10,8 +8,8 @@ ENV MAP=de_dust2
 ENV SLOT=32
 ENV FTP_USER=dockeruser
 
-# Make directory /gamefiles
-RUN mkdir -p /gamefiles
+# Make directory /gamefiles & /data
+RUN mkdir -p /gamefiles /data
 
 # Install dependencies
 RUN dpkg --add-architecture i386 && \
@@ -28,17 +26,15 @@ RUN wget https://github.com/cofyye/gamehosting-gamefiles/releases/download/cs16/
     rm -rf cs16_rehlds_clean cs16_rehlds_clean.zip && \
     chmod +x /gamefiles/hlds_linux && chmod +x /gamefiles/hlds_run
 
-
-# Create a new user
-RUN useradd -r $FTP_USER
-
-# Change ownership of /data directories to the new user
-RUN chown -R $FTP_USER:$FTP_USER /data
-RUN chown 755 /data
+# Set permissions for the data directory
+RUN chmod -R 777 /data
 
 # Copy entrypoint script
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
+
+# Set the work directory
+WORKDIR /data
 
 # Set the entrypoint
 ENTRYPOINT ["/entrypoint.sh"]

@@ -316,7 +316,7 @@ export class UtilsService {
       functions.handleHttpException(
         err,
         false,
-        'An error occurred while getting machine.',
+        'An error occurred while getting mod.',
       );
     }
   }

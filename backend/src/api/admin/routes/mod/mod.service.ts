@@ -90,7 +90,12 @@ export class ModService {
           body.dockerName,
         );
         this._fileUploadService.deleteDocker(body.dockerName);
-        throw new Error('Throw error');
+
+        functions.handleHttpException(
+          err,
+          false,
+          'An error occurred while adding the mod.',
+        );
       }
     } catch (err: unknown) {
       functions.handleHttpException(

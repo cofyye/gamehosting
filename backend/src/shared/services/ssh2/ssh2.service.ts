@@ -145,11 +145,11 @@ export class Ssh2Service {
             '..',
             '..',
             '..',
-            'dockers',
+            'dockers-custom',
             `${dockerFolder}`,
-            'Dockerfile',
+            'Dockerfile.zip',
           ),
-          `/opt/gamehosting/${dockerFolder}/Dockerfile`,
+          `/opt/gamehosting/${dockerFolder}/Dockerfile.zip`,
         );
 
         await this.ssh2.connect({
@@ -160,11 +160,15 @@ export class Ssh2Service {
           readyTimeout: 3000,
         });
 
-        const result = await this.ssh2.execCommand(
+        const unzipResult = await this.ssh2.execCommand(
+          `cd /opt/gamehosting/${dockerFolder} && unzip Dockerfile.zip && rm -rf Dockerfile.zip`,
+        );
+
+        const buildResult = await this.ssh2.execCommand(
           `cd /opt/gamehosting/${dockerFolder} && sudo docker build -t ${dockerFolder} .`,
         );
 
-        if (result.code !== 0) {
+        if (unzipResult.code !== 0 || buildResult.code !== 0) {
           throw new Error(
             'An error occurred while uploading and building Dockerfile.',
           );

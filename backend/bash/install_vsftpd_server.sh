@@ -11,7 +11,8 @@ echo "Updating & Upgrading VPS/Dedicated, Installing vsftpd..."
 apt-get update && apt-get upgrade -y
 
 # Check if vsftpd package is available
-if apt-cache show vsftpd > /dev/null 2>&1; then
+if apt-cache policy vsftpd | grep -q 'Candidate:'; then
+  apt-get update
   apt-get install -y vsftpd
 else
   echo "vsftpd package not found."

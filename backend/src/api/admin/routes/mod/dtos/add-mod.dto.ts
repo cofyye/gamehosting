@@ -22,16 +22,16 @@ export class AddModDto {
 
   @Matches(new RegExp('^[a-z0-9_-]+([_-]?[a-z0-9]+)*$', 'gm'), {
     message:
-      'Allowed characters for the Docker name are: a-z (lowercase only), 0-9, - (hyphen), and _ (underscore).',
+      'Allowed characters for the Docker image are: a-z (lowercase only), 0-9, - (hyphen), and _ (underscore).',
   })
   @MaxLength(40, {
-    message: 'The docker name must contain a maximum of 40 characters.',
+    message: 'The docker image must contain a maximum of 40 characters.',
   })
   @MinLength(2, {
-    message: 'The docker name must contain at least 2 characters.',
+    message: 'The docker image must contain at least 2 characters.',
   })
-  @IsNotEmpty({ message: 'The docker name field must not be empty.' })
-  public readonly dockerName: string;
+  @IsNotEmpty({ message: 'The docker image field must not be empty.' })
+  public readonly dockerImage: string;
 
   @IsNotEmpty({ message: 'The startup variables field must not be empty.' })
   public readonly startupVariables: string;

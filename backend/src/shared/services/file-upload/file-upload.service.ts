@@ -140,7 +140,7 @@ export class FileUploadService {
   }
 
   public async uploadDocker(
-    dockerFolder: string,
+    dockerImage: string,
     docker: UploadedFile | UploadedFile[],
   ): Promise<void> {
     try {
@@ -159,17 +159,17 @@ export class FileUploadService {
           );
         }
 
-        this.checkDockerInFolder(dockerFolder);
+        this.checkDockerInFolder(dockerImage);
 
         try {
-          if (!fs.existsSync(`${this.dockerPath}/${dockerFolder}`)) {
-            fs.mkdirSync(`${this.dockerPath}/${dockerFolder}`);
+          if (!fs.existsSync(`${this.dockerPath}/${dockerImage}`)) {
+            fs.mkdirSync(`${this.dockerPath}/${dockerImage}`);
           }
-          await docker.mv(`${this.dockerPath}/${dockerFolder}/${docker.name}`);
+          await docker.mv(`${this.dockerPath}/${dockerImage}/${docker.name}`);
         } catch (err: unknown) {
           functions.throwHttpException(
             false,
-            `An error occurred while uploading ${dockerFolder}.`,
+            `An error occurred while uploading ${dockerImage}.`,
             HttpStatus.INTERNAL_SERVER_ERROR,
           );
         }

@@ -24,8 +24,8 @@ export class ModEntity {
   @Column({ name: 'mod_name', nullable: false, unique: true, length: 40 })
   public modName: string;
 
-  @Column({ name: 'docker_name', nullable: false, unique: true, length: 40 })
-  public dockerName: string;
+  @Column({ name: 'docker_image', nullable: false, unique: true, length: 40 })
+  public dockerImage: string;
 
   @Column({ name: 'startup_variables', nullable: false, type: 'text' })
   public startupVariables: string;

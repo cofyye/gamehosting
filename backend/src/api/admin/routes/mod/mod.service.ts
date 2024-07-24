@@ -34,7 +34,7 @@ export class ModService {
         );
       }
 
-      functions.validateProvidedStartupVariables(body.startupVariables);
+      functions.validateProvidedCustomStartupVariables(body.startupVariables);
 
       if (!(await this._utilsService.gameExists(body.gameId))) {
         functions.throwHttpException(
@@ -49,7 +49,7 @@ export class ModService {
           {
             modName: body.modName,
           },
-          { dockerName: body.dockerName },
+          { dockerImage: body.dockerImage },
         ],
       });
 
@@ -61,35 +61,35 @@ export class ModService {
         );
       }
 
-      if (mod?.dockerName === body.dockerName) {
+      if (mod?.dockerImage === body.dockerImage) {
         functions.throwHttpException(
           false,
-          'A mod with this docker name already exists.',
+          'A mod with this docker image already exists.',
           HttpStatus.CONFLICT,
         );
       }
 
       mod = new ModEntity();
       mod.modName = body.modName;
-      mod.dockerName = body.dockerName;
+      mod.dockerImage = body.dockerImage;
       mod.startupVariables = body.startupVariables;
       mod.startupCommand = body.startupCommand;
       mod.description = body.description;
       mod.gameId = body.gameId;
 
       try {
-        await this._fileUploadService.uploadDocker(mod.dockerName, dockerFile);
+        await this._fileUploadService.uploadDocker(mod.dockerImage, dockerFile);
         await this._ssh2Service.uploadAndBuildDocker(
           body.gameId,
-          body.dockerName,
+          body.dockerImage,
         );
         await this._modRepo.save(this._modRepo.create(mod));
       } catch (err: unknown) {
         await this._ssh2Service.removeIfuploadAndBuildDockerFailed(
           body.gameId,
-          body.dockerName,
+          body.dockerImage,
         );
-        this._fileUploadService.deleteDocker(body.dockerName);
+        this._fileUploadService.deleteDocker(body.dockerImage);
 
         functions.handleHttpException(
           err,

@@ -272,4 +272,52 @@ export class UtilsService {
       );
     }
   }
+
+  public async getMachineById(machineId: string): Promise<MachineEntity> {
+    try {
+      const machine = await this._machineRepo.findOne({
+        where: { id: machineId },
+      });
+
+      if (!machine) {
+        functions.throwHttpException(
+          false,
+          'This machine does not exist.',
+          HttpStatus.NOT_FOUND,
+        );
+      }
+
+      return machine;
+    } catch (err: unknown) {
+      functions.handleHttpException(
+        err,
+        false,
+        'An error occurred while getting machine.',
+      );
+    }
+  }
+
+  public async getModById(modId: string): Promise<ModEntity> {
+    try {
+      const mod = await this._modRepo.findOne({
+        where: { id: modId },
+      });
+
+      if (!mod) {
+        functions.throwHttpException(
+          false,
+          'This mod does not exist.',
+          HttpStatus.NOT_FOUND,
+        );
+      }
+
+      return mod;
+    } catch (err: unknown) {
+      functions.handleHttpException(
+        err,
+        false,
+        'An error occurred while getting machine.',
+      );
+    }
+  }
 }

@@ -115,6 +115,9 @@ export class ServerService {
       server.expirationDate = momentDate;
       server.port = body.port;
       server.slot = body.slot;
+      server.startupVariables = (
+        await this._utilsService.getModById(body.modId)
+      ).startupVariables;
       server.ftpUsername = `srv_${body.userId.split('-')[0]}_${functions.generateRandomString(4)}`;
       server.ftpPassword = this._encryptionService.encrypt(
         functions.generateRandomString(10),
@@ -125,7 +128,21 @@ export class ServerService {
       server.machineId = body.machineId;
       server.status = ServerStatus.INSTALLATION_IN_PROGRESS;
 
-      await this._serverRepo.save(this._serverRepo.create(server));
+      try {
+        await this._serverRepo.save(this._serverRepo.create(server));
+
+        await this._ssh2Service.installGameServer(
+          server,
+          await this._utilsService.getMachineById(body.machineId),
+          await this._utilsService.getModById(body.modId),
+        );
+      } catch (err: unknown) {
+        functions.handleHttpException(
+          err,
+          false,
+          'An error occurred while adding the server.',
+        );
+      }
     } catch (err: unknown) {
       functions.handleHttpException(
         err,

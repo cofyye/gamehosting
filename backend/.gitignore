@@ -3,6 +3,7 @@
 /node_modules
 /build
 /uploads
+/dockers-custom
 
 # Logs
 logs

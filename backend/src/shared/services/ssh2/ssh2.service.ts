@@ -7,6 +7,10 @@ import * as path from 'path';
 import { functions } from 'src/shared/utils/functions';
 import { ISSH2Connect } from 'src/shared/interfaces/ssh.interface';
 import { UtilsService } from '../utils/utils.service';
+import { ServerEntity } from 'src/shared/entities/server.entity';
+import { MachineEntity } from 'src/shared/entities/machine.entity';
+import { ModEntity } from 'src/shared/entities/mod.entity';
+import { IRequiredStartupVariable } from 'src/shared/interfaces/startup.interface';
 import { EncryptionService } from '../encryption/encryption.service';
 
 @Injectable()
@@ -116,7 +120,7 @@ export class Ssh2Service {
   // Upload and build docker on all VPS/Dedicated where defined for game id
   public async uploadAndBuildDocker(
     gameId: string,
-    dockerFolder: string,
+    dockerImage: string,
   ): Promise<void> {
     try {
       const machines =
@@ -135,8 +139,8 @@ export class Ssh2Service {
           await this.client.mkdir('/opt/gamehosting');
         }
 
-        if (!(await this.client.exists(`/opt/gamehosting/${dockerFolder}`))) {
-          await this.client.mkdir(`/opt/gamehosting/${dockerFolder}`);
+        if (!(await this.client.exists(`/opt/gamehosting/${dockerImage}`))) {
+          await this.client.mkdir(`/opt/gamehosting/${dockerImage}`);
         }
 
         await this.client.fastPut(
@@ -146,10 +150,10 @@ export class Ssh2Service {
             '..',
             '..',
             'dockers-custom',
-            `${dockerFolder}`,
+            `${dockerImage}`,
             'Dockerfile.zip',
           ),
-          `/opt/gamehosting/${dockerFolder}/Dockerfile.zip`,
+          `/opt/gamehosting/${dockerImage}/Dockerfile.zip`,
         );
 
         await this.ssh2.connect({
@@ -161,24 +165,34 @@ export class Ssh2Service {
         });
 
         const unzipResult = await this.ssh2.execCommand(
-          `cd /opt/gamehosting/${dockerFolder} && unzip Dockerfile.zip && rm -rf Dockerfile.zip`,
+          `cd /opt/gamehosting/${dockerImage} && unzip Dockerfile.zip && rm -rf Dockerfile.zip`,
         );
+
+        if (unzipResult.code !== 0) {
+          functions.throwHttpException(
+            false,
+            `An error occurred while uploading Dockerfile.`,
+            HttpStatus.INTERNAL_SERVER_ERROR,
+          );
+        }
 
         const buildResult = await this.ssh2.execCommand(
-          `cd /opt/gamehosting/${dockerFolder} && sudo docker build -t ${dockerFolder} .`,
+          `cd /opt/gamehosting/${dockerImage} && sudo docker build -t ${dockerImage} .`,
         );
 
-        if (unzipResult.code !== 0 || buildResult.code !== 0) {
-          throw new Error(
-            'An error occurred while uploading and building Dockerfile.',
+        if (buildResult.code !== 0) {
+          functions.throwHttpException(
+            false,
+            `An error occurred while building Dockerfile.`,
+            HttpStatus.INTERNAL_SERVER_ERROR,
           );
         }
       }
     } catch (err: unknown) {
-      functions.throwHttpException(
+      functions.handleHttpException(
+        err,
         false,
         `An error occurred while uploading and building Dockerfile.`,
-        HttpStatus.INTERNAL_SERVER_ERROR,
       );
     } finally {
       await this.client.end();
@@ -217,6 +231,76 @@ export class Ssh2Service {
         await this.ssh2.execCommand(`sudo docker rmi ${dockerFolder}`);
       }
     } catch (err: unknown) {
+    } finally {
+      await this.client.end();
+      this.ssh2.dispose();
+    }
+  }
+
+  // Create and install game server
+  public async installGameServer(
+    server: ServerEntity,
+    machine: MachineEntity,
+    mod: ModEntity,
+  ): Promise<void> {
+    try {
+      const config: ISSH2Connect = {
+        host: machine.ip,
+        username: machine.username,
+        password: this._encryptionService.decrypt(machine.password),
+        port: machine.sshPort,
+        readyTimeout: 3000,
+      };
+
+      await this.checkConnection(config);
+
+      await this.ssh2.connect(config);
+
+      const addFtpUserResult = await this.ssh2.execCommand(
+        `/root/gamehosting/add_vsftpd_user.sh ${server.ftpUsername} ${this._encryptionService.decrypt(server.ftpPassword)}`,
+      );
+
+      if (addFtpUserResult.code !== 0) {
+        functions.throwHttpException(
+          false,
+          `An error occurred while creating FTP user.`,
+          HttpStatus.INTERNAL_SERVER_ERROR,
+        );
+      }
+
+      // Kada se dodaju planovi, ovo se menja
+      // Ovo su obavezni parametri
+      const variables: IRequiredStartupVariable = {
+        IP: machine.ip,
+        PORT: server.port.toString(),
+        SLOT: server.slot.toString(),
+        RAM: '',
+        FTP_USER: server.ftpUsername,
+      };
+
+      const dockerCommand = functions.getCompleteReplacedDockerCommand(
+        mod.startupCommand,
+        variables,
+        server.startupVariables,
+      );
+
+      const dockerCommandResult = await this.ssh2.execCommand(
+        `${dockerCommand}`,
+      );
+
+      if (dockerCommandResult.code !== 0) {
+        functions.throwHttpException(
+          false,
+          `An error occurred while running a server.`,
+          HttpStatus.INTERNAL_SERVER_ERROR,
+        );
+      }
+    } catch (err: unknown) {
+      functions.handleHttpException(
+        err,
+        false,
+        `An error occurred while installing a server.`,
+      );
     } finally {
       await this.client.end();
       this.ssh2.dispose();

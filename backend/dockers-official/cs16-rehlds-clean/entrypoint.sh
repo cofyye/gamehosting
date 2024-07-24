@@ -3,7 +3,10 @@
 # Check if the /data directory is empty on the host
 if [ -z "$(ls -A /data | grep -v '^\..*')" ]; then
   cp -r /gamefiles/* /data/
+
+  chown -R $FTP_USER:$FTP_USER /data
+  chmod -R 755 /data
 fi
 
 # Start the server
-exec /data/hlds_run -game cstrike +ip ${ip} +port ${port} -secure -pingboost 3 +sys_ticrate ${tickrate} +fps_max ${tickrate} +sv_lan 0 +map ${map} +maxplayers ${slot} +servercfgfile server.cfg
+exec /data/hlds_run -game cstrike +ip ${IP} +port ${PORT} -secure -pingboost 3 +sys_ticrate ${TICKRATE} +fps_max ${TICKRATE} +sv_lan 0 +map ${MAP} +maxplayers ${SLOT} +servercfgfile server.cfg

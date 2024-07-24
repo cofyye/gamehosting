@@ -4,7 +4,10 @@ import {
   IDataSendResponse,
   ISendResponse,
 } from '../interfaces/response.interface';
-import { IStartupVariable } from '../interfaces/startup.interface';
+import {
+  ICustomStartupVariable,
+  IRequiredStartupVariable,
+} from '../interfaces/startup.interface';
 
 const handleHttpException = (
   err: unknown,
@@ -122,15 +125,15 @@ function validateProvidedGamesForMachine(games: string): string[] {
   }
 }
 
-function validateProvidedStartupVariables(
+function validateProvidedCustomStartupVariables(
   startupVariables: string,
-): IStartupVariable[] {
+): ICustomStartupVariable[] {
   try {
-    const _startupVariables = JSON.parse(
+    const _customStartupVariables = JSON.parse(
       startupVariables,
-    ) as IStartupVariable[];
+    ) as ICustomStartupVariable[];
 
-    if (_startupVariables.length < 1) {
+    if (_customStartupVariables.length < 1) {
       functions.throwHttpException(
         false,
         'You must select at least one startup variable.',
@@ -138,7 +141,7 @@ function validateProvidedStartupVariables(
       );
     }
 
-    if (_startupVariables.length > 10) {
+    if (_customStartupVariables.length > 10) {
       functions.throwHttpException(
         false,
         'You can select up to 10 startup variables.',
@@ -146,7 +149,7 @@ function validateProvidedStartupVariables(
       );
     }
 
-    _startupVariables.forEach((item) => {
+    _customStartupVariables.forEach((item) => {
       if (!item?.name) {
         functions.throwHttpException(
           false,
@@ -163,7 +166,7 @@ function validateProvidedStartupVariables(
         );
       }
 
-      if (!item?.value) {
+      if (!item?.name) {
         functions.throwHttpException(
           false,
           'The value field must not be empty.',
@@ -195,6 +198,22 @@ function validateProvidedStartupVariables(
         );
       }
 
+      if (!('docker_env' in item)) {
+        functions.throwHttpException(
+          false,
+          'The docker env field must be present.',
+          HttpStatus.BAD_REQUEST,
+        );
+      }
+
+      if (item?.docker_env?.length > 40) {
+        functions.throwHttpException(
+          false,
+          'The docker env field must be at most 40 characters long.',
+          HttpStatus.BAD_REQUEST,
+        );
+      }
+
       if (!item?.show) {
         functions.throwHttpException(
           false,
@@ -212,7 +231,7 @@ function validateProvidedStartupVariables(
       }
     });
 
-    return _startupVariables;
+    return _customStartupVariables;
   } catch (err) {
     functions.handleHttpException(
       err,
@@ -220,6 +239,48 @@ function validateProvidedStartupVariables(
       'The startup variables are not provided in a valid JSON format.',
     );
   }
+}
+
+function replaceCustomStartupVariables(
+  command: string,
+  variables: ICustomStartupVariable[],
+): string {
+  variables.forEach((variable) => {
+    const regex = new RegExp(`\\$\\{${variable.docker_env}\\}`, 'g');
+    command = command.replace(regex, variable.value);
+  });
+
+  return command;
+}
+
+function replaceRequiredStartupVariables(
+  command: string,
+  variables: IRequiredStartupVariable,
+): string {
+  return command
+    .replace(/\${IP}/g, variables.IP)
+    .replace(/\${PORT}/g, variables.PORT)
+    .replace(/\${SLOT}/g, variables.SLOT)
+    .replace(/\${RAM}/g, variables.RAM)
+    .replace(/\${FTP_USER}/g, variables.FTP_USER);
+}
+
+function getCompleteReplacedDockerCommand(
+  command: string,
+  requiredVariables: IRequiredStartupVariable,
+  customVariables: string,
+) {
+  let dockerCommand = functions.replaceRequiredStartupVariables(
+    command,
+    requiredVariables,
+  );
+
+  dockerCommand = functions.replaceCustomStartupVariables(
+    dockerCommand,
+    functions.validateProvidedCustomStartupVariables(customVariables),
+  );
+
+  return dockerCommand;
 }
 
 export const functions = {
@@ -231,5 +292,8 @@ export const functions = {
   formatBytes,
   checkListOfSupportedGames,
   validateProvidedGamesForMachine,
-  validateProvidedStartupVariables,
+  validateProvidedCustomStartupVariables,
+  replaceCustomStartupVariables,
+  replaceRequiredStartupVariables,
+  getCompleteReplacedDockerCommand,
 };

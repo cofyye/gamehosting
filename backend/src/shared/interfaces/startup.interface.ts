@@ -1,7 +1,16 @@
-export interface IStartupVariable {
+export interface ICustomStartupVariable {
   name: string;
-  value: string;
+  docker_env?: string;
+  value?: string;
   show: boolean;
   editable: boolean;
   default_value: string;
+}
+
+export interface IRequiredStartupVariable {
+  IP: string;
+  PORT: string;
+  SLOT: string;
+  RAM: string;
+  FTP_USER: string;
 }

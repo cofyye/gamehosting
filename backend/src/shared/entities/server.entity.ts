@@ -50,6 +50,9 @@ export class ServerEntity {
   @Column({ name: 'ftp_password', nullable: false, length: 100 })
   public ftpPassword: string;
 
+  @Column({ name: 'startup_variables', nullable: false, type: 'text' })
+  public startupVariables: string;
+
   @Column({
     name: 'port',
     nullable: false,

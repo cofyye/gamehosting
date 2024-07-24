@@ -31,13 +31,6 @@ else
   echo "User $USERNAME not found in /etc/vsftpd.userlist."
 fi
 
-# Kill all processes owned by the user
-pkill -u $USERNAME
-if [ $? -ne 0 ]; then
-  echo "Failed to kill processes for user $USERNAME."
-  exit 254
-fi
-
 # Delete the user and their home directory
 userdel -r $USERNAME
 if [ $? -ne 0 ]; then

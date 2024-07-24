@@ -10,7 +10,7 @@ import { functions } from 'src/shared/utils/functions';
 @Injectable()
 export class FileUploadService {
   private readonly fullPath = path.join(__dirname, '../../../../uploads');
-  private readonly dockerPath = path.join(__dirname, '../../../../dockers');
+  private readonly dockerPath = path.join(__dirname, '../../../../dockers-custom');
 
   constructor(private readonly _configService: ConfigService) {}
 

@@ -14,8 +14,8 @@
         "watchAssets": true
       },
       {
-        "include": "../dockers/**",
-        "outDir": "dist/dockers",
+        "include": "../dockers-custom/**",
+        "outDir": "dist/dockers-custom",
         "watchAssets": true
       },
       {

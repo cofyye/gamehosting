@@ -43,6 +43,8 @@ export class Ssh2Service {
   // Auto installing needed packages like vsftpd and etc while machine added
   public async autoInstallationWizard(config: ISSH2Connect): Promise<void> {
     try {
+      await this.checkConnection(config);
+
       await this.client.connect(config);
 
       if (!(await this.client.exists('/root/gamehosting'))) {
@@ -130,13 +132,17 @@ export class Ssh2Service {
         await this._utilsService.getAllMachinesFromGameId(gameId);
 
       for (const machine of machines) {
-        await this.client.connect({
+        const config: ISSH2Connect = {
           host: machine.ip,
           username: machine.username,
           password: this._encryptionService.decrypt(machine.password),
           port: machine.sshPort,
           readyTimeout: 3000,
-        });
+        };
+
+        await this.checkConnection(config);
+
+        await this.client.connect(config);
 
         if (!(await this.client.exists('/opt/gamehosting'))) {
           await this.client.mkdir('/opt/gamehosting');
@@ -159,13 +165,7 @@ export class Ssh2Service {
           `/opt/gamehosting/${dockerImage}/Dockerfile.zip`,
         );
 
-        await this.ssh2.connect({
-          host: machine.ip,
-          username: machine.username,
-          password: this._encryptionService.decrypt(machine.password),
-          port: machine.sshPort,
-          readyTimeout: 3000,
-        });
+        await this.ssh2.connect(config);
 
         const unzipResult = await this.ssh2.execCommand(
           `cd /opt/gamehosting/${dockerImage} && unzip Dockerfile.zip && rm -rf Dockerfile.zip`,

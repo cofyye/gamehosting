@@ -7,7 +7,9 @@ import { MachineEntity } from 'src/shared/entities/machine.entity';
 import { GameEntity } from 'src/shared/entities/game.entity';
 import { ModEntity } from 'src/shared/entities/mod.entity';
 import { ServerEntity } from 'src/shared/entities/server.entity';
+import { PlanEntity } from 'src/shared/entities/plan.entity';
 import { MachineGamesEntity } from 'src/shared/entities/machine-games.entity';
+import { PlanMachinesEntity } from 'src/shared/entities/plan-machines.entity';
 
 import { UtilsService } from './utils.service';
 
@@ -21,6 +23,8 @@ import { UtilsService } from './utils.service';
       GameEntity,
       ModEntity,
       ServerEntity,
+      PlanEntity,
+      PlanMachinesEntity,
     ]),
   ],
   providers: [UtilsService],

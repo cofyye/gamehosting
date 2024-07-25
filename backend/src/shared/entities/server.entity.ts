@@ -65,7 +65,7 @@ export class ServerEntity {
     name: 'custom_price',
     nullable: true,
     type: 'decimal',
-    precision: 5,
+    precision: 8,
     scale: 2,
     unsigned: true,
   })

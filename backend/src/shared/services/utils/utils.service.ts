@@ -10,6 +10,9 @@ import { MachineGamesEntity } from 'src/shared/entities/machine-games.entity';
 import { UserEntity } from 'src/shared/entities/user.entity';
 import { ModEntity } from 'src/shared/entities/mod.entity';
 import { ServerEntity } from 'src/shared/entities/server.entity';
+import { PlanEntity } from 'src/shared/entities/plan.entity';
+import { PlanMachinesEntity } from 'src/shared/entities/plan-machines.entity';
+import { IProvidedMachinesForPlan } from 'src/shared/interfaces/plan.interface';
 
 @Injectable()
 export class UtilsService {
@@ -26,8 +29,12 @@ export class UtilsService {
     private readonly _modRepo: Repository<ModEntity>,
     @InjectRepository(ServerEntity)
     private readonly _serverRepo: Repository<ServerEntity>,
+    @InjectRepository(PlanEntity)
+    private readonly _planRepo: Repository<PlanEntity>,
     @InjectRepository(MachineGamesEntity)
     private readonly _machineGamesRepo: Repository<MachineGamesEntity>,
+    @InjectRepository(PlanMachinesEntity)
+    private readonly _planMachinesRepo: Repository<PlanMachinesEntity>,
   ) {}
 
   public async locationExists(locationId: string): Promise<boolean> {
@@ -232,6 +239,64 @@ export class UtilsService {
         err,
         false,
         'An error occurred while adding games for this machine.',
+      );
+    }
+  }
+
+  public async addMachinesForPlan(
+    plan: PlanEntity,
+    machines: IProvidedMachinesForPlan[],
+  ): Promise<void> {
+    try {
+      for (const machineItem of machines) {
+        const machine = await this._machineRepo.findOne({
+          where: {
+            id: machineItem.id,
+          },
+        });
+
+        if (!machine) {
+          functions.throwHttpException(
+            false,
+            `Machine with ID ${machineItem.id} not found.`,
+            HttpStatus.NOT_FOUND,
+          );
+        }
+
+        const machineExistInPlanMachineDb =
+          await this._planMachinesRepo.findOne({
+            where: {
+              planId: plan.id,
+              machineId: machineItem.id,
+            },
+          });
+
+        if (machineExistInPlanMachineDb) {
+          functions.throwHttpException(
+            false,
+            `Machine ${machine.name} has already been added to this plan.`,
+            HttpStatus.CONFLICT,
+          );
+        }
+
+        const planMachine = new PlanMachinesEntity();
+        planMachine.planId = plan.id;
+        planMachine.machineId = machineItem.id;
+        planMachine.serverCount = machineItem.server_count;
+
+        await this._planMachinesRepo.save(
+          this._planMachinesRepo.create(planMachine),
+        );
+      }
+    } catch (err: unknown) {
+      await this._planRepo.delete({
+        id: plan.id,
+      });
+
+      functions.handleHttpException(
+        err,
+        false,
+        'An error occurred while adding machines for this plan.',
       );
     }
   }

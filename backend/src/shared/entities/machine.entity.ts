@@ -11,6 +11,7 @@ import {
 import { LocationEntity } from './location.entity';
 import { MachineGamesEntity } from './machine-games.entity';
 import { ServerEntity } from './server.entity';
+import { PlanMachinesEntity } from './plan-machines.entity';
 
 @Entity({
   name: 'machines',
@@ -59,6 +60,9 @@ export class MachineEntity {
 
   @OneToMany(() => MachineGamesEntity, (machineGame) => machineGame.machine)
   public machineGames: MachineGamesEntity[];
+
+  @OneToMany(() => PlanMachinesEntity, (planMachine) => planMachine.machine)
+  public planMachines: PlanMachinesEntity[];
 
   @OneToMany(() => ServerEntity, (server) => server.machine)
   servers?: ServerEntity[];

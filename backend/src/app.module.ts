@@ -15,6 +15,8 @@ import { MachineEntity } from './shared/entities/machine.entity';
 import { MachineGamesEntity } from './shared/entities/machine-games.entity';
 import { ModEntity } from './shared/entities/mod.entity';
 import { ServerEntity } from './shared/entities/server.entity';
+import { PlanEntity } from './shared/entities/plan.entity';
+import { PlanMachinesEntity } from './shared/entities/plan-machines.entity';
 
 import { AuthModule } from './api/auth/auth.module';
 import { AdminModule } from './api/admin/admin.module';
@@ -44,6 +46,8 @@ import { AdminModule } from './api/admin/admin.module';
             MachineGamesEntity,
             ModEntity,
             ServerEntity,
+            PlanEntity,
+            PlanMachinesEntity,
           ],
         };
       },

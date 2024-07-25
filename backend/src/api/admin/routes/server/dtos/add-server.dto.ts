@@ -59,8 +59,8 @@ export class AddServerDto {
   @IsNotEmpty({ message: 'The port field must not be empty.' })
   public readonly port: number;
 
-  @Max(1000, {
-    message: 'The maximum value for the custom price must be 1000.',
+  @Max(100000, {
+    message: 'The maximum value for the custom price must be 100000.',
   })
   @IsNotEmpty({ message: 'The custom price field must not be empty.' })
   @IsOptional()

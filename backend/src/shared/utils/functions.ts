@@ -8,6 +8,7 @@ import {
   ICustomStartupVariable,
   IRequiredStartupVariable,
 } from '../interfaces/startup.interface';
+import { IProvidedMachinesForPlan } from '../interfaces/plan.interface';
 
 const handleHttpException = (
   err: unknown,
@@ -107,20 +108,62 @@ function validateProvidedGamesForMachine(games: string): string[] {
       );
     }
 
-    if (_games.length > 10) {
-      functions.throwHttpException(
-        false,
-        'You can select up to 10 games.',
-        HttpStatus.BAD_REQUEST,
-      );
-    }
-
     return _games;
   } catch (err) {
     functions.handleHttpException(
       err,
       false,
       'The games are not provided in a valid JSON format.',
+    );
+  }
+}
+
+function validateProvidedMachinesForPlan(
+  machines: string,
+): IProvidedMachinesForPlan[] {
+  try {
+    const _machines = JSON.parse(machines) as IProvidedMachinesForPlan[];
+
+    if (_machines.length < 1) {
+      functions.throwHttpException(
+        false,
+        'You must select at least one machine.',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
+    _machines.forEach((item) => {
+      if (!item?.id) {
+        functions.throwHttpException(
+          false,
+          'The machine ID field must not be empty.',
+          HttpStatus.BAD_REQUEST,
+        );
+      }
+
+      if (!item?.server_count) {
+        functions.throwHttpException(
+          false,
+          'The server count field must not be empty.',
+          HttpStatus.BAD_REQUEST,
+        );
+      }
+
+      if (isNaN(item?.server_count)) {
+        functions.throwHttpException(
+          false,
+          'The server count field must be a number.',
+          HttpStatus.BAD_REQUEST,
+        );
+      }
+    });
+
+    return _machines;
+  } catch (err) {
+    functions.handleHttpException(
+      err,
+      false,
+      'The machines are not provided in a valid JSON format.',
     );
   }
 }
@@ -166,7 +209,7 @@ function validateProvidedCustomStartupVariables(
         );
       }
 
-      if (!item?.name) {
+      if (!item?.value) {
         functions.throwHttpException(
           false,
           'The value field must not be empty.',
@@ -292,6 +335,7 @@ export const functions = {
   formatBytes,
   checkListOfSupportedGames,
   validateProvidedGamesForMachine,
+  validateProvidedMachinesForPlan,
   validateProvidedCustomStartupVariables,
   replaceCustomStartupVariables,
   replaceRequiredStartupVariables,

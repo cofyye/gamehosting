@@ -5,9 +5,17 @@ import { GameModule } from './routes/game/game.module';
 import { MachineModule } from './routes/machine/machine.module';
 import { ModModule } from './routes/mod/mod.module';
 import { ServerModule } from './routes/server/server.module';
+import { PlanModule } from './routes/plan/plan.module';
 
 @Module({
-  imports: [LocationModule, GameModule, MachineModule, ModModule, ServerModule],
+  imports: [
+    LocationModule,
+    GameModule,
+    MachineModule,
+    ModModule,
+    ServerModule,
+    PlanModule,
+  ],
   controllers: [],
   providers: [],
 })

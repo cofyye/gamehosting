@@ -4,10 +4,12 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
 import { GameEntity } from './game.entity';
+import { PlanMachinesEntity } from './plan-machines.entity';
 
 @Entity({
   name: 'plans',
@@ -29,7 +31,7 @@ export class PlanEntity {
     name: 'price',
     nullable: true,
     type: 'decimal',
-    precision: 5,
+    precision: 8,
     scale: 2,
     unsigned: true,
   })
@@ -37,13 +39,13 @@ export class PlanEntity {
 
   @Column({
     name: 'cpu_count',
-    nullable: false,
+    nullable: true,
     type: 'smallint',
     unsigned: true,
   })
   public cpuCount: number;
 
-  @Column({ name: 'description', nullable: false, type: 'text' })
+  @Column({ name: 'description', nullable: true, type: 'text' })
   public description: string;
 
   @Column({ name: 'active', default: true, nullable: false })
@@ -65,4 +67,7 @@ export class PlanEntity {
   })
   @JoinColumn({ name: 'game_id' })
   game?: GameEntity;
+
+  @OneToMany(() => PlanMachinesEntity, (planMachine) => planMachine.plan)
+  public planMachines: PlanMachinesEntity[];
 }

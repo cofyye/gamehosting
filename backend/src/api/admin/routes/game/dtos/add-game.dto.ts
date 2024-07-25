@@ -1,4 +1,5 @@
 import {
+  IsEnum,
   IsInt,
   IsNotEmpty,
   Max,
@@ -6,6 +7,8 @@ import {
   Min,
   MinLength,
 } from 'class-validator';
+
+import { HostBy } from 'src/shared/enums/game.enum';
 
 export class AddGameDto {
   @MaxLength(30, {
@@ -59,6 +62,10 @@ export class AddGameDto {
   @IsInt({ message: 'The maximum slot must be in numeric format.' })
   @IsNotEmpty({ message: 'The maximum slot field must not be empty.' })
   public readonly slotMax: number;
+
+  @IsEnum(HostBy, { message: 'Host By must be: slot or custom_resources' })
+  @IsNotEmpty({ message: 'The host by field must not be empty.' })
+  public readonly hostBy: HostBy;
 
   @MaxLength(2500, {
     message: 'The description must contain a maximum of 2500 characters.',

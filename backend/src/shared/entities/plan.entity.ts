@@ -10,6 +10,7 @@ import {
 
 import { GameEntity } from './game.entity';
 import { PlanMachinesEntity } from './plan-machines.entity';
+import { ServerEntity } from './server.entity';
 
 @Entity({
   name: 'plans',
@@ -24,8 +25,16 @@ export class PlanEntity {
   @Column({ name: 'name', nullable: false, length: 40 })
   public name: string;
 
-  @Column({ name: 'slot_ram_quantity', nullable: false, type: 'bigint' })
-  public slotRamQuantity: number;
+  @Column({
+    name: 'slot',
+    nullable: true,
+    type: 'smallint',
+    unsigned: true,
+  })
+  public slot: number;
+
+  @Column({ name: 'ram', nullable: true, type: 'bigint' })
+  public ram: number;
 
   @Column({
     name: 'price',
@@ -67,6 +76,9 @@ export class PlanEntity {
   })
   @JoinColumn({ name: 'game_id' })
   game?: GameEntity;
+
+  @OneToMany(() => ServerEntity, (server) => server.plan)
+  servers?: ServerEntity[];
 
   @OneToMany(() => PlanMachinesEntity, (planMachine) => planMachine.plan)
   public planMachines: PlanMachinesEntity[];

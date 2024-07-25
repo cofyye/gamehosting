@@ -23,16 +23,25 @@ export class AddPlanDto {
   @IsNotEmpty({ message: 'The name field must not be empty.' })
   public readonly name: string;
 
+  @Max(65535, {
+    message: 'The maximum value for the slot must be 65535.',
+  })
+  @Min(1, { message: 'The minimum value for the slot must be 1.' })
+  @IsInt({ message: 'The slot must be in numeric format.' })
+  @IsNotEmpty({ message: 'The slot field must not be empty.' })
+  @IsOptional()
+  public readonly slot: number;
+
   @Max(109951162777600, {
-    message:
-      'The maximum value for the slot or ram quantity must be 10 TB in bytes.',
+    message: 'The maximum value for the ram must be 10 TB in bytes.',
   })
-  @Min(1, {
-    message: 'The minimum value for the slot or ram quantity must be 1.',
+  @Min(536870912, {
+    message: 'The minimum value for the ram must be 512 MB in bytes.',
   })
-  @IsInt({ message: 'The slot or ram quantity must be in numeric format.' })
-  @IsNotEmpty({ message: 'The slot or ram quantity field must not be empty.' })
-  public readonly slotRamQuantity: number;
+  @IsInt({ message: 'The ram must be in numeric format.' })
+  @IsNotEmpty({ message: 'The ram field must not be empty.' })
+  @IsOptional()
+  public readonly ram: number;
 
   @Max(100000, {
     message: 'The maximum value for the price must be 100000.',

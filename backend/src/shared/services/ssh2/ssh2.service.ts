@@ -12,6 +12,9 @@ import { MachineEntity } from 'src/shared/entities/machine.entity';
 import { ModEntity } from 'src/shared/entities/mod.entity';
 import { IRequiredStartupVariable } from 'src/shared/interfaces/startup.interface';
 import { EncryptionService } from '../encryption/encryption.service';
+import { GameEntity } from 'src/shared/entities/game.entity';
+import { PlanEntity } from 'src/shared/entities/plan.entity';
+import { HostBy } from 'src/shared/enums/game.enum';
 
 @Injectable()
 export class Ssh2Service {
@@ -242,6 +245,8 @@ export class Ssh2Service {
     server: ServerEntity,
     machine: MachineEntity,
     mod: ModEntity,
+    game: GameEntity,
+    plan: PlanEntity,
   ): Promise<void> {
     try {
       const config: ISSH2Connect = {
@@ -252,6 +257,67 @@ export class Ssh2Service {
         readyTimeout: 3000,
       };
 
+      const variables: IRequiredStartupVariable = {
+        IP: machine.ip,
+        PORT: server.port.toString(),
+        SLOT: null,
+        RAM: null,
+        FTP_USER: server.ftpUsername,
+        CPU_COUNT: null,
+      };
+
+      if (!mod.startupCommand.includes('${PORT}')) {
+        functions.throwHttpException(
+          false,
+          `The PORT must be specified in the startup command.`,
+          HttpStatus.BAD_REQUEST,
+        );
+      }
+
+      if (!mod.startupCommand.includes('${FTP_USER}')) {
+        functions.throwHttpException(
+          false,
+          `The FTP_USER must be specified in the startup command.`,
+          HttpStatus.BAD_REQUEST,
+        );
+      }
+
+      if (game.hostBy === HostBy.SLOT) {
+        if (mod.startupCommand.includes('${RAM}')) {
+          await this._utilsService.deleteServerById(server.id);
+
+          functions.throwHttpException(
+            false,
+            `It is not allowed to use the RAM option in the Docker command because your type of game is slot-based.`,
+            HttpStatus.CONFLICT,
+          );
+        }
+        if (mod.startupCommand.includes('${CPU_COUNT}')) {
+          await this._utilsService.deleteServerById(server.id);
+
+          functions.throwHttpException(
+            false,
+            `It is not allowed to use the CPU_COUNT option in the Docker command because your type of game is slot-based.`,
+            HttpStatus.CONFLICT,
+          );
+        }
+
+        variables.SLOT = plan.slot.toString();
+      } else {
+        variables.CPU_COUNT = plan.cpuCount.toString();
+        variables.RAM = plan.ram.toString();
+      }
+
+      if (!variables.RAM && !variables.SLOT) {
+        await this._utilsService.deleteServerById(server.id);
+
+        functions.throwHttpException(
+          false,
+          `Both ram and slot cannot be empty.`,
+          HttpStatus.CONFLICT,
+        );
+      }
+
       await this.checkConnection(config);
 
       await this.ssh2.connect(config);
@@ -261,22 +327,14 @@ export class Ssh2Service {
       );
 
       if (addFtpUserResult.code !== 0) {
+        await this._utilsService.deleteServerById(server.id);
+
         functions.throwHttpException(
           false,
           `An error occurred while creating FTP user.`,
           HttpStatus.INTERNAL_SERVER_ERROR,
         );
       }
-
-      // Kada se dodaju planovi, ovo se menja
-      // Ovo su obavezni parametri
-      const variables: IRequiredStartupVariable = {
-        IP: machine.ip,
-        PORT: server.port.toString(),
-        SLOT: server.slot.toString(),
-        RAM: '',
-        FTP_USER: server.ftpUsername,
-      };
 
       const dockerCommand = functions.getCompleteReplacedDockerCommand(
         mod.startupCommand,

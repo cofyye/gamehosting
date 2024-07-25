@@ -32,29 +32,28 @@ export class ServerService {
         );
       }
 
-      if (!(await this._utilsService.machineExists(body.machineId))) {
+      const mod = await this._utilsService.getModById(body.modId);
+      const machine = await this._utilsService.getMachineById(body.machineId);
+      const game = await this._utilsService.getGameById(body.gameId);
+      const plan = await this._utilsService.getPlanById(body.planId);
+
+      if (
+        !(await this._utilsService.checkIfServerCanBeHostedOnThisPlanMachine(
+          body.planId,
+          body.machineId,
+        ))
+      ) {
         functions.throwHttpException(
           false,
-          'This machine does not exist.',
-          HttpStatus.NOT_FOUND,
+          'The limit for creating servers for this plan and machine has been reached.',
+          HttpStatus.FORBIDDEN,
         );
       }
 
-      if (!(await this._utilsService.gameExists(body.gameId))) {
-        functions.throwHttpException(
-          false,
-          'This game does not exist.',
-          HttpStatus.NOT_FOUND,
-        );
-      }
-
-      if (!(await this._utilsService.modExists(body.modId))) {
-        functions.throwHttpException(
-          false,
-          'This mod does not exist.',
-          HttpStatus.NOT_FOUND,
-        );
-      }
+      await this._utilsService.checkIfGameAllowedOnMachine(
+        body.gameId,
+        body.machineId,
+      );
 
       if (
         !(await this._utilsService.checkIfPortIsInRange(body.gameId, body.port))
@@ -80,7 +79,7 @@ export class ServerService {
       }
 
       if (
-        !(await this._utilsService.checkIfSlotIsInRange(body.gameId, body.slot))
+        !(await this._utilsService.checkIfSlotIsInRange(body.gameId, plan.slot))
       ) {
         functions.throwHttpException(
           false,
@@ -109,12 +108,11 @@ export class ServerService {
         );
       }
 
-      const server = new ServerEntity();
+      let server = new ServerEntity();
       server.name = body.name;
       server.customPrice = body.customPrice;
       server.expirationDate = momentDate;
       server.port = body.port;
-      server.slot = body.slot;
       server.startupVariables = (
         await this._utilsService.getModById(body.modId)
       ).startupVariables;
@@ -126,14 +124,17 @@ export class ServerService {
       server.gameId = body.gameId;
       server.modId = body.modId;
       server.machineId = body.machineId;
+      server.planId = body.planId;
       server.status = ServerStatus.INSTALLATION_IN_PROGRESS;
 
-      await this._serverRepo.save(this._serverRepo.create(server));
+      server = await this._serverRepo.save(this._serverRepo.create(server));
 
       await this._ssh2Service.createGameServer(
         server,
-        await this._utilsService.getMachineById(body.machineId),
-        await this._utilsService.getModById(body.modId),
+        machine,
+        mod,
+        game,
+        plan,
       );
     } catch (err: unknown) {
       functions.handleHttpException(

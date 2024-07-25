@@ -11,6 +11,7 @@ import { UserEntity } from './user.entity';
 import { MachineEntity } from './machine.entity';
 import { ModEntity } from './mod.entity';
 import { GameEntity } from './game.entity';
+import { PlanEntity } from './plan.entity';
 
 import { ServerStatus } from '../enums/server.enum';
 
@@ -33,16 +34,11 @@ export class ServerEntity {
   @Column({ name: 'mod_id', nullable: false })
   public modId: string;
 
+  @Column({ name: 'plan_id', nullable: false })
+  public planId: string;
+
   @Column({ name: 'name', nullable: false, length: 40 })
   public name: string;
-
-  @Column({
-    name: 'slots',
-    nullable: false,
-    type: 'smallint',
-    unsigned: true,
-  })
-  public slot: number;
 
   @Column({ name: 'ftp_username', nullable: false, unique: true, length: 30 })
   public ftpUsername: string;
@@ -124,4 +120,12 @@ export class ServerEntity {
   })
   @JoinColumn({ name: 'mod_id' })
   mod?: ModEntity;
+
+  @ManyToOne(() => PlanEntity, (plan) => plan.servers, {
+    nullable: false,
+    onUpdate: 'RESTRICT',
+    onDelete: 'RESTRICT',
+  })
+  @JoinColumn({ name: 'plan_id' })
+  plan?: PlanEntity;
 }

@@ -112,6 +112,21 @@ export class UtilsService {
     }
   }
 
+  public async planExists(planId: string): Promise<boolean> {
+    try {
+      const count = await this._planRepo.count({
+        where: { id: planId },
+      });
+      return count > 0;
+    } catch (err: unknown) {
+      functions.throwHttpException(
+        false,
+        `An error occurred while checking if the plan exists.`,
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
+
   public async checkIfPortExistsOnProvidedMachine(
     machineId: string,
     port: number,
@@ -133,29 +148,61 @@ export class UtilsService {
     }
   }
 
-  public async checkIfPortIsInRange(
+  public async checkIfGameAllowedOnMachine(
     gameId: string,
-    port: number,
-  ): Promise<boolean> {
+    machineId: string,
+  ): Promise<void> {
     try {
-      const game = await this._gameRepo.findOne({
-        where: { id: gameId },
+      const machineGame = await this._machineGamesRepo.findOne({
+        where: { gameId, machineId },
       });
 
-      if (!game) {
+      if (!machineGame) {
         functions.throwHttpException(
           false,
-          `This game does not exist.`,
-          HttpStatus.NOT_FOUND,
+          `This machine does not support this game.`,
+          HttpStatus.UNPROCESSABLE_ENTITY,
         );
       }
-
-      return port >= game.startPort && port <= game.endPort;
     } catch (err: unknown) {
       functions.handleHttpException(
         err,
         false,
-        `An error occurred while checking if the port is in range.`,
+        `An error occurred while checking if the game allowed on this machine.`,
+      );
+    }
+  }
+
+  public async checkIfServerCanBeHostedOnThisPlanMachine(
+    planId: string,
+    machineId: string,
+  ): Promise<boolean> {
+    try {
+      const planMachine = await this._planMachinesRepo.findOne({
+        where: { planId, machineId },
+      });
+
+      if (!planMachine) {
+        functions.throwHttpException(
+          false,
+          `The plan is still not set for this machine.`,
+          HttpStatus.PRECONDITION_FAILED,
+        );
+      }
+
+      const getAllServerOnThisMachinePlanCount = await this._serverRepo.count({
+        where: {
+          machineId,
+          planId,
+        },
+      });
+
+      return planMachine.serverCount >= getAllServerOnThisMachinePlanCount + 1;
+    } catch (err: unknown) {
+      functions.handleHttpException(
+        err,
+        false,
+        `An error occurred while checking if the server can be hosted on this plan and machine.`,
       );
     }
   }
@@ -178,6 +225,33 @@ export class UtilsService {
       }
 
       return slot >= game.slotMin && slot <= game.slotMax;
+    } catch (err: unknown) {
+      functions.handleHttpException(
+        err,
+        false,
+        `An error occurred while checking if the slot is in range.`,
+      );
+    }
+  }
+
+  public async checkIfPortIsInRange(
+    gameId: string,
+    slot: number,
+  ): Promise<boolean> {
+    try {
+      const game = await this._gameRepo.findOne({
+        where: { id: gameId },
+      });
+
+      if (!game) {
+        functions.throwHttpException(
+          false,
+          `This game does not exist.`,
+          HttpStatus.NOT_FOUND,
+        );
+      }
+
+      return slot >= game.startPort && slot <= game.endPort;
     } catch (err: unknown) {
       functions.handleHttpException(
         err,
@@ -383,6 +457,90 @@ export class UtilsService {
         false,
         'An error occurred while getting mod.',
       );
+    }
+  }
+
+  public async getGameById(gameId: string): Promise<GameEntity> {
+    try {
+      const game = await this._gameRepo.findOne({
+        where: { id: gameId },
+      });
+
+      if (!game) {
+        functions.throwHttpException(
+          false,
+          'This game does not exist.',
+          HttpStatus.NOT_FOUND,
+        );
+      }
+
+      return game;
+    } catch (err: unknown) {
+      functions.handleHttpException(
+        err,
+        false,
+        'An error occurred while getting game.',
+      );
+    }
+  }
+
+  public async getPlanById(planId: string): Promise<PlanEntity> {
+    try {
+      const plan = await this._planRepo.findOne({
+        where: { id: planId },
+      });
+
+      if (!plan) {
+        functions.throwHttpException(
+          false,
+          'This plan does not exist.',
+          HttpStatus.NOT_FOUND,
+        );
+      }
+
+      return plan;
+    } catch (err: unknown) {
+      functions.handleHttpException(
+        err,
+        false,
+        'An error occurred while getting plan.',
+      );
+    }
+  }
+
+  public async getUserById(userId: string): Promise<UserEntity> {
+    try {
+      const user = await this._userRepo.findOne({
+        where: { id: userId },
+      });
+
+      if (!user) {
+        functions.throwHttpException(
+          false,
+          'This user does not exist.',
+          HttpStatus.NOT_FOUND,
+        );
+      }
+
+      return user;
+    } catch (err: unknown) {
+      functions.handleHttpException(
+        err,
+        false,
+        'An error occurred while getting user.',
+      );
+    }
+  }
+
+  public async deleteServerById(serverId: string): Promise<boolean> {
+    try {
+      if (!(await this._serverRepo.delete({ id: serverId })).affected) {
+        return false;
+      } else {
+        return true;
+      }
+    } catch (err: unknown) {
+      return false;
     }
   }
 }

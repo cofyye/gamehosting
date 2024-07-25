@@ -36,20 +36,18 @@ export class AddServerDto {
   @IsNotEmpty({ message: 'The mod ID field must not be empty.' })
   public readonly modId: string;
 
+  @IsUUID('4', {
+    message: 'The plan ID is not valid.',
+  })
+  @IsNotEmpty({ message: 'The plan ID field must not be empty.' })
+  public readonly planId: string;
+
   @MaxLength(40, {
     message: 'The name must contain a maximum of 40 characters.',
   })
   @MinLength(2, { message: 'The name must contain at least 2 characters.' })
   @IsNotEmpty({ message: 'The name field must not be empty.' })
   public readonly name: string;
-
-  @Max(65535, {
-    message: 'The maximum value for the slot must be 65535.',
-  })
-  @Min(1, { message: 'The minimum value for the slot must be 1.' })
-  @IsInt({ message: 'The slot must be in numeric format.' })
-  @IsNotEmpty({ message: 'The slot field must not be empty.' })
-  public readonly slot: number;
 
   @Max(65535, {
     message: 'The maximum value for the port must be 65535.',

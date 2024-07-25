@@ -13,4 +13,5 @@ export interface IRequiredStartupVariable {
   SLOT: string;
   RAM: string;
   FTP_USER: string;
+  CPU_COUNT: string;
 }

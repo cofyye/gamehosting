@@ -11,6 +11,8 @@ import { ModEntity } from './mod.entity';
 import { ServerEntity } from './server.entity';
 import { PlanEntity } from './plan.entity';
 
+import { HostBy } from '../enums/game.enum';
+
 @Entity({
   name: 'games',
 })
@@ -63,6 +65,15 @@ export class GameEntity {
     unsigned: true,
   })
   public slotMax: number;
+
+  @Column({
+    name: 'host_by',
+    default: HostBy.CUSTOM_RESOURCES,
+    nullable: false,
+    type: 'enum',
+    enum: HostBy,
+  })
+  public hostBy: HostBy;
 
   @Column({ name: 'description', nullable: false, type: 'text' })
   public description: string;

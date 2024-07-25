@@ -18,6 +18,14 @@ export class PlanService {
 
   public async addPlan(body: AddPlanDto): Promise<void> {
     try {
+      if (!body.ram && !body.slot) {
+        functions.throwHttpException(
+          false,
+          `Both ram and slot cannot be empty.`,
+          HttpStatus.CONFLICT,
+        );
+      }
+
       const providedMachinesForPlan = functions.validateProvidedMachinesForPlan(
         body.machines,
       );
@@ -32,7 +40,8 @@ export class PlanService {
 
       let plan = new PlanEntity();
       plan.name = body.name;
-      plan.slotRamQuantity = body.slotRamQuantity;
+      plan.slot = body.slot;
+      plan.ram = body.ram;
       plan.cpuCount = body.cpuCount;
       plan.description = body.description;
       plan.price = body.price;
@@ -44,7 +53,7 @@ export class PlanService {
         plan,
         providedMachinesForPlan,
       );
-    } catch (err) {
+    } catch (err: unknown) {
       functions.handleHttpException(
         err,
         false,

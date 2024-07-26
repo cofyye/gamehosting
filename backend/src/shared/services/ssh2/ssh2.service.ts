@@ -309,6 +309,13 @@ export class Ssh2Service {
         variables.RAM = plan.ram.toString();
       }
 
+      functions.checkParametersForGameHostType(
+        game.hostBy,
+        variables.RAM,
+        variables.CPU_COUNT,
+        variables.SLOT,
+      );
+
       if (!variables.RAM && !variables.SLOT) {
         functions.throwHttpException(
           false,

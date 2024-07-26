@@ -18,25 +18,18 @@ export class PlanService {
 
   public async addPlan(body: AddPlanDto): Promise<void> {
     try {
-      if (!body.ram && !body.slot) {
-        functions.throwHttpException(
-          false,
-          `Both ram and slot cannot be empty.`,
-          HttpStatus.BAD_REQUEST,
-        );
-      }
-
       const providedMachinesForPlan = functions.validateProvidedMachinesForPlan(
         body.machines,
       );
 
-      if (!(await this._utilsService.gameExists(body.gameId))) {
-        functions.throwHttpException(
-          false,
-          'This game does not exist.',
-          HttpStatus.NOT_FOUND,
-        );
-      }
+      const game = await this._utilsService.getGameById(body.gameId);
+
+      functions.checkParametersForGameHostType(
+        game.hostBy,
+        body.ram,
+        body.cpuCount,
+        body.slot,
+      );
 
       let plan = new PlanEntity();
       plan.name = body.name;

@@ -313,7 +313,7 @@ function getCompleteReplacedDockerCommand(
   command: string,
   requiredVariables: IRequiredStartupVariable,
   customVariables: string,
-) {
+): string {
   let dockerCommand = functions.replaceRequiredStartupVariables(
     command,
     requiredVariables,
@@ -330,7 +330,7 @@ function getCompleteReplacedDockerCommand(
 function checkRequiredStartupCommandParameters(
   hostBy: HostBy,
   command: string,
-) {
+): void {
   if (!command.includes('${PORT}')) {
     functions.throwHttpException(
       false,
@@ -365,6 +365,31 @@ function checkRequiredStartupCommandParameters(
   }
 }
 
+function checkParametersForGameHostType(
+  hostBy: HostBy,
+  ram: number | string,
+  cpuCount: number | string,
+  slot: number | string,
+): void {
+  if (hostBy === HostBy.SLOT) {
+    if (!slot) {
+      functions.throwHttpException(
+        false,
+        `The slot field cannot be empty.`,
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+  } else {
+    if (!ram || !cpuCount) {
+      functions.throwHttpException(
+        false,
+        `The RAM or CPU count field cannot be empty.`,
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+  }
+}
+
 export const functions = {
   handleHttpException,
   throwHttpException,
@@ -380,4 +405,5 @@ export const functions = {
   replaceRequiredStartupVariables,
   getCompleteReplacedDockerCommand,
   checkRequiredStartupCommandParameters,
+  checkParametersForGameHostType,
 };

@@ -36,14 +36,6 @@ export class ModService {
 
       functions.validateProvidedCustomStartupVariables(body.startupVariables);
 
-      if (!(await this._utilsService.gameExists(body.gameId))) {
-        functions.throwHttpException(
-          false,
-          'This game does not exist.',
-          HttpStatus.NOT_FOUND,
-        );
-      }
-
       let mod = await this._modRepo.findOne({
         where: [
           {
@@ -68,6 +60,13 @@ export class ModService {
           HttpStatus.CONFLICT,
         );
       }
+
+      const game = await this._utilsService.getGameById(body.gameId);
+
+      functions.checkRequiredStartupCommandParameters(
+        game.hostBy,
+        mod.startupCommand,
+      );
 
       mod = new ModEntity();
       mod.modName = body.modName;

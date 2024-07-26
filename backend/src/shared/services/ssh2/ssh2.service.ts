@@ -1,4 +1,4 @@
-import { HttpStatus, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 
 import * as Client from 'ssh2-sftp-client';
 import { NodeSSH } from 'node-ssh';
@@ -92,8 +92,25 @@ export class Ssh2Service {
         );
       }
 
+      if (
+        !(await this.client.exists('/root/gamehosting/required_packages.sh'))
+      ) {
+        await this.client.fastPut(
+          path.join(
+            __dirname,
+            '..',
+            '..',
+            '..',
+            'bash',
+            'required_packages.sh',
+          ),
+          '/root/gamehosting/required_packages.sh',
+        );
+      }
+
       await this.client.chmod('/root/gamehosting/add_vsftpd_user.sh', '755');
       await this.client.chmod('/root/gamehosting/delete_vsftpd_user.sh', '755');
+      await this.client.chmod('/root/gamehosting/required_packages.sh', '755');
       await this.client.chmod(
         '/root/gamehosting/install_vsftpd_server.sh',
         '755',
@@ -101,20 +118,34 @@ export class Ssh2Service {
 
       await this.ssh2.connect(config);
 
-      const result = await this.ssh2.execCommand(
+      const installRequiredPackagesResult = await this.ssh2.execCommand(
+        'cd /root/gamehosting && sudo ./required_packages.sh',
+      );
+
+      if (installRequiredPackagesResult.code !== 0) {
+        functions.throwHttpException(
+          false,
+          `An error occurred while installing the necessary files on the machine.`,
+          HttpStatus.INTERNAL_SERVER_ERROR,
+        );
+      }
+
+      const installVsftpdResult = await this.ssh2.execCommand(
         'cd /root/gamehosting && sudo ./install_vsftpd_server.sh',
       );
 
-      if (result.code === 254) {
-        throw new Error(
-          'An error occurred while installing the necessary files on the machine.',
+      if (installVsftpdResult.code !== 0) {
+        functions.throwHttpException(
+          false,
+          `An error occurred while installing the vsftpd server on the machine.`,
+          HttpStatus.INTERNAL_SERVER_ERROR,
         );
       }
     } catch (err: unknown) {
-      functions.throwHttpException(
+      functions.handleHttpException(
+        err,
         false,
         `An error occurred while installing the necessary files on the machine.`,
-        HttpStatus.INTERNAL_SERVER_ERROR,
       );
     } finally {
       await this.client.end();
@@ -266,42 +297,12 @@ export class Ssh2Service {
         CPU_COUNT: null,
       };
 
-      if (!mod.startupCommand.includes('${PORT}')) {
-        functions.throwHttpException(
-          false,
-          `The PORT must be specified in the startup command.`,
-          HttpStatus.BAD_REQUEST,
-        );
-      }
-
-      if (!mod.startupCommand.includes('${FTP_USER}')) {
-        functions.throwHttpException(
-          false,
-          `The FTP_USER must be specified in the startup command.`,
-          HttpStatus.BAD_REQUEST,
-        );
-      }
+      functions.checkRequiredStartupCommandParameters(
+        game.hostBy,
+        mod.startupCommand,
+      );
 
       if (game.hostBy === HostBy.SLOT) {
-        if (mod.startupCommand.includes('${RAM}')) {
-          await this._utilsService.deleteServerById(server.id);
-
-          functions.throwHttpException(
-            false,
-            `It is not allowed to use the RAM option in the Docker command because your type of game is slot-based.`,
-            HttpStatus.CONFLICT,
-          );
-        }
-        if (mod.startupCommand.includes('${CPU_COUNT}')) {
-          await this._utilsService.deleteServerById(server.id);
-
-          functions.throwHttpException(
-            false,
-            `It is not allowed to use the CPU_COUNT option in the Docker command because your type of game is slot-based.`,
-            HttpStatus.CONFLICT,
-          );
-        }
-
         variables.SLOT = plan.slot.toString();
       } else {
         variables.CPU_COUNT = plan.cpuCount.toString();
@@ -309,12 +310,10 @@ export class Ssh2Service {
       }
 
       if (!variables.RAM && !variables.SLOT) {
-        await this._utilsService.deleteServerById(server.id);
-
         functions.throwHttpException(
           false,
           `Both ram and slot cannot be empty.`,
-          HttpStatus.CONFLICT,
+          HttpStatus.BAD_REQUEST,
         );
       }
 
@@ -354,6 +353,15 @@ export class Ssh2Service {
         );
       }
     } catch (err: unknown) {
+      if (err instanceof HttpException) {
+        if (
+          err.getStatus() === HttpStatus.BAD_REQUEST ||
+          err.getStatus() === HttpStatus.CONFLICT
+        ) {
+          await this._utilsService.deleteServerById(server.id);
+        }
+      }
+
       functions.handleHttpException(
         err,
         false,

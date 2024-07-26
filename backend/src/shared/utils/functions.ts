@@ -9,6 +9,7 @@ import {
   IRequiredStartupVariable,
 } from '../interfaces/startup.interface';
 import { IProvidedMachinesForPlan } from '../interfaces/plan.interface';
+import { HostBy } from '../enums/game.enum';
 
 const handleHttpException = (
   err: unknown,
@@ -326,6 +327,44 @@ function getCompleteReplacedDockerCommand(
   return dockerCommand;
 }
 
+function checkRequiredStartupCommandParameters(
+  hostBy: HostBy,
+  command: string,
+) {
+  if (!command.includes('${PORT}')) {
+    functions.throwHttpException(
+      false,
+      `The PORT must be specified in the startup command.`,
+      HttpStatus.BAD_REQUEST,
+    );
+  }
+
+  if (!command.includes('${FTP_USER}')) {
+    functions.throwHttpException(
+      false,
+      `The FTP_USER must be specified in the startup command.`,
+      HttpStatus.BAD_REQUEST,
+    );
+  }
+
+  if (hostBy === HostBy.SLOT) {
+    if (command.includes('${RAM}')) {
+      functions.throwHttpException(
+        false,
+        `It is not allowed to use the RAM option in the Docker command because your type of game is slot-based.`,
+        HttpStatus.CONFLICT,
+      );
+    }
+    if (command.includes('${CPU_COUNT}')) {
+      functions.throwHttpException(
+        false,
+        `It is not allowed to use the CPU_COUNT option in the Docker command because your type of game is slot-based.`,
+        HttpStatus.CONFLICT,
+      );
+    }
+  }
+}
+
 export const functions = {
   handleHttpException,
   throwHttpException,
@@ -340,4 +379,5 @@ export const functions = {
   replaceCustomStartupVariables,
   replaceRequiredStartupVariables,
   getCompleteReplacedDockerCommand,
+  checkRequiredStartupCommandParameters,
 };

@@ -22,7 +22,7 @@ export class PlanService {
         functions.throwHttpException(
           false,
           `Both ram and slot cannot be empty.`,
-          HttpStatus.CONFLICT,
+          HttpStatus.BAD_REQUEST,
         );
       }
 

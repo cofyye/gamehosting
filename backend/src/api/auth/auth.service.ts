@@ -96,7 +96,7 @@ export class AuthService {
         functions.throwHttpException(
           false,
           'An error occurred while sending the verification code.',
-          HttpStatus.FAILED_DEPENDENCY,
+          HttpStatus.INTERNAL_SERVER_ERROR,
         );
       }
 
@@ -122,7 +122,7 @@ export class AuthService {
         functions.throwHttpException(
           false,
           'Invalid email or password.',
-          HttpStatus.FORBIDDEN,
+          HttpStatus.UNAUTHORIZED,
         );
       }
 
@@ -149,7 +149,7 @@ export class AuthService {
         functions.throwHttpException(
           false,
           'Invalid email or password.',
-          HttpStatus.FORBIDDEN,
+          HttpStatus.UNAUTHORIZED,
         );
       }
 
@@ -178,7 +178,7 @@ export class AuthService {
         functions.throwHttpException(
           false,
           'Invalid verification code. Please try again.',
-          HttpStatus.CONFLICT,
+          HttpStatus.UNPROCESSABLE_ENTITY,
         );
       }
 
@@ -252,7 +252,7 @@ export class AuthService {
         functions.throwHttpException(
           false,
           'An error occurred while sending the verification code.',
-          HttpStatus.FAILED_DEPENDENCY,
+          HttpStatus.INTERNAL_SERVER_ERROR,
         );
       }
 
@@ -296,7 +296,7 @@ export class AuthService {
         functions.throwHttpException(
           false,
           'An error occurred while sending the password reset request.',
-          HttpStatus.FAILED_DEPENDENCY,
+          HttpStatus.INTERNAL_SERVER_ERROR,
         );
       }
     } catch (err) {
@@ -321,7 +321,7 @@ export class AuthService {
         functions.throwHttpException(
           false,
           'Invalid password reset token. Please try again.',
-          HttpStatus.CONFLICT,
+          HttpStatus.UNPROCESSABLE_ENTITY,
         );
       }
 
@@ -364,7 +364,7 @@ export class AuthService {
         functions.throwHttpException(
           false,
           'Invalid password reset token. Please try again.',
-          HttpStatus.CONFLICT,
+          HttpStatus.UNPROCESSABLE_ENTITY,
         );
       }
 

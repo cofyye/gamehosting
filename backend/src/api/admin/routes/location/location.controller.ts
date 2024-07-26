@@ -97,7 +97,7 @@ export class LocationController {
     }
   }
 
-  @UseGuards(new RoleGuard([UserRole.FOUNDER, UserRole.ADMIN]))
+  @UseGuards(new RoleGuard([UserRole.FOUNDER]))
   @Put(':id')
   @HttpCode(HttpStatus.OK)
   public async editLocation(
@@ -125,7 +125,7 @@ export class LocationController {
     }
   }
 
-  @UseGuards(new RoleGuard([UserRole.FOUNDER, UserRole.ADMIN]))
+  @UseGuards(new RoleGuard([UserRole.FOUNDER]))
   @Delete(':id')
   @HttpCode(HttpStatus.OK)
   public async deleteLocation(

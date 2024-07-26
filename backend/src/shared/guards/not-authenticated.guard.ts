@@ -32,7 +32,7 @@ export class NotAuthenticatedGuard extends AuthGuard('jwt-access') {
       functions.throwHttpException(
         false,
         'You must be logged out to access this page.',
-        HttpStatus.FORBIDDEN,
+        HttpStatus.UNAUTHORIZED,
       );
     }
 

@@ -26,13 +26,13 @@ export class JwtRefreshGuard extends AuthGuard('jwt-refresh') {
       functions.throwHttpException(
         false,
         'Your session token has expired. Please log in again.',
-        HttpStatus.FORBIDDEN,
+        HttpStatus.UNAUTHORIZED,
       );
     } else if (info || err) {
       functions.throwHttpException(
         false,
         'You must be logged in to access this page.',
-        HttpStatus.FORBIDDEN,
+        HttpStatus.UNAUTHORIZED,
       );
     }
 

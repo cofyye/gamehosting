@@ -10,10 +10,8 @@ import {
   Res,
   UseGuards,
 } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
-import { Repository } from 'typeorm';
 import { Request, Response } from 'express';
 
 import { UserEntity } from 'src/shared/entities/user.entity';
@@ -40,8 +38,6 @@ import { AuthService } from './auth.service';
 @Controller('/auth')
 export class AuthController {
   constructor(
-    @InjectRepository(UserEntity)
-    private readonly _userRepo: Repository<UserEntity>,
     private readonly _configService: ConfigService,
     private readonly _authService: AuthService,
     private readonly _jwtService: JwtService,
@@ -83,7 +79,7 @@ export class AuthController {
       functions.throwHttpException(
         false,
         'Login failed. Please try again.',
-        HttpStatus.INTERNAL_SERVER_ERROR,
+        HttpStatus.UNAUTHORIZED,
       );
     }
 
@@ -214,33 +210,41 @@ export class AuthController {
   public async signOut(
     @Res({ passthrough: true }) response: Response,
   ): Promise<ISendResponse> {
-    response.clearCookie('access_token', {
-      httpOnly:
-        this._configService.get<string>('APP_STATE') === 'production'
-          ? true
-          : false,
-      sameSite: 'none',
-      secure:
-        this._configService.get<string>('APP_STATE') === 'production'
-          ? true
-          : false,
-    });
-    response.clearCookie('refresh_token', {
-      httpOnly:
-        this._configService.get<string>('APP_STATE') === 'production'
-          ? true
-          : false,
-      sameSite: 'none',
-      secure:
-        this._configService.get<string>('APP_STATE') === 'production'
-          ? true
-          : false,
-    });
+    try {
+      response.clearCookie('access_token', {
+        httpOnly:
+          this._configService.get<string>('APP_STATE') === 'production'
+            ? true
+            : false,
+        sameSite: 'none',
+        secure:
+          this._configService.get<string>('APP_STATE') === 'production'
+            ? true
+            : false,
+      });
+      response.clearCookie('refresh_token', {
+        httpOnly:
+          this._configService.get<string>('APP_STATE') === 'production'
+            ? true
+            : false,
+        sameSite: 'none',
+        secure:
+          this._configService.get<string>('APP_STATE') === 'production'
+            ? true
+            : false,
+      });
 
-    return {
-      success: true,
-      message: 'Success.',
-    };
+      return {
+        success: true,
+        message: 'Success.',
+      };
+    } catch (err: unknown) {
+      functions.handleHttpException(
+        err,
+        false,
+        'The error occurred during logout.',
+      );
+    }
   }
 
   @UseGuards(JwtRefreshGuard)

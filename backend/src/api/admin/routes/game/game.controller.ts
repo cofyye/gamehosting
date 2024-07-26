@@ -97,7 +97,7 @@ export class GameController {
     }
   }
 
-  @UseGuards(new RoleGuard([UserRole.FOUNDER, UserRole.ADMIN]))
+  @UseGuards(new RoleGuard([UserRole.FOUNDER]))
   @Put(':id')
   @HttpCode(HttpStatus.OK)
   public async editGame(
@@ -121,7 +121,7 @@ export class GameController {
     }
   }
 
-  @UseGuards(new RoleGuard([UserRole.FOUNDER, UserRole.ADMIN]))
+  @UseGuards(new RoleGuard([UserRole.FOUNDER]))
   @Delete(':id')
   @HttpCode(HttpStatus.OK)
   public async deleteGame(@Param() params: UuidDto): Promise<ISendResponse> {

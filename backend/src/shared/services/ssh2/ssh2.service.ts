@@ -375,7 +375,6 @@ export class Ssh2Service {
         `An error occurred while installing a server.`,
       );
     } finally {
-      await this.client.end();
       this.ssh2.dispose();
     }
   }
@@ -410,19 +409,19 @@ export class Ssh2Service {
         );
       }
 
-      const stopServerResult = await this.ssh2.execCommand(
-        `docker stop ${server.ftpUsername}`,
+      await this.ssh2.execCommand(`docker stop ${server.ftpUsername}`);
+
+      const deleteServerDockerResult = await this.ssh2.execCommand(
+        `docker rm ${server.ftpUsername}`,
       );
 
-      if (stopServerResult.code !== 0) {
+      if (deleteServerDockerResult.code !== 0) {
         functions.throwHttpException(
           false,
-          `An error occurred while stopping the server.`,
+          `The FTP account and server files were deleted, but an error occurred while deleting the server container, so the server was not removed from the database.`,
           HttpStatus.INTERNAL_SERVER_ERROR,
         );
       }
-
-      await this.ssh2.execCommand(`docker rm ${server.ftpUsername}`);
     } catch (err: unknown) {
       functions.handleHttpException(
         err,
@@ -430,7 +429,6 @@ export class Ssh2Service {
         `An error occurred while deleting a server.`,
       );
     } finally {
-      await this.client.end();
       this.ssh2.dispose();
     }
   }

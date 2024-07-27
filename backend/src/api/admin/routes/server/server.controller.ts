@@ -1,8 +1,10 @@
 import {
   Body,
   Controller,
+  Delete,
   HttpCode,
   HttpStatus,
+  Param,
   Post,
   UseGuards,
 } from '@nestjs/common';
@@ -12,6 +14,7 @@ import { ISendResponse } from 'src/shared/interfaces/response.interface';
 import { functions } from 'src/shared/utils/functions';
 import { RoleGuard } from 'src/shared/guards/role.guard';
 import { UserRole } from 'src/shared/enums/role.enum';
+import { UuidDto } from 'src/shared/dtos/uuid.dto';
 
 import { AddServerDto } from './dtos/add-server.dto';
 
@@ -38,6 +41,26 @@ export class ServerController {
         err,
         false,
         'An error occurred while adding the server.',
+      );
+    }
+  }
+
+  @UseGuards(new RoleGuard([UserRole.FOUNDER]))
+  @Delete(':id')
+  @HttpCode(HttpStatus.OK)
+  public async deleteServer(@Param() params: UuidDto): Promise<ISendResponse> {
+    try {
+      await this._serverService.deleteServer(params.id);
+
+      return {
+        success: true,
+        message: 'You have successfully deleted the server.',
+      };
+    } catch (err: unknown) {
+      functions.handleHttpException(
+        err,
+        false,
+        'An error occurred while deleting the server.',
       );
     }
   }

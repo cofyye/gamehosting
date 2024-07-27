@@ -532,6 +532,30 @@ export class UtilsService {
     }
   }
 
+  public async getServerById(serverId: string): Promise<ServerEntity> {
+    try {
+      const server = await this._serverRepo.findOne({
+        where: { id: serverId },
+      });
+
+      if (!server) {
+        functions.throwHttpException(
+          false,
+          'This server does not exist.',
+          HttpStatus.NOT_FOUND,
+        );
+      }
+
+      return server;
+    } catch (err: unknown) {
+      functions.handleHttpException(
+        err,
+        false,
+        'An error occurred while getting server.',
+      );
+    }
+  }
+
   public async deleteServerById(serverId: string): Promise<boolean> {
     try {
       if (!(await this._serverRepo.delete({ id: serverId })).affected) {

@@ -379,4 +379,59 @@ export class Ssh2Service {
       this.ssh2.dispose();
     }
   }
+
+  // Delete game server
+  public async deleteGameServer(
+    server: ServerEntity,
+    machine: MachineEntity,
+  ): Promise<void> {
+    try {
+      const config: ISSH2Connect = {
+        host: machine.ip,
+        username: machine.username,
+        password: this._encryptionService.decrypt(machine.password),
+        port: machine.sshPort,
+        readyTimeout: 3000,
+      };
+
+      await this.checkConnection(config);
+
+      await this.ssh2.connect(config);
+
+      const deleteFtpUserResult = await this.ssh2.execCommand(
+        `/root/gamehosting/delete_vsftpd_user.sh ${server.ftpUsername}`,
+      );
+
+      if (deleteFtpUserResult.code !== 0) {
+        functions.throwHttpException(
+          false,
+          `An error occurred while deleting FTP user.`,
+          HttpStatus.INTERNAL_SERVER_ERROR,
+        );
+      }
+
+      const stopServerResult = await this.ssh2.execCommand(
+        `docker stop ${server.ftpUsername}`,
+      );
+
+      if (stopServerResult.code !== 0) {
+        functions.throwHttpException(
+          false,
+          `An error occurred while stopping the server.`,
+          HttpStatus.INTERNAL_SERVER_ERROR,
+        );
+      }
+
+      await this.ssh2.execCommand(`docker rm ${server.ftpUsername}`);
+    } catch (err: unknown) {
+      functions.handleHttpException(
+        err,
+        false,
+        `An error occurred while deleting a server.`,
+      );
+    } finally {
+      await this.client.end();
+      this.ssh2.dispose();
+    }
+  }
 }

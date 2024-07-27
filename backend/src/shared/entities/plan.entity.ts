@@ -71,8 +71,8 @@ export class PlanEntity {
 
   @ManyToOne(() => GameEntity, (game) => game.plans, {
     nullable: false,
-    onUpdate: 'CASCADE',
-    onDelete: 'CASCADE',
+    onUpdate: 'RESTRICT',
+    onDelete: 'RESTRICT',
   })
   @JoinColumn({ name: 'game_id' })
   game?: GameEntity;

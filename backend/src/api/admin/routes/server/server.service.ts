@@ -144,4 +144,27 @@ export class ServerService {
       );
     }
   }
+
+  public async deleteServer(id: string): Promise<void> {
+    try {
+      const server = await this._utilsService.getServerById(id);
+      const machine = await this._utilsService.getMachineById(server.machineId);
+
+      await this._ssh2Service.deleteGameServer(server, machine);
+
+      if (!(await this._utilsService.deleteServerById(server.id))) {
+        functions.throwHttpException(
+          false,
+          `The server was deleted, but an error occurred while deleting the server in the database.`,
+          HttpStatus.INTERNAL_SERVER_ERROR,
+        );
+      }
+    } catch (err) {
+      functions.handleHttpException(
+        err,
+        false,
+        'An error occurred while deleting the server.',
+      );
+    }
+  }
 }

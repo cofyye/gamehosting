@@ -175,6 +175,38 @@ export class GameService {
     try {
       const game = await this._utilsService.getGameById(id);
 
+      if (await this._utilsService.gameHasMachines(id)) {
+        functions.throwHttpException(
+          false,
+          'Before deleting the game, you must delete all machines associated with this game.',
+          HttpStatus.BAD_REQUEST,
+        );
+      }
+
+      if (await this._utilsService.gameHasServers(id)) {
+        functions.throwHttpException(
+          false,
+          'Before deleting the game, you must delete all servers associated with this game.',
+          HttpStatus.BAD_REQUEST,
+        );
+      }
+
+      if (await this._utilsService.gameHasPlans(id)) {
+        functions.throwHttpException(
+          false,
+          'Before deleting the game, you must delete all plans associated with this game.',
+          HttpStatus.BAD_REQUEST,
+        );
+      }
+
+      if (await this._utilsService.gameHasMods(id)) {
+        functions.throwHttpException(
+          false,
+          'Before deleting the game, you must delete all mods associated with this game.',
+          HttpStatus.BAD_REQUEST,
+        );
+      }
+
       if (!(await this._gameRepo.delete({ id })).affected) {
         functions.throwHttpException(
           false,

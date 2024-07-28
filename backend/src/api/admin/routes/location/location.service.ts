@@ -146,6 +146,14 @@ export class LocationService {
     try {
       const location = await this._utilsService.getLocationById(id);
 
+      if (await this._utilsService.locationHasMachines(id)) {
+        functions.throwHttpException(
+          false,
+          'Before deleting the location, you must delete all machines associated with this location.',
+          HttpStatus.BAD_REQUEST,
+        );
+      }
+
       if (!(await this._locationRepo.delete({ id })).affected) {
         functions.throwHttpException(
           false,

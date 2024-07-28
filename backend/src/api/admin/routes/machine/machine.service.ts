@@ -93,4 +93,28 @@ export class MachineService {
       );
     }
   }
+
+  public async getMachines(): Promise<MachineEntity[]> {
+    try {
+      return await this._machineRepo.find();
+    } catch (err) {
+      functions.handleHttpException(
+        err,
+        false,
+        'An error occurred while retrieving all machines.',
+      );
+    }
+  }
+
+  public async getMachine(id: string): Promise<MachineEntity> {
+    try {
+      return await this._utilsService.getMachineById(id);
+    } catch (err) {
+      functions.handleHttpException(
+        err,
+        false,
+        'An error occurred while retrieving the machine.',
+      );
+    }
+  }
 }

@@ -580,6 +580,96 @@ export class UtilsService {
     }
   }
 
+  public async locationHasMachines(locationId: string): Promise<boolean> {
+    try {
+      const count = await this._machineRepo.count({
+        where: {
+          locationId,
+        },
+      });
+
+      return count > 0;
+    } catch (err: unknown) {
+      functions.throwHttpException(
+        false,
+        `An error occurred while checking if the location has machines.`,
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
+
+  public async gameHasMachines(gameId: string): Promise<boolean> {
+    try {
+      const count = await this._machineGamesRepo.count({
+        where: {
+          gameId,
+        },
+      });
+
+      return count > 0;
+    } catch (err: unknown) {
+      functions.throwHttpException(
+        false,
+        `An error occurred while checking if the game has machines.`,
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
+
+  public async gameHasServers(gameId: string): Promise<boolean> {
+    try {
+      const count = await this._serverRepo.count({
+        where: {
+          gameId,
+        },
+      });
+
+      return count > 0;
+    } catch (err: unknown) {
+      functions.throwHttpException(
+        false,
+        `An error occurred while checking if the game has servers.`,
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
+
+  public async gameHasPlans(gameId: string): Promise<boolean> {
+    try {
+      const count = await this._planRepo.count({
+        where: {
+          gameId,
+        },
+      });
+
+      return count > 0;
+    } catch (err: unknown) {
+      functions.throwHttpException(
+        false,
+        `An error occurred while checking if the game has plans.`,
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
+
+  public async gameHasMods(gameId: string): Promise<boolean> {
+    try {
+      const count = await this._modRepo.count({
+        where: {
+          gameId,
+        },
+      });
+
+      return count > 0;
+    } catch (err: unknown) {
+      functions.throwHttpException(
+        false,
+        `An error occurred while checking if the game has mods.`,
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
+
   public async deleteServerById(serverId: string): Promise<boolean> {
     try {
       if (!(await this._serverRepo.delete({ id: serverId })).affected) {

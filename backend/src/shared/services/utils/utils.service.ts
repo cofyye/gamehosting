@@ -532,6 +532,30 @@ export class UtilsService {
     }
   }
 
+  public async getLocationById(locationId: string): Promise<LocationEntity> {
+    try {
+      const location = await this._locationRepo.findOne({
+        where: { id: locationId },
+      });
+
+      if (!location) {
+        functions.throwHttpException(
+          false,
+          'This location does not exist.',
+          HttpStatus.NOT_FOUND,
+        );
+      }
+
+      return location;
+    } catch (err: unknown) {
+      functions.handleHttpException(
+        err,
+        false,
+        'An error occurred while getting location.',
+      );
+    }
+  }
+
   public async getServerById(serverId: string): Promise<ServerEntity> {
     try {
       const server = await this._serverRepo.findOne({

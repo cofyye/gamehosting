@@ -145,6 +145,30 @@ export class ServerService {
     }
   }
 
+  public async getServers(): Promise<ServerEntity[]> {
+    try {
+      return await this._serverRepo.find();
+    } catch (err) {
+      functions.handleHttpException(
+        err,
+        false,
+        'An error occurred while retrieving all servers.',
+      );
+    }
+  }
+
+  public async getServer(id: string): Promise<ServerEntity> {
+    try {
+      return await this._utilsService.getServerById(id);
+    } catch (err) {
+      functions.handleHttpException(
+        err,
+        false,
+        'An error occurred while retrieving the server.',
+      );
+    }
+  }
+
   public async deleteServer(id: string): Promise<void> {
     try {
       const server = await this._utilsService.getServerById(id);

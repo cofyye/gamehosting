@@ -5,6 +5,7 @@ import { UploadedFile } from 'express-fileupload';
 
 import { LocationEntity } from 'src/shared/entities/location.entity';
 import { FileUploadService } from 'src/shared/services/file-upload/file-upload.service';
+import { UtilsService } from 'src/shared/services/utils/utils.service';
 import { functions } from 'src/shared/utils/functions';
 
 import { AddLocationDto } from './dtos/add-location.dto';
@@ -16,6 +17,7 @@ export class LocationService {
     @InjectRepository(LocationEntity)
     private readonly _locationRepo: Repository<LocationEntity>,
     private readonly _fileUploadService: FileUploadService,
+    private readonly _utilsService: UtilsService,
   ) {}
 
   public async addLocation(
@@ -83,19 +85,7 @@ export class LocationService {
     let filename: string = '';
 
     try {
-      const location = await this._locationRepo.findOne({
-        where: {
-          id,
-        },
-      });
-
-      if (!location) {
-        functions.throwHttpException(
-          false,
-          'This location does not exist.',
-          HttpStatus.NOT_FOUND,
-        );
-      }
+      const location = await this._utilsService.getLocationById(id);
 
       location.country = body.country;
       location.town = body.town;
@@ -142,21 +132,7 @@ export class LocationService {
 
   public async getLocation(id: string): Promise<LocationEntity> {
     try {
-      const location = await this._locationRepo.findOne({
-        where: {
-          id,
-        },
-      });
-
-      if (!location) {
-        functions.throwHttpException(
-          false,
-          'This location does not exist.',
-          HttpStatus.NOT_FOUND,
-        );
-      }
-
-      return location;
+      return await this._utilsService.getLocationById(id);
     } catch (err) {
       functions.handleHttpException(
         err,
@@ -168,19 +144,7 @@ export class LocationService {
 
   public async deleteLocation(id: string): Promise<void> {
     try {
-      const location = await this._locationRepo.findOne({
-        where: {
-          id,
-        },
-      });
-
-      if (!location) {
-        functions.throwHttpException(
-          false,
-          'This location does not exist.',
-          HttpStatus.NOT_FOUND,
-        );
-      }
+      const location = await this._utilsService.getLocationById(id);
 
       if (!(await this._locationRepo.delete({ id })).affected) {
         functions.throwHttpException(

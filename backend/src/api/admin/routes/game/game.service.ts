@@ -6,6 +6,7 @@ import { UploadedFile } from 'express-fileupload';
 import { GameEntity } from 'src/shared/entities/game.entity';
 import { FileUploadService } from 'src/shared/services/file-upload/file-upload.service';
 import { functions } from 'src/shared/utils/functions';
+import { UtilsService } from 'src/shared/services/utils/utils.service';
 
 import { AddGameDto } from './dtos/add-game.dto';
 import { EditGameDto } from './dtos/edit-game.dto';
@@ -16,6 +17,7 @@ export class GameService {
     @InjectRepository(GameEntity)
     private readonly _gameRepo: Repository<GameEntity>,
     private readonly _fileUploadService: FileUploadService,
+    private readonly _utilsService: UtilsService,
   ) {}
 
   public async addGame(
@@ -107,19 +109,7 @@ export class GameService {
     let filename: string = '';
 
     try {
-      const game = await this._gameRepo.findOne({
-        where: {
-          id,
-        },
-      });
-
-      if (!game) {
-        functions.throwHttpException(
-          false,
-          'This game does not exist.',
-          HttpStatus.NOT_FOUND,
-        );
-      }
+      const game = await this._utilsService.getGameById(id);
 
       game.name = body.name;
       game.tag = body.tag;
@@ -171,21 +161,7 @@ export class GameService {
 
   public async getGame(id: string): Promise<GameEntity> {
     try {
-      const game = await this._gameRepo.findOne({
-        where: {
-          id,
-        },
-      });
-
-      if (!game) {
-        functions.throwHttpException(
-          false,
-          'This game does not exist.',
-          HttpStatus.NOT_FOUND,
-        );
-      }
-
-      return game;
+      return await this._utilsService.getGameById(id);
     } catch (err) {
       functions.handleHttpException(
         err,
@@ -197,19 +173,7 @@ export class GameService {
 
   public async deleteGame(id: string): Promise<void> {
     try {
-      const game = await this._gameRepo.findOne({
-        where: {
-          id,
-        },
-      });
-
-      if (!game) {
-        functions.throwHttpException(
-          false,
-          'This game does not exist.',
-          HttpStatus.NOT_FOUND,
-        );
-      }
+      const game = await this._utilsService.getGameById(id);
 
       if (!(await this._gameRepo.delete({ id })).affected) {
         functions.throwHttpException(

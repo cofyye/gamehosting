@@ -54,4 +54,62 @@ export class PlanService {
       );
     }
   }
+
+  public async getPlans(): Promise<PlanEntity[]> {
+    try {
+      return await this._planRepo.find();
+    } catch (err) {
+      functions.handleHttpException(
+        err,
+        false,
+        'An error occurred while retrieving all plans.',
+      );
+    }
+  }
+
+  public async getPlan(id: string): Promise<PlanEntity> {
+    try {
+      return await this._utilsService.getPlanById(id);
+    } catch (err) {
+      functions.handleHttpException(
+        err,
+        false,
+        'An error occurred while retrieving the plan.',
+      );
+    }
+  }
+
+  public async deletePlan(id: string): Promise<void> {
+    try {
+      if (!(await this._utilsService.planExists(id))) {
+        functions.throwHttpException(
+          false,
+          'This plan does not exist.',
+          HttpStatus.NOT_FOUND,
+        );
+      }
+
+      if (await this._utilsService.planHasServers(id)) {
+        functions.throwHttpException(
+          false,
+          'Before deleting the plan, you must delete all servers associated with this plan.',
+          HttpStatus.BAD_REQUEST,
+        );
+      }
+
+      if (!(await this._planRepo.delete({ id })).affected) {
+        functions.throwHttpException(
+          false,
+          'An error occurred while deleting the plan.',
+          HttpStatus.INTERNAL_SERVER_ERROR,
+        );
+      }
+    } catch (err) {
+      functions.handleHttpException(
+        err,
+        false,
+        'An error occurred while deleting the plan.',
+      );
+    }
+  }
 }

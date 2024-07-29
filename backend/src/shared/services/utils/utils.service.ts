@@ -670,6 +670,24 @@ export class UtilsService {
     }
   }
 
+  public async planHasServers(planId: string): Promise<boolean> {
+    try {
+      const count = await this._serverRepo.count({
+        where: {
+          planId,
+        },
+      });
+
+      return count > 0;
+    } catch (err: unknown) {
+      functions.throwHttpException(
+        false,
+        `An error occurred while checking if the plan has servers.`,
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
+
   public async deleteServerById(serverId: string): Promise<boolean> {
     try {
       if (!(await this._serverRepo.delete({ id: serverId })).affected) {

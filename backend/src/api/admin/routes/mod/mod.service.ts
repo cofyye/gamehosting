@@ -104,4 +104,28 @@ export class ModService {
       );
     }
   }
+
+  public async getMods(): Promise<ModEntity[]> {
+    try {
+      return await this._modRepo.find();
+    } catch (err) {
+      functions.handleHttpException(
+        err,
+        false,
+        'An error occurred while retrieving all mods.',
+      );
+    }
+  }
+
+  public async getMod(id: string): Promise<ModEntity> {
+    try {
+      return await this._utilsService.getModById(id);
+    } catch (err) {
+      functions.handleHttpException(
+        err,
+        false,
+        'An error occurred while retrieving the mod.',
+      );
+    }
+  }
 }

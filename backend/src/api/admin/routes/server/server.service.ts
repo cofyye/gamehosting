@@ -37,6 +37,22 @@ export class ServerService {
       const game = await this._utilsService.getGameById(body.gameId);
       const plan = await this._utilsService.getPlanById(body.planId);
 
+      if (mod.gameId !== game.id) {
+        functions.throwHttpException(
+          false,
+          'This mod does not belong to the specified game.',
+          HttpStatus.BAD_REQUEST,
+        );
+      }
+
+      if (plan.gameId !== game.id) {
+        functions.throwHttpException(
+          false,
+          'This plan does not belong to the specified game.',
+          HttpStatus.BAD_REQUEST,
+        );
+      }
+
       if (
         !(await this._utilsService.checkIfServerCanBeHostedOnThisPlanMachine(
           body.planId,

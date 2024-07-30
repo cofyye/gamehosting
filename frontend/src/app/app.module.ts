@@ -1,7 +1,6 @@
 import { APP_INITIALIZER, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
-import { PrimeNGConfig } from 'primeng/api';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 
@@ -23,14 +22,6 @@ import { appReducer } from './app.state';
     FeaturesModule,
   ],
   providers: [
-    {
-      provide: APP_INITIALIZER,
-      useFactory: (primeConfig: PrimeNGConfig) => () => {
-        primeConfig.ripple = true;
-      },
-      deps: [PrimeNGConfig],
-      multi: true,
-    },
     {
       provide: HTTP_INTERCEPTORS,
       useClass: HttpRequestInterceptor,

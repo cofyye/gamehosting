@@ -7,13 +7,12 @@ import {
 } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, catchError, throwError } from 'rxjs';
-import { MessageService } from 'primeng/api';
 
 import { IAcceptResponse } from '../models/response.model';
 
 @Injectable()
 export class ErrorHandlingInterceptor implements HttpInterceptor {
-  constructor(private readonly _messageService: MessageService) {}
+  constructor() {}
 
   intercept(
     req: HttpRequest<unknown>,
@@ -24,18 +23,18 @@ export class ErrorHandlingInterceptor implements HttpInterceptor {
         const error: IAcceptResponse = err.error as IAcceptResponse;
 
         if (error?.success === false) {
-          this._messageService.add({
-            severity: 'error',
-            summary: 'Error',
-            detail: error?.message,
-          });
+          // this._messageService.add({
+          //   severity: 'error',
+          //   summary: 'Error',
+          //   detail: error?.message,
+          // });
         } else {
-          this._messageService.add({
-            severity: 'error',
-            summary: 'Error',
-            detail:
-              'An error occurred. Please report this to the administrator.',
-          });
+          // this._messageService.add({
+          //   severity: 'error',
+          //   summary: 'Error',
+          //   detail:
+          //     'An error occurred. Please report this to the administrator.',
+          // });
         }
 
         return throwError(() => err);

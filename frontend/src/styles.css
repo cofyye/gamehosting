@@ -1,4 +1,7 @@
-a {
-  color: var(--primary-color);
-  text-decoration: none;
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  @apply bg-gray-900 text-white;
 }

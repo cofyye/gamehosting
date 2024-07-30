@@ -46,12 +46,19 @@ export class CreateUserDto {
   @IsNotEmpty({ message: 'The email address field must not be empty.' })
   public readonly email: string;
 
+  @MaxLength(5, {
+    message: 'The pin code must contain 5 characters.',
+  })
+  @MinLength(5, {
+    message: 'The pin code must contain 5 characters.',
+  })
+  @IsNotEmpty({ message: 'The pin code field must not be empty.' })
+  public readonly pinCode: string;
+
   @MaxLength(32, {
     message: 'The password must contain a maximum of 32 characters.',
   })
   @MinLength(8, { message: 'The password must contain at least 8 characters.' })
   @IsNotEmpty({ message: 'The password field must not be empty.' })
   public readonly password: string;
-
-  public avatar: string;
 }

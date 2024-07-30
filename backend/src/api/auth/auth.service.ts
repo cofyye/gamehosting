@@ -27,21 +27,8 @@ export class AuthService {
     private readonly _emailService: EmailService,
   ) {}
 
-  public async createUser(
-    body: CreateUserDto,
-    avatar: UploadedFile | UploadedFile[],
-  ): Promise<void> {
-    let filename = '';
-
+  public async createUser(body: CreateUserDto): Promise<void> {
     try {
-      if (!avatar) {
-        functions.throwHttpException(
-          false,
-          'The image field must not be empty.',
-          HttpStatus.BAD_REQUEST,
-        );
-      }
-
       let user = await this._userRepo.findOne({
         where: [{ email: body.email }, { username: body.username }],
       });
@@ -68,21 +55,11 @@ export class AuthService {
       user.email = body.email;
       user.username = body.username;
       user.password = body.password;
+      user.pinCode = body.pinCode;
 
       const salt = await bcrypt.genSalt(10);
       const password = await bcrypt.hash(user.password, salt);
 
-      filename = await this._fileUploadService.uploadImage('avatar', avatar);
-
-      if (!filename) {
-        functions.throwHttpException(
-          false,
-          'An error occurred while uploading the image.',
-          HttpStatus.INTERNAL_SERVER_ERROR,
-        );
-      }
-
-      user.avatar = filename;
       user.password = password;
       user.verificationToken = functions.generateCode(6);
       user.verificationExpDate = moment().add(1, 'day').toDate();
@@ -102,8 +79,6 @@ export class AuthService {
 
       await this._userRepo.save(this._userRepo.create(user));
     } catch (err) {
-      this._fileUploadService.deleteFile(filename);
-
       functions.handleHttpException(
         err,
         false,

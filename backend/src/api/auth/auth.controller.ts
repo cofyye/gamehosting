@@ -46,12 +46,9 @@ export class AuthController {
   @UseGuards(NotAuthenticatedGuard)
   @Post('/signup')
   @HttpCode(HttpStatus.CREATED)
-  public async createUser(
-    @Body() body: CreateUserDto,
-    @Req() req: Request,
-  ): Promise<ISendResponse> {
+  public async createUser(@Body() body: CreateUserDto): Promise<ISendResponse> {
     try {
-      await this._authService.createUser(body, req.files?.avatar);
+      await this._authService.createUser(body);
 
       return {
         success: true,

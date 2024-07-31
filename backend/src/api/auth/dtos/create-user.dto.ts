@@ -8,15 +8,21 @@ import {
 } from 'class-validator';
 
 export class CreateUserDto {
-  @IsString({ message: 'The name must contain only characters.' })
-  @MaxLength(20, {
-    message: 'The name must contain a maximum of 20 characters.',
+  @Matches(new RegExp('^[a-zA-Z ]+', 'gm'), {
+    message: 'The first name must contain only characters.',
   })
-  @MinLength(2, { message: 'The name must contain at least 2 characters.' })
-  @IsNotEmpty({ message: 'The name field must not be empty.' })
+  @MaxLength(20, {
+    message: 'The first name must contain a maximum of 20 characters.',
+  })
+  @MinLength(2, {
+    message: 'The first name must contain at least 2 characters.',
+  })
+  @IsNotEmpty({ message: 'The first name field must not be empty.' })
   public readonly firstName: string;
 
-  @IsString({ message: 'The last name must contain only characters.' })
+  @Matches(new RegExp('^[a-zA-Z ]+', 'gm'), {
+    message: 'The last name must contain only characters.',
+  })
   @MaxLength(20, {
     message: 'The last name must contain a maximum of 20 characters.',
   })
@@ -46,6 +52,9 @@ export class CreateUserDto {
   @IsNotEmpty({ message: 'The email address field must not be empty.' })
   public readonly email: string;
 
+  @Matches(new RegExp('^[0-9]+', 'gm'), {
+    message: 'The pin code must be in numeric format.',
+  })
   @MaxLength(5, {
     message: 'The pin code must contain 5 characters.',
   })

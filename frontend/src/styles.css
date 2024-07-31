@@ -6,15 +6,29 @@ body {
   @apply bg-gray-900 text-white;
 }
 
+@layer components {
+  .input-invalid {
+    @apply border-red-500 !important;
+    @apply ring-0 !important;
+  }
+
+  .input-valid {
+    @apply border-green-500 !important;
+    @apply ring-0 !important;
+  }
+}
+
 /* TOOLTIP START */
 
 .tooltip {
   position: absolute;
-  background-color: rgba(0, 0, 0, 0.75);
+  background-color: rgba(0, 0, 0, 1);
   color: white;
-  padding: 0.5rem;
+  padding: 0.8rem;
+  max-width: 20rem;
+  word-wrap: break-word;
   border-radius: 0.25rem;
-  white-space: nowrap;
+  white-space: normal;
   z-index: 1000;
   opacity: 0;
   transition: all ease-in-out 300ms;
@@ -36,7 +50,7 @@ body {
   left: 50%;
   transform: translateX(-50%);
   border-width: 5px 5px 0;
-  border-color: rgba(0, 0, 0, 0.75) transparent transparent transparent;
+  border-color: rgba(0, 0, 0, 1) transparent transparent transparent;
 }
 
 .tooltip-bottom::before {
@@ -44,7 +58,7 @@ body {
   left: 50%;
   transform: translateX(-50%);
   border-width: 0 5px 5px;
-  border-color: transparent transparent rgba(0, 0, 0, 0.75) transparent;
+  border-color: transparent transparent rgba(0, 0, 0, 1) transparent;
 }
 
 .tooltip-left::before {
@@ -52,7 +66,7 @@ body {
   right: -5px;
   transform: translateY(-50%) rotate(180deg);
   border-width: 5px 5px 5px 0;
-  border-color: transparent rgba(0, 0, 0, 0.75) transparent transparent;
+  border-color: transparent rgba(0, 0, 0, 1) transparent transparent;
 }
 
 .tooltip-right::before {
@@ -60,7 +74,7 @@ body {
   left: -5px;
   transform: translateY(-50%) rotate(-180deg);
   border-width: 5px 0 5px 5px;
-  border-color: transparent transparent transparent rgba(0, 0, 0, 0.75);
+  border-color: transparent transparent transparent rgba(0, 0, 0, 1);
 }
 
 /* TOOLTIP END */

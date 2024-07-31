@@ -16,8 +16,10 @@ export class TooltipDirective {
     | 'bottom'
     | 'left'
     | 'right' = 'top';
-  tooltip: HTMLElement | null = null;
-  offset = 10;
+  @Input('tooltip-disabled') tooltipDisabled: 'true' | 'false' | true | false =
+    false;
+  private tooltip: HTMLElement | null = null;
+  private offset = 10;
 
   constructor(
     private readonly _el: ElementRef,
@@ -25,7 +27,10 @@ export class TooltipDirective {
   ) {}
 
   @HostListener('mouseenter') onMouseEnter() {
-    if (!this.tooltip) {
+    if (
+      (!this.tooltip && !this.tooltipDisabled) ||
+      this.tooltipDisabled === 'false'
+    ) {
       this.show();
     }
   }

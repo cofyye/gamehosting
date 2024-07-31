@@ -8,6 +8,7 @@ import { ForgotPasswordComponent } from './pages/forgot-password/forgot-password
 import { ResetPasswordComponent } from './pages/reset-password/reset-password.component';
 import { AuthService } from './services/auth.service';
 import { provideHttpClient } from '@angular/common/http';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -17,7 +18,7 @@ import { provideHttpClient } from '@angular/common/http';
     ResetPasswordComponent,
     TooltipDirective,
   ],
-  imports: [AuthRoutingModule, CommonModule],
+  imports: [AuthRoutingModule, CommonModule, ReactiveFormsModule],
   providers: [AuthService, provideHttpClient()],
   exports: [],
 })

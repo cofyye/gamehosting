@@ -2,70 +2,490 @@
   <div class="container mx-auto">
     <div class="max-w-2xl mx-auto bg-gray-800 p-8 rounded-lg shadow-lg">
       <h2 class="text-3xl font-bold text-center mb-6">Register</h2>
-      <form action="#">
+      <form [formGroup]="registerForm">
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div class="mb-4">
             <label for="firstName" class="block text-gray-400 mb-2"
               >First Name</label
             >
-            <input
-              type="text"
-              id="firstName"
-              class="w-full px-4 py-2 rounded bg-gray-800 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
-              required
-            />
+            <div class="relative">
+              <input
+                type="text"
+                id="firstName"
+                class="w-full px-4 py-2 rounded bg-gray-800 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 pr-8"
+                autocomplete="false"
+                required
+                formControlName="firstName"
+                [ngClass]="
+                  registerForm.controls['firstName'].invalid &&
+                  (registerForm.controls['firstName'].dirty ||
+                    registerForm.controls['firstName'].touched)
+                    ? 'input-invalid'
+                    : registerForm.controls['firstName'].valid
+                    ? 'input-valid'
+                    : ''
+                "
+                [tooltip-disabled]="
+                  !(
+                    registerForm.controls['firstName'].invalid &&
+                    (registerForm.controls['firstName'].dirty ||
+                      registerForm.controls['firstName'].touched)
+                  )
+                "
+                [tooltip]="
+                  registerForm.controls['firstName'].errors?.['required'] && 'The first name field must not be empty.' ||
+                  registerForm.controls['firstName'].errors?.['minlength'] && 'The first name must contain at least 2 characters.' ||
+                  registerForm.controls['firstName'].errors?.['maxlength'] && 'The first name must contain a maximum of 20 characters.' ||
+                  registerForm.controls['firstName'].errors?.['pattern'] && 'The first name must contain only characters.'
+                "
+                tooltip-position="right"
+              />
+              <div
+                class="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none"
+              >
+                <!-- Icon Close -->
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                  class="w-5 h-5 text-red-500"
+                  *ngIf="
+                    registerForm.controls['firstName'].invalid &&
+                    (registerForm.controls['firstName'].dirty ||
+                      registerForm.controls['firstName'].touched)
+                      ? true
+                      : false
+                  "
+                >
+                  <path
+                    d="M11.9997 10.5865L16.9495 5.63672L18.3637 7.05093L13.4139 12.0007L18.3637 16.9504L16.9495 18.3646L11.9997 13.4149L7.04996 18.3646L5.63574 16.9504L10.5855 12.0007L5.63574 7.05093L7.04996 5.63672L11.9997 10.5865Z"
+                  ></path>
+                </svg>
+
+                <!-- Icon Check -->
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                  class="w-5 h-5 text-green-500"
+                  *ngIf="
+                    registerForm.controls['firstName'].invalid &&
+                    (registerForm.controls['firstName'].dirty ||
+                      registerForm.controls['firstName'].touched)
+                      ? false
+                      : registerForm.controls['firstName'].valid
+                      ? true
+                      : false
+                  "
+                >
+                  <path
+                    d="M9.9997 15.1709L19.1921 5.97852L20.6063 7.39273L9.9997 17.9993L3.63574 11.6354L5.04996 10.2212L9.9997 15.1709Z"
+                  ></path>
+                </svg>
+              </div>
+            </div>
           </div>
           <div class="mb-4">
             <label for="lastName" class="block text-gray-400 mb-2"
               >Last Name</label
             >
-            <input
-              type="text"
-              id="lastName"
-              class="w-full px-4 py-2 rounded bg-gray-800 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
-              required
-            />
+            <div class="relative">
+              <input
+                type="text"
+                id="lastName"
+                class="w-full px-4 py-2 rounded bg-gray-800 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 pr-8"
+                autocomplete="false"
+                required
+                formControlName="lastName"
+                [ngClass]="
+                  registerForm.controls['lastName'].invalid &&
+                  (registerForm.controls['lastName'].dirty ||
+                    registerForm.controls['lastName'].touched)
+                    ? 'input-invalid'
+                    : registerForm.controls['lastName'].valid
+                    ? 'input-valid'
+                    : ''
+                "
+                [tooltip-disabled]="
+                  !(
+                    registerForm.controls['lastName'].invalid &&
+                    (registerForm.controls['lastName'].dirty ||
+                      registerForm.controls['lastName'].touched)
+                  )
+                "
+                [tooltip]="
+                  registerForm.controls['lastName'].errors?.['required'] && 'The last name field must not be empty.' ||
+                  registerForm.controls['lastName'].errors?.['minlength'] && 'The last name must contain at least 2 characters.' ||
+                  registerForm.controls['lastName'].errors?.['maxlength'] && 'The last name must contain a maximum of 20 characters.' ||
+                  registerForm.controls['lastName'].errors?.['pattern'] && 'The last name must contain only characters.'
+                "
+                tooltip-position="right"
+              />
+              <div
+                class="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none"
+              >
+                <!-- Icon Close -->
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                  class="w-5 h-5 text-red-500"
+                  *ngIf="
+                    registerForm.controls['lastName'].invalid &&
+                    (registerForm.controls['lastName'].dirty ||
+                      registerForm.controls['lastName'].touched)
+                      ? true
+                      : false
+                  "
+                >
+                  <path
+                    d="M11.9997 10.5865L16.9495 5.63672L18.3637 7.05093L13.4139 12.0007L18.3637 16.9504L16.9495 18.3646L11.9997 13.4149L7.04996 18.3646L5.63574 16.9504L10.5855 12.0007L5.63574 7.05093L7.04996 5.63672L11.9997 10.5865Z"
+                  ></path>
+                </svg>
+
+                <!-- Icon Check -->
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                  class="w-5 h-5 text-green-500"
+                  *ngIf="
+                    registerForm.controls['lastName'].invalid &&
+                    (registerForm.controls['lastName'].dirty ||
+                      registerForm.controls['lastName'].touched)
+                      ? false
+                      : registerForm.controls['lastName'].valid
+                      ? true
+                      : false
+                  "
+                >
+                  <path
+                    d="M9.9997 15.1709L19.1921 5.97852L20.6063 7.39273L9.9997 17.9993L3.63574 11.6354L5.04996 10.2212L9.9997 15.1709Z"
+                  ></path>
+                </svg>
+              </div>
+            </div>
           </div>
         </div>
         <div class="mb-4">
           <label for="username" class="block text-gray-400 mb-2"
             >Username</label
           >
-          <input
-            type="text"
-            id="username"
-            class="w-full px-4 py-2 rounded bg-gray-800 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            required
-          />
+          <div class="relative">
+            <input
+              type="text"
+              id="username"
+              class="w-full px-4 py-2 rounded bg-gray-800 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 pr-8"
+              autocomplete="false"
+              required
+              formControlName="username"
+              [ngClass]="
+                registerForm.controls['username'].invalid &&
+                (registerForm.controls['username'].dirty ||
+                  registerForm.controls['username'].touched)
+                  ? 'input-invalid'
+                  : registerForm.controls['username'].valid
+                  ? 'input-valid'
+                  : ''
+              "
+              [tooltip-disabled]="
+                !(
+                  registerForm.controls['username'].invalid &&
+                  (registerForm.controls['username'].dirty ||
+                    registerForm.controls['username'].touched)
+                )
+              "
+              [tooltip]="
+                registerForm.controls['username'].errors?.['required'] && 'The username field must not be empty.' ||
+                registerForm.controls['username'].errors?.['minlength'] && 'The username must contain at least 3 characters.' ||
+                registerForm.controls['username'].errors?.['maxlength'] && 'The username must contain a maximum of 20 characters.' ||
+                registerForm.controls['username'].errors?.['pattern'] && 'The username is not valid. Allowed characters are: a-z, 0-9, _ and . (dot).' ||
+                registerForm.controls['username'].errors?.['usernameAvailable'] && 'This username is taken.'
+              "
+              tooltip-position="right"
+            />
+            <div
+              class="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none"
+            >
+              <!-- Icon Close -->
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                class="w-5 h-5 text-red-500"
+                *ngIf="
+                  registerForm.controls['username'].invalid &&
+                  (registerForm.controls['username'].dirty ||
+                    registerForm.controls['username'].touched)
+                    ? true
+                    : false
+                "
+              >
+                <path
+                  d="M11.9997 10.5865L16.9495 5.63672L18.3637 7.05093L13.4139 12.0007L18.3637 16.9504L16.9495 18.3646L11.9997 13.4149L7.04996 18.3646L5.63574 16.9504L10.5855 12.0007L5.63574 7.05093L7.04996 5.63672L11.9997 10.5865Z"
+                ></path>
+              </svg>
+
+              <!-- Icon Check -->
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                class="w-5 h-5 text-green-500"
+                *ngIf="
+                  registerForm.controls['username'].invalid &&
+                  (registerForm.controls['username'].dirty ||
+                    registerForm.controls['username'].touched)
+                    ? false
+                    : registerForm.controls['username'].valid
+                    ? true
+                    : false
+                "
+              >
+                <path
+                  d="M9.9997 15.1709L19.1921 5.97852L20.6063 7.39273L9.9997 17.9993L3.63574 11.6354L5.04996 10.2212L9.9997 15.1709Z"
+                ></path>
+              </svg>
+            </div>
+          </div>
         </div>
         <div class="mb-4">
           <label for="email" class="block text-gray-400 mb-2">E-mail</label>
-          <input
-            type="email"
-            id="email"
-            class="w-full px-4 py-2 rounded bg-gray-800 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            required
-          />
+          <div class="relative">
+            <input
+              type="email"
+              id="email"
+              class="w-full px-4 py-2 rounded bg-gray-800 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 pr-8"
+              autocomplete="false"
+              required
+              formControlName="email"
+              [ngClass]="
+                registerForm.controls['email'].invalid &&
+                (registerForm.controls['email'].dirty ||
+                  registerForm.controls['email'].touched)
+                  ? 'input-invalid'
+                  : registerForm.controls['email'].valid
+                  ? 'input-valid'
+                  : ''
+              "
+              [tooltip-disabled]="
+                !(
+                  registerForm.controls['email'].invalid &&
+                  (registerForm.controls['email'].dirty ||
+                    registerForm.controls['email'].touched)
+                )
+              "
+              [tooltip]="
+                registerForm.controls['email'].errors?.['required'] && 'The email address field must not be empty.' ||
+                registerForm.controls['email'].errors?.['maxlength'] && 'The email address must contain a maximum of 100 characters.' ||
+                registerForm.controls['email'].errors?.['pattern'] && 'Please enter a valid email address.' ||
+                registerForm.controls['email'].errors?.['emailAvailable'] && 'This email address is taken.'
+              "
+              tooltip-position="right"
+            />
+            <div
+              class="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none"
+            >
+              <!-- Icon Close -->
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                class="w-5 h-5 text-red-500"
+                *ngIf="
+                  registerForm.controls['email'].invalid &&
+                  (registerForm.controls['email'].dirty ||
+                    registerForm.controls['email'].touched)
+                    ? true
+                    : false
+                "
+              >
+                <path
+                  d="M11.9997 10.5865L16.9495 5.63672L18.3637 7.05093L13.4139 12.0007L18.3637 16.9504L16.9495 18.3646L11.9997 13.4149L7.04996 18.3646L5.63574 16.9504L10.5855 12.0007L5.63574 7.05093L7.04996 5.63672L11.9997 10.5865Z"
+                ></path>
+              </svg>
+
+              <!-- Icon Check -->
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                class="w-5 h-5 text-green-500"
+                *ngIf="
+                  registerForm.controls['email'].invalid &&
+                  (registerForm.controls['email'].dirty ||
+                    registerForm.controls['email'].touched)
+                    ? false
+                    : registerForm.controls['email'].valid
+                    ? true
+                    : false
+                "
+              >
+                <path
+                  d="M9.9997 15.1709L19.1921 5.97852L20.6063 7.39273L9.9997 17.9993L3.63574 11.6354L5.04996 10.2212L9.9997 15.1709Z"
+                ></path>
+              </svg>
+            </div>
+          </div>
         </div>
         <div class="mb-4">
           <label for="password" class="block text-gray-400 mb-2"
             >Password</label
           >
-          <input
-            type="password"
-            id="password"
-            class="w-full px-4 py-2 rounded bg-gray-800 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            required
-          />
+          <div class="relative">
+            <input
+              type="password"
+              id="password"
+              class="w-full px-4 py-2 rounded bg-gray-800 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 pr-8"
+              autocomplete="false"
+              required
+              formControlName="password"
+              [ngClass]="
+                registerForm.controls['password'].invalid &&
+                (registerForm.controls['password'].dirty ||
+                  registerForm.controls['password'].touched)
+                  ? 'input-invalid'
+                  : registerForm.controls['password'].valid
+                  ? 'input-valid'
+                  : ''
+              "
+              [tooltip-disabled]="
+                !(
+                  registerForm.controls['password'].invalid &&
+                  (registerForm.controls['password'].dirty ||
+                    registerForm.controls['password'].touched)
+                )
+              "
+              [tooltip]="
+                registerForm.controls['password'].errors?.['required'] && 'The password field must not be empty.' ||
+                registerForm.controls['password'].errors?.['minlength'] && 'The password must contain at least 8 characters.' ||
+                registerForm.controls['password'].errors?.['maxlength'] && 'The password must contain a maximum of 32 characters.'
+              "
+              tooltip-position="right"
+            />
+            <div
+              class="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none"
+            >
+              <!-- Icon Close -->
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                class="w-5 h-5 text-red-500"
+                *ngIf="
+                  registerForm.controls['password'].invalid &&
+                  (registerForm.controls['password'].dirty ||
+                    registerForm.controls['password'].touched)
+                    ? true
+                    : false
+                "
+              >
+                <path
+                  d="M11.9997 10.5865L16.9495 5.63672L18.3637 7.05093L13.4139 12.0007L18.3637 16.9504L16.9495 18.3646L11.9997 13.4149L7.04996 18.3646L5.63574 16.9504L10.5855 12.0007L5.63574 7.05093L7.04996 5.63672L11.9997 10.5865Z"
+                ></path>
+              </svg>
+
+              <!-- Icon Check -->
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                class="w-5 h-5 text-green-500"
+                *ngIf="
+                  registerForm.controls['password'].invalid &&
+                  (registerForm.controls['password'].dirty ||
+                    registerForm.controls['password'].touched)
+                    ? false
+                    : registerForm.controls['password'].valid
+                    ? true
+                    : false
+                "
+              >
+                <path
+                  d="M9.9997 15.1709L19.1921 5.97852L20.6063 7.39273L9.9997 17.9993L3.63574 11.6354L5.04996 10.2212L9.9997 15.1709Z"
+                ></path>
+              </svg>
+            </div>
+          </div>
         </div>
         <div class="mb-6">
-          <label for="pincode" class="block text-gray-400 mb-2">Pincode</label>
-          <input
-            type="text"
-            id="pincode"
-            class="w-full px-4 py-2 rounded bg-gray-800 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            required
-          />
+          <label for="pinCode" class="block text-gray-400 mb-2">Pin Code</label>
+          <div class="relative">
+            <input
+              type="text"
+              id="pinCode"
+              class="w-full px-4 py-2 rounded bg-gray-800 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 pr-8"
+              autocomplete="false"
+              required
+              formControlName="pinCode"
+              [ngClass]="
+                registerForm.controls['pinCode'].invalid &&
+                (registerForm.controls['pinCode'].dirty ||
+                  registerForm.controls['pinCode'].touched)
+                  ? 'input-invalid'
+                  : registerForm.controls['pinCode'].valid
+                  ? 'input-valid'
+                  : ''
+              "
+              [tooltip-disabled]="
+                !(
+                  registerForm.controls['pinCode'].invalid &&
+                  (registerForm.controls['pinCode'].dirty ||
+                    registerForm.controls['pinCode'].touched)
+                )
+              "
+              [tooltip]="
+                registerForm.controls['pinCode'].errors?.['required'] && 'The pin code field must not be empty.' ||
+                registerForm.controls['pinCode'].errors?.['minlength'] && 'The pin code must contain 5 characters.' ||
+                registerForm.controls['pinCode'].errors?.['maxlength'] && 'The pin code must contain 5 characters.' ||
+                registerForm.controls['pinCode'].errors?.['pattern'] && 'The pin code must be in numeric format.'
+              "
+              tooltip-position="right"
+            />
+            <div
+              class="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none"
+            >
+              <!-- Icon Close -->
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                class="w-5 h-5 text-red-500"
+                *ngIf="
+                  registerForm.controls['pinCode'].invalid &&
+                  (registerForm.controls['pinCode'].dirty ||
+                    registerForm.controls['pinCode'].touched)
+                    ? true
+                    : false
+                "
+              >
+                <path
+                  d="M11.9997 10.5865L16.9495 5.63672L18.3637 7.05093L13.4139 12.0007L18.3637 16.9504L16.9495 18.3646L11.9997 13.4149L7.04996 18.3646L5.63574 16.9504L10.5855 12.0007L5.63574 7.05093L7.04996 5.63672L11.9997 10.5865Z"
+                ></path>
+              </svg>
+
+              <!-- Icon Check -->
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                class="w-5 h-5 text-green-500"
+                *ngIf="
+                  registerForm.controls['pinCode'].invalid &&
+                  (registerForm.controls['pinCode'].dirty ||
+                    registerForm.controls['pinCode'].touched)
+                    ? false
+                    : registerForm.controls['pinCode'].valid
+                    ? true
+                    : false
+                "
+              >
+                <path
+                  d="M9.9997 15.1709L19.1921 5.97852L20.6063 7.39273L9.9997 17.9993L3.63574 11.6354L5.04996 10.2212L9.9997 15.1709Z"
+                ></path>
+              </svg>
+            </div>
+          </div>
         </div>
         <button
           type="button"

@@ -8,7 +8,7 @@ import {
 } from '@angular/forms';
 import { AppState } from '../../../../app.state';
 import { IRegisterRequest } from '../../models/auth-request.model';
-import { register } from '../../store/auth.actions';
+import { REGISTER } from '../../store/auth.actions';
 import { usernameAvailabilityValidator } from '../../../../shared/validators/username-availability.validator';
 import { emailAvailabilityValidator } from '../../../../shared/validators/email-availability.validator';
 import { HttpClient } from '@angular/common/http';
@@ -86,6 +86,6 @@ export class RegisterComponent {
 
     console.log(data);
 
-    this._store.dispatch(register({ payload: data }));
+    this._store.dispatch(REGISTER({ payload: data }));
   }
 }

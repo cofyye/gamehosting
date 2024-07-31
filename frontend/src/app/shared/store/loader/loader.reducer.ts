@@ -1,15 +1,19 @@
 import { createReducer, on } from '@ngrx/store';
-import { startLoading, stopLoading } from './loader.actions';
+import { START_LOADING, STOP_LOADING } from './loader.actions';
 import { initialState } from './loader.state';
 
 export const loaderReducer = createReducer(
   initialState,
-  on(startLoading, (state, { key }) => ({
+  on(START_LOADING, (state, { key }) => ({
     ...state,
-    [key]: true,
+    loader: {
+      [key]: true,
+    },
   })),
-  on(stopLoading, (state, { key }) => ({
+  on(STOP_LOADING, (state, { key }) => ({
     ...state,
-    [key]: false,
+    loader: {
+      [key]: false,
+    },
   }))
 );

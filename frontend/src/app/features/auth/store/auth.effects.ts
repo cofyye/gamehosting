@@ -6,13 +6,17 @@ import * as AuthActions from './auth.actions';
 import { ToasterService } from '../../../shared/services/toaster.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { IAcceptResponse } from '../../../shared/models/response.model';
+import { Store } from '@ngrx/store';
+import { AppState } from '../../../app.state';
+import { STOP_LOADING } from '../../../shared/store/loader/loader.actions';
 
 @Injectable()
 export class AuthEffects {
   constructor(
     private readonly _actions$: Actions,
     private readonly _authService: AuthService,
-    private readonly _toasterService: ToasterService
+    private readonly _toasterService: ToasterService,
+    private readonly _store: Store<AppState>
   ) {}
 
   register$ = createEffect(() =>
@@ -26,6 +30,8 @@ export class AuthEffects {
             } else {
               this._toasterService.error(response.message, 'Error');
             }
+
+            this._store.dispatch(STOP_LOADING({ key: 'REGISTER_BTN' }));
 
             return response;
           }),
@@ -41,6 +47,8 @@ export class AuthEffects {
                 'Error'
               );
             }
+
+            this._store.dispatch(STOP_LOADING({ key: 'REGISTER_BTN' }));
 
             return of(AuthActions.REGISTER_FAILURE({ error: '' }));
           })

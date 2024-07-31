@@ -11,5 +11,5 @@ export interface AppState {
 
 export const appReducer = {
   auth: authReducer,
-  loading: loaderReducer,
+  loader: loaderReducer,
 };

@@ -487,12 +487,46 @@
             </div>
           </div>
         </div>
+        <span class="loader"></span>
         <button
           type="button"
-          class="w-full bg-blue-500 py-2 rounded text-white hover:bg-blue-600"
+          class="text-center w-full bg-blue-500 py-2 rounded text-white hover:bg-blue-600"
           (click)="onRegister()"
         >
-          Register
+          <span *ngIf="!isLoadingRegister">Register</span>
+          <svg
+            width="24"
+            height="24"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 100 100"
+            preserveAspectRatio="xMidYMid"
+            class="lds-rolling w-full"
+            style="background: none"
+            *ngIf="isLoadingRegister"
+          >
+            <circle
+              class="loader-svg"
+              cx="50"
+              cy="50"
+              fill="none"
+              stroke="#fff"
+              stroke-width="3"
+              r="35"
+              stroke-dasharray="164.93361431346415 56.97787143782138"
+              transform="rotate(159.821 50 50)"
+            >
+              <animateTransform
+                attributeName="transform"
+                type="rotate"
+                calcMode="linear"
+                values="0 50 50;360 50 50"
+                keyTimes="0;1"
+                dur="0.6s"
+                begin="0s"
+                repeatCount="indefinite"
+              ></animateTransform>
+            </circle>
+          </svg>
         </button>
         <div class="flex justify-center items-center mt-4">
           <a routerLink="/auth/login" class="flex items-center space-x-2">

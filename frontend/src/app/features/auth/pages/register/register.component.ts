@@ -1,4 +1,4 @@
-import { Component, ViewEncapsulation } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import { Store } from '@ngrx/store';
 import {
   FormBuilder,
@@ -12,6 +12,9 @@ import { REGISTER } from '../../store/auth.actions';
 import { usernameAvailabilityValidator } from '../../../../shared/validators/username-availability.validator';
 import { emailAvailabilityValidator } from '../../../../shared/validators/email-availability.validator';
 import { HttpClient } from '@angular/common/http';
+import { START_LOADING } from '../../../../shared/store/loader/loader.actions';
+import { Subscription } from 'rxjs';
+import { IS_LOADING } from '../../../../shared/store/loader/loader.selectors';
 
 @Component({
   selector: 'app-register',
@@ -19,11 +22,14 @@ import { HttpClient } from '@angular/common/http';
   styleUrl: './register.component.css',
   encapsulation: ViewEncapsulation.None,
 })
-export class RegisterComponent {
+export class RegisterComponent implements OnInit, OnDestroy {
+  private loadingRegisterSub!: Subscription;
+  public isLoadingRegister: boolean = false;
+
   constructor(
     private readonly _fb: FormBuilder,
     private readonly _httpClient: HttpClient,
-    private readonly _store: Store<AppState>
+    public readonly _store: Store<AppState>
   ) {}
 
   public registerForm: FormGroup = this._fb.group({
@@ -69,6 +75,18 @@ export class RegisterComponent {
     ]),
   });
 
+  public ngOnInit(): void {
+    this.loadingRegisterSub = this._store
+      .select(IS_LOADING('REGISTER_BTN'))
+      .subscribe((value) => (this.isLoadingRegister = value));
+  }
+
+  public ngOnDestroy(): void {
+    if (this.loadingRegisterSub) {
+      this.loadingRegisterSub.unsubscribe();
+    }
+  }
+
   public onRegister(): void {
     if (this.registerForm.invalid) {
       this.registerForm.markAllAsTouched();
@@ -84,8 +102,7 @@ export class RegisterComponent {
       pinCode: this.registerForm.get('pinCode')?.value,
     };
 
-    console.log(data);
-
+    this._store.dispatch(START_LOADING({ key: 'REGISTER_BTN' }));
     this._store.dispatch(REGISTER({ payload: data }));
   }
 }

@@ -29,7 +29,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
   constructor(
     private readonly _fb: FormBuilder,
     private readonly _httpClient: HttpClient,
-    public readonly _store: Store<AppState>
+    private readonly _store: Store<AppState>
   ) {}
 
   public registerForm: FormGroup = this._fb.group({

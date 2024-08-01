@@ -2,28 +2,162 @@
   <div class="container mx-auto">
     <div class="max-w-2xl mx-auto bg-gray-800 p-8 rounded-lg shadow-lg">
       <h2 class="text-3xl font-bold text-center mb-6">Login</h2>
-      <form action="#">
+      <form [formGroup]="loginForm">
         <div class="mb-4">
-          <label for="username" class="block text-gray-400 mb-2"
-            >E-mail / Username</label
-          >
-          <input
-            type="text"
-            id="username"
-            class="w-full px-4 py-2 rounded bg-gray-800 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            required
-          />
+          <label for="email" class="block text-gray-400 mb-2">E-mail</label>
+          <div class="relative">
+            <input
+              type="email"
+              id="email"
+              class="w-full px-4 py-2 rounded bg-gray-800 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 pr-8"
+              autocomplete="false"
+              required
+              formControlName="email"
+              [ngClass]="
+                loginForm.controls['email'].invalid &&
+                (loginForm.controls['email'].dirty ||
+                  loginForm.controls['email'].touched)
+                  ? 'input-invalid'
+                  : loginForm.controls['email'].valid
+                  ? 'input-valid'
+                  : ''
+              "
+              [tooltip-disabled]="
+                !(
+                  loginForm.controls['email'].invalid &&
+                  (loginForm.controls['email'].dirty ||
+                    loginForm.controls['email'].touched)
+                )
+              "
+              [tooltip]="
+                loginForm.controls['email'].errors?.['required'] && 'The email address field must not be empty.' ||
+                loginForm.controls['email'].errors?.['maxlength'] && 'The email address must contain a maximum of 100 characters.' ||
+                loginForm.controls['email'].errors?.['pattern'] && 'Please enter a valid email address.'
+              "
+              tooltip-position="right"
+            />
+            <div
+              class="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none"
+            >
+              <!-- Icon Close -->
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                class="w-5 h-5 text-red-500"
+                *ngIf="
+                  loginForm.controls['email'].invalid &&
+                  (loginForm.controls['email'].dirty ||
+                    loginForm.controls['email'].touched)
+                    ? true
+                    : false
+                "
+              >
+                <path
+                  d="M11.9997 10.5865L16.9495 5.63672L18.3637 7.05093L13.4139 12.0007L18.3637 16.9504L16.9495 18.3646L11.9997 13.4149L7.04996 18.3646L5.63574 16.9504L10.5855 12.0007L5.63574 7.05093L7.04996 5.63672L11.9997 10.5865Z"
+                ></path>
+              </svg>
+
+              <!-- Icon Check -->
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                class="w-5 h-5 text-green-500"
+                *ngIf="
+                  loginForm.controls['email'].invalid &&
+                  (loginForm.controls['email'].dirty ||
+                    loginForm.controls['email'].touched)
+                    ? false
+                    : loginForm.controls['email'].valid
+                    ? true
+                    : false
+                "
+              >
+                <path
+                  d="M9.9997 15.1709L19.1921 5.97852L20.6063 7.39273L9.9997 17.9993L3.63574 11.6354L5.04996 10.2212L9.9997 15.1709Z"
+                ></path>
+              </svg>
+            </div>
+          </div>
         </div>
         <div class="mb-4">
           <label for="password" class="block text-gray-400 mb-2"
             >Password</label
           >
-          <input
-            type="password"
-            id="password"
-            class="w-full px-4 py-2 rounded bg-gray-800 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            required
-          />
+          <div class="relative">
+            <input
+              type="password"
+              id="password"
+              class="w-full px-4 py-2 rounded bg-gray-800 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 pr-8"
+              autocomplete="false"
+              required
+              formControlName="password"
+              [ngClass]="
+                loginForm.controls['password'].invalid &&
+                (loginForm.controls['password'].dirty ||
+                  loginForm.controls['password'].touched)
+                  ? 'input-invalid'
+                  : loginForm.controls['password'].valid
+                  ? 'input-valid'
+                  : ''
+              "
+              [tooltip-disabled]="
+                !(
+                  loginForm.controls['password'].invalid &&
+                  (loginForm.controls['password'].dirty ||
+                    loginForm.controls['password'].touched)
+                )
+              "
+              [tooltip]="
+                loginForm.controls['password'].errors?.['required'] && 'The password field must not be empty.'
+              "
+              tooltip-position="right"
+            />
+            <div
+              class="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none"
+            >
+              <!-- Icon Close -->
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                class="w-5 h-5 text-red-500"
+                *ngIf="
+                  loginForm.controls['password'].invalid &&
+                  (loginForm.controls['password'].dirty ||
+                    loginForm.controls['password'].touched)
+                    ? true
+                    : false
+                "
+              >
+                <path
+                  d="M11.9997 10.5865L16.9495 5.63672L18.3637 7.05093L13.4139 12.0007L18.3637 16.9504L16.9495 18.3646L11.9997 13.4149L7.04996 18.3646L5.63574 16.9504L10.5855 12.0007L5.63574 7.05093L7.04996 5.63672L11.9997 10.5865Z"
+                ></path>
+              </svg>
+
+              <!-- Icon Check -->
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                class="w-5 h-5 text-green-500"
+                *ngIf="
+                  loginForm.controls['password'].invalid &&
+                  (loginForm.controls['password'].dirty ||
+                    loginForm.controls['password'].touched)
+                    ? false
+                    : loginForm.controls['password'].valid
+                    ? true
+                    : false
+                "
+              >
+                <path
+                  d="M9.9997 15.1709L19.1921 5.97852L20.6063 7.39273L9.9997 17.9993L3.63574 11.6354L5.04996 10.2212L9.9997 15.1709Z"
+                ></path>
+              </svg>
+            </div>
+          </div>
         </div>
         <div class="flex justify-between items-center mb-4">
           <label class="inline-flex items-center">
@@ -39,8 +173,42 @@
         <button
           type="submit"
           class="w-full bg-blue-500 py-2 rounded text-white hover:bg-blue-600"
+          (click)="onLogin()"
         >
-          Login
+          <span *ngIf="!isLoadingLogin">Login</span>
+          <svg
+            width="24"
+            height="24"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 100 100"
+            preserveAspectRatio="xMidYMid"
+            class="lds-rolling w-full"
+            style="background: none"
+            *ngIf="isLoadingLogin"
+          >
+            <circle
+              class="loader-svg"
+              cx="50"
+              cy="50"
+              fill="none"
+              stroke="#fff"
+              stroke-width="3"
+              r="35"
+              stroke-dasharray="164.93361431346415 56.97787143782138"
+              transform="rotate(159.821 50 50)"
+            >
+              <animateTransform
+                attributeName="transform"
+                type="rotate"
+                calcMode="linear"
+                values="0 50 50;360 50 50"
+                keyTimes="0;1"
+                dur="0.6s"
+                begin="0s"
+                repeatCount="indefinite"
+              ></animateTransform>
+            </circle>
+          </svg>
         </button>
         <div class="flex justify-center items-center mt-4">
           <a routerLink="/auth/register" class="flex items-center space-x-2">

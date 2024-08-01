@@ -390,6 +390,25 @@ function checkParametersForGameHostType(
   }
 }
 
+function splitNumberAndLetter(input: string): {
+  amount: number;
+  unit: 'm' | 'd' | 's';
+} {
+  const match = input.match(/(\d+)(\D+)/);
+  if (match) {
+    let unit: 'm' | 'd' | 's' = 'm';
+
+    if (match[2] === 'm') unit = 'm';
+    if (match[2] === 'd') unit = 'd';
+    if (match[2] === 's') unit = 's';
+
+    return {
+      amount: parseInt(match[1], 10),
+      unit,
+    };
+  }
+  return null;
+}
 export const functions = {
   handleHttpException,
   throwHttpException,
@@ -406,4 +425,5 @@ export const functions = {
   getCompleteReplacedDockerCommand,
   checkRequiredStartupCommandParameters,
   checkParametersForGameHostType,
+  splitNumberAndLetter,
 };

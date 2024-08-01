@@ -1,7 +1,6 @@
 import { HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { UploadedFile } from 'express-fileupload';
 
 import * as moment from 'moment';
 import * as bcrypt from 'bcrypt';
@@ -9,7 +8,6 @@ import * as bcrypt from 'bcrypt';
 import { UserEntity } from 'src/shared/entities/user.entity';
 import { functions } from 'src/shared/utils/functions';
 import { EmailService } from 'src/shared/services/email/email.service';
-import { FileUploadService } from 'src/shared/services/file-upload/file-upload.service';
 
 import { CreateUserDto } from './dtos/create-user.dto';
 import { LoginUserDto } from './dtos/login-user.dto';
@@ -23,7 +21,6 @@ export class AuthService {
   constructor(
     @InjectRepository(UserEntity)
     private readonly _userRepo: Repository<UserEntity>,
-    private readonly _fileUploadService: FileUploadService,
     private readonly _emailService: EmailService,
   ) {}
 

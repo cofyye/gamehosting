@@ -13,6 +13,7 @@ import {
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { Request, Response } from 'express';
+import * as moment from 'moment';
 
 import { UserEntity } from 'src/shared/entities/user.entity';
 import { functions } from 'src/shared/utils/functions';
@@ -69,7 +70,11 @@ export class AuthController {
   public async loginUser(
     @Body() body: LoginUserDto,
     @Res({ passthrough: true }) response: Response,
-  ): Promise<IDataSendResponse<Pick<UserEntity, 'id' | 'role'>>> {
+  ): Promise<
+    IDataSendResponse<
+      Pick<UserEntity, 'id' | 'role'> & { expirationDate: Date }
+    >
+  > {
     const user: UserEntity = await this._authService.loginUser(body);
 
     if (!user) {
@@ -90,34 +95,27 @@ export class AuthController {
       });
 
       response.cookie('access_token', accessToken, {
-        httpOnly:
-          this._configService.get<string>('APP_STATE') === 'production'
-            ? true
-            : false,
-        sameSite: 'none',
-        secure:
-          this._configService.get<string>('APP_STATE') === 'production'
-            ? true
-            : false,
+        httpOnly: true,
+        sameSite: 'strict',
+        secure: false,
       });
 
       response.cookie('refresh_token', refreshToken, {
-        httpOnly:
-          this._configService.get<string>('APP_STATE') === 'production'
-            ? true
-            : false,
-        sameSite: 'none',
-        secure:
-          this._configService.get<string>('APP_STATE') === 'production'
-            ? true
-            : false,
+        httpOnly: true,
+        sameSite: 'strict',
+        secure: false,
       });
+
+      const result = functions.splitNumberAndLetter(
+        this._configService.get<string>('JWT_ACCESS_TOKEN_EXPIRE'),
+      );
 
       return {
         success: true,
         data: {
           id: user.id,
           role: user.role,
+          expirationDate: moment().add(result.amount, result.unit).toDate(),
         },
         message: 'You have successfully logged in.',
       };
@@ -209,26 +207,14 @@ export class AuthController {
   ): Promise<ISendResponse> {
     try {
       response.clearCookie('access_token', {
-        httpOnly:
-          this._configService.get<string>('APP_STATE') === 'production'
-            ? true
-            : false,
-        sameSite: 'none',
-        secure:
-          this._configService.get<string>('APP_STATE') === 'production'
-            ? true
-            : false,
+        httpOnly: true,
+        sameSite: 'strict',
+        secure: false,
       });
       response.clearCookie('refresh_token', {
-        httpOnly:
-          this._configService.get<string>('APP_STATE') === 'production'
-            ? true
-            : false,
-        sameSite: 'none',
-        secure:
-          this._configService.get<string>('APP_STATE') === 'production'
-            ? true
-            : false,
+        httpOnly: true,
+        sameSite: 'strict',
+        secure: false,
       });
 
       return {
@@ -250,7 +236,7 @@ export class AuthController {
   public async relogin(
     @Req() request: Request,
     @Res({ passthrough: true }) response: Response,
-  ): Promise<ISendResponse> {
+  ): Promise<IDataSendResponse<Date>> {
     try {
       const user = request.user as UserEntity;
 
@@ -259,19 +245,18 @@ export class AuthController {
       const accessToken = await this._jwtService.signAsync(payload);
 
       response.cookie('access_token', accessToken, {
-        httpOnly:
-          this._configService.get<string>('APP_STATE') === 'production'
-            ? true
-            : false,
-        sameSite: 'none',
-        secure:
-          this._configService.get<string>('APP_STATE') === 'production'
-            ? true
-            : false,
+        httpOnly: true,
+        sameSite: 'strict',
+        secure: false,
       });
+
+      const result = functions.splitNumberAndLetter(
+        this._configService.get<string>('JWT_ACCESS_TOKEN_EXPIRE'),
+      );
 
       return {
         success: true,
+        data: moment().add(result.amount, result.unit).toDate(),
         message: 'Success.',
       };
     } catch (err) {

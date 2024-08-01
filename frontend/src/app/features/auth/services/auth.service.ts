@@ -3,8 +3,12 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { environment } from '../../../../environments/environment';
-import { IAcceptResponse } from '../../../shared/models/response.model';
+import {
+  IAcceptResponse,
+  IDataAcceptResponse,
+} from '../../../shared/models/response.model';
 import { ILoginRequest, IRegisterRequest } from '../models/auth-request.model';
+import { ILoginResponse } from '../models/auth-response.model';
 
 @Injectable()
 export class AuthService {
@@ -17,10 +21,19 @@ export class AuthService {
     );
   }
 
-  public login(data: ILoginRequest): Observable<IAcceptResponse> {
-    return this._httpClient.post<IAcceptResponse>(
+  public login(
+    data: ILoginRequest
+  ): Observable<IDataAcceptResponse<ILoginResponse>> {
+    return this._httpClient.post<IDataAcceptResponse<ILoginResponse>>(
       `${environment.API_URL}/auth/signin`,
       data
+    );
+  }
+
+  public regenerateToken(): Observable<IDataAcceptResponse<Date>> {
+    return this._httpClient.post<IDataAcceptResponse<Date>>(
+      `${environment.API_URL}/auth/relogin`,
+      {}
     );
   }
 }

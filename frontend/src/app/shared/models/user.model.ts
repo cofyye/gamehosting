@@ -5,4 +5,5 @@ export interface ILoginStatus {
   role: UserRole;
   fetched: boolean;
   loggedIn: boolean;
+  expirationDate: Date | null;
 }

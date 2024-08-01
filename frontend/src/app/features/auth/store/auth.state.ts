@@ -11,5 +11,6 @@ export const initialState: AuthState = {
     role: UserRole.USER,
     fetched: false,
     loggedIn: false,
+    expirationDate: null,
   },
 };

@@ -1,7 +1,10 @@
 import { createAction, props } from '@ngrx/store';
 import { ILoginStatus } from '../../../shared/models/user.model';
 import { ILoginRequest, IRegisterRequest } from '../models/auth-request.model';
-import { IAcceptResponse } from '../../../shared/models/response.model';
+import {
+  IAcceptResponse,
+  IDataAcceptResponse,
+} from '../../../shared/models/response.model';
 
 export const SAVE_AUTH = createAction(
   '[Auth Page] Save Auth Data',
@@ -36,4 +39,14 @@ export const LOGIN_SUCCESS = createAction(
 export const LOGIN_FAILURE = createAction(
   '[Auth] Login Failure',
   props<{ error: string }>()
+);
+
+export const REGENERATE_TOKEN = createAction(
+  '[Auth] Regenerate Token',
+  props<{ response: IDataAcceptResponse<Date> }>
+);
+
+export const REGENERATE_TOKEN_FAILURE = createAction(
+  '[Auth] Regenerate Token Failure',
+  props<{ auth: ILoginStatus; error: string }>()
 );

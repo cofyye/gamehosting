@@ -1,25 +1,37 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { NotFoundComponent } from './not-found/not-found.component';
+import { HomeComponent } from './home/home.component';
+import { fetchUserGuard } from './shared/guards/fetch-user.guard';
+import { notAuthenticatedGuard } from './shared/guards/not-authenticated.guard';
+import { authenticatedGuard } from './shared/guards/authenticated.guard';
 
 const routes: Routes = [
-  // {
-  //   path: '',
-  //   pathMatch: 'full',
-  // },
+  {
+    path: '',
+    component: HomeComponent,
+    canActivate: [fetchUserGuard],
+    pathMatch: 'full',
+  },
   {
     path: 'auth',
+    canActivate: [fetchUserGuard],
+    canActivateChild: [notAuthenticatedGuard],
     loadChildren: () =>
       import('./features/auth/auth.module').then((m) => m.AuthModule),
   },
   {
     path: 'admin',
+    canActivate: [fetchUserGuard],
+    canActivateChild: [authenticatedGuard],
     loadChildren: () =>
       import('./features/admin/admin.module').then((m) => m.AdminModule),
   },
-  // {
-  //   path: '**',
-  //   redirectTo: '/404',
-  // },
+  {
+    path: '**',
+    canActivate: [fetchUserGuard],
+    component: NotFoundComponent,
+  },
 ];
 
 @NgModule({

@@ -13,19 +13,19 @@ import {
   timer,
   withLatestFrom,
 } from 'rxjs';
-import { AuthService } from '../services/auth.service';
 import * as AuthActions from './auth.actions';
 import * as moment from 'moment-timezone';
 import { HttpErrorResponse } from '@angular/common/http';
 import { IAcceptResponse } from '../../../shared/models/response.model';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../../app.state';
-import { STOP_LOADING } from '../../../shared/store/loader/loader.actions';
 import { UtilsService } from '../../../shared/services/utils.service';
 import { SELECT_AUTH_STATE } from './auth.selectors';
 import { UserRole } from '../../../shared/enums/user.enum';
 import { Router } from '@angular/router';
 import { ToasterService } from '../../../shared/services/toaster.service';
+import { AuthService } from '../../services/auth.service';
+import { STOP_LOADING } from '../loader/loader.actions';
 
 @Injectable()
 export class AuthEffects {
@@ -76,15 +76,18 @@ export class AuthEffects {
 
             this._store.dispatch(STOP_LOADING({ key: 'LOGIN_BTN' }));
 
+            this._router.navigate(['/']);
+
             return response;
           }),
           map((response) =>
             AuthActions.SAVE_AUTH({
               auth: {
-                ...state.auth,
                 id: response.data.id,
                 role: response.data.role,
                 expirationDate: response.data.expirationDate,
+                loggedIn: true,
+                fetched: state.auth.fetched,
               },
             })
           ),
@@ -118,7 +121,9 @@ export class AuthEffects {
         const currentUtcTime = moment.utc();
 
         const timerDuration =
-          expirationMoment.diff(currentUtcTime, 'milliseconds') - 30000; // 30 seconds
+          expirationMoment.diff(currentUtcTime, 'milliseconds') - 19000; // 19 seconds before end
+
+        // console.log(timerDuration);
 
         if (timerDuration <= 0) {
           return of(AuthActions.REGENERATE_TOKEN());
@@ -126,6 +131,7 @@ export class AuthEffects {
 
         return timer(timerDuration).pipe(
           map(() => AuthActions.REGENERATE_TOKEN())
+          // tap(() => console.log('call API'))
         );
       })
     )
@@ -162,7 +168,7 @@ export class AuthEffects {
               }),
               concatMap(() =>
                 of(
-                  AuthActions.REGENERATE_TOKEN_FAILURE({
+                  AuthActions.SAVE_AUTH({
                     auth: {
                       expirationDate: null,
                       id: '',
@@ -170,7 +176,6 @@ export class AuthEffects {
                       fetched: state.auth.fetched,
                       role: UserRole.USER,
                     },
-                    error: '',
                   })
                 )
               )

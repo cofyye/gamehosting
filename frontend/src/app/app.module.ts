@@ -10,9 +10,11 @@ import { httpRequestInterceptor } from './shared/interceptors/http-request.inter
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { appReducer } from './app.state';
-import { AuthEffects } from './features/auth/store/auth.effects';
 import { ToasterComponent } from './shared/components/toaster/toaster.component';
 import { ToasterService } from './shared/services/toaster.service';
+import { NotFoundModule } from './not-found/not-found.module';
+import { HomeModule } from './home/home.module';
+import { AuthEffects } from './shared/stores/auth/auth.effects';
 
 @NgModule({
   declarations: [AppComponent, ToasterComponent],
@@ -24,6 +26,8 @@ import { ToasterService } from './shared/services/toaster.service';
     EffectsModule.forRoot([AuthEffects]),
     StoreDevtoolsModule.instrument(),
     FeaturesModule,
+    NotFoundModule,
+    HomeModule,
   ],
   providers: [
     ToasterService,

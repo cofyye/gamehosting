@@ -8,13 +8,13 @@ import {
 } from '@angular/forms';
 import { AppState } from '../../../../app.state';
 import { IRegisterRequest } from '../../models/auth-request.model';
-import { REGISTER } from '../../store/auth.actions';
 import { usernameAvailabilityValidator } from '../../../../shared/validators/username-availability.validator';
 import { emailAvailabilityValidator } from '../../../../shared/validators/email-availability.validator';
 import { HttpClient } from '@angular/common/http';
-import { START_LOADING } from '../../../../shared/store/loader/loader.actions';
 import { Subscription } from 'rxjs';
-import { IS_LOADING } from '../../../../shared/store/loader/loader.selectors';
+import { IS_LOADING } from '../../../../shared/stores/loader/loader.selectors';
+import { START_LOADING } from '../../../../shared/stores/loader/loader.actions';
+import { REGISTER } from '../../../../shared/stores/auth/auth.actions';
 
 @Component({
   selector: 'app-register',

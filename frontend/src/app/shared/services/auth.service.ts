@@ -2,13 +2,13 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
-import { environment } from '../../../../environments/environment';
+import { environment } from '../../../environments/environment';
+import { IAcceptResponse, IDataAcceptResponse } from '../models/response.model';
 import {
-  IAcceptResponse,
-  IDataAcceptResponse,
-} from '../../../shared/models/response.model';
-import { ILoginRequest, IRegisterRequest } from '../models/auth-request.model';
-import { ILoginResponse } from '../models/auth-response.model';
+  ILoginRequest,
+  IRegisterRequest,
+} from '../../features/auth/models/auth-request.model';
+import { ILoginResponse } from '../../features/auth/models/auth-response.model';
 
 @Injectable()
 export class AuthService {

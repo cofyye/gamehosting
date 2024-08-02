@@ -8,10 +8,10 @@ import {
 import { Store } from '@ngrx/store';
 import { AppState } from '../../../../app.state';
 import { ILoginRequest } from '../../models/auth-request.model';
-import { START_LOADING } from '../../../../shared/store/loader/loader.actions';
-import { LOGIN } from '../../store/auth.actions';
 import { Subscription } from 'rxjs';
-import { IS_LOADING } from '../../../../shared/store/loader/loader.selectors';
+import { IS_LOADING } from '../../../../shared/stores/loader/loader.selectors';
+import { START_LOADING } from '../../../../shared/stores/loader/loader.actions';
+import { LOGIN } from '../../../../shared/stores/auth/auth.actions';
 
 @Component({
   selector: 'app-login',

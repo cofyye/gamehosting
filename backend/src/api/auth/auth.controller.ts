@@ -25,6 +25,7 @@ import {
 
 import { NotAuthenticatedGuard } from 'src/shared/guards/not-authenticated.guard';
 import { AuthenticatedGuard } from 'src/shared/guards/authenticated.guard';
+import { CheckSessionGuard } from 'src/shared/guards/check-session.guard';
 import { JwtRefreshGuard } from './guards/jwt-refresh.guard';
 
 import { CreateUserDto } from './dtos/create-user.dto';
@@ -106,16 +107,16 @@ export class AuthController {
         secure: false,
       });
 
-      const result = functions.splitNumberAndLetter(
-        this._configService.get<string>('JWT_ACCESS_TOKEN_EXPIRE'),
-      );
+      const token = (await this._jwtService.verifyAsync(
+        accessToken,
+      )) as IJwtPayload;
 
       return {
         success: true,
         data: {
           id: user.id,
           role: user.role,
-          expirationDate: moment().add(result.amount, result.unit).toDate(),
+          expirationDate: moment.unix(token.exp).toDate(),
         },
         message: 'You have successfully logged in.',
       };
@@ -250,13 +251,13 @@ export class AuthController {
         secure: false,
       });
 
-      const result = functions.splitNumberAndLetter(
-        this._configService.get<string>('JWT_ACCESS_TOKEN_EXPIRE'),
-      );
+      const token = (await this._jwtService.verifyAsync(
+        accessToken,
+      )) as IJwtPayload;
 
       return {
         success: true,
-        data: moment().add(result.amount, result.unit).toDate(),
+        data: moment.unix(token.exp).toDate(),
         message: 'Success.',
       };
     } catch (err) {
@@ -265,6 +266,47 @@ export class AuthController {
         false,
         'An error occurred while generating the token.',
       );
+    }
+  }
+
+  @UseGuards(CheckSessionGuard)
+  @Post('/check/session')
+  @HttpCode(HttpStatus.OK)
+  public async checkUserSession(
+    @Req() req: Request,
+  ): Promise<
+    IDataSendResponse<Partial<UserEntity & { expirationDate: Date }>>
+  > {
+    try {
+      const loggedUser: Partial<UserEntity> = req.user;
+
+      if (loggedUser) {
+        const token = (await this._jwtService.verifyAsync(
+          req?.cookies?.['access_token'],
+        )) as IJwtPayload;
+
+        return {
+          success: true,
+          data: {
+            id: loggedUser.id,
+            role: loggedUser.role,
+            expirationDate: moment.unix(token.exp).toDate(),
+          },
+          message: 'Success.',
+        };
+      } else {
+        return {
+          success: false,
+          data: {},
+          message: 'Success.',
+        };
+      }
+    } catch (err: unknown) {
+      return {
+        success: false,
+        data: {},
+        message: 'Success.',
+      };
     }
   }
 }

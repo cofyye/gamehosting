@@ -5,17 +5,18 @@ import { DashboardModule } from './dashboard/dashboard.module';
 import { LocationModule } from './location/location.module';
 import { SidebarComponent } from '../shared/components/sidebar/sidebar.component';
 import { HeaderComponent } from '../shared/components/header/header.component';
-import { NavbarComponent } from '../shared/components/navbar/navbar.component';
 import { AdminIndexComponent } from './admin-index.component';
 import { RouterModule } from '@angular/router';
+import { UserModule } from './user/user.module';
 
 @NgModule({
-  declarations: [
-    AdminIndexComponent,
-    SidebarComponent,
-    HeaderComponent,
-    NavbarComponent,
+  declarations: [AdminIndexComponent, SidebarComponent, HeaderComponent],
+  imports: [
+    CommonModule,
+    RouterModule,
+    DashboardModule,
+    LocationModule,
+    UserModule,
   ],
-  imports: [CommonModule, RouterModule, DashboardModule, LocationModule],
 })
 export class AdminFeatureModule {}

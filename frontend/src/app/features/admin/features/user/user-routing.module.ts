@@ -1,9 +1,9 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { LocationAllComponent } from './pages/all/location-all.component';
-import { LocationAddComponent } from './pages/add/location-add.component';
-import { LocationEditComponent } from './pages/edit/location-edit.component';
+import { UserAllComponent } from './pages/all/user-all.component';
+import { UserAddComponent } from './pages/add/user-add.component';
+import { UserEditComponent } from './pages/edit/user-edit.component';
 
 const routes: Routes = [
   {
@@ -12,17 +12,17 @@ const routes: Routes = [
     children: [
       {
         path: '',
-        component: LocationAllComponent,
+        component: UserAllComponent,
         pathMatch: 'full',
       },
       {
         path: 'add',
-        component: LocationAddComponent,
+        component: UserAddComponent,
         pathMatch: 'full',
       },
       {
-        path: ':locationId',
-        component: LocationEditComponent,
+        path: ':userId',
+        component: UserEditComponent,
         pathMatch: 'full',
       },
     ],
@@ -33,4 +33,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class LocationRoutingModule {}
+export class UserRoutingModule {}

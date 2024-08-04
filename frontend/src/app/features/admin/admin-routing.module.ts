@@ -27,6 +27,11 @@ const routes: Routes = [
             (m) => m.LocationModule
           ),
       },
+      {
+        path: 'users',
+        loadChildren: () =>
+          import('./features/user/user.module').then((m) => m.UserModule),
+      },
     ],
   },
 ];

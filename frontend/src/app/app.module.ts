@@ -15,6 +15,7 @@ import { ToasterService } from './shared/services/toaster.service';
 import { NotFoundModule } from './not-found/not-found.module';
 import { HomeModule } from './home/home.module';
 import { AuthEffects } from './shared/stores/auth/auth.effects';
+import { LocationEffects } from './shared/stores/location/location.effects';
 
 @NgModule({
   declarations: [AppComponent, ToasterComponent],
@@ -23,7 +24,7 @@ import { AuthEffects } from './shared/stores/auth/auth.effects';
     BrowserAnimationsModule,
     AppRoutingModule,
     StoreModule.forRoot(appReducer),
-    EffectsModule.forRoot([AuthEffects]),
+    EffectsModule.forRoot([AuthEffects, LocationEffects]),
     StoreDevtoolsModule.instrument(),
     FeaturesModule,
     NotFoundModule,

@@ -1,7 +1,7 @@
-import { Loader } from '../../models/loader.model';
+import { ILoader } from '../../models/loader.model';
 
 export interface LoaderState {
-  loader: Loader;
+  loader: ILoader;
 }
 
 export const initialState: LoaderState = {

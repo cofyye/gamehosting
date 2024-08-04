@@ -1,3 +1,3 @@
-export interface Loader {
+export interface ILoader {
   [key: string]: boolean;
 }

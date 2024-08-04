@@ -1,4 +1,4 @@
-import { UserRole } from '../../../shared/enums/user.enum';
+import { UserRole } from '../enums/user.enum';
 
 export interface ILoginResponse {
   id: string;

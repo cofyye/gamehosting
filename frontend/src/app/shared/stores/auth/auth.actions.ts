@@ -7,7 +7,7 @@ import {
 import {
   ILoginRequest,
   IRegisterRequest,
-} from '../../../features/auth/models/auth-request.model';
+} from '../../models/auth-request.model';
 
 export const SAVE_AUTH = createAction(
   '[Auth Page] Save Auth Data',

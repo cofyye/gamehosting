@@ -7,7 +7,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { AppState } from '../../../../app.state';
-import { IRegisterRequest } from '../../models/auth-request.model';
+import { IRegisterRequest } from '../../../../shared/models/auth-request.model';
 import { usernameAvailabilityValidator } from '../../../../shared/validators/username-availability.validator';
 import { emailAvailabilityValidator } from '../../../../shared/validators/email-availability.validator';
 import { HttpClient } from '@angular/common/http';

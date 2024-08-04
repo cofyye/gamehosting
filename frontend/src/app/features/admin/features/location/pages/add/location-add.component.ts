@@ -10,6 +10,8 @@ import { AppState } from '../../../../../../app.state';
 import { Subscription } from 'rxjs';
 import { IS_LOADING } from '../../../../../../shared/stores/loader/loader.selectors';
 import { START_LOADING } from '../../../../../../shared/stores/loader/loader.actions';
+import { ILocationAddRequest } from '../../../../../../shared/models/location-request.model';
+import { LOCATION_ADD } from '../../../../../../shared/stores/location/location.actions';
 
 @Component({
   selector: 'app-location-add',
@@ -73,12 +75,13 @@ export class LocationAddComponent implements OnInit, OnDestroy {
       return;
     }
 
-    // const data:  = {
-    //   email: this.locationAddForm.get('email')?.value,
-    //   password: this.locationAddForm.get('password')?.value,
-    // };
+    const data: ILocationAddRequest = {
+      country: this.locationAddForm.get('country')?.value,
+      town: this.locationAddForm.get('town')?.value,
+      icon: this.locationAddForm.get('icon')?.value,
+    };
 
     this._store.dispatch(START_LOADING({ key: 'LOCATION_ADD_BTN' }));
-    // this._store.dispatch(LOGIN({ payload: data }));
+    this._store.dispatch(LOCATION_ADD({ payload: data }));
   }
 }

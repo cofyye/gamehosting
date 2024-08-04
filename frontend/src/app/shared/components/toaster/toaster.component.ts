@@ -29,30 +29,6 @@ export class ToasterComponent implements OnInit, OnDestroy {
     );
   }
 
-  public getClassType(toast: IToaster): string {
-    let className = 'toast-success';
-
-    switch (toast.type) {
-      case 'success':
-        className = 'toast-success';
-        break;
-      case 'error':
-        className = 'toast-error';
-        break;
-      case 'info':
-        className = 'toast-info';
-        break;
-      case 'warning':
-        className = 'toast-warning';
-        break;
-      default:
-        className = 'toast-success';
-        break;
-    }
-
-    return className;
-  }
-
   public ngOnDestroy(): void {
     this.toasterSubscription.unsubscribe();
   }

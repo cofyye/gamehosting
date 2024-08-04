@@ -1,4 +1,4 @@
-import { Component, ViewEncapsulation } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import {
   FormBuilder,
   FormControl,
@@ -7,6 +7,10 @@ import {
 } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../../../app.state';
+import { Subscription } from 'rxjs';
+import { IS_LOADING } from '../../../../shared/stores/loader/loader.selectors';
+import { START_LOADING } from '../../../../shared/stores/loader/loader.actions';
+import { FORGOT_PW } from '../../../../shared/stores/auth/auth.actions';
 
 @Component({
   selector: 'app-forgot-password',
@@ -14,7 +18,10 @@ import { AppState } from '../../../../app.state';
   styleUrl: './forgot-password.component.css',
   encapsulation: ViewEncapsulation.None,
 })
-export class ForgotPasswordComponent {
+export class ForgotPasswordComponent implements OnInit, OnDestroy {
+  private loadingForgotPwSub!: Subscription;
+  public isLoadingForgotPw: boolean = false;
+
   constructor(
     private readonly _fb: FormBuilder,
     private readonly _store: Store<AppState>
@@ -27,4 +34,28 @@ export class ForgotPasswordComponent {
       Validators.pattern('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+$'),
     ]),
   });
+
+  public ngOnInit(): void {
+    this.loadingForgotPwSub = this._store
+      .select(IS_LOADING('FORGOT_PW_BTN'))
+      .subscribe((value) => (this.isLoadingForgotPw = value));
+  }
+
+  public ngOnDestroy(): void {
+    if (this.loadingForgotPwSub) {
+      this.loadingForgotPwSub.unsubscribe();
+    }
+  }
+
+  public onForgotPw(): void {
+    if (this.forgotPasswordForm.invalid) {
+      this.forgotPasswordForm.markAllAsTouched();
+      return;
+    }
+
+    this._store.dispatch(START_LOADING({ key: 'FORGOT_PW_BTN' }));
+    this._store.dispatch(
+      FORGOT_PW({ payload: this.forgotPasswordForm.get('email')?.value })
+    );
+  }
 }

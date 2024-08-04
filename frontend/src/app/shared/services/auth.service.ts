@@ -36,4 +36,11 @@ export class AuthService {
       {}
     );
   }
+
+  public forgotPassword(email: string): Observable<IAcceptResponse> {
+    return this._httpClient.post<IAcceptResponse>(
+      `${environment.API_URL}/auth/password/forgot/${email}`,
+      {}
+    );
+  }
 }

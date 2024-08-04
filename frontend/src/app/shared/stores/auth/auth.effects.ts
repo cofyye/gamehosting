@@ -185,4 +185,31 @@ export class AuthEffects {
       )
     )
   );
+
+  forgotPw$ = createEffect(() =>
+    this._actions$.pipe(
+      ofType(AuthActions.FORGOT_PW),
+      mergeMap((action) =>
+        this._authService.forgotPassword(action.payload).pipe(
+          tap((response) => {
+            this._utilsService.handleResponseToaster(response);
+
+            this._store.dispatch(STOP_LOADING({ key: 'FORGOT_PW_BTN' }));
+
+            return response;
+          }),
+          map((response) => AuthActions.FORGOT_PW_SUCCESS({ response })),
+          catchError((err: HttpErrorResponse) => {
+            const error: IAcceptResponse = err.error as IAcceptResponse;
+
+            this._utilsService.handleErrorToaster(error);
+
+            this._store.dispatch(STOP_LOADING({ key: 'FORGOT_PW_BTN' }));
+
+            return of(AuthActions.FORGOT_PW_FAILURE({ error: '' }));
+          })
+        )
+      )
+    )
+  );
 }

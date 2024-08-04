@@ -48,3 +48,20 @@ export const REGENERATE_TOKEN = createAction(
   '[Auth] Regenerate Token',
   props<{ response: IDataAcceptResponse<Date> }>
 );
+
+export const FORGOT_PW = createAction(
+  '[Auth] Forgot Password',
+  props<{
+    payload: string;
+  }>()
+);
+
+export const FORGOT_PW_SUCCESS = createAction(
+  '[Auth] Forgot Password Success',
+  props<{ response: IAcceptResponse }>()
+);
+
+export const FORGOT_PW_FAILURE = createAction(
+  '[Auth] Forgot Password Failure',
+  props<{ error: string }>()
+);

@@ -20,11 +20,11 @@ export class FileUploadService {
   private checkImageSize(image: UploadedFile): void {
     try {
       if (
-        image.size > this._configService.get<number>('PICTURE_MAX_UPLOAD_SIZE')
+        image.size > this._configService.get<number>('IMAGE_MAX_UPLOAD_SIZE')
       ) {
         functions.throwHttpException(
           false,
-          `The size of your file ${image.name} is ${functions.formatBytes(image.size)}, the maximum size is ${functions.formatBytes(this._configService.get<number>('PICTURE_MAX_UPLOAD_SIZE'))}.`,
+          `The size of your image ${image.name} is ${functions.formatBytes(image.size)}, the maximum size is ${functions.formatBytes(this._configService.get<number>('IMAGE_MAX_UPLOAD_SIZE'))}.`,
           HttpStatus.PAYLOAD_TOO_LARGE,
         );
       }
@@ -40,13 +40,13 @@ export class FileUploadService {
   private checkImageExtension(image: UploadedFile): void {
     try {
       const extensions: Array<string> = this._configService
-        .get<string>('PICTURE_EXTENSIONS')
+        .get<string>('IMAGE_EXTENSIONS')
         .split(', ');
 
       if (!extensions.includes(path.extname(image.name))) {
         functions.throwHttpException(
           false,
-          `The file extension of ${image.name} is not supported.`,
+          `The image extension of ${image.name} is not supported.`,
           HttpStatus.UNSUPPORTED_MEDIA_TYPE,
         );
       }
@@ -72,7 +72,7 @@ export class FileUploadService {
       functions.handleHttpException(
         err,
         false,
-        'An error occurred while checking for duplicate files on the server.',
+        'An error occurred while checking for duplicate images on the server.',
       );
     }
   }
@@ -90,7 +90,7 @@ export class FileUploadService {
       functions.handleHttpException(
         err,
         false,
-        'An error occurred while checking for duplicate files on the server.',
+        'An error occurred while checking for duplicate dockers on the server.',
       );
     }
   }
@@ -134,7 +134,7 @@ export class FileUploadService {
       functions.handleHttpException(
         err,
         false,
-        'An error occurred while uploading the file.',
+        'An error occurred while uploading the image.',
       );
     }
   }
@@ -178,7 +178,7 @@ export class FileUploadService {
       functions.handleHttpException(
         err,
         false,
-        'An error occurred while uploading the file.',
+        'An error occurred while uploading the docker.',
       );
     }
   }

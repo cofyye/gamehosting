@@ -14,6 +14,7 @@ import { ILocationAddRequest } from '../../../../../../shared/models/location/lo
 import { LOCATION_ADD } from '../../../../../../shared/stores/location/location.actions';
 import { imageSizeValidator } from '../../../../../../shared/validators/image-size.validator';
 import { imageExtensionValidator } from '../../../../../../shared/validators/image-extension.validator';
+import { environment } from '../../../../../../../environments/environment';
 
 @Component({
   selector: 'app-location-add',
@@ -23,7 +24,7 @@ import { imageExtensionValidator } from '../../../../../../shared/validators/ima
 export class LocationAddComponent implements OnInit, OnDestroy {
   private loadingLocationAddSub!: Subscription;
   public isLoadingLocationAdd: boolean = false;
-
+  public allowedExtenstions = environment.IMAGE_EXTENSIONS.join(', ');
   public fileName: string | null = null;
 
   constructor(
@@ -72,6 +73,7 @@ export class LocationAddComponent implements OnInit, OnDestroy {
       this.locationAddForm.patchValue({
         icon: file,
       });
+
       this.locationAddForm.get('icon')?.markAsTouched();
     } else {
       this.fileName = null;

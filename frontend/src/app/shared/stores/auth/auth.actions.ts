@@ -7,7 +7,7 @@ import {
 import {
   ILoginRequest,
   IRegisterRequest,
-} from '../../models/auth-request.model';
+} from '../../models/auth/auth-request.model';
 
 export const SAVE_AUTH = createAction(
   '[Auth Page] Save Auth Data',
@@ -19,10 +19,7 @@ export const REGISTER = createAction(
   props<{ payload: IRegisterRequest }>()
 );
 
-export const REGISTER_SUCCESS = createAction(
-  '[Auth] Register Success',
-  props<{ response: IAcceptResponse }>()
-);
+export const REGISTER_SUCCESS = createAction('[Auth] Register Success');
 
 export const REGISTER_FAILURE = createAction(
   '[Auth] Register Failure',
@@ -34,10 +31,7 @@ export const LOGIN = createAction(
   props<{ payload: ILoginRequest }>()
 );
 
-export const LOGIN_SUCCESS = createAction(
-  '[Auth] Login Success',
-  props<{ response: IAcceptResponse }>()
-);
+export const LOGIN_SUCCESS = createAction('[Auth] Login Success');
 
 export const LOGIN_FAILURE = createAction(
   '[Auth] Login Failure',
@@ -56,10 +50,7 @@ export const FORGOT_PW = createAction(
   }>()
 );
 
-export const FORGOT_PW_SUCCESS = createAction(
-  '[Auth] Forgot Password Success',
-  props<{ response: IAcceptResponse }>()
-);
+export const FORGOT_PW_SUCCESS = createAction('[Auth] Forgot Password Success');
 
 export const FORGOT_PW_FAILURE = createAction(
   '[Auth] Forgot Password Failure',

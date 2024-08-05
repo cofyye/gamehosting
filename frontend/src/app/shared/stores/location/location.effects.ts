@@ -23,7 +23,7 @@ export class LocationEffects {
     private readonly _store: Store<AppState>
   ) {}
 
-  register$ = createEffect(() =>
+  addLocation$ = createEffect(() =>
     this._actions$.pipe(
       ofType(LocationActions.LOCATION_ADD),
       mergeMap((action) =>
@@ -35,7 +35,7 @@ export class LocationEffects {
 
             return response;
           }),
-          map((response) => LocationActions.LOCATION_ADD_SUCCESS({ response })),
+          map(() => LocationActions.LOCATION_ADD_SUCCESS()),
           catchError((err: HttpErrorResponse) => {
             const error: IAcceptResponse = err.error as IAcceptResponse;
 

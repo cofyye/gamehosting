@@ -8,6 +8,10 @@ import { ForgotPasswordComponent } from './pages/forgot-password/forgot-password
 import { ResetPasswordComponent } from './pages/reset-password/reset-password.component';
 import { AuthService } from '../../shared/services/auth.service';
 import { ReactiveFormsModule } from '@angular/forms';
+import { StoreModule } from '@ngrx/store';
+import { authReducer } from '../../shared/stores/auth/auth.reducer';
+import { EffectsModule } from '@ngrx/effects';
+import { AuthEffects } from '../../shared/stores/auth/auth.effects';
 
 @NgModule({
   declarations: [
@@ -17,7 +21,13 @@ import { ReactiveFormsModule } from '@angular/forms';
     ResetPasswordComponent,
     TooltipDirective,
   ],
-  imports: [AuthRoutingModule, CommonModule, ReactiveFormsModule],
+  imports: [
+    AuthRoutingModule,
+    CommonModule,
+    ReactiveFormsModule,
+    StoreModule.forFeature('auth', authReducer),
+    EffectsModule.forFeature(AuthEffects),
+  ],
   providers: [AuthService],
   exports: [],
 })

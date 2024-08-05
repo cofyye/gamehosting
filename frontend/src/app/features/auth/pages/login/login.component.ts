@@ -7,7 +7,7 @@ import {
 } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../../../app.state';
-import { ILoginRequest } from '../../../../shared/models/auth-request.model';
+import { ILoginRequest } from '../../../../shared/models/auth/auth-request.model';
 import { Subscription } from 'rxjs';
 import { IS_LOADING } from '../../../../shared/stores/loader/loader.selectors';
 import { START_LOADING } from '../../../../shared/stores/loader/loader.actions';

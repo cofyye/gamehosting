@@ -320,7 +320,6 @@
                       <input
                         id="hs-floating-input-icon-value"
                         type="file"
-                        formControlName="icon"
                         (change)="onIconChange($event)"
                         #fileInput
                         class="hidden"
@@ -337,7 +336,9 @@
                       "
                     >
                       {{
-                        locationAddForm.controls['icon'].errors?.['required'] && 'The icon field must not be empty.'
+                        locationAddForm.controls['icon'].errors?.['required'] && 'The icon field must not be empty.' ||
+                        locationAddForm.controls['icon'].errors?.['imageExtension'] && 'The image extension of ' + fileName + ' is not supported. Supported extensions are: ' + locationAddForm.controls['icon'].errors?.['imageExtension'].allowedExtensions + '.' ||
+                        locationAddForm.controls['icon'].errors?.['imageSize'] && 'The size of your image ' + fileName + ' is ' + locationAddForm.controls['icon'].errors?.['imageSize'].actualSize + ', the maximum size is ' + locationAddForm.controls['icon'].errors?.['imageSize'].maxSize + '.'
                       }}
                     </p>
                   </div>

@@ -10,8 +10,10 @@ import { AppState } from '../../../../../../app.state';
 import { Subscription } from 'rxjs';
 import { IS_LOADING } from '../../../../../../shared/stores/loader/loader.selectors';
 import { START_LOADING } from '../../../../../../shared/stores/loader/loader.actions';
-import { ILocationAddRequest } from '../../../../../../shared/models/location-request.model';
+import { ILocationAddRequest } from '../../../../../../shared/models/location/location-request.model';
 import { LOCATION_ADD } from '../../../../../../shared/stores/location/location.actions';
+import { imageSizeValidator } from '../../../../../../shared/validators/image-size.validator';
+import { imageExtensionValidator } from '../../../../../../shared/validators/image-extension.validator';
 
 @Component({
   selector: 'app-location-add',
@@ -42,7 +44,11 @@ export class LocationAddComponent implements OnInit, OnDestroy {
       Validators.maxLength(30),
       Validators.pattern('^[a-zA-Z ]+'),
     ]),
-    icon: new FormControl<File | null>(null, [Validators.required]),
+    icon: new FormControl<File | null>(null, [
+      Validators.required,
+      imageExtensionValidator(),
+      imageSizeValidator(),
+    ]),
   });
 
   public ngOnInit(): void {
@@ -57,15 +63,22 @@ export class LocationAddComponent implements OnInit, OnDestroy {
     }
   }
 
-  onIconChange(event: any) {
-    const file = event.target.files[0];
+  onIconChange(event: Event) {
+    const input = event.target as HTMLInputElement;
+    const file = input.files?.[0];
+
     if (file) {
       this.fileName = file.name;
       this.locationAddForm.patchValue({
-        file: file,
+        icon: file,
       });
+      this.locationAddForm.get('icon')?.markAsTouched();
     } else {
       this.fileName = null;
+      this.locationAddForm.patchValue({
+        icon: null,
+      });
+      this.locationAddForm.get('icon')?.markAsTouched();
     }
   }
 

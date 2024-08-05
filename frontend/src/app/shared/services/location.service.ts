@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 
 import { environment } from '../../../environments/environment';
 import { IAcceptResponse, IDataAcceptResponse } from '../models/response.model';
-import { ILocationAddRequest } from '../models/location-request.model';
+import { ILocationAddRequest } from '../models/location/location-request.model';
 
 @Injectable()
 export class LocationService {

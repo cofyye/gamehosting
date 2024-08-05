@@ -4,8 +4,11 @@ import { Observable } from 'rxjs';
 
 import { environment } from '../../../environments/environment';
 import { IAcceptResponse, IDataAcceptResponse } from '../models/response.model';
-import { ILoginRequest, IRegisterRequest } from '../models/auth-request.model';
-import { ILoginResponse } from '../models/auth-response.model';
+import {
+  ILoginRequest,
+  IRegisterRequest,
+} from '../models/auth/auth-request.model';
+import { ILoginResponse } from '../models/auth/auth-response.model';
 
 @Injectable()
 export class AuthService {

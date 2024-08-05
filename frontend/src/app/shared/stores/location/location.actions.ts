@@ -1,9 +1,5 @@
 import { createAction, props } from '@ngrx/store';
-import {
-  IAcceptResponse,
-  IDataAcceptResponse,
-} from '../../models/response.model';
-import { ILocationAddRequest } from '../../models/location-request.model';
+import { ILocationAddRequest } from '../../models/location/location-request.model';
 
 export const LOCATION_ADD = createAction(
   '[Auth] Location Add',
@@ -12,10 +8,7 @@ export const LOCATION_ADD = createAction(
   }>()
 );
 
-export const LOCATION_ADD_SUCCESS = createAction(
-  '[Auth] Location Add Success',
-  props<{ response: IAcceptResponse }>()
-);
+export const LOCATION_ADD_SUCCESS = createAction('[Auth] Location Add Success');
 
 export const LOCATION_ADD_FAILURE = createAction(
   '[Auth] Location Add Failure',

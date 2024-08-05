@@ -1,4 +1,4 @@
-import { ILocation } from '../../models/location.model';
+import { ILocation } from '../../models/location/location.model';
 
 export interface LocationState {
   locations: ILocation[];

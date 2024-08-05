@@ -50,7 +50,7 @@ export class AuthEffects {
 
             return response;
           }),
-          map((response) => AuthActions.REGISTER_SUCCESS({ response })),
+          map(() => AuthActions.REGISTER_SUCCESS()),
           catchError((err: HttpErrorResponse) => {
             const error: IAcceptResponse = err.error as IAcceptResponse;
 
@@ -198,7 +198,7 @@ export class AuthEffects {
 
             return response;
           }),
-          map((response) => AuthActions.FORGOT_PW_SUCCESS({ response })),
+          map(() => AuthActions.FORGOT_PW_SUCCESS()),
           catchError((err: HttpErrorResponse) => {
             const error: IAcceptResponse = err.error as IAcceptResponse;
 

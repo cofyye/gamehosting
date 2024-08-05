@@ -7,8 +7,6 @@ import { IAcceptResponse } from '../../models/response.model';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../../app.state';
 import { UtilsService } from '../../services/utils.service';
-import { Router } from '@angular/router';
-import { ToasterService } from '../../services/toaster.service';
 import { STOP_LOADING } from '../loader/loader.actions';
 import { LocationService } from '../../services/location.service';
 
@@ -18,8 +16,6 @@ export class LocationEffects {
     private readonly _actions$: Actions,
     private readonly _locationService: LocationService,
     private readonly _utilsService: UtilsService,
-    private readonly _toasterService: ToasterService,
-    private readonly _router: Router,
     private readonly _store: Store<AppState>
   ) {}
 
@@ -35,7 +31,7 @@ export class LocationEffects {
 
             return response;
           }),
-          map(() => LocationActions.LOCATION_ADD_SUCCESS()),
+          map((response) => LocationActions.LOCATION_ADD_SUCCESS({ response })),
           catchError((err: HttpErrorResponse) => {
             const error: IAcceptResponse = err.error as IAcceptResponse;
 

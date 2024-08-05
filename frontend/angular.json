@@ -34,7 +34,10 @@
                 "input": "public"
               }
             ],
-            "styles": ["src/styles.css"],
+            "styles": [
+              "src/styles.css",
+              "node_modules/nprogress/nprogress.css"
+            ],
             "scripts": [
               "node_modules/preline/preline.js",
               "node_modules/lodash/lodash.min.js",

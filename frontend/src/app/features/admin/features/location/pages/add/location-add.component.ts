@@ -15,6 +15,7 @@ import { LOCATION_ADD } from '../../../../../../shared/stores/location/location.
 import { imageSizeValidator } from '../../../../../../shared/validators/image-size.validator';
 import { imageExtensionValidator } from '../../../../../../shared/validators/image-extension.validator';
 import { environment } from '../../../../../../../environments/environment';
+import { SELECT_LOCATION_RESPONSE } from '../../../../../../shared/stores/location/location.selectors';
 
 @Component({
   selector: 'app-location-add',
@@ -23,6 +24,7 @@ import { environment } from '../../../../../../../environments/environment';
 })
 export class LocationAddComponent implements OnInit, OnDestroy {
   private loadingLocationAddSub!: Subscription;
+  private locationAddSub!: Subscription;
   public isLoadingLocationAdd: boolean = false;
   public allowedExtenstions = environment.IMAGE_EXTENSIONS.join(', ');
   public fileName: string | null = null;
@@ -56,11 +58,22 @@ export class LocationAddComponent implements OnInit, OnDestroy {
     this.loadingLocationAddSub = this._store
       .select(IS_LOADING('LOCATION_ADD_BTN'))
       .subscribe((value) => (this.isLoadingLocationAdd = value));
+    this.locationAddSub = this._store
+      .select(SELECT_LOCATION_RESPONSE)
+      .subscribe((response) => {
+        if (response?.success) {
+          this.fileName = null;
+          this.locationAddForm.reset();
+        }
+      });
   }
 
   public ngOnDestroy(): void {
     if (this.loadingLocationAddSub) {
       this.loadingLocationAddSub.unsubscribe();
+    }
+    if (this.locationAddSub) {
+      this.locationAddSub.unsubscribe();
     }
   }
 

@@ -45,4 +45,29 @@ export class LocationEffects {
       )
     )
   );
+
+  loadLocations$ = createEffect(() =>
+    this._actions$.pipe(
+      ofType(LocationActions.LOCATIONS_LOAD),
+      mergeMap(() =>
+        this._locationService.getLocations().pipe(
+          map((response) =>
+            LocationActions.LOCATIONS_LOAD_SUCCESS({
+              response,
+              data: response.data,
+            })
+          ),
+          catchError((err: HttpErrorResponse) => {
+            const error: IAcceptResponse = err.error as IAcceptResponse;
+
+            this._utilsService.handleErrorToaster(error);
+
+            this._store.dispatch(STOP_LOADING({ key: 'LOCATION_ADD_BTN' }));
+
+            return of(LocationActions.LOCATION_ADD_FAILURE({ error: '' }));
+          })
+        )
+      )
+    )
+  );
 }

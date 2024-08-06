@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { IAcceptResponse, IDataAcceptResponse } from '../models/response.model';
 import { ILocationAddRequest } from '../models/location/location-request.model';
+import { ILocation } from '../models/location/location.model';
 
 @Injectable()
 export class LocationService {
@@ -19,6 +20,12 @@ export class LocationService {
     return this._httpClient.post<IAcceptResponse>(
       `${environment.API_URL}/admin/location`,
       formData
+    );
+  }
+
+  public getLocations(): Observable<IDataAcceptResponse<ILocation[]>> {
+    return this._httpClient.get<IDataAcceptResponse<ILocation[]>>(
+      `${environment.API_URL}/admin/location`
     );
   }
 }

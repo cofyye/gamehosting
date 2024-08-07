@@ -28,6 +28,11 @@ const routes: Routes = [
           ),
       },
       {
+        path: 'games',
+        loadChildren: () =>
+          import('./features/game/game.module').then((m) => m.GameModule),
+      },
+      {
         path: 'users',
         loadChildren: () =>
           import('./features/user/user.module').then((m) => m.UserModule),

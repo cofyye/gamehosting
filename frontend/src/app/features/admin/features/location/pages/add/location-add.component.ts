@@ -1,4 +1,10 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  OnDestroy,
+  OnInit,
+  Renderer2,
+} from '@angular/core';
 import {
   FormBuilder,
   FormControl,
@@ -12,9 +18,6 @@ import { IS_LOADING } from '../../../../../../shared/stores/loader/loader.select
 import { START_LOADING } from '../../../../../../shared/stores/loader/loader.actions';
 import { ILocationAddRequest } from '../../../../../../shared/models/location/location-request.model';
 import { LOCATION_ADD } from '../../../../../../shared/stores/location/location.actions';
-import { imageSizeValidator } from '../../../../../../shared/validators/image-size.validator';
-import { imageExtensionValidator } from '../../../../../../shared/validators/image-extension.validator';
-import { environment } from '../../../../../../../environments/environment';
 import { SELECT_LOCATION_RESPONSE } from '../../../../../../shared/stores/location/location.selectors';
 import { ISelectedCountry } from '../../../../../../shared/models/country.model';
 
@@ -27,10 +30,10 @@ export class LocationAddComponent implements OnInit, OnDestroy {
   private loadingLocationAddSub!: Subscription;
   private locationAddSub!: Subscription;
   public isLoadingLocationAdd: boolean = false;
-  public allowedExtenstions = environment.IMAGE_EXTENSIONS.join(', ');
-  public fileName: string | null = null;
 
   constructor(
+    private readonly _el: ElementRef,
+    private readonly _renderer: Renderer2,
     private readonly _fb: FormBuilder,
     private readonly _store: Store<AppState>
   ) {}
@@ -39,19 +42,17 @@ export class LocationAddComponent implements OnInit, OnDestroy {
     country: new FormControl<string>('', [
       Validators.required,
       Validators.minLength(2),
-      Validators.maxLength(30),
-      Validators.pattern('^[a-zA-Z ]+'),
+      Validators.maxLength(50),
+    ]),
+    countryTag: new FormControl<string>('', [
+      Validators.required,
+      Validators.minLength(2),
+      Validators.maxLength(10),
     ]),
     town: new FormControl<string>('', [
       Validators.required,
       Validators.minLength(2),
-      Validators.maxLength(30),
-      Validators.pattern('^[a-zA-Z ]+'),
-    ]),
-    icon: new FormControl<File | null>(null, [
-      Validators.required,
-      imageExtensionValidator(),
-      imageSizeValidator(),
+      Validators.maxLength(50),
     ]),
   });
 
@@ -63,7 +64,23 @@ export class LocationAddComponent implements OnInit, OnDestroy {
       .select(SELECT_LOCATION_RESPONSE)
       .subscribe((response) => {
         if (response?.success) {
-          this.fileName = null;
+          const countryDataIcon =
+            this._el.nativeElement.querySelector('[data-icon]');
+          const countryDataTitle =
+            this._el.nativeElement.querySelector('[data-title]');
+
+          if (countryDataIcon) {
+            this._renderer.addClass(countryDataIcon, 'hidden');
+            this._renderer.setProperty(countryDataIcon, 'innerHTML', 'null');
+          }
+          if (countryDataTitle) {
+            this._renderer.setProperty(
+              countryDataTitle,
+              'innerHTML',
+              'Select country...'
+            );
+          }
+
           this.locationAddForm.reset();
         }
       });
@@ -78,28 +95,29 @@ export class LocationAddComponent implements OnInit, OnDestroy {
     }
   }
 
-  onIconChange(event: Event) {
-    const input = event.target as HTMLInputElement;
-    const file = input.files?.[0];
-
-    if (file) {
-      this.fileName = file.name;
+  public onCountrySelected(selectedCountry: ISelectedCountry): void {
+    if (selectedCountry.value) {
       this.locationAddForm.patchValue({
-        icon: file,
+        country: selectedCountry.label,
+      });
+      this.locationAddForm.patchValue({
+        countryTag: selectedCountry.value,
       });
 
-      this.locationAddForm.get('icon')?.markAsTouched();
+      this.locationAddForm.get('country')?.markAsTouched();
     } else {
-      this.fileName = null;
       this.locationAddForm.patchValue({
-        icon: null,
+        country: '',
       });
-      this.locationAddForm.get('icon')?.markAsTouched();
+      this.locationAddForm.patchValue({
+        countryTag: '',
+      });
+      this.locationAddForm.get('country')?.markAsTouched();
     }
   }
 
-  onCountrySelected(selectedCountry: ISelectedCountry) {
-    console.log('Selected country:', selectedCountry);
+  public onCountryBlur(): void {
+    this.locationAddForm.get('country')?.markAsTouched();
   }
 
   public onLocationAdd(): void {
@@ -110,8 +128,8 @@ export class LocationAddComponent implements OnInit, OnDestroy {
 
     const data: ILocationAddRequest = {
       country: this.locationAddForm.get('country')?.value,
+      countryTag: this.locationAddForm.get('countryTag')?.value,
       town: this.locationAddForm.get('town')?.value,
-      icon: this.locationAddForm.get('icon')?.value,
     };
 
     this._store.dispatch(START_LOADING({ key: 'LOCATION_ADD_BTN' }));

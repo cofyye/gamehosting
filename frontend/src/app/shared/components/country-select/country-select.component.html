@@ -1,0 +1,15 @@
+<select
+  (change)="onSelectionChange($event)"
+  [attr.data-hs-select]="hsSelectConfig"
+  class="hidden"
+  autocomplete="false"
+>
+  <option value="">Choose</option>
+  <option
+    *ngFor="let country of countries"
+    [value]="country.value"
+    [attr.data-hs-select-option]="country.optionConfig"
+  >
+    {{ country.label }}
+  </option>
+</select>

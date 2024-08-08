@@ -16,6 +16,7 @@ import { imageSizeValidator } from '../../../../../../shared/validators/image-si
 import { imageExtensionValidator } from '../../../../../../shared/validators/image-extension.validator';
 import { environment } from '../../../../../../../environments/environment';
 import { SELECT_LOCATION_RESPONSE } from '../../../../../../shared/stores/location/location.selectors';
+import { ISelectedCountry } from '../../../../../../shared/models/country.model';
 
 @Component({
   selector: 'app-location-add',
@@ -95,6 +96,10 @@ export class LocationAddComponent implements OnInit, OnDestroy {
       });
       this.locationAddForm.get('icon')?.markAsTouched();
     }
+  }
+
+  onCountrySelected(selectedCountry: ISelectedCountry) {
+    console.log('Selected country:', selectedCountry);
   }
 
   public onLocationAdd(): void {

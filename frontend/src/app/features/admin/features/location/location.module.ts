@@ -10,12 +10,14 @@ import { locationReducer } from '../../../../shared/stores/location/location.red
 import { EffectsModule } from '@ngrx/effects';
 import { LocationEffects } from '../../../../shared/stores/location/location.effects';
 import { LocationService } from '../../../../shared/services/location.service';
+import { CountrySelectComponent } from '../../../../shared/components/country-select/country-select.component';
 
 @NgModule({
   declarations: [
     LocationAddComponent,
     LocationAllComponent,
     LocationEditComponent,
+    CountrySelectComponent,
   ],
   imports: [
     CommonModule,

@@ -20,6 +20,7 @@ import { PlanMachinesEntity } from './shared/entities/plan-machines.entity';
 
 import { AuthModule } from './api/auth/auth.module';
 import { AdminModule } from './api/admin/admin.module';
+import { ServeStaticModule } from '@nestjs/serve-static';
 
 @Module({
   imports: [
@@ -83,6 +84,14 @@ import { AdminModule } from './api/admin/admin.module';
       signOptions: {
         expiresIn: process.env.JWT_ACCESS_TOKEN_EXPIRE,
       },
+    }),
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', 'uploads'),
+      serveRoot: '/uploads',
+    }),
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', 'assets'),
+      serveRoot: '/assets',
     }),
     AuthModule,
     AdminModule,

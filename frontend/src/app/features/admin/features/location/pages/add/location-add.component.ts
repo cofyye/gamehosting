@@ -17,7 +17,7 @@ import { Subscription } from 'rxjs';
 import { IS_LOADING } from '../../../../../../shared/stores/loader/loader.selectors';
 import { START_LOADING } from '../../../../../../shared/stores/loader/loader.actions';
 import { ILocationAddRequest } from '../../../../../../shared/models/location/location-request.model';
-import { LOCATION_ADD } from '../../../../../../shared/stores/location/location.actions';
+import { ADD_LOCATION } from '../../../../../../shared/stores/location/location.actions';
 import { SELECT_LOCATION_RESPONSE } from '../../../../../../shared/stores/location/location.selectors';
 import { ISelectedCountry } from '../../../../../../shared/models/country.model';
 
@@ -58,7 +58,7 @@ export class LocationAddComponent implements OnInit, OnDestroy {
 
   public ngOnInit(): void {
     this.loadingLocationAddSub = this._store
-      .select(IS_LOADING('LOCATION_ADD_BTN'))
+      .select(IS_LOADING('ADD_LOCATION_BTN'))
       .subscribe((value) => (this.isLoadingLocationAdd = value));
     this.locationAddSub = this._store
       .select(SELECT_LOCATION_RESPONSE)
@@ -132,7 +132,7 @@ export class LocationAddComponent implements OnInit, OnDestroy {
       town: this.locationAddForm.get('town')?.value,
     };
 
-    this._store.dispatch(START_LOADING({ key: 'LOCATION_ADD_BTN' }));
-    this._store.dispatch(LOCATION_ADD({ payload: data }));
+    this._store.dispatch(START_LOADING({ key: 'ADD_LOCATION_BTN' }));
+    this._store.dispatch(ADD_LOCATION({ payload: data }));
   }
 }

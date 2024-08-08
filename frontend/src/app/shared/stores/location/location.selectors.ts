@@ -1,7 +1,7 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 import { locationAdapter, LocationState } from './location.state';
 
-const { selectAll } = locationAdapter.getSelectors();
+const { selectAll, selectEntities } = locationAdapter.getSelectors();
 
 export const SELECT_LOCATION_STATE =
   createFeatureSelector<LocationState>('location');
@@ -19,4 +19,15 @@ export const SELECT_LOCATION_RESPONSE = createSelector(
 export const SELECT_LOCATION_LOADED = createSelector(
   SELECT_LOCATION_STATE,
   (state: LocationState) => state.loaded
+);
+
+export const SELECT_SELECTED_LOCATION_ID = createSelector(
+  SELECT_LOCATION_STATE,
+  (state: LocationState) => state.selectedLocationId
+);
+
+export const SELECT_SELECTED_LOCATION = createSelector(
+  selectEntities,
+  SELECT_SELECTED_LOCATION_ID,
+  (entities, selectedId) => (selectedId ? entities[selectedId] : null)
 );

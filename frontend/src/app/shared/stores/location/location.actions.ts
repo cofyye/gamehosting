@@ -3,31 +3,36 @@ import { ILocationAddRequest } from '../../models/location/location-request.mode
 import { IAcceptResponse } from '../../models/response.model';
 import { ILocationResponse } from '../../models/location/location-response.model';
 
-export const LOCATION_ADD = createAction(
-  '[Auth] Location Add',
+export const ADD_LOCATION = createAction(
+  '[Location] Add Location',
   props<{
     payload: ILocationAddRequest;
   }>()
 );
 
-export const LOCATION_ADD_SUCCESS = createAction(
-  '[Auth] Location Add Success',
+export const ADD_LOCATION_SUCCESS = createAction(
+  '[Location] Add Location Success',
   props<{ response: IAcceptResponse }>()
 );
 
-export const LOCATION_ADD_FAILURE = createAction(
-  '[Auth] Location Add Failure',
+export const ADD_LOCATION_FAILURE = createAction(
+  '[Location] Add Location Failure',
   props<{ error: string }>()
 );
 
-export const LOCATIONS_LOAD = createAction('[Auth] Locations Load');
+export const LOAD_LOCATIONS = createAction('[Location] Load Locations');
 
-export const LOCATIONS_LOAD_SUCCESS = createAction(
-  '[Auth] Locations Load Success',
+export const LOAD_LOCATIONS_SUCCESS = createAction(
+  '[Location] Load Locations Success',
   props<{ response: IAcceptResponse; data: ILocationResponse[] }>()
 );
 
-export const LOCATIONS_LOAD_FAILURE = createAction(
-  '[Auth] Locations Load Failure',
+export const LOAD_LOCATIONS_FAILURE = createAction(
+  '[Location] Load Locations Failure',
   props<{ error: string }>()
+);
+
+export const SELECT_LOCATION = createAction(
+  '[Location] Select Location',
+  props<{ id: string }>()
 );

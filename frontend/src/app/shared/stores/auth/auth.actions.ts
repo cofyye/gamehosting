@@ -1,9 +1,6 @@
 import { createAction, props } from '@ngrx/store';
 import { ILoginStatus } from '../../../shared/models/user.model';
-import {
-  IAcceptResponse,
-  IDataAcceptResponse,
-} from '../../../shared/models/response.model';
+import { IDataAcceptResponse } from '../../../shared/models/response.model';
 import {
   ILoginRequest,
   IRegisterRequest,

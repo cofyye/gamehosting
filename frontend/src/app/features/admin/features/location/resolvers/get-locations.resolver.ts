@@ -9,7 +9,7 @@ import { catchError, filter, first, Observable, of, switchMap } from 'rxjs';
 import { select, Store } from '@ngrx/store';
 import { AppState } from '../../../../../app.state';
 import { ILocationResponse } from '../../../../../shared/models/location/location-response.model';
-import { LOCATIONS_LOAD } from '../../../../../shared/stores/location/location.actions';
+import { LOAD_LOCATIONS } from '../../../../../shared/stores/location/location.actions';
 import {
   SELECT_LOCATION_LOADED,
   SELECT_LOCATIONS,
@@ -25,7 +25,7 @@ class GetLocationsService {
     _: ActivatedRouteSnapshot,
     __: RouterStateSnapshot
   ): Observable<ILocationResponse[]> {
-    this._store.dispatch(LOCATIONS_LOAD());
+    this._store.dispatch(LOAD_LOCATIONS());
 
     return this._store.pipe(
       select(SELECT_LOCATION_LOADED),

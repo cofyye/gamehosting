@@ -21,25 +21,25 @@ export class LocationEffects {
 
   addLocation$ = createEffect(() =>
     this._actions$.pipe(
-      ofType(LocationActions.LOCATION_ADD),
+      ofType(LocationActions.ADD_LOCATION),
       mergeMap((action) =>
         this._locationService.addLocation(action.payload).pipe(
           tap((response) => {
             this._utilsService.handleResponseToaster(response);
 
-            this._store.dispatch(STOP_LOADING({ key: 'LOCATION_ADD_BTN' }));
+            this._store.dispatch(STOP_LOADING({ key: 'ADD_LOCATION_BTN' }));
 
             return response;
           }),
-          map((response) => LocationActions.LOCATION_ADD_SUCCESS({ response })),
+          map((response) => LocationActions.ADD_LOCATION_SUCCESS({ response })),
           catchError((err: HttpErrorResponse) => {
             const error: IAcceptResponse = err.error as IAcceptResponse;
 
             this._utilsService.handleErrorToaster(error);
 
-            this._store.dispatch(STOP_LOADING({ key: 'LOCATION_ADD_BTN' }));
+            this._store.dispatch(STOP_LOADING({ key: 'ADD_LOCATION_BTN' }));
 
-            return of(LocationActions.LOCATION_ADD_FAILURE({ error: '' }));
+            return of(LocationActions.ADD_LOCATION_FAILURE({ error: '' }));
           })
         )
       )
@@ -48,11 +48,11 @@ export class LocationEffects {
 
   loadLocations$ = createEffect(() =>
     this._actions$.pipe(
-      ofType(LocationActions.LOCATIONS_LOAD),
+      ofType(LocationActions.LOAD_LOCATIONS),
       mergeMap(() =>
         this._locationService.getLocations().pipe(
           map((response) =>
-            LocationActions.LOCATIONS_LOAD_SUCCESS({
+            LocationActions.LOAD_LOCATIONS_SUCCESS({
               response,
               data: response.data,
             })
@@ -62,9 +62,7 @@ export class LocationEffects {
 
             this._utilsService.handleErrorToaster(error);
 
-            this._store.dispatch(STOP_LOADING({ key: 'LOCATION_ADD_BTN' }));
-
-            return of(LocationActions.LOCATION_ADD_FAILURE({ error: '' }));
+            return of(LocationActions.LOAD_LOCATIONS_FAILURE({ error: '' }));
           })
         )
       )

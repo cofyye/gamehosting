@@ -25,7 +25,7 @@ const routes: Routes = [
         pathMatch: 'full',
       },
       {
-        path: ':locationId',
+        path: 'edit/:locationId',
         component: LocationEditComponent,
         pathMatch: 'full',
       },

@@ -20,24 +20,14 @@ export class LocationService {
     private readonly _utilsService: UtilsService,
   ) {}
 
-  public async addLocation(
-    body: AddLocationDto,
-    icon: UploadedFile | UploadedFile[],
-  ): Promise<void> {
+  public async addLocation(body: AddLocationDto): Promise<void> {
     let filename = '';
 
     try {
-      if (!icon) {
-        functions.throwHttpException(
-          false,
-          'The icon field must not be empty.',
-          HttpStatus.BAD_REQUEST,
-        );
-      }
-
       let location = await this._locationRepo.findOne({
         where: {
           country: body.country,
+          town: body.town,
         },
       });
 
@@ -51,19 +41,8 @@ export class LocationService {
 
       location = new LocationEntity();
       location.country = body.country;
+      location.countryTag = body.countryTag;
       location.town = body.town;
-
-      filename = await this._fileUploadService.uploadImage('location', icon);
-
-      if (!filename) {
-        functions.throwHttpException(
-          false,
-          'An error occurred while uploading the icon.',
-          HttpStatus.INTERNAL_SERVER_ERROR,
-        );
-      }
-
-      location.icon = filename;
 
       await this._locationRepo.save(this._locationRepo.create(location));
     } catch (err) {
@@ -77,39 +56,16 @@ export class LocationService {
     }
   }
 
-  public async editLocation(
-    id: string,
-    body: EditLocationDto,
-    icon: UploadedFile | UploadedFile[],
-  ): Promise<void> {
-    let filename: string = '';
-
+  public async editLocation(id: string, body: EditLocationDto): Promise<void> {
     try {
       const location = await this._utilsService.getLocationById(id);
 
       location.country = body.country;
+      location.countryTag = body.countryTag;
       location.town = body.town;
-
-      if (icon) {
-        filename = await this._fileUploadService.uploadImage('location', icon);
-
-        if (!filename) {
-          functions.throwHttpException(
-            false,
-            'An error occurred while uploading the icon.',
-            HttpStatus.INTERNAL_SERVER_ERROR,
-          );
-        }
-
-        this._fileUploadService.deleteFile(location.icon);
-
-        location.icon = filename;
-      }
 
       await this._locationRepo.save(location);
     } catch (err) {
-      this._fileUploadService.deleteFile(filename);
-
       functions.handleHttpException(
         err,
         false,
@@ -144,7 +100,13 @@ export class LocationService {
 
   public async deleteLocation(id: string): Promise<void> {
     try {
-      const location = await this._utilsService.getLocationById(id);
+      if (!(await this._utilsService.locationExists(id))) {
+        functions.throwHttpException(
+          false,
+          'This location does not exist.',
+          HttpStatus.NOT_FOUND,
+        );
+      }
 
       if (await this._utilsService.locationHasMachines(id)) {
         functions.throwHttpException(
@@ -161,8 +123,6 @@ export class LocationService {
           HttpStatus.INTERNAL_SERVER_ERROR,
         );
       }
-
-      this._fileUploadService.deleteFile(location.icon);
     } catch (err) {
       functions.handleHttpException(
         err,

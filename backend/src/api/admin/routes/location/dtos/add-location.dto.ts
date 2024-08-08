@@ -1,21 +1,26 @@
-import { IsNotEmpty, IsString, MaxLength, MinLength } from 'class-validator';
+import { IsNotEmpty, MaxLength, MinLength } from 'class-validator';
 
 export class AddLocationDto {
-  @IsString({ message: 'The country must contain only characters.' })
-  @MaxLength(30, {
-    message: 'The country must contain a maximum of 30 characters.',
+  @MaxLength(50, {
+    message: 'The country must contain a maximum of 50 characters.',
   })
   @MinLength(2, { message: 'The country must contain at least 2 characters.' })
   @IsNotEmpty({ message: 'The country field must not be empty.' })
   public readonly country: string;
 
-  @IsString({ message: 'The town must contain only characters.' })
-  @MaxLength(30, {
-    message: 'The town must contain a maximum of 30 characters.',
+  @MaxLength(10, {
+    message: 'The country tag must contain a maximum of 10 characters.',
+  })
+  @MinLength(2, {
+    message: 'The country tag must contain at least 2 characters.',
+  })
+  @IsNotEmpty({ message: 'The country tag field must not be empty.' })
+  public countryTag: string;
+
+  @MaxLength(50, {
+    message: 'The town must contain a maximum of 50 characters.',
   })
   @MinLength(2, { message: 'The town must contain at least 2 characters.' })
   @IsNotEmpty({ message: 'The town field must not be empty.' })
   public readonly town: string;
-
-  public icon: string;
 }

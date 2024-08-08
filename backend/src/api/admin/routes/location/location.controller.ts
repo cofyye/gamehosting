@@ -8,10 +8,8 @@ import {
   Param,
   Post,
   Put,
-  Req,
   UseGuards,
 } from '@nestjs/common';
-import { Request } from 'express';
 
 import { LocationEntity } from 'src/shared/entities/location.entity';
 import { AuthenticatedGuard } from 'src/shared/guards/authenticated.guard';
@@ -39,10 +37,9 @@ export class LocationController {
   @HttpCode(HttpStatus.CREATED)
   public async addLocation(
     @Body() body: AddLocationDto,
-    @Req() req: Request,
   ): Promise<ISendResponse> {
     try {
-      await this._locationService.addLocation(body, req.files?.icon);
+      await this._locationService.addLocation(body);
 
       return {
         success: true,
@@ -103,14 +100,9 @@ export class LocationController {
   public async editLocation(
     @Param() params: UuidDto,
     @Body() body: EditLocationDto,
-    @Req() req: Request,
   ): Promise<ISendResponse> {
     try {
-      await this._locationService.editLocation(
-        params.id,
-        body,
-        req.files?.icon,
-      );
+      await this._locationService.editLocation(params.id, body);
 
       return {
         success: true,

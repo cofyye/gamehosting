@@ -15,19 +15,18 @@ export class LocationEntity {
   @PrimaryGeneratedColumn('uuid')
   public id: string;
 
-  @Column({ name: 'country', nullable: false, unique: true, length: 30 })
+  @Column({ name: 'country', nullable: false, length: 50 })
   public country: string;
 
-  @Column({ name: 'town', nullable: false, length: 30 })
-  public town: string;
-
   @Column({
-    name: 'icon',
-    unique: true,
+    name: 'country_tag',
     nullable: false,
-    length: 100,
+    length: 10,
   })
-  public icon: string;
+  public countryTag: string;
+
+  @Column({ name: 'town', nullable: false, length: 50 })
+  public town: string;
 
   @CreateDateColumn({
     name: 'created_at',

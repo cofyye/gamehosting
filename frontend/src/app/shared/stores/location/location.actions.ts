@@ -1,10 +1,7 @@
 import { createAction, props } from '@ngrx/store';
 import { ILocationAddRequest } from '../../models/location/location-request.model';
-import {
-  IAcceptResponse,
-  IDataAcceptResponse,
-} from '../../models/response.model';
-import { ILocation } from '../../models/location/location.model';
+import { IAcceptResponse } from '../../models/response.model';
+import { ILocationResponse } from '../../models/location/location-response.model';
 
 export const LOCATION_ADD = createAction(
   '[Auth] Location Add',
@@ -27,7 +24,7 @@ export const LOCATIONS_LOAD = createAction('[Auth] Locations Load');
 
 export const LOCATIONS_LOAD_SUCCESS = createAction(
   '[Auth] Locations Load Success',
-  props<{ response: IAcceptResponse; data: ILocation[] }>()
+  props<{ response: IAcceptResponse; data: ILocationResponse[] }>()
 );
 
 export const LOCATIONS_LOAD_FAILURE = createAction(

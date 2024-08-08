@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { IAcceptResponse, IDataAcceptResponse } from '../models/response.model';
 import { ILocationAddRequest } from '../models/location/location-request.model';
-import { ILocation } from '../models/location/location.model';
+import { ILocationResponse } from '../models/location/location-response.model';
 
 @Injectable()
 export class LocationService {
@@ -18,8 +18,8 @@ export class LocationService {
     );
   }
 
-  public getLocations(): Observable<IDataAcceptResponse<ILocation[]>> {
-    return this._httpClient.get<IDataAcceptResponse<ILocation[]>>(
+  public getLocations(): Observable<IDataAcceptResponse<ILocationResponse[]>> {
+    return this._httpClient.get<IDataAcceptResponse<ILocationResponse[]>>(
       `${environment.API_URL}/admin/location`
     );
   }

@@ -1,5 +1,5 @@
 import { createReducer, on } from '@ngrx/store';
-import { initialState } from './location.state';
+import { initialState, locationAdapter } from './location.state';
 import {
   LOCATION_ADD_SUCCESS,
   LOCATIONS_LOAD,
@@ -17,14 +17,16 @@ export const locationReducer = createReducer(
     ...state,
     response,
   })),
-  on(LOCATIONS_LOAD_SUCCESS, (state, { response, data }) => ({
-    ...state,
-    response,
-    locations: data,
-    loaded: true,
-  })),
+  on(LOCATIONS_LOAD_SUCCESS, (state, { response, data }) => {
+    return locationAdapter.setAll(data, {
+      ...state,
+      response,
+      loaded: true,
+    });
+  }),
   on(LOCATIONS_LOAD_FAILURE, (state, { error }) => ({
     ...state,
     loaded: true,
+    error,
   }))
 );

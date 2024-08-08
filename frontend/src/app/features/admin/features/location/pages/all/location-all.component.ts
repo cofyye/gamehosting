@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { ILocation } from '../../../../../../shared/models/location/location.model';
+import { ILocationResponse } from '../../../../../../shared/models/location/location-response.model';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -10,7 +10,7 @@ import { Subscription } from 'rxjs';
 })
 export class LocationAllComponent implements OnInit, OnDestroy {
   private routeSub!: Subscription;
-  public locations: ILocation[] = [];
+  public locations: ILocationResponse[] = [];
 
   constructor(private readonly _route: ActivatedRoute) {}
 

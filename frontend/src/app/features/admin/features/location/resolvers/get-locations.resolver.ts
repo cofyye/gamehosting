@@ -4,19 +4,11 @@ import {
   RouterStateSnapshot,
   ResolveFn,
 } from '@angular/router';
-import {
-  catchError,
-  filter,
-  first,
-  Observable,
-  of,
-  switchMap,
-  take,
-} from 'rxjs';
+import { catchError, filter, first, Observable, of, switchMap } from 'rxjs';
 
 import { select, Store } from '@ngrx/store';
 import { AppState } from '../../../../../app.state';
-import { ILocation } from '../../../../../shared/models/location/location.model';
+import { ILocationResponse } from '../../../../../shared/models/location/location-response.model';
 import { LOCATIONS_LOAD } from '../../../../../shared/stores/location/location.actions';
 import {
   SELECT_LOCATION_LOADED,
@@ -32,7 +24,7 @@ class GetLocationsService {
   resolve(
     _: ActivatedRouteSnapshot,
     __: RouterStateSnapshot
-  ): Observable<ILocation[]> {
+  ): Observable<ILocationResponse[]> {
     this._store.dispatch(LOCATIONS_LOAD());
 
     return this._store.pipe(
@@ -50,6 +42,9 @@ class GetLocationsService {
   }
 }
 
-export const getLocationsResolver: ResolveFn<ILocation[]> = (route, state) => {
+export const getLocationsResolver: ResolveFn<ILocationResponse[]> = (
+  route,
+  state
+) => {
   return inject(GetLocationsService).resolve(route, state);
 };

@@ -21,7 +21,7 @@ export const SELECT_LOCATION_HTTP_RESPONSE = (key: string) =>
     return state._http[key]?.response || null;
   });
 
-export const IS_LOADED = (key: string) =>
+export const IS_LOCATION_HTTP_LOADED = (key: string) =>
   createSelector(SELECT_LOCATION_STATE, (state: LocationState) => {
     return state._http[key].loaded || false;
   });

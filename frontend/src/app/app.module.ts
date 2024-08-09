@@ -14,6 +14,8 @@ import { NotFoundModule } from './not-found/not-found.module';
 import { HomeModule } from './home/home.module';
 import { EffectsModule } from '@ngrx/effects';
 import { loaderReducer } from './shared/stores/loader/loader.reducer';
+import { environment } from '../environments/environment';
+import { authReducer } from './shared/stores/auth/auth.reducer';
 
 @NgModule({
   declarations: [AppComponent, ToasterComponent],
@@ -23,9 +25,13 @@ import { loaderReducer } from './shared/stores/loader/loader.reducer';
     AppRoutingModule,
     StoreModule.forRoot({
       loader: loaderReducer,
+      auth: authReducer,
     }),
     EffectsModule.forRoot(),
-    StoreDevtoolsModule.instrument(),
+    StoreDevtoolsModule.instrument({
+      maxAge: 25,
+      logOnly: environment.PRODUCTION,
+    }),
     FeaturesModule,
     NotFoundModule,
     HomeModule,

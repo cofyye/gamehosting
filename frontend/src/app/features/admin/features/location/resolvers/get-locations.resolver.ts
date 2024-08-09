@@ -11,7 +11,7 @@ import { AppState } from '../../../../../app.state';
 import { ILocationResponse } from '../../../../../shared/models/location/location-response.model';
 import { LOAD_LOCATIONS } from '../../../../../shared/stores/location/location.actions';
 import {
-  IS_LOADED,
+  IS_LOCATION_HTTP_LOADED,
   SELECT_LOCATIONS,
 } from '../../../../../shared/stores/location/location.selectors';
 
@@ -28,7 +28,7 @@ class GetLocationsService {
     this._store.dispatch(LOAD_LOCATIONS());
 
     return this._store.pipe(
-      select(IS_LOADED('LOAD_LOCATIONS')),
+      select(IS_LOCATION_HTTP_LOADED('LOAD_LOCATIONS')),
       filter((loaded) => loaded),
       first(),
       switchMap(() =>

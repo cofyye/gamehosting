@@ -16,10 +16,10 @@ import { AppState } from '../../../../../../app.state';
 import { Subscription } from 'rxjs';
 import { IS_LOADING } from '../../../../../../shared/stores/loader/loader.selectors';
 import { START_LOADING } from '../../../../../../shared/stores/loader/loader.actions';
-import { ILocationAddRequest } from '../../../../../../shared/models/location/location-request.model';
-import { ADD_LOCATION } from '../../../../../../shared/stores/location/location.actions';
-import { SELECT_LOCATION_HTTP_RESPONSE } from '../../../../../../shared/stores/location/location.selectors';
+import { ILocationAddRequest } from '../../models/location-request.model';
+import { ADD_LOCATION } from '../../store/location.actions';
 import { ISelectedCountry } from '../../../../../../shared/models/country.model';
+import { SELECT_HTTP_RESPONSE } from '../../../../../../shared/stores/http/http.selectors';
 
 @Component({
   selector: 'app-location-add',
@@ -61,7 +61,7 @@ export class LocationAddComponent implements OnInit, OnDestroy {
       .select(IS_LOADING('ADD_LOCATION_BTN'))
       .subscribe((value) => (this.isLoadingLocationAdd = value));
     this.locationAddSub = this._store
-      .select(SELECT_LOCATION_HTTP_RESPONSE('ADD_LOCATION'))
+      .select(SELECT_HTTP_RESPONSE('ADD_LOCATION'))
       .subscribe((response) => {
         if (response?.success) {
           const countryDataIcon =

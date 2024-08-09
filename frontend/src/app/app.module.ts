@@ -4,7 +4,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
-import { FeaturesModule } from './features/features.module';
 import { httpRequestInterceptor } from './shared/interceptors/http-request.interceptor';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -16,6 +15,7 @@ import { EffectsModule } from '@ngrx/effects';
 import { loaderReducer } from './shared/stores/loader/loader.reducer';
 import { environment } from '../environments/environment';
 import { authReducer } from './shared/stores/auth/auth.reducer';
+import { httpReducer } from './shared/stores/http/http.reducer';
 
 @NgModule({
   declarations: [AppComponent, ToasterComponent],
@@ -26,13 +26,13 @@ import { authReducer } from './shared/stores/auth/auth.reducer';
     StoreModule.forRoot({
       loader: loaderReducer,
       auth: authReducer,
+      http: httpReducer,
     }),
     EffectsModule.forRoot(),
     StoreDevtoolsModule.instrument({
       maxAge: 25,
       logOnly: environment.PRODUCTION,
     }),
-    FeaturesModule,
     NotFoundModule,
     HomeModule,
   ],

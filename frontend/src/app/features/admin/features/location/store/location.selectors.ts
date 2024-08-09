@@ -16,16 +16,6 @@ export const SELECT_LOCATIONS_ENTITIES = createSelector(
   selectEntities
 );
 
-export const SELECT_LOCATION_HTTP_RESPONSE = (key: string) =>
-  createSelector(SELECT_LOCATION_STATE, (state: LocationState) => {
-    return state._http[key]?.response || null;
-  });
-
-export const IS_LOCATION_HTTP_LOADED = (key: string) =>
-  createSelector(SELECT_LOCATION_STATE, (state: LocationState) => {
-    return state._http[key].loaded || false;
-  });
-
 export const SELECT_SELECTED_LOCATION_ID = createSelector(
   SELECT_LOCATION_STATE,
   (state: LocationState) => state.selectedLocationId

@@ -2,13 +2,14 @@ import { Injectable } from '@angular/core';
 import { Actions, ofType, createEffect } from '@ngrx/effects';
 import { catchError, map, mergeMap, of, tap } from 'rxjs';
 import * as LocationActions from './location.actions';
+import * as HttpActions from '../../../../../shared/stores/http/http.actions';
 import { HttpErrorResponse } from '@angular/common/http';
-import { IAcceptResponse } from '../../models/response.model';
+import { IAcceptResponse } from '../../../../../shared/models/response.model';
 import { Store } from '@ngrx/store';
-import { AppState } from '../../../app.state';
-import { UtilsService } from '../../services/utils.service';
-import { STOP_LOADING } from '../loader/loader.actions';
-import { LocationService } from '../../services/location.service';
+import { AppState } from '../../../../../app.state';
+import { UtilsService } from '../../../../../shared/services/utils.service';
+import { STOP_LOADING } from '../../../../../shared/stores/loader/loader.actions';
+import { LocationService } from '../services/location.service';
 
 @Injectable()
 export class LocationEffects {
@@ -32,7 +33,8 @@ export class LocationEffects {
             return response;
           }),
           map((response) =>
-            LocationActions.ADD_LOCATION_RESPONSE({
+            HttpActions.SET_RESPONSE({
+              key: 'ADD_LOCATION',
               response,
             })
           ),
@@ -44,7 +46,8 @@ export class LocationEffects {
             this._store.dispatch(STOP_LOADING({ key: 'ADD_LOCATION_BTN' }));
 
             return of(
-              LocationActions.ADD_LOCATION_RESPONSE({
+              HttpActions.SET_RESPONSE({
+                key: 'ADD_LOCATION',
                 response,
               })
             );
@@ -66,22 +69,27 @@ export class LocationEffects {
 
             return response;
           }),
-          map((response) =>
-            LocationActions.DELETE_LOCATION_RESPONSE({
-              response,
+          map((response) => {
+            this._store.dispatch(
+              HttpActions.SET_RESPONSE({ key: 'DELETE_LOCATION', response })
+            );
+
+            return LocationActions.DELETE_LOCATION_RESPONSE({
               data: action.payload,
-            })
-          ),
+            });
+          }),
           catchError((err: HttpErrorResponse) => {
             const response: IAcceptResponse = err.error as IAcceptResponse;
 
             this._utilsService.handleErrorToaster(response);
 
             this._store.dispatch(STOP_LOADING({ key: 'DELETE_LOCATION_BTN' }));
+            this._store.dispatch(
+              HttpActions.SET_RESPONSE({ key: 'DELETE_LOCATION', response })
+            );
 
             return of(
               LocationActions.DELETE_LOCATION_RESPONSE({
-                response,
                 data: '',
               })
             );
@@ -96,20 +104,34 @@ export class LocationEffects {
       ofType(LocationActions.LOAD_LOCATIONS),
       mergeMap(() =>
         this._locationService.getLocations().pipe(
-          map((response) =>
-            LocationActions.LOAD_LOCATIONS_RESPONSE({
-              response,
+          map((response) => {
+            this._store.dispatch(
+              HttpActions.SET_FULL_RESPONSE({
+                key: 'LOAD_LOCATIONS',
+                response,
+                load: false,
+              })
+            );
+
+            return LocationActions.LOAD_LOCATIONS_RESPONSE({
               data: response.data,
-            })
-          ),
+            });
+          }),
           catchError((err: HttpErrorResponse) => {
             const response: IAcceptResponse = err.error as IAcceptResponse;
 
             this._utilsService.handleErrorToaster(response);
 
+            this._store.dispatch(
+              HttpActions.SET_FULL_RESPONSE({
+                key: 'LOAD_LOCATIONS',
+                response,
+                load: false,
+              })
+            );
+
             return of(
               LocationActions.LOAD_LOCATIONS_RESPONSE({
-                response,
                 data: [],
               })
             );

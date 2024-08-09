@@ -6,10 +6,10 @@ import { LocationAllComponent } from './pages/all/location-all.component';
 import { LocationEditComponent } from './pages/edit/location-edit.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { StoreModule } from '@ngrx/store';
-import { locationReducer } from '../../../../shared/stores/location/location.reducer';
+import { locationReducer } from './store/location.reducer';
 import { EffectsModule } from '@ngrx/effects';
-import { LocationEffects } from '../../../../shared/stores/location/location.effects';
-import { LocationService } from '../../../../shared/services/location.service';
+import { LocationEffects } from './store/location.effects';
+import { LocationService } from './services/location.service';
 import { CountrySelectComponent } from '../../../../shared/components/country-select/country-select.component';
 
 @NgModule({

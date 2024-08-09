@@ -1,10 +1,9 @@
 import { EntityState, EntityAdapter, createEntityAdapter } from '@ngrx/entity';
-import { ILocationResponse } from '../../models/location/location-response.model';
-import { _httpResponse } from '../../models/response.model';
+import { ILocationResponse } from '../models/location-response.model';
+import { _httpResponse } from '../../../../../shared/models/response.model';
 
 export interface LocationState extends EntityState<ILocationResponse> {
   selectedLocationId: string | null;
-  _http: _httpResponse;
 }
 
 export const locationAdapter: EntityAdapter<ILocationResponse> =
@@ -12,5 +11,4 @@ export const locationAdapter: EntityAdapter<ILocationResponse> =
 
 export const initialState: LocationState = locationAdapter.getInitialState({
   selectedLocationId: null,
-  _http: {},
 });

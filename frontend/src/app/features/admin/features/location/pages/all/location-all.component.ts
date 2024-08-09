@@ -6,7 +6,7 @@ import {
   ViewChild,
 } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { ILocationResponse } from '../../../../../../shared/models/location/location-response.model';
+import { ILocationResponse } from '../../models/location-response.model';
 import { Subscription } from 'rxjs';
 import { environment } from '../../../../../../../environments/environment';
 import { Store } from '@ngrx/store';
@@ -15,15 +15,15 @@ import {
   DELETE_LOCATION,
   DESELECT_LOCATION,
   SELECT_LOCATION,
-} from '../../../../../../shared/stores/location/location.actions';
+} from '../../store/location.actions';
 import {
-  SELECT_LOCATION_HTTP_RESPONSE,
   SELECT_LOCATIONS,
   SELECT_SELECTED_LOCATION,
-} from '../../../../../../shared/stores/location/location.selectors';
+} from '../../store/location.selectors';
 import { ToasterService } from '../../../../../../shared/services/toaster.service';
 import { IS_LOADING } from '../../../../../../shared/stores/loader/loader.selectors';
 import { START_LOADING } from '../../../../../../shared/stores/loader/loader.actions';
+import { SELECT_HTTP_RESPONSE } from '../../../../../../shared/stores/http/http.selectors';
 
 @Component({
   selector: 'app-location-all',
@@ -66,8 +66,9 @@ export class LocationAllComponent implements OnInit, OnDestroy {
       });
 
     this.locationDeleteSub = this._store
-      .select(SELECT_LOCATION_HTTP_RESPONSE('DELETE_LOCATION'))
+      .select(SELECT_HTTP_RESPONSE('DELETE_LOCATION'))
       .subscribe((_) => {
+        this.onDeselectLocation();
         if (this.deleteLocationAlertCloseButton) {
           this.deleteLocationAlertCloseButton.nativeElement.click();
         }
@@ -116,6 +117,7 @@ export class LocationAllComponent implements OnInit, OnDestroy {
         'No location selected, deletion has been aborted.',
         'Error'
       );
+      this.onDeselectLocation();
       if (this.deleteLocationAlertCloseButton) {
         this.deleteLocationAlertCloseButton.nativeElement.click();
       }

@@ -11,6 +11,11 @@ export const SELECT_LOCATIONS = createSelector(
   selectAll
 );
 
+export const SELECT_LOCATIONS_ENTITIES = createSelector(
+  SELECT_LOCATION_STATE,
+  selectEntities
+);
+
 export const SELECT_LOCATION_RESPONSE = createSelector(
   SELECT_LOCATION_STATE,
   (state: LocationState) => state.response
@@ -27,7 +32,7 @@ export const SELECT_SELECTED_LOCATION_ID = createSelector(
 );
 
 export const SELECT_SELECTED_LOCATION = createSelector(
-  selectEntities,
+  SELECT_LOCATIONS_ENTITIES,
   SELECT_SELECTED_LOCATION_ID,
   (entities, selectedId) => (selectedId ? entities[selectedId] : null)
 );

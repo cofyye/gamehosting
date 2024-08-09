@@ -6,3 +6,7 @@ export interface IAcceptResponse {
 export interface IDataAcceptResponse<T> extends IAcceptResponse {
   data: T;
 }
+
+export interface IResponse {
+  [key: string]: IAcceptResponse;
+}

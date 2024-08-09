@@ -31,15 +31,51 @@ export class LocationEffects {
 
             return response;
           }),
-          map((response) => LocationActions.ADD_LOCATION_SUCCESS({ response })),
+          map((response) =>
+            LocationActions.ADD_LOCATION_RESPONSE({ response })
+          ),
           catchError((err: HttpErrorResponse) => {
-            const error: IAcceptResponse = err.error as IAcceptResponse;
+            const response: IAcceptResponse = err.error as IAcceptResponse;
 
-            this._utilsService.handleErrorToaster(error);
+            this._utilsService.handleErrorToaster(response);
 
             this._store.dispatch(STOP_LOADING({ key: 'ADD_LOCATION_BTN' }));
 
-            return of(LocationActions.ADD_LOCATION_FAILURE({ error: '' }));
+            return of(LocationActions.ADD_LOCATION_RESPONSE({ response }));
+          })
+        )
+      )
+    )
+  );
+
+  deleteLocation$ = createEffect(() =>
+    this._actions$.pipe(
+      ofType(LocationActions.DELETE_LOCATION),
+      mergeMap((action) =>
+        this._locationService.deleteLocation(action.payload).pipe(
+          tap((response) => {
+            this._utilsService.handleResponseToaster(response);
+
+            this._store.dispatch(STOP_LOADING({ key: 'DELETE_LOCATION_BTN' }));
+
+            return response;
+          }),
+          map((response) =>
+            LocationActions.DELETE_LOCATION_RESPONSE({
+              response,
+              data: action.payload,
+            })
+          ),
+          catchError((err: HttpErrorResponse) => {
+            const response: IAcceptResponse = err.error as IAcceptResponse;
+
+            this._utilsService.handleErrorToaster(response);
+
+            this._store.dispatch(STOP_LOADING({ key: 'DELETE_LOCATION_BTN' }));
+
+            return of(
+              LocationActions.DELETE_LOCATION_RESPONSE({ response, data: '' })
+            );
           })
         )
       )
@@ -52,17 +88,19 @@ export class LocationEffects {
       mergeMap(() =>
         this._locationService.getLocations().pipe(
           map((response) =>
-            LocationActions.LOAD_LOCATIONS_SUCCESS({
+            LocationActions.LOAD_LOCATIONS_RESPONSE({
               response,
               data: response.data,
             })
           ),
           catchError((err: HttpErrorResponse) => {
-            const error: IAcceptResponse = err.error as IAcceptResponse;
+            const response: IAcceptResponse = err.error as IAcceptResponse;
 
-            this._utilsService.handleErrorToaster(error);
+            this._utilsService.handleErrorToaster(response);
 
-            return of(LocationActions.LOAD_LOCATIONS_FAILURE({ error: '' }));
+            return of(
+              LocationActions.LOAD_LOCATIONS_RESPONSE({ response, data: [] })
+            );
           })
         )
       )

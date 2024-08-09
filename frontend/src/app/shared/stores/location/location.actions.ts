@@ -10,29 +10,33 @@ export const ADD_LOCATION = createAction(
   }>()
 );
 
-export const ADD_LOCATION_SUCCESS = createAction(
-  '[Location] Add Location Success',
+export const ADD_LOCATION_RESPONSE = createAction(
+  '[Location] Add Location Response',
   props<{ response: IAcceptResponse }>()
 );
 
-export const ADD_LOCATION_FAILURE = createAction(
-  '[Location] Add Location Failure',
-  props<{ error: string }>()
+export const DELETE_LOCATION = createAction(
+  '[Location] Delete Location',
+  props<{
+    payload: string;
+  }>()
+);
+
+export const DELETE_LOCATION_RESPONSE = createAction(
+  '[Location] Delete Location Response',
+  props<{ response: IAcceptResponse; data: string }>()
 );
 
 export const LOAD_LOCATIONS = createAction('[Location] Load Locations');
 
-export const LOAD_LOCATIONS_SUCCESS = createAction(
-  '[Location] Load Locations Success',
+export const LOAD_LOCATIONS_RESPONSE = createAction(
+  '[Location] Load Locations Response',
   props<{ response: IAcceptResponse; data: ILocationResponse[] }>()
-);
-
-export const LOAD_LOCATIONS_FAILURE = createAction(
-  '[Location] Load Locations Failure',
-  props<{ error: string }>()
 );
 
 export const SELECT_LOCATION = createAction(
   '[Location] Select Location',
   props<{ id: string }>()
 );
+
+export const DESELECT_LOCATION = createAction('[Location] Deselect Location');

@@ -18,6 +18,12 @@ export class LocationService {
     );
   }
 
+  public deleteLocation(id: string): Observable<IAcceptResponse> {
+    return this._httpClient.delete<IAcceptResponse>(
+      `${environment.API_URL}/admin/location/${id}`
+    );
+  }
+
   public getLocations(): Observable<IDataAcceptResponse<ILocationResponse[]>> {
     return this._httpClient.get<IDataAcceptResponse<ILocationResponse[]>>(
       `${environment.API_URL}/admin/location`

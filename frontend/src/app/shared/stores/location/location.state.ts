@@ -6,7 +6,6 @@ export interface LocationState extends EntityState<ILocationResponse> {
   selectedLocationId: string | null;
   response: IAcceptResponse | null;
   loaded: boolean;
-  error: string;
 }
 
 export const locationAdapter: EntityAdapter<ILocationResponse> =
@@ -16,5 +15,4 @@ export const initialState: LocationState = locationAdapter.getInitialState({
   selectedLocationId: null,
   response: null,
   loaded: false,
-  error: '',
 });

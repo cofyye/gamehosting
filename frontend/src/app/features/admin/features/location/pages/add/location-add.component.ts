@@ -120,7 +120,7 @@ export class LocationAddComponent implements OnInit, OnDestroy {
     this.locationAddForm.get('country')?.markAsTouched();
   }
 
-  public onLocationAdd(): void {
+  public onAddLocation(): void {
     if (this.locationAddForm.invalid) {
       this.locationAddForm.markAllAsTouched();
       return;

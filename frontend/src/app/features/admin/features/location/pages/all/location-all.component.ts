@@ -17,7 +17,8 @@ import {
   SELECT_LOCATION,
 } from '../../../../../../shared/stores/location/location.actions';
 import {
-  SELECT_LOCATION_RESPONSE,
+  SELECT_LOCATION_HTTP_RESPONSE,
+  SELECT_LOCATIONS,
   SELECT_SELECTED_LOCATION,
 } from '../../../../../../shared/stores/location/location.selectors';
 import { ToasterService } from '../../../../../../shared/services/toaster.service';
@@ -36,6 +37,7 @@ export class LocationAllComponent implements OnInit, OnDestroy {
   private routeSub!: Subscription;
   private locationDeleteSub!: Subscription;
   private loadingLocationDeleteSub!: Subscription;
+  private getLocationsSub!: Subscription;
   public locations: ILocationResponse[] = [];
   public environment = environment;
   public selectedLocation: ILocationResponse | null | undefined = null;
@@ -64,12 +66,17 @@ export class LocationAllComponent implements OnInit, OnDestroy {
       });
 
     this.locationDeleteSub = this._store
-      .select(SELECT_LOCATION_RESPONSE)
-      .subscribe((response) => {
-        console.log(response);
+      .select(SELECT_LOCATION_HTTP_RESPONSE('DELETE_LOCATION'))
+      .subscribe((_) => {
         if (this.deleteLocationAlertCloseButton) {
           this.deleteLocationAlertCloseButton.nativeElement.click();
         }
+      });
+
+    this.getLocationsSub = this._store
+      .select(SELECT_LOCATIONS)
+      .subscribe((locations) => {
+        this.locations = locations;
       });
   }
 
@@ -85,6 +92,9 @@ export class LocationAllComponent implements OnInit, OnDestroy {
     }
     if (this.locationDeleteSub) {
       this.locationDeleteSub.unsubscribe();
+    }
+    if (this.getLocationsSub) {
+      this.getLocationsSub.unsubscribe();
     }
   }
 

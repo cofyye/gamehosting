@@ -13,22 +13,41 @@ export const locationReducer = createReducer(
   initialState,
   on(LOAD_LOCATIONS, (state) => ({
     ...state,
-    loaded: false,
+    _http: {
+      ['LOAD_LOCATIONS']: {
+        ...state._http['LOAD_LOCATIONS'],
+        loaded: false,
+      },
+    },
   })),
   on(LOAD_LOCATIONS_RESPONSE, (state, { response, data }) => {
     return locationAdapter.setAll(data, {
       ...state,
-      response,
-      loaded: true,
+      _http: {
+        ['LOAD_LOCATIONS']: {
+          response,
+          loaded: true,
+        },
+      },
     });
   }),
   on(ADD_LOCATION_RESPONSE, (state, { response }) => ({
     ...state,
-    response,
+    _http: {
+      ['ADD_LOCATION']: {
+        ...state._http['ADD_LOCATION'],
+        response,
+      },
+    },
   })),
   on(DELETE_LOCATION_RESPONSE, (state, { response, data }) => ({
     ...locationAdapter.removeOne(data, state),
-    response,
+    _http: {
+      ['DELETE_LOCATION']: {
+        ...state._http['DELETE_LOCATION'],
+        response,
+      },
+    },
   })),
   on(SELECT_LOCATION, (state, { id }) => ({
     ...state,

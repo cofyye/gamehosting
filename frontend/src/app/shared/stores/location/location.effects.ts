@@ -32,7 +32,9 @@ export class LocationEffects {
             return response;
           }),
           map((response) =>
-            LocationActions.ADD_LOCATION_RESPONSE({ response })
+            LocationActions.ADD_LOCATION_RESPONSE({
+              response,
+            })
           ),
           catchError((err: HttpErrorResponse) => {
             const response: IAcceptResponse = err.error as IAcceptResponse;
@@ -41,7 +43,11 @@ export class LocationEffects {
 
             this._store.dispatch(STOP_LOADING({ key: 'ADD_LOCATION_BTN' }));
 
-            return of(LocationActions.ADD_LOCATION_RESPONSE({ response }));
+            return of(
+              LocationActions.ADD_LOCATION_RESPONSE({
+                response,
+              })
+            );
           })
         )
       )
@@ -74,7 +80,10 @@ export class LocationEffects {
             this._store.dispatch(STOP_LOADING({ key: 'DELETE_LOCATION_BTN' }));
 
             return of(
-              LocationActions.DELETE_LOCATION_RESPONSE({ response, data: '' })
+              LocationActions.DELETE_LOCATION_RESPONSE({
+                response,
+                data: '',
+              })
             );
           })
         )
@@ -99,7 +108,10 @@ export class LocationEffects {
             this._utilsService.handleErrorToaster(response);
 
             return of(
-              LocationActions.LOAD_LOCATIONS_RESPONSE({ response, data: [] })
+              LocationActions.LOAD_LOCATIONS_RESPONSE({
+                response,
+                data: [],
+              })
             );
           })
         )

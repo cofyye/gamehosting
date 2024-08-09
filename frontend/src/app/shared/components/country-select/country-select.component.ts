@@ -1809,7 +1809,7 @@ export class CountrySelectComponent implements AfterViewChecked, OnChanges {
 
   public ngOnChanges(changes: SimpleChanges): void {
     if (changes['ngClass']) {
-      this.applyClassesToElement();
+      this.applyClassesToElement(changes);
     }
   }
 
@@ -1830,13 +1830,24 @@ export class CountrySelectComponent implements AfterViewChecked, OnChanges {
     }
   }
 
-  private applyClassesToElement(): void {
+  private applyClassesToElement(changes: SimpleChanges): void {
     const button = this._el.nativeElement.querySelector('button');
     if (button) {
-      const currentClasses = button.getAttribute('class') || '';
-      const newClasses = this.ngClass.split(' ');
-      newClasses.forEach((className) => {
-        if (currentClasses.indexOf(className) === -1) {
+      const currentClasses: string = changes['ngClass'].currentValue || '';
+      const previousClasses: string = changes['ngClass'].previousValue || '';
+
+      // Removing all from `previousValue`
+      const previousClassesArray = previousClasses.split(' ');
+      previousClassesArray.forEach((className) => {
+        if (className) {
+          this._renderer.removeClass(button, className);
+        }
+      });
+
+      // Adding all from `currentValue`
+      const newClassesArray = currentClasses.split(' ');
+      newClassesArray.forEach((className) => {
+        if (className) {
           this._renderer.addClass(button, className);
         }
       });

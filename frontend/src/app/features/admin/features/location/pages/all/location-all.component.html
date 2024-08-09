@@ -64,27 +64,7 @@
                       <span
                         class="text-xs font-semibold uppercase tracking-wide text-gray-800"
                       >
-                        Icon
-                      </span>
-                    </div>
-                  </th>
-
-                  <th scope="col" class="px-6 py-3 text-start">
-                    <div class="flex items-center gap-x-2">
-                      <span
-                        class="text-xs font-semibold uppercase tracking-wide text-gray-800"
-                      >
                         Country
-                      </span>
-                    </div>
-                  </th>
-
-                  <th scope="col" class="ps-6 py-3 text-start">
-                    <div class="flex items-center gap-x-2">
-                      <span
-                        class="text-xs font-semibold uppercase tracking-wide text-gray-800"
-                      >
-                        Country Tag
                       </span>
                     </div>
                   </th>
@@ -108,29 +88,18 @@
                   <td class="size-px whitespace-nowrap">
                     <div class="px-6 py-3">
                       <img
-                        class="inline-block size-[24px] rounded-full"
+                        class="inline-block size-[16px] rounded-full"
                         src="{{ environment.API_URL }}/assets/flags/1x1/{{
                           location.countryTag
                         }}.svg"
                         alt="{{ location.country }}"
                       />
-                    </div>
-                  </td>
-                  <td class="size-px whitespace-nowrap">
-                    <div class="px-6 py-3">
                       <a
-                        class="inline-flex items-center gap-x-1 text-sm text-blue-600 decoration-2 hover:underline focus:outline-none focus:underline font-medium"
+                        class="ml-1 inline-flex items-center gap-x-1 text-sm text-blue-600 decoration-2 hover:underline focus:outline-none focus:underline font-medium"
                         routerLink="/admin/locations/edit/{{ location.id }}"
                       >
                         {{ location.country }}
                       </a>
-                    </div>
-                  </td>
-                  <td class="size-px whitespace-nowrap">
-                    <div class="px-6 py-3">
-                      <span class="block text-sm text-gray-500">{{
-                        location.countryTag
-                      }}</span>
                     </div>
                   </td>
                   <td class="size-px whitespace-nowrap">
@@ -184,6 +153,7 @@
                   <button
                     type="button"
                     class="py-1.5 px-2 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none focus:outline-none focus:bg-gray-50"
+                    disabled
                   >
                     <svg
                       class="shrink-0 size-4"
@@ -205,6 +175,7 @@
                   <button
                     type="button"
                     class="py-1.5 px-2 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none focus:outline-none focus:bg-gray-50"
+                    disabled
                   >
                     Next
                     <svg
@@ -301,7 +272,8 @@
         </h3>
         <p class="text-gray-500">
           Are you sure you would like to delete
-          {{ selectedLocation?.country }} location?
+          {{ selectedLocation?.country }},
+          {{ selectedLocation?.town }} location?
         </p>
 
         <div class="mt-6 flex justify-center gap-x-4">
@@ -312,9 +284,10 @@
           >
             close alert
           </button>
+
           <button
-            type="button"
-            class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-red-600 text-white hover:bg-red-700 focus:outline-none focus:bg-red-700 disabled:opacity-50 disabled:pointer-events-none"
+            type="submit"
+            class="py-3 px-4 inline-flex justify-center items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-red-600 text-white hover:bg-red-700 focus:outline-none focus:bg-red-700 disabled:opacity-50 disabled:pointer-events-none"
             (click)="onDeleteLocation()"
           >
             <div

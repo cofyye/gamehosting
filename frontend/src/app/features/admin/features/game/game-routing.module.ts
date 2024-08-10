@@ -4,6 +4,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { GameAllComponent } from './pages/all/game-all.component';
 import { GameEditComponent } from './pages/edit/game-edit.component';
 import { GameAddComponent } from './pages/add/game-add.component';
+import { getGamesResolver } from './resolvers/get-games.resolver';
 
 const routes: Routes = [
   {
@@ -14,6 +15,9 @@ const routes: Routes = [
         path: '',
         component: GameAllComponent,
         pathMatch: 'full',
+        resolve: {
+          locations: getGamesResolver,
+        },
       },
       {
         path: 'add',
@@ -21,7 +25,7 @@ const routes: Routes = [
         pathMatch: 'full',
       },
       {
-        path: ':locationId',
+        path: ':gameId',
         component: GameEditComponent,
         pathMatch: 'full',
       },

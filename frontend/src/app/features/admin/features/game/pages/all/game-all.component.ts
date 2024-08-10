@@ -22,7 +22,7 @@ import {
   styleUrl: './game-all.component.css',
 })
 export class GameAllComponent implements OnInit {
-  @ViewChild('deleteGameAlertCloseButton', { static: false })
+  @ViewChild('deleteGameAlertCloseButton')
   deleteGameAlertCloseButton!: ElementRef<HTMLButtonElement>;
 
   private routeSub!: Subscription;

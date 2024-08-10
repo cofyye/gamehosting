@@ -31,7 +31,7 @@ import { SELECT_HTTP_RESPONSE } from '../../../../../../shared/stores/http/http.
   styleUrl: './location-all.component.css',
 })
 export class LocationAllComponent implements OnInit, OnDestroy {
-  @ViewChild('deleteLocationAlertCloseButton', { static: false })
+  @ViewChild('deleteLocationAlertCloseButton')
   deleteLocationAlertCloseButton!: ElementRef<HTMLButtonElement>;
 
   private routeSub!: Subscription;

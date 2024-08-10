@@ -5,6 +5,7 @@ import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { httpRequestInterceptor } from './shared/interceptors/http-request.interceptor';
+import { errorHandlingInterceptor } from './shared/interceptors/error-handling.interceptor';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ToasterComponent } from './shared/components/toaster/toaster.component';
@@ -38,7 +39,9 @@ import { httpReducer } from './shared/stores/http/http.reducer';
   ],
   providers: [
     ToasterService,
-    provideHttpClient(withInterceptors([httpRequestInterceptor])),
+    provideHttpClient(
+      withInterceptors([httpRequestInterceptor, errorHandlingInterceptor])
+    ),
   ],
   bootstrap: [AppComponent],
 })

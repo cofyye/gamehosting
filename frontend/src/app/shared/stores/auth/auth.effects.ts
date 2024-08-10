@@ -15,8 +15,6 @@ import {
 } from 'rxjs';
 import * as AuthActions from './auth.actions';
 import * as moment from 'moment-timezone';
-import { HttpErrorResponse } from '@angular/common/http';
-import { IAcceptResponse } from '../../../shared/models/response.model';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../../app.state';
 import { UtilsService } from '../../../shared/services/utils.service';
@@ -51,11 +49,7 @@ export class AuthEffects {
             return response;
           }),
           map(() => AuthActions.REGISTER_SUCCESS()),
-          catchError((err: HttpErrorResponse) => {
-            const error: IAcceptResponse = err.error as IAcceptResponse;
-
-            this._utilsService.handleErrorToaster(error);
-
+          catchError(() => {
             this._store.dispatch(STOP_LOADING({ key: 'REGISTER_BTN' }));
 
             return of(AuthActions.REGISTER_FAILURE({ error: '' }));
@@ -91,11 +85,7 @@ export class AuthEffects {
               },
             })
           ),
-          catchError((err: HttpErrorResponse) => {
-            const error: IAcceptResponse = err.error as IAcceptResponse;
-
-            this._utilsService.handleErrorToaster(error);
-
+          catchError(() => {
             this._store.dispatch(STOP_LOADING({ key: 'LOGIN_BTN' }));
 
             return of(AuthActions.LOGIN_FAILURE({ error: '' }));
@@ -199,11 +189,7 @@ export class AuthEffects {
             return response;
           }),
           map(() => AuthActions.FORGOT_PW_SUCCESS()),
-          catchError((err: HttpErrorResponse) => {
-            const error: IAcceptResponse = err.error as IAcceptResponse;
-
-            this._utilsService.handleErrorToaster(error);
-
+          catchError(() => {
             this._store.dispatch(STOP_LOADING({ key: 'FORGOT_PW_BTN' }));
 
             return of(AuthActions.FORGOT_PW_FAILURE({ error: '' }));

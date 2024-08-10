@@ -15,15 +15,4 @@ export class UtilsService {
       this._toasterService.error(response.message, 'Error');
     }
   }
-
-  public handleErrorToaster(error: IAcceptResponse): void {
-    if (error?.success === false) {
-      this._toasterService.error(error?.message, 'Error');
-    } else {
-      this._toasterService.error(
-        'An error occurred. Please report this to the administrator.',
-        'Error'
-      );
-    }
-  }
 }

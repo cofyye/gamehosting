@@ -41,8 +41,6 @@ export class LocationEffects {
           catchError((err: HttpErrorResponse) => {
             const response: IAcceptResponse = err.error as IAcceptResponse;
 
-            this._utilsService.handleErrorToaster(response);
-
             this._store.dispatch(STOP_LOADING({ key: 'ADD_LOCATION_BTN' }));
 
             return of(
@@ -81,8 +79,6 @@ export class LocationEffects {
           catchError((err: HttpErrorResponse) => {
             const response: IAcceptResponse = err.error as IAcceptResponse;
 
-            this._utilsService.handleErrorToaster(response);
-
             this._store.dispatch(STOP_LOADING({ key: 'DELETE_LOCATION_BTN' }));
             this._store.dispatch(
               HttpActions.SET_RESPONSE({ key: 'DELETE_LOCATION', response })
@@ -119,8 +115,6 @@ export class LocationEffects {
           }),
           catchError((err: HttpErrorResponse) => {
             const response: IAcceptResponse = err.error as IAcceptResponse;
-
-            this._utilsService.handleErrorToaster(response);
 
             this._store.dispatch(
               HttpActions.SET_FULL_RESPONSE({

@@ -26,13 +26,13 @@ export class GameEntity {
   @Column({ name: 'tag', nullable: false, unique: true, length: 20 })
   public tag: string;
 
-  @Column({
-    name: 'icon',
-    unique: true,
-    nullable: false,
-    length: 100,
-  })
-  public icon: string;
+  // @Column({
+  //   name: 'icon',
+  //   unique: true,
+  //   nullable: false,
+  //   length: 100,
+  // })
+  // public icon: string;
 
   @Column({
     name: 'start_port',

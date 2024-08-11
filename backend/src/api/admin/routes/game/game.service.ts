@@ -27,10 +27,26 @@ export class GameService {
     let filename = '';
 
     try {
-      if (!icon) {
+      // if (!icon) {
+      //   functions.throwHttpException(
+      //     false,
+      //     'The icon field must not be empty.',
+      //     HttpStatus.BAD_REQUEST,
+      //   );
+      // }
+
+      if (body.startPort >= body.endPort) {
         functions.throwHttpException(
           false,
-          'The icon field must not be empty.',
+          'Start port must not be greater than or equal to end port.',
+          HttpStatus.BAD_REQUEST,
+        );
+      }
+
+      if (body.slotMin >= body.slotMax) {
+        functions.throwHttpException(
+          false,
+          'Minimum slots must not be greater than or equal to maximum slots.',
           HttpStatus.BAD_REQUEST,
         );
       }
@@ -63,7 +79,7 @@ export class GameService {
       if (game?.tag === body.tag) {
         functions.throwHttpException(
           false,
-          'A game with this gamedig tag already exists.',
+          'A game with this tag already exists.',
           HttpStatus.CONFLICT,
         );
       }
@@ -77,17 +93,17 @@ export class GameService {
       game.slotMax = body.slotMax;
       game.description = body.description;
 
-      filename = await this._fileUploadService.uploadImage('game', icon);
+      // filename = await this._fileUploadService.uploadImage('game', icon);
 
-      if (!filename) {
-        functions.throwHttpException(
-          false,
-          'An error occurred while uploading the icon.',
-          HttpStatus.INTERNAL_SERVER_ERROR,
-        );
-      }
+      // if (!filename) {
+      //   functions.throwHttpException(
+      //     false,
+      //     'An error occurred while uploading the icon.',
+      //     HttpStatus.INTERNAL_SERVER_ERROR,
+      //   );
+      // }
 
-      game.icon = filename;
+      // game.icon = filename;
 
       await this._gameRepo.save(this._gameRepo.create(game));
     } catch (err) {
@@ -119,21 +135,21 @@ export class GameService {
       game.slotMax = body.slotMax;
       game.description = body.description;
 
-      if (icon) {
-        filename = await this._fileUploadService.uploadImage('game', icon);
+      // if (icon) {
+      //   filename = await this._fileUploadService.uploadImage('game', icon);
 
-        if (!filename) {
-          functions.throwHttpException(
-            false,
-            'An error occurred while uploading the icon.',
-            HttpStatus.INTERNAL_SERVER_ERROR,
-          );
-        }
+      //   if (!filename) {
+      //     functions.throwHttpException(
+      //       false,
+      //       'An error occurred while uploading the icon.',
+      //       HttpStatus.INTERNAL_SERVER_ERROR,
+      //     );
+      //   }
 
-        this._fileUploadService.deleteFile(game.icon);
+      //   this._fileUploadService.deleteFile(game.icon);
 
-        game.icon = filename;
-      }
+      //   game.icon = filename;
+      // }
 
       await this._gameRepo.save(game);
     } catch (err) {
@@ -215,7 +231,7 @@ export class GameService {
         );
       }
 
-      this._fileUploadService.deleteFile(game.icon);
+      // this._fileUploadService.deleteFile(game.icon);
     } catch (err) {
       functions.handleHttpException(
         err,

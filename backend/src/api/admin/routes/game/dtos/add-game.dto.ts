@@ -43,8 +43,8 @@ export class AddGameDto {
   @IsNotEmpty({ message: 'The end port field must not be empty.' })
   public readonly endPort: number;
 
-  @Max(100, {
-    message: 'The maximum value for the minimum slot must be 100.',
+  @Max(65535, {
+    message: 'The maximum value for the minimum slot must be 65535.',
   })
   @Min(1, {
     message: 'The minimum value for the minimum slot must be 1.',
@@ -53,8 +53,8 @@ export class AddGameDto {
   @IsNotEmpty({ message: 'The minimum slot field must not be empty.' })
   public readonly slotMin: number;
 
-  @Max(10000, {
-    message: 'The maximum value for the maximum slot must be 10000.',
+  @Max(65535, {
+    message: 'The maximum value for the maximum slot must be 65535.',
   })
   @Min(1, {
     message: 'The minimum value for the maximum slot must be 1.',

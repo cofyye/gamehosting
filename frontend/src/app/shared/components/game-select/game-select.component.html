@@ -1,0 +1,16 @@
+<select
+  (change)="onSelectionChange($event)"
+  [attr.data-hs-select]="hsSelectConfig"
+  class="hidden"
+  autocomplete="false"
+  id="game"
+>
+  <option value="">Choose</option>
+  <option
+    *ngFor="let game of games"
+    [value]="game.value"
+    [attr.data-hs-select-option]="game.optionConfig"
+  >
+    {{ game.label }}
+  </option>
+</select>

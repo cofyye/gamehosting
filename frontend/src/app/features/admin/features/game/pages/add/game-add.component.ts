@@ -13,6 +13,8 @@ import { START_LOADING } from '../../../../../../shared/stores/loader/loader.act
 import { imageSizeValidator } from '../../../../../../shared/validators/image-size.validator';
 import { imageExtensionValidator } from '../../../../../../shared/validators/image-extension.validator';
 import { environment } from '../../../../../../../environments/environment';
+import { HostBy } from '../../../../../../shared/enums/game.enum';
+import { ISelectedGame } from '../../../../../../shared/models/game.model';
 
 @Component({
   selector: 'app-game-add',
@@ -32,22 +34,44 @@ export class GameAddComponent implements OnInit, OnDestroy {
   ) {}
 
   public gameAddForm: FormGroup = this._fb.group({
-    country: new FormControl<string>('', [
+    name: new FormControl<string>('', [
       Validators.required,
       Validators.minLength(2),
       Validators.maxLength(30),
-      Validators.pattern('^[a-zA-Z ]+'),
     ]),
-    town: new FormControl<string>('', [
+    tag: new FormControl<string>('', [
       Validators.required,
       Validators.minLength(2),
-      Validators.maxLength(30),
-      Validators.pattern('^[a-zA-Z ]+'),
+      Validators.maxLength(20),
     ]),
-    icon: new FormControl<File | null>(null, [
+    startPort: new FormControl<number>(0, [
       Validators.required,
-      imageExtensionValidator(),
-      imageSizeValidator(),
+      Validators.min(1),
+      Validators.max(65535),
+    ]),
+    endPort: new FormControl<number>(0, [
+      Validators.required,
+      Validators.min(1),
+      Validators.max(65535),
+    ]),
+    slotMin: new FormControl<number>(0, [
+      Validators.required,
+      Validators.min(1),
+      Validators.max(65535),
+    ]),
+    slotMax: new FormControl<number>(0, [
+      Validators.required,
+      Validators.min(1),
+      Validators.max(65535),
+    ]),
+    hostBy: new FormControl<HostBy>(HostBy.CUSTOM_RESOURCES, [
+      Validators.required,
+    ]),
+    banner: new FormControl<File | null>(null, [Validators.required]),
+    description: new FormControl<string>('', [
+      Validators.required,
+      Validators.min(10),
+      Validators.max(2500),
     ]),
   });
 
@@ -92,6 +116,31 @@ export class GameAddComponent implements OnInit, OnDestroy {
       });
       this.gameAddForm.get('icon')?.markAsTouched();
     }
+  }
+
+  public onGameSelected(selectedGame: ISelectedGame): void {
+    if (selectedGame.value) {
+      this.gameAddForm.patchValue({
+        name: selectedGame.label,
+      });
+      this.gameAddForm.patchValue({
+        tag: selectedGame.value,
+      });
+
+      this.gameAddForm.get('name')?.markAsTouched();
+    } else {
+      this.gameAddForm.patchValue({
+        name: '',
+      });
+      this.gameAddForm.patchValue({
+        tag: '',
+      });
+      this.gameAddForm.get('name')?.markAsTouched();
+    }
+  }
+
+  public onGameBlur(): void {
+    this.gameAddForm.get('name')?.markAsTouched();
   }
 
   public onGameAdd(): void {

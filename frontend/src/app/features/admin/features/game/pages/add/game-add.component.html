@@ -27,106 +27,38 @@
               <form [formGroup]="gameAddForm">
                 <div class="grid gap-y-4">
                   <div class="flex gap-4">
-                    <!-- Form Group for Country -->
+                    <!-- Form Group for Name -->
                     <div class="flex-1">
-                      <div class="relative">
-                        <input
-                          type="text"
-                          id="hs-floating-input-country-value"
-                          class="peer p-4 block w-full border-gray-200 rounded-lg text-sm placeholder:text-transparent focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none focus:pt-6 focus:pb-2 [&amp;:not(:placeholder-shown)]:pt-6 [&amp;:not(:placeholder-shown)]:pb-2 autofill:pt-6 autofill:pb-2 pr-10"
-                          placeholder=""
-                          required
-                          formControlName="country"
-                          autocomplete="false"
-                          [ngClass]="
-                            gameAddForm.controls['country'].invalid &&
-                            (gameAddForm.controls['country'].dirty ||
-                              gameAddForm.controls['country'].touched)
-                              ? 'border-red-500 focus:border-red-500 focus:ring-red-500'
-                              : gameAddForm.controls['country'].valid
-                              ? 'border-teal-500 focus:border-teal-500 focus:ring-teal-500'
-                              : ''
-                          "
-                        />
-                        <label
-                          for="hs-floating-input-country-value"
-                          class="absolute top-0 start-0 p-4 h-full text-sm truncate pointer-events-none transition ease-in-out duration-100 border border-transparent origin-[0_0] peer-disabled:opacity-50 peer-disabled:pointer-events-none peer-focus:scale-90 peer-focus:translate-x-0.5 peer-focus:-translate-y-1.5 peer-focus:text-gray-500 peer-[:not(:placeholder-shown)]:scale-90 peer-[:not(:placeholder-shown)]:translate-x-0.5 peer-[:not(:placeholder-shown)]:-translate-y-1.5 peer-[:not(:placeholder-shown)]:text-gray-500"
-                          >Country</label
-                        >
-
-                        <!-- Failure Input -->
-                        <div
-                          class="absolute inset-y-0 end-0 flex items-center pointer-events-none pe-3"
-                          *ngIf="
-                            gameAddForm.controls['country'].invalid &&
-                            (gameAddForm.controls['country'].dirty ||
-                              gameAddForm.controls['country'].touched)
-                          "
-                        >
-                          <svg
-                            class="shrink-0 size-4 text-red-500"
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="24"
-                            height="24"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="3"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                          >
-                            <circle cx="12" cy="12" r="10"></circle>
-                            <line x1="12" x2="12" y1="8" y2="12"></line>
-                            <line x1="12" x2="12.01" y1="16" y2="16"></line>
-                          </svg>
-                        </div>
-
-                        <!-- Success Input -->
-                        <div
-                          class="absolute inset-y-0 end-0 flex items-center pointer-events-none pe-3"
-                          *ngIf="
-                            gameAddForm.controls['country'].invalid &&
-                            (gameAddForm.controls['country'].dirty ||
-                              gameAddForm.controls['country'].touched)
-                              ? false
-                              : gameAddForm.controls['country'].valid
-                              ? true
-                              : false
-                          "
-                        >
-                          <svg
-                            class="shrink-0 size-4 text-teal-500"
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="24"
-                            height="24"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="3"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                          >
-                            <polyline points="20 6 9 17 4 12"></polyline>
-                          </svg>
-                        </div>
-                      </div>
+                      <app-game-select
+                        (selectionChange)="onGameSelected($event)"
+                        (selectionBlur)="onGameBlur()"
+                        autocomplete="false"
+                        [ngClass]="
+                          gameAddForm.controls['name'].invalid &&
+                          (gameAddForm.controls['name'].dirty ||
+                            gameAddForm.controls['name'].touched)
+                            ? 'border-red-500 focus:border-red-500 focus:ring-red-500'
+                            : gameAddForm.controls['name'].valid
+                            ? 'border-teal-500 focus:border-teal-500 focus:ring-teal-500'
+                            : ''
+                        "
+                      ></app-game-select>
                       <p
                         class="text-sm text-red-600 mt-2"
                         *ngIf="
-                          gameAddForm.controls['country'].invalid &&
-                          (gameAddForm.controls['country'].dirty ||
-                            gameAddForm.controls['country'].touched)
+                          gameAddForm.controls['name'].invalid &&
+                          (gameAddForm.controls['name'].dirty ||
+                            gameAddForm.controls['name'].touched)
                         "
                       >
                         {{
-                          gameAddForm.controls['country'].errors?.['required'] && 'The country field must not be empty.' ||
-                          gameAddForm.controls['country'].errors?.['minlength'] && 'The country must contain at least 2 characters.' ||
-                          gameAddForm.controls['country'].errors?.['maxlength'] && 'The country must contain a maximum of 30 characters.' ||
-                          gameAddForm.controls['country'].errors?.['pattern'] && 'The country must contain only characters.'
+                          gameAddForm.controls['name'].errors?.['required'] && 'The name field must not be empty.' ||
+                          gameAddForm.controls['name'].errors?.['minlength'] && 'The name must contain at least 2 characters.' ||
+                          gameAddForm.controls['name'].errors?.['maxlength'] && 'The name must contain a maximum of 30 characters.'
                         }}
                       </p>
                     </div>
-                    <!-- End Form Group for Country -->
+                    <!-- End Form Group for Name -->
 
                     <!-- Form Group for Town -->
                     <div class="flex-1">
@@ -137,31 +69,31 @@
                           class="peer p-4 block w-full border-gray-200 rounded-lg text-sm placeholder:text-transparent focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none focus:pt-6 focus:pb-2 [&amp;:not(:placeholder-shown)]:pt-6 [&amp;:not(:placeholder-shown)]:pb-2 autofill:pt-6 autofill:pb-2"
                           placeholder=""
                           required
-                          formControlName="town"
+                          formControlName="description"
                           autocomplete="false"
                           [ngClass]="
-                            gameAddForm.controls['town'].invalid &&
-                            (gameAddForm.controls['town'].dirty ||
-                              gameAddForm.controls['town'].touched)
+                            gameAddForm.controls['description'].invalid &&
+                            (gameAddForm.controls['description'].dirty ||
+                              gameAddForm.controls['description'].touched)
                               ? 'border-red-500 focus:border-red-500 focus:ring-red-500'
-                              : gameAddForm.controls['town'].valid
+                              : gameAddForm.controls['description'].valid
                               ? 'border-teal-500 focus:border-teal-500 focus:ring-teal-500'
                               : ''
                           "
                         />
                         <label
-                          for="hs-floating-input-town-value"
+                          for="hs-floating-input-description-value"
                           class="absolute top-0 start-0 p-4 h-full text-sm truncate pointer-events-none transition ease-in-out duration-100 border border-transparent origin-[0_0] peer-disabled:opacity-50 peer-disabled:pointer-events-none peer-focus:scale-90 peer-focus:translate-x-0.5 peer-focus:-translate-y-1.5 peer-focus:text-gray-500 peer-[:not(:placeholder-shown)]:scale-90 peer-[:not(:placeholder-shown)]:translate-x-0.5 peer-[:not(:placeholder-shown)]:-translate-y-1.5 peer-[:not(:placeholder-shown)]:text-gray-500"
-                          >Town</label
+                          >description</label
                         >
 
                         <!-- Failure Input -->
                         <div
                           class="absolute inset-y-0 end-0 flex items-center pointer-events-none pe-3"
                           *ngIf="
-                            gameAddForm.controls['town'].invalid &&
-                            (gameAddForm.controls['town'].dirty ||
-                              gameAddForm.controls['town'].touched)
+                            gameAddForm.controls['description'].invalid &&
+                            (gameAddForm.controls['description'].dirty ||
+                              gameAddForm.controls['description'].touched)
                           "
                         >
                           <svg
@@ -186,11 +118,11 @@
                         <div
                           class="absolute inset-y-0 end-0 flex items-center pointer-events-none pe-3"
                           *ngIf="
-                            gameAddForm.controls['town'].invalid &&
-                            (gameAddForm.controls['town'].dirty ||
-                              gameAddForm.controls['town'].touched)
+                            gameAddForm.controls['description'].invalid &&
+                            (gameAddForm.controls['description'].dirty ||
+                              gameAddForm.controls['description'].touched)
                               ? false
-                              : gameAddForm.controls['town'].valid
+                              : gameAddForm.controls['description'].valid
                               ? true
                               : false
                           "
@@ -214,23 +146,23 @@
                       <p
                         class="text-sm text-red-600 mt-2"
                         *ngIf="
-                          gameAddForm.controls['town'].invalid &&
-                          (gameAddForm.controls['town'].dirty ||
-                            gameAddForm.controls['town'].touched)
+                          gameAddForm.controls['description'].invalid &&
+                          (gameAddForm.controls['description'].dirty ||
+                            gameAddForm.controls['description'].touched)
                         "
                       >
                         {{
-                          gameAddForm.controls['town'].errors?.['required'] && 'The town field must not be empty.' ||
-                          gameAddForm.controls['town'].errors?.['minlength'] && 'The town must contain at least 2 characters.' ||
-                          gameAddForm.controls['town'].errors?.['maxlength'] && 'The town must contain a maximum of 30 characters.' ||
-                          gameAddForm.controls['town'].errors?.['pattern'] && 'The town must contain only characters.'
+                          gameAddForm.controls['description'].errors?.['required'] && 'The description field must not be empty.' ||
+                          gameAddForm.controls['description'].errors?.['minlength'] && 'The description must contain at least 2 characters.' ||
+                          gameAddForm.controls['description'].errors?.['maxlength'] && 'The description must contain a maximum of 30 characters.' ||
+                          gameAddForm.controls['description'].errors?.['pattern'] && 'The description must contain only characters.'
                         }}
                       </p>
                     </div>
-                    <!-- End Form Group for Town -->
+                    <!-- End Form Group for Description -->
                   </div>
 
-                  <!-- Form Group for Country Icon -->
+                  <!-- Form Group for Country Banner -->
                   <div>
                     <div
                       id="dismiss-alert"
@@ -302,11 +234,11 @@
                           class="relative flex w-full border overflow-hidden border-gray-200 shadow-sm rounded-lg text-sm focus:outline-none focus:z-10 focus:border-blue-500 disabled:opacity-50 disabled:pointer-events-none"
                           (click)="fileInput.click()"
                           [ngClass]="
-                            gameAddForm.controls['icon'].invalid &&
-                            (gameAddForm.controls['icon'].dirty ||
-                              gameAddForm.controls['icon'].touched)
+                            gameAddForm.controls['banner'].invalid &&
+                            (gameAddForm.controls['banner'].dirty ||
+                              gameAddForm.controls['banner'].touched)
                               ? 'border-red-500 focus:border-red-500 focus:ring-red-500'
-                              : gameAddForm.controls['icon'].valid
+                              : gameAddForm.controls['banner'].valid
                               ? 'border-teal-500 focus:border-teal-500 focus:ring-teal-500'
                               : ''
                           "
@@ -326,9 +258,9 @@
                         <div
                           class="absolute inset-y-0 end-0 flex items-center pointer-events-none pe-3"
                           *ngIf="
-                            gameAddForm.controls['icon'].invalid &&
-                            (gameAddForm.controls['icon'].dirty ||
-                              gameAddForm.controls['icon'].touched)
+                            gameAddForm.controls['banner'].invalid &&
+                            (gameAddForm.controls['banner'].dirty ||
+                              gameAddForm.controls['banner'].touched)
                           "
                         >
                           <svg
@@ -353,11 +285,11 @@
                         <div
                           class="absolute inset-y-0 end-0 flex items-center pointer-events-none pe-3"
                           *ngIf="
-                            gameAddForm.controls['icon'].invalid &&
-                            (gameAddForm.controls['icon'].dirty ||
-                              gameAddForm.controls['icon'].touched)
+                            gameAddForm.controls['banner'].invalid &&
+                            (gameAddForm.controls['banner'].dirty ||
+                              gameAddForm.controls['banner'].touched)
                               ? false
-                              : gameAddForm.controls['icon'].valid
+                              : gameAddForm.controls['banner'].valid
                               ? true
                               : false
                           "
@@ -379,7 +311,7 @@
                         </div>
                       </div>
                       <input
-                        id="hs-floating-input-icon-value"
+                        id="hs-floating-input-banner-value"
                         type="file"
                         (change)="onIconChange($event)"
                         #fileInput
@@ -391,19 +323,19 @@
                     <p
                       class="text-sm text-red-600 mt-2"
                       *ngIf="
-                        gameAddForm.controls['icon'].invalid &&
-                        (gameAddForm.controls['icon'].dirty ||
-                          gameAddForm.controls['icon'].touched)
+                        gameAddForm.controls['banner'].invalid &&
+                        (gameAddForm.controls['banner'].dirty ||
+                          gameAddForm.controls['banner'].touched)
                       "
                     >
                       {{
-                        gameAddForm.controls['icon'].errors?.['required'] && 'The icon field must not be empty.' ||
-                        gameAddForm.controls['icon'].errors?.['imageExtension'] && 'The image extension of ' + fileName + ' is not supported.' ||
-                        gameAddForm.controls['icon'].errors?.['imageSize'] && 'The size of your image ' + fileName + ' is ' + gameAddForm.controls['icon'].errors?.['imageSize'].actualSize + ', the maximum size is ' + gameAddForm.controls['icon'].errors?.['imageSize'].maxSize + '.'
+                        gameAddForm.controls['banner'].errors?.['required'] && 'The banner field must not be empty.' ||
+                        gameAddForm.controls['banner'].errors?.['imageExtension'] && 'The image extension of ' + fileName + ' is not supported.' ||
+                        gameAddForm.controls['banner'].errors?.['imageSize'] && 'The size of your image ' + fileName + ' is ' + gameAddForm.controls['banner'].errors?.['imageSize'].actualSize + ', the maximum size is ' + gameAddForm.controls['banner'].errors?.['imageSize'].maxSize + '.'
                       }}
                     </p>
                   </div>
-                  <!-- End Form Group for Country Icon -->
+                  <!-- End Form Group for Country banner -->
 
                   <!-- Buttons -->
                   <div class="inline-flex justify-end gap-x-2">

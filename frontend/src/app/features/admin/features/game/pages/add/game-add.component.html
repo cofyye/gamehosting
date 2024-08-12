@@ -60,109 +60,423 @@
                     </div>
                     <!-- End Form Group for Name -->
 
-                    <!-- Form Group for Town -->
+                    <!-- Form Group for HostBy -->
                     <div class="flex-1">
                       <div class="relative">
-                        <input
-                          type="text"
-                          id="hs-floating-input-town-value"
-                          class="peer p-4 block w-full border-gray-200 rounded-lg text-sm placeholder:text-transparent focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none focus:pt-6 focus:pb-2 [&amp;:not(:placeholder-shown)]:pt-6 [&amp;:not(:placeholder-shown)]:pb-2 autofill:pt-6 autofill:pb-2"
-                          placeholder=""
-                          required
-                          formControlName="description"
-                          autocomplete="false"
-                          [ngClass]="
-                            gameAddForm.controls['description'].invalid &&
-                            (gameAddForm.controls['description'].dirty ||
-                              gameAddForm.controls['description'].touched)
-                              ? 'border-red-500 focus:border-red-500 focus:ring-red-500'
-                              : gameAddForm.controls['description'].valid
-                              ? 'border-teal-500 focus:border-teal-500 focus:ring-teal-500'
-                              : ''
-                          "
-                        />
-                        <label
-                          for="hs-floating-input-description-value"
-                          class="absolute top-0 start-0 p-4 h-full text-sm truncate pointer-events-none transition ease-in-out duration-100 border border-transparent origin-[0_0] peer-disabled:opacity-50 peer-disabled:pointer-events-none peer-focus:scale-90 peer-focus:translate-x-0.5 peer-focus:-translate-y-1.5 peer-focus:text-gray-500 peer-[:not(:placeholder-shown)]:scale-90 peer-[:not(:placeholder-shown)]:translate-x-0.5 peer-[:not(:placeholder-shown)]:-translate-y-1.5 peer-[:not(:placeholder-shown)]:text-gray-500"
-                          >description</label
-                        >
-
-                        <!-- Failure Input -->
-                        <div
-                          class="absolute inset-y-0 end-0 flex items-center pointer-events-none pe-3"
-                          *ngIf="
-                            gameAddForm.controls['description'].invalid &&
-                            (gameAddForm.controls['description'].dirty ||
-                              gameAddForm.controls['description'].touched)
-                          "
-                        >
-                          <svg
-                            class="shrink-0 size-4 text-red-500"
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="24"
-                            height="24"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="3"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
+                        <div>
+                          <label
+                            for="hs-floating-input-hostby-value"
+                            class="block text-sm font-medium mb-2 dark:text-white"
+                            >Host By</label
                           >
-                            <circle cx="12" cy="12" r="10"></circle>
-                            <line x1="12" x2="12" y1="8" y2="12"></line>
-                            <line x1="12" x2="12.01" y1="16" y2="16"></line>
-                          </svg>
-                        </div>
+                          <div class="relative">
+                            <select
+                              id="hs-floating-input-hostby-value"
+                              class="py-3 px-4 pe-16 block w-full border-red-500 rounded-lg text-sm focus:border-red-500 focus:ring-red-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-800 dark:border-neutral-700 dark:text-neutral-400 dark:focus:ring-neutral-600"
+                              required
+                              formControlName="hostBy"
+                              [ngClass]="
+                                gameAddForm.controls['hostBy'].invalid &&
+                                (gameAddForm.controls['hostBy'].dirty ||
+                                  gameAddForm.controls['hostBy'].touched)
+                                  ? 'border-red-500 focus:border-red-500 focus:ring-red-500'
+                                  : gameAddForm.controls['hostBy'].valid
+                                  ? 'border-teal-500 focus:border-teal-500 focus:ring-teal-500'
+                                  : ''
+                              "
+                            >
+                              <option
+                                selected
+                                [value]="hostBy.CUSTOM_RESOURCES"
+                              >
+                                Custom Resources
+                              </option>
+                              <option [value]="hostBy.SLOT">Slot</option>
+                            </select>
+                          </div>
+                          <!-- Failure Input -->
+                          <div
+                            class="absolute inset-y-0 end-0 flex items-center pointer-events-none pe-3"
+                            *ngIf="
+                              gameAddForm.controls['hostBy'].invalid &&
+                              (gameAddForm.controls['hostBy'].dirty ||
+                                gameAddForm.controls['hostBy'].touched)
+                            "
+                          >
+                            <svg
+                              class="shrink-0 size-4 text-red-500"
+                              xmlns="http://www.w3.org/2000/svg"
+                              width="24"
+                              height="24"
+                              viewBox="0 0 24 24"
+                              fill="none"
+                              stroke="currentColor"
+                              stroke-width="3"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                            >
+                              <circle cx="12" cy="12" r="10"></circle>
+                              <line x1="12" x2="12" y1="8" y2="12"></line>
+                              <line x1="12" x2="12.01" y1="16" y2="16"></line>
+                            </svg>
+                          </div>
 
-                        <!-- Success Input -->
-                        <div
-                          class="absolute inset-y-0 end-0 flex items-center pointer-events-none pe-3"
+                          <!-- Success Input -->
+                          <div
+                            class="absolute inset-y-0 end-0 flex items-center pointer-events-none pe-3"
+                            *ngIf="
+                              gameAddForm.controls['hostBy'].invalid &&
+                              (gameAddForm.controls['hostBy'].dirty ||
+                                gameAddForm.controls['hostBy'].touched)
+                                ? false
+                                : gameAddForm.controls['hostBy'].valid
+                                ? true
+                                : false
+                            "
+                          >
+                            <svg
+                              class="shrink-0 size-4 text-teal-500"
+                              xmlns="http://www.w3.org/2000/svg"
+                              width="24"
+                              height="24"
+                              viewBox="0 0 24 24"
+                              fill="none"
+                              stroke="currentColor"
+                              stroke-width="3"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                            >
+                              <polyline points="20 6 9 17 4 12"></polyline>
+                            </svg>
+                          </div>
+                        </div>
+                        <p
+                          class="text-sm text-red-600 mt-2"
                           *ngIf="
-                            gameAddForm.controls['description'].invalid &&
-                            (gameAddForm.controls['description'].dirty ||
-                              gameAddForm.controls['description'].touched)
-                              ? false
-                              : gameAddForm.controls['description'].valid
-                              ? true
-                              : false
+                            gameAddForm.controls['hostBy'].invalid &&
+                            (gameAddForm.controls['hostBy'].dirty ||
+                              gameAddForm.controls['hostBy'].touched)
                           "
                         >
-                          <svg
-                            class="shrink-0 size-4 text-teal-500"
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="24"
-                            height="24"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="3"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                          >
-                            <polyline points="20 6 9 17 4 12"></polyline>
-                          </svg>
-                        </div>
+                          {{
+                            gameAddForm.controls['hostBy'].errors?.['required'] && 'The host by field must not be empty.'
+                          }}
+                        </p>
                       </div>
-                      <p
-                        class="text-sm text-red-600 mt-2"
-                        *ngIf="
-                          gameAddForm.controls['description'].invalid &&
-                          (gameAddForm.controls['description'].dirty ||
-                            gameAddForm.controls['description'].touched)
-                        "
-                      >
-                        {{
-                          gameAddForm.controls['description'].errors?.['required'] && 'The description field must not be empty.' ||
-                          gameAddForm.controls['description'].errors?.['minlength'] && 'The description must contain at least 2 characters.' ||
-                          gameAddForm.controls['description'].errors?.['maxlength'] && 'The description must contain a maximum of 30 characters.' ||
-                          gameAddForm.controls['description'].errors?.['pattern'] && 'The description must contain only characters.'
-                        }}
-                      </p>
+                      <!-- End Form Group for HostBy -->
                     </div>
-                    <!-- End Form Group for Description -->
                   </div>
 
-                  <!-- Form Group for Country Banner -->
+                  <div class="grid gap-y-4">
+                    <div class="flex gap-4">
+                      <!-- Form Group for Start Port -->
+                      <div class="flex-1">
+                        <div class="relative">
+                          <input
+                            type="text"
+                            id="hs-floating-input-startport-value"
+                            class="peer p-4 block w-full border-gray-200 rounded-lg text-sm placeholder:text-transparent focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none focus:pt-6 focus:pb-2 [&amp;:not(:placeholder-shown)]:pt-6 [&amp;:not(:placeholder-shown)]:pb-2 autofill:pt-6 autofill:pb-2"
+                            placeholder=""
+                            required
+                            formControlName="startPort"
+                            autocomplete="false"
+                            [ngClass]="
+                              gameAddForm.controls['startPort'].invalid &&
+                              (gameAddForm.controls['startPort'].dirty ||
+                                gameAddForm.controls['startPort'].touched)
+                                ? 'border-red-500 focus:border-red-500 focus:ring-red-500'
+                                : gameAddForm.controls['startPort'].valid
+                                ? 'border-teal-500 focus:border-teal-500 focus:ring-teal-500'
+                                : ''
+                            "
+                          />
+                          <label
+                            for="hs-floating-input-startport-value"
+                            class="absolute top-0 start-0 p-4 h-full text-sm truncate pointer-events-none transition ease-in-out duration-100 border border-transparent origin-[0_0] peer-disabled:opacity-50 peer-disabled:pointer-events-none peer-focus:scale-90 peer-focus:translate-x-0.5 peer-focus:-translate-y-1.5 peer-focus:text-gray-500 peer-[:not(:placeholder-shown)]:scale-90 peer-[:not(:placeholder-shown)]:translate-x-0.5 peer-[:not(:placeholder-shown)]:-translate-y-1.5 peer-[:not(:placeholder-shown)]:text-gray-500"
+                            >Start Port</label
+                          >
+
+                          <!-- Failure Input -->
+                          <div
+                            class="absolute inset-y-0 end-0 flex items-center pointer-events-none pe-3"
+                            *ngIf="
+                              gameAddForm.controls['startPort'].invalid &&
+                              (gameAddForm.controls['startPort'].dirty ||
+                                gameAddForm.controls['startPort'].touched)
+                            "
+                          >
+                            <svg
+                              class="shrink-0 size-4 text-red-500"
+                              xmlns="http://www.w3.org/2000/svg"
+                              width="24"
+                              height="24"
+                              viewBox="0 0 24 24"
+                              fill="none"
+                              stroke="currentColor"
+                              stroke-width="3"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                            >
+                              <circle cx="12" cy="12" r="10"></circle>
+                              <line x1="12" x2="12" y1="8" y2="12"></line>
+                              <line x1="12" x2="12.01" y1="16" y2="16"></line>
+                            </svg>
+                          </div>
+
+                          <!-- Success Input -->
+                          <div
+                            class="absolute inset-y-0 end-0 flex items-center pointer-events-none pe-3"
+                            *ngIf="
+                              gameAddForm.controls['startPort'].invalid &&
+                              (gameAddForm.controls['startPort'].dirty ||
+                                gameAddForm.controls['startPort'].touched)
+                                ? false
+                                : gameAddForm.controls['startPort'].valid
+                                ? true
+                                : false
+                            "
+                          >
+                            <svg
+                              class="shrink-0 size-4 text-teal-500"
+                              xmlns="http://www.w3.org/2000/svg"
+                              width="24"
+                              height="24"
+                              viewBox="0 0 24 24"
+                              fill="none"
+                              stroke="currentColor"
+                              stroke-width="3"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                            >
+                              <polyline points="20 6 9 17 4 12"></polyline>
+                            </svg>
+                          </div>
+                        </div>
+                        <p
+                          class="text-sm text-red-600 mt-2"
+                          *ngIf="
+                            gameAddForm.controls['startPort'].invalid &&
+                            (gameAddForm.controls['startPort'].dirty ||
+                              gameAddForm.controls['startPort'].touched)
+                          "
+                        >
+                          {{
+                            gameAddForm.controls['startPort'].errors?.['required'] && 'The start port field must not be empty.' ||
+                            gameAddForm.controls['startPort'].errors?.['min'] && 'The minimum value for the start port must be 1.' ||
+                            gameAddForm.controls['startPort'].errors?.['max'] && 'The maximum value for the start port must be 65535.' ||
+                            gameAddForm.controls['startPort'].errors?.['pattern'] && 'The start port must be in numeric format.'
+                          }}
+                        </p>
+                      </div>
+                      <!-- End Form Group for Start Port -->
+
+                      <!-- Form Group for End Port -->
+                      <div class="flex-1">
+                        <div class="relative">
+                          <input
+                            type="text"
+                            id="hs-floating-input-endport-value"
+                            class="peer p-4 block w-full border-gray-200 rounded-lg text-sm placeholder:text-transparent focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none focus:pt-6 focus:pb-2 [&amp;:not(:placeholder-shown)]:pt-6 [&amp;:not(:placeholder-shown)]:pb-2 autofill:pt-6 autofill:pb-2"
+                            placeholder=""
+                            required
+                            formControlName="endPort"
+                            autocomplete="false"
+                            [ngClass]="
+                              gameAddForm.controls['endPort'].invalid &&
+                              (gameAddForm.controls['endPort'].dirty ||
+                                gameAddForm.controls['endPort'].touched)
+                                ? 'border-red-500 focus:border-red-500 focus:ring-red-500'
+                                : gameAddForm.controls['endPort'].valid
+                                ? 'border-teal-500 focus:border-teal-500 focus:ring-teal-500'
+                                : ''
+                            "
+                          />
+                          <label
+                            for="hs-floating-input-endport-value"
+                            class="absolute top-0 start-0 p-4 h-full text-sm truncate pointer-events-none transition ease-in-out duration-100 border border-transparent origin-[0_0] peer-disabled:opacity-50 peer-disabled:pointer-events-none peer-focus:scale-90 peer-focus:translate-x-0.5 peer-focus:-translate-y-1.5 peer-focus:text-gray-500 peer-[:not(:placeholder-shown)]:scale-90 peer-[:not(:placeholder-shown)]:translate-x-0.5 peer-[:not(:placeholder-shown)]:-translate-y-1.5 peer-[:not(:placeholder-shown)]:text-gray-500"
+                            >End Port</label
+                          >
+
+                          <!-- Failure Input -->
+                          <div
+                            class="absolute inset-y-0 end-0 flex items-center pointer-events-none pe-3"
+                            *ngIf="
+                              gameAddForm.controls['endPort'].invalid &&
+                              (gameAddForm.controls['endPort'].dirty ||
+                                gameAddForm.controls['endPort'].touched)
+                            "
+                          >
+                            <svg
+                              class="shrink-0 size-4 text-red-500"
+                              xmlns="http://www.w3.org/2000/svg"
+                              width="24"
+                              height="24"
+                              viewBox="0 0 24 24"
+                              fill="none"
+                              stroke="currentColor"
+                              stroke-width="3"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                            >
+                              <circle cx="12" cy="12" r="10"></circle>
+                              <line x1="12" x2="12" y1="8" y2="12"></line>
+                              <line x1="12" x2="12.01" y1="16" y2="16"></line>
+                            </svg>
+                          </div>
+
+                          <!-- Success Input -->
+                          <div
+                            class="absolute inset-y-0 end-0 flex items-center pointer-events-none pe-3"
+                            *ngIf="
+                              gameAddForm.controls['endPort'].invalid &&
+                              (gameAddForm.controls['endPort'].dirty ||
+                                gameAddForm.controls['endPort'].touched)
+                                ? false
+                                : gameAddForm.controls['endPort'].valid
+                                ? true
+                                : false
+                            "
+                          >
+                            <svg
+                              class="shrink-0 size-4 text-teal-500"
+                              xmlns="http://www.w3.org/2000/svg"
+                              width="24"
+                              height="24"
+                              viewBox="0 0 24 24"
+                              fill="none"
+                              stroke="currentColor"
+                              stroke-width="3"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                            >
+                              <polyline points="20 6 9 17 4 12"></polyline>
+                            </svg>
+                          </div>
+                        </div>
+                        <p
+                          class="text-sm text-red-600 mt-2"
+                          *ngIf="
+                            gameAddForm.controls['endPort'].invalid &&
+                            (gameAddForm.controls['endPort'].dirty ||
+                              gameAddForm.controls['endPort'].touched)
+                          "
+                        >
+                          {{
+                            gameAddForm.controls['endPort'].errors?.['required'] && 'The end port field must not be empty.' ||
+                            gameAddForm.controls['endPort'].errors?.['min'] && 'The minimum value for the end port must be 1.' ||
+                            gameAddForm.controls['endPort'].errors?.['max'] && 'The maximum value for the end port must be 65535.' ||
+                            gameAddForm.controls['endPort'].errors?.['pattern'] && 'The end port must be in numeric format.'
+                          }}
+                        </p>
+                      </div>
+                      <!-- End Form Group for End Port -->
+                    </div>
+                  </div>
+
+                  <div class="grid gap-y-4">
+                    <div class="flex gap-4">
+                      <!-- Form Group for Description -->
+                      <div class="flex-1">
+                        <div class="relative">
+                          <textarea
+                            id="hs-floating-textarea-description-value"
+                            class="peer p-4 block w-full border-gray-200 rounded-lg text-sm placeholder:text-transparent focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none focus:pt-6 focus:pb-2 [&amp;:not(:placeholder-shown)]:pt-6 [&amp;:not(:placeholder-shown)]:pb-2 autofill:pt-6 autofill:pb-2"
+                            placeholder=""
+                            required
+                            formControlName="description"
+                            autocomplete="false"
+                            [ngClass]="
+                              gameAddForm.controls['description'].invalid &&
+                              (gameAddForm.controls['description'].dirty ||
+                                gameAddForm.controls['description'].touched)
+                                ? 'border-red-500 focus:border-red-500 focus:ring-red-500'
+                                : gameAddForm.controls['description'].valid
+                                ? 'border-teal-500 focus:border-teal-500 focus:ring-teal-500'
+                                : ''
+                            "
+                          ></textarea>
+                          <label
+                            for="hs-floating-textarea-description-value"
+                            class="absolute top-0 start-0 p-4 h-full text-sm truncate pointer-events-none transition ease-in-out duration-100 border border-transparent origin-[0_0] peer-disabled:opacity-50 peer-disabled:pointer-events-none peer-focus:scale-90 peer-focus:translate-x-0.5 peer-focus:-translate-y-1.5 peer-focus:text-gray-500 peer-[:not(:placeholder-shown)]:scale-90 peer-[:not(:placeholder-shown)]:translate-x-0.5 peer-[:not(:placeholder-shown)]:-translate-y-1.5 peer-[:not(:placeholder-shown)]:text-gray-500"
+                            >Description</label
+                          >
+
+                          <!-- Failure Input -->
+                          <div
+                            class="absolute inset-y-0 end-0 flex items-center pointer-events-none pe-3"
+                            *ngIf="
+                              gameAddForm.controls['description'].invalid &&
+                              (gameAddForm.controls['description'].dirty ||
+                                gameAddForm.controls['description'].touched)
+                            "
+                          >
+                            <svg
+                              class="shrink-0 size-4 text-red-500"
+                              xmlns="http://www.w3.org/2000/svg"
+                              width="24"
+                              height="24"
+                              viewBox="0 0 24 24"
+                              fill="none"
+                              stroke="currentColor"
+                              stroke-width="3"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                            >
+                              <circle cx="12" cy="12" r="10"></circle>
+                              <line x1="12" x2="12" y1="8" y2="12"></line>
+                              <line x1="12" x2="12.01" y1="16" y2="16"></line>
+                            </svg>
+                          </div>
+
+                          <!-- Success Input -->
+                          <div
+                            class="absolute inset-y-0 end-0 flex items-center pointer-events-none pe-3"
+                            *ngIf="
+                              gameAddForm.controls['description'].invalid &&
+                              (gameAddForm.controls['description'].dirty ||
+                                gameAddForm.controls['description'].touched)
+                                ? false
+                                : gameAddForm.controls['description'].valid
+                                ? true
+                                : false
+                            "
+                          >
+                            <svg
+                              class="shrink-0 size-4 text-teal-500"
+                              xmlns="http://www.w3.org/2000/svg"
+                              width="24"
+                              height="24"
+                              viewBox="0 0 24 24"
+                              fill="none"
+                              stroke="currentColor"
+                              stroke-width="3"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                            >
+                              <polyline points="20 6 9 17 4 12"></polyline>
+                            </svg>
+                          </div>
+                        </div>
+                        <p
+                          class="text-sm text-red-600 mt-2"
+                          *ngIf="
+                            gameAddForm.controls['description'].invalid &&
+                            (gameAddForm.controls['description'].dirty ||
+                              gameAddForm.controls['description'].touched)
+                          "
+                        >
+                          {{
+                            gameAddForm.controls['description'].errors?.['required'] && 'The description field must not be empty.' ||
+                            gameAddForm.controls['description'].errors?.['minlength'] && 'The description must contain at least 10 characters.' ||
+                            gameAddForm.controls['description'].errors?.['maxlength'] && 'The description must contain a maximum of 2500 characters.'
+                          }}
+                        </p>
+                      </div>
+                      <!-- End Form Group for Description -->
+                    </div>
+                  </div>
+
+                  <!-- Form Group for Game Banner -->
                   <div>
                     <div
                       id="dismiss-alert"
@@ -335,7 +649,7 @@
                       }}
                     </p>
                   </div>
-                  <!-- End Form Group for Country banner -->
+                  <!-- End Form Group for Game Banner -->
 
                   <!-- Buttons -->
                   <div class="inline-flex justify-end gap-x-2">

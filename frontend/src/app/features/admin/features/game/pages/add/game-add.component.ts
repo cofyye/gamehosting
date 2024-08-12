@@ -27,6 +27,7 @@ export class GameAddComponent implements OnInit, OnDestroy {
   public isLoadingGameAdd: boolean = false;
   public allowedExtenstions = environment.IMAGE_EXTENSIONS.join(', ');
   public fileName: string | null = null;
+  public hostBy = HostBy;
 
   constructor(
     private readonly _fb: FormBuilder,
@@ -37,32 +38,36 @@ export class GameAddComponent implements OnInit, OnDestroy {
     name: new FormControl<string>('', [
       Validators.required,
       Validators.minLength(2),
-      Validators.maxLength(30),
+      Validators.maxLength(50),
     ]),
     tag: new FormControl<string>('', [
       Validators.required,
       Validators.minLength(2),
-      Validators.maxLength(20),
+      Validators.maxLength(30),
     ]),
-    startPort: new FormControl<number>(0, [
+    startPort: new FormControl<string>('', [
       Validators.required,
       Validators.min(1),
       Validators.max(65535),
+      Validators.pattern(/^-?\d+$/),
     ]),
-    endPort: new FormControl<number>(0, [
+    endPort: new FormControl<string>('', [
       Validators.required,
       Validators.min(1),
       Validators.max(65535),
+      Validators.pattern(/^-?\d+$/),
     ]),
-    slotMin: new FormControl<number>(0, [
+    slotMin: new FormControl<string>('', [
       Validators.required,
       Validators.min(1),
       Validators.max(65535),
+      Validators.pattern(/^-?\d+$/),
     ]),
-    slotMax: new FormControl<number>(0, [
+    slotMax: new FormControl<string>('', [
       Validators.required,
       Validators.min(1),
       Validators.max(65535),
+      Validators.pattern(/^-?\d+$/),
     ]),
     hostBy: new FormControl<HostBy>(HostBy.CUSTOM_RESOURCES, [
       Validators.required,
@@ -70,8 +75,8 @@ export class GameAddComponent implements OnInit, OnDestroy {
     banner: new FormControl<File | null>(null, [Validators.required]),
     description: new FormControl<string>('', [
       Validators.required,
-      Validators.min(10),
-      Validators.max(2500),
+      Validators.minLength(10),
+      Validators.maxLength(2500),
     ]),
   });
 

@@ -1,4 +1,10 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  OnDestroy,
+  OnInit,
+  Renderer2,
+} from '@angular/core';
 import {
   FormBuilder,
   FormControl,
@@ -15,6 +21,9 @@ import { imageExtensionValidator } from '../../../../../../shared/validators/ima
 import { environment } from '../../../../../../../environments/environment';
 import { HostBy } from '../../../../../../shared/enums/game.enum';
 import { ISelectedGame } from '../../../../../../shared/models/game.model';
+import { SELECT_HTTP_RESPONSE } from '../../../../../../shared/stores/http/http.selectors';
+import { IGameAddRequest } from '../../models/game-request.model';
+import { ADD_GAME } from '../../store/game.actions';
 
 @Component({
   selector: 'app-game-add',
@@ -30,6 +39,8 @@ export class GameAddComponent implements OnInit, OnDestroy {
   public hostBy = HostBy;
 
   constructor(
+    private readonly _el: ElementRef,
+    private readonly _renderer: Renderer2,
     private readonly _fb: FormBuilder,
     private readonly _store: Store<AppState>
   ) {}
@@ -57,22 +68,10 @@ export class GameAddComponent implements OnInit, OnDestroy {
       Validators.max(65535),
       Validators.pattern(/^-?\d+$/),
     ]),
-    slotMin: new FormControl<string>('', [
-      Validators.required,
-      Validators.min(1),
-      Validators.max(65535),
-      Validators.pattern(/^-?\d+$/),
-    ]),
-    slotMax: new FormControl<string>('', [
-      Validators.required,
-      Validators.min(1),
-      Validators.max(65535),
-      Validators.pattern(/^-?\d+$/),
-    ]),
     hostBy: new FormControl<HostBy>(HostBy.CUSTOM_RESOURCES, [
       Validators.required,
     ]),
-    banner: new FormControl<File | null>(null, [Validators.required]),
+    banner: new FormControl<File | null>(null, []),
     description: new FormControl<string>('', [
       Validators.required,
       Validators.minLength(10),
@@ -82,16 +81,32 @@ export class GameAddComponent implements OnInit, OnDestroy {
 
   public ngOnInit(): void {
     this.loadingGameAddSub = this._store
-      .select(IS_LOADING('GAME_ADD_BTN'))
+      .select(IS_LOADING('ADD_GAME_BTN'))
       .subscribe((value) => (this.isLoadingGameAdd = value));
-    // this.gameAddSub = this._store
-    //   .select(SELECT_GAME_RESPONSE)
-    //   .subscribe((response) => {
-    //     if (response?.success) {
-    //       this.fileName = null;
-    //       this.gameAddForm.reset();
-    //     }
-    //   });
+    this.gameAddSub = this._store
+      .select(SELECT_HTTP_RESPONSE('ADD_GAME'))
+      .subscribe((response) => {
+        if (response?.success) {
+          const gameDataIcon =
+            this._el.nativeElement.querySelector('[data-icon]');
+          const gameDataTitle =
+            this._el.nativeElement.querySelector('[data-title]');
+
+          if (gameDataIcon) {
+            this._renderer.addClass(gameDataIcon, 'hidden');
+            this._renderer.setProperty(gameDataIcon, 'innerHTML', 'null');
+          }
+          if (gameDataTitle) {
+            this._renderer.setProperty(
+              gameDataTitle,
+              'innerHTML',
+              'Select game...'
+            );
+          }
+
+          this.gameAddForm.reset();
+        }
+      });
   }
 
   public ngOnDestroy(): void {
@@ -124,6 +139,7 @@ export class GameAddComponent implements OnInit, OnDestroy {
   }
 
   public onGameSelected(selectedGame: ISelectedGame): void {
+    console.log(selectedGame);
     if (selectedGame.value) {
       this.gameAddForm.patchValue({
         name: selectedGame.label,
@@ -154,13 +170,16 @@ export class GameAddComponent implements OnInit, OnDestroy {
       return;
     }
 
-    // const data: IGameAddRequest = {
-    //   country: this.gameAddForm.get('country')?.value,
-    //   town: this.gameAddForm.get('town')?.value,
-    //   icon: this.gameAddForm.get('icon')?.value,
-    // };
+    const data: IGameAddRequest = {
+      name: this.gameAddForm.get('name')?.value,
+      tag: this.gameAddForm.get('tag')?.value,
+      startPort: this.gameAddForm.get('startPort')?.value,
+      endPort: this.gameAddForm.get('endPort')?.value,
+      hostBy: this.gameAddForm.get('hostBy')?.value,
+      description: this.gameAddForm.get('description')?.value,
+    };
 
-    this._store.dispatch(START_LOADING({ key: 'GAME_ADD_BTN' }));
-    // this._store.dispatch(LOCATION_ADD({ payload: data }));
+    this._store.dispatch(START_LOADING({ key: 'ADD_GAME_BTN' }));
+    this._store.dispatch(ADD_GAME({ payload: data }));
   }
 }

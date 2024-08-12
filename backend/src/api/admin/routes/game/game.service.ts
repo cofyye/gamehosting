@@ -43,14 +43,6 @@ export class GameService {
         );
       }
 
-      if (body.slotMin >= body.slotMax) {
-        functions.throwHttpException(
-          false,
-          'Minimum slots must not be greater than or equal to maximum slots.',
-          HttpStatus.BAD_REQUEST,
-        );
-      }
-
       if (!functions.checkListOfSupportedGames(body.tag)) {
         functions.throwHttpException(
           false,
@@ -89,8 +81,6 @@ export class GameService {
       game.tag = body.tag;
       game.startPort = body.startPort;
       game.endPort = body.endPort;
-      game.slotMin = body.slotMin;
-      game.slotMax = body.slotMax;
       game.description = body.description;
 
       // filename = await this._fileUploadService.uploadImage('game', icon);
@@ -131,8 +121,6 @@ export class GameService {
       game.tag = body.tag;
       game.startPort = body.startPort;
       game.endPort = body.endPort;
-      game.slotMin = body.slotMin;
-      game.slotMax = body.slotMax;
       game.description = body.description;
 
       // if (icon) {

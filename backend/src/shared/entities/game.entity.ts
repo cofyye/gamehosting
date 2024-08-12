@@ -20,10 +20,10 @@ export class GameEntity {
   @PrimaryGeneratedColumn('uuid')
   public id: string;
 
-  @Column({ name: 'name', nullable: false, unique: true, length: 30 })
+  @Column({ name: 'name', nullable: false, unique: true, length: 50 })
   public name: string;
 
-  @Column({ name: 'tag', nullable: false, unique: true, length: 20 })
+  @Column({ name: 'tag', nullable: false, unique: true, length: 30 })
   public tag: string;
 
   // @Column({
@@ -49,22 +49,6 @@ export class GameEntity {
     unsigned: true,
   })
   public endPort: number;
-
-  @Column({
-    name: 'slot_min',
-    nullable: false,
-    type: 'smallint',
-    unsigned: true,
-  })
-  public slotMin: number;
-
-  @Column({
-    name: 'slot_max',
-    nullable: false,
-    type: 'smallint',
-    unsigned: true,
-  })
-  public slotMax: number;
 
   @Column({
     name: 'host_by',

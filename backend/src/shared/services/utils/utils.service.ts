@@ -207,33 +207,6 @@ export class UtilsService {
     }
   }
 
-  public async checkIfSlotIsInRange(
-    gameId: string,
-    slot: number,
-  ): Promise<boolean> {
-    try {
-      const game = await this._gameRepo.findOne({
-        where: { id: gameId },
-      });
-
-      if (!game) {
-        functions.throwHttpException(
-          false,
-          `This game does not exist.`,
-          HttpStatus.NOT_FOUND,
-        );
-      }
-
-      return slot >= game.slotMin && slot <= game.slotMax;
-    } catch (err: unknown) {
-      functions.handleHttpException(
-        err,
-        false,
-        `An error occurred while checking if the slot is in range.`,
-      );
-    }
-  }
-
   public async checkIfPortIsInRange(
     gameId: string,
     slot: number,

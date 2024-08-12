@@ -8,15 +8,15 @@ import {
 } from 'class-validator';
 
 export class EditGameDto {
-  @MaxLength(30, {
-    message: 'The name must contain a maximum of 30 characters.',
+  @MaxLength(50, {
+    message: 'The name must contain a maximum of 50 characters.',
   })
   @MinLength(2, { message: 'The name must contain at least 2 characters.' })
   @IsNotEmpty({ message: 'The name field must not be empty.' })
   public readonly name: string;
 
-  @MaxLength(20, {
-    message: 'The tag must contain a maximum of 20 characters.',
+  @MaxLength(30, {
+    message: 'The tag must contain a maximum of 30 characters.',
   })
   @MinLength(2, {
     message: 'The tag must contain at least 2 characters.',
@@ -39,26 +39,6 @@ export class EditGameDto {
   @IsInt({ message: 'The end port must be in numeric format.' })
   @IsNotEmpty({ message: 'The end port field must not be empty.' })
   public readonly endPort: number;
-
-  @Max(100, {
-    message: 'The maximum value for the minimum slot must be 100.',
-  })
-  @Min(1, {
-    message: 'The minimum value for the minimum slot must be 1.',
-  })
-  @IsInt({ message: 'The minimum slot must be in numeric format.' })
-  @IsNotEmpty({ message: 'The minimum slot field must not be empty.' })
-  public readonly slotMin: number;
-
-  @Max(10000, {
-    message: 'The maximum value for the maximum slot must be 10000.',
-  })
-  @Min(1, {
-    message: 'The minimum value for the maximum slot must be 1.',
-  })
-  @IsInt({ message: 'The maximum slot must be in numeric format.' })
-  @IsNotEmpty({ message: 'The maximum slot field must not be empty.' })
-  public readonly slotMax: number;
 
   @MaxLength(2500, {
     message: 'The description must contain a maximum of 2500 characters.',

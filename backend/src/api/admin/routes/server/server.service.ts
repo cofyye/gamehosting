@@ -94,16 +94,6 @@ export class ServerService {
         );
       }
 
-      if (
-        !(await this._utilsService.checkIfSlotIsInRange(body.gameId, plan.slot))
-      ) {
-        functions.throwHttpException(
-          false,
-          'The slot is not in range.',
-          HttpStatus.BAD_REQUEST,
-        );
-      }
-
       if (body.customPrice < 0) {
         functions.throwHttpException(
           false,

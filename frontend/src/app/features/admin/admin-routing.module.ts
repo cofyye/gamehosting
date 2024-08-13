@@ -33,6 +33,13 @@ const routes: Routes = [
           import('./features/game/game.module').then((m) => m.GameModule),
       },
       {
+        path: 'machines',
+        loadChildren: () =>
+          import('./features/machine/machine.module').then(
+            (m) => m.MachineModule
+          ),
+      },
+      {
         path: 'users',
         loadChildren: () =>
           import('./features/user/user.module').then((m) => m.UserModule),

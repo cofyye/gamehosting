@@ -27,52 +27,6 @@ body {
 
 /* INPUT VALIDATION CLASSES END */
 
-/* TOASTER START */
-
-@layer components {
-  .toast-success {
-    @apply bg-green-800 border-green-300;
-  }
-
-  .toast-success .toast-icon svg {
-    @apply text-green-300;
-  }
-
-  .toast-success .toast-body span {
-    @apply text-green-300;
-  }
-
-  .toast-success .toast-body p {
-    @apply text-white;
-  }
-
-  .toast-success .toast-close-btn {
-    @apply text-white;
-  }
-
-  .toast-error {
-    @apply bg-red-800 border-red-300;
-  }
-
-  .toast-error .toast-icon svg {
-    @apply text-red-300;
-  }
-
-  .toast-error .toast-body span {
-    @apply text-red-300;
-  }
-
-  .toast-error .toast-body p {
-    @apply text-white;
-  }
-
-  .toast-error .toast-close-btn {
-    @apply text-white;
-  }
-}
-
-/* TOASTER END */
-
 /* TOOLTIP START */
 
 .tooltip {
@@ -133,3 +87,36 @@ body {
 }
 
 /* TOOLTIP END */
+
+.py-12 {
+  padding-top: 5rem;
+  padding-bottom: 5rem;
+}
+
+@media (max-width: 768px) {
+  table thead {
+    display: none;
+  }
+
+  table tbody tr {
+    display: block;
+    box-shadow: 0 2px 3px rgba(0, 0, 0, 0.075);
+    border-radius: 0.25rem;
+    padding: 0.75rem;
+    background-color: white;
+  }
+
+  table tbody tr td {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.5rem 0;
+    text-align: left;
+    position: relative;
+  }
+
+  table tbody tr td:before {
+    content: attr(data-label);
+    font-weight: bold;
+    color: #495057;
+  }
+}

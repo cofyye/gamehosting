@@ -1,0 +1,413 @@
+<div class="w-full lg:ps-64">
+  <div class="p-4 sm:p-6 space-y-4 sm:space-y-6">
+    <!-- Form -->
+    <div class="mx-auto">
+      <!-- Card -->
+      <div class="flex flex-col">
+        <div class="-m-1.5">
+          <!-- Header -->
+          <div class="p-1.5 min-w-full inline-block align-middle">
+            <div class="bg-white border border-gray-200 rounded-xl shadow-sm">
+              <div
+                class="px-6 py-4 grid gap-3 md:flex md:justify-between md:items-center border-b border-gray-200"
+              >
+                <div>
+                  <h2 class="text-lg/[26px] font-semibold mb-0 text-gray-800">
+                    Machines
+                  </h2>
+                  <p class="text-xs text-gray-600">
+                    Add your machine to the system by entering the details
+                    below.
+                  </p>
+                </div>
+                <div>
+                  <div class="inline-flex gap-x-2">
+                    <a
+                      class="py-2 px-3 inline-flex items-center gap-x-2 text-sm/[15px] font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none focus:outline-none focus:bg-gray-50"
+                      routerLink="/admin/machines"
+                    >
+                      View all
+                    </a>
+                  </div>
+                </div>
+              </div>
+              <!-- End Header -->
+
+              <!-- Body -->
+              <div class="p-4 md:p-5">
+                <div class="grid gap-y-4">
+                  <!-- Grid with 3 cols -->
+                  <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 lg:gap-4">
+                    <!-- Form Group -->
+                    <div class="relative flex-1">
+                      <input
+                        type="text"
+                        id="hs-floating-input-email-value"
+                        class="peer p-4 block w-full border-gray-200 rounded-lg text-sm placeholder:text-transparent focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none focus:pt-6 focus:pb-2 [&amp;:not(:placeholder-shown)]:pt-6 [&amp;:not(:placeholder-shown)]:pb-2 autofill:pt-6 autofill:pb-2"
+                        placeholder=" "
+                        value=""
+                      />
+                      <label
+                        for="hs-floating-input-email-value"
+                        class="absolute top-0 start-0 p-4 h-full text-sm truncate pointer-events-none transition ease-in-out duration-100 border border-transparent origin-[0_0] peer-disabled:opacity-50 peer-disabled:pointer-events-none peer-focus:scale-90 peer-focus:translate-x-0.5 peer-focus:-translate-y-1.5 peer-focus:text-gray-500 peer-[:not(:placeholder-shown)]:scale-90 peer-[:not(:placeholder-shown)]:translate-x-0.5 peer-[:not(:placeholder-shown)]:-translate-y-1.5 peer-[:not(:placeholder-shown)]:text-gray-500"
+                        >Name</label
+                      >
+                    </div>
+
+                    <!-- Form Group -->
+                    <div class="relative flex-1">
+                      <input
+                        type="password"
+                        id="hs-floating-input-password-value"
+                        class="peer p-4 block w-full border-gray-200 rounded-lg text-sm placeholder:text-transparent focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none focus:pt-6 focus:pb-2 [&amp;:not(:placeholder-shown)]:pt-6 [&amp;:not(:placeholder-shown)]:pb-2 autofill:pt-6 autofill:pb-2"
+                        placeholder=" "
+                        value=""
+                      />
+                      <label
+                        for="hs-floating-input-password-value"
+                        class="absolute top-0 start-0 p-4 h-full text-sm truncate pointer-events-none transition ease-in-out duration-100 border border-transparent origin-[0_0] peer-disabled:opacity-50 peer-disabled:pointer-events-none peer-focus:scale-90 peer-focus:translate-x-0.5 peer-focus:-translate-y-1.5 peer-focus:text-gray-500 peer-[:not(:placeholder-shown)]:scale-90 peer-[:not(:placeholder-shown)]:translate-x-0.5 peer-[:not(:placeholder-shown)]:-translate-y-1.5 peer-[:not(:placeholder-shown)]:text-gray-500"
+                        >IP Address</label
+                      >
+                    </div>
+
+                    <!-- Select -->
+                    <select
+                      data-hs-select='{
+                                    "placeholder": "Select option...",
+                                    "toggleTag": "<button type=\"button\" aria-expanded=\"false\"></button>",
+                                    "toggleClasses": "hs-select-disabled:pointer-events-none hs-select-disabled:opacity-50 relative py-4 ps-4 pe-9 flex gap-x-2 text-nowrap w-full cursor-pointer bg-white border border-gray-200 rounded-lg text-start text-sm focus:outline-none focus:ring-2 focus:ring-blue-500",
+                                    "dropdownClasses": "mt-2 z-50 w-full max-h-72 p-1 space-y-0.5 bg-white border border-gray-200 rounded-lg overflow-hidden overflow-y-auto [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:bg-gray-300",
+                                    "optionClasses": "py-2 px-4 w-full text-sm text-gray-800 cursor-pointer hover:bg-gray-100 rounded-lg focus:outline-none focus:bg-gray-100 hs-select-disabled:pointer-events-none hs-select-disabled:opacity-50",
+                                    "optionTemplate": "<div class=\"flex items-center justify-between w-full\"><div class=\"flex items-center gap-x-2\"><div class=\"me-0\" data-icon></div><span data-title></span></div><span class=\"hidden hs-selected:block\"><svg class=\"shrink-0 size-3.5 text-blue-600\" xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><polyline points=\"20 6 9 17 4 12\"/></svg></span></div>",
+                                    "extraMarkup": "<div class=\"absolute top-1/2 end-3 -translate-y-1/2\"><svg class=\"shrink-0 size-3.5 text-gray-500\" xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"m7 15 5 5 5-5\"/><path d=\"m7 9 5-5 5 5\"/></svg></div>"
+                                }'
+                      class="hidden"
+                    >
+                      <option value="">Choose Location</option>
+                      <option
+                        value="1"
+                        data-hs-select-option='{
+                                    "icon": "<img class=\"shrink-0 size-5 rounded-md\" src=\"https://raw.githubusercontent.com/lipis/flag-icons/b919a036693ee1ee0434ef5ae05f93543fc4f437/flags/4x3/rs.svg\" alt=\"James Collins\" />"}'
+                      >
+                        Serbia
+                      </option>
+                      <option
+                        value="2"
+                        data-hs-select-option='{
+                                    "icon": "<img class=\"shrink-0 size-5 rounded-md\" src=\"https://raw.githubusercontent.com/lipis/flag-icons/b919a036693ee1ee0434ef5ae05f93543fc4f437/flags/4x3/de.svg\" />"}'
+                      >
+                        Germany
+                      </option>
+                      <option
+                        value="3"
+                        data-hs-select-option='{
+                                    "icon": "<img class=\"shrink-0 size-5 rounded-md\" src=\"https://raw.githubusercontent.com/lipis/flag-icons/b919a036693ee1ee0434ef5ae05f93543fc4f437/flags/4x3/bg.svg\" alt=\"Costa Quinn\" />"}'
+                      >
+                        Bulgaria
+                      </option>
+                    </select>
+
+                    <!-- End Select -->
+                  </div>
+                  <!-- End Grid with 3 cols -->
+
+                  <!-- Grid with 2 cols -->
+                  <div class="grid grid-cols-1 md:grid-cols-2 gap-4 lg:gap-4">
+                    <!-- Form Group for First Name -->
+                    <div class="relative flex-1">
+                      <input
+                        type="text"
+                        id="hs-floating-input-email-value"
+                        class="peer p-4 block w-full border-gray-200 rounded-lg text-sm placeholder:text-transparent focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none focus:pt-6 focus:pb-2 [&amp;:not(:placeholder-shown)]:pt-6 [&amp;:not(:placeholder-shown)]:pb-2 autofill:pt-6 autofill:pb-2"
+                        placeholder=" "
+                        value=""
+                      />
+                      <label
+                        for="hs-floating-input-email-value"
+                        class="absolute top-0 start-0 p-4 h-full text-sm truncate pointer-events-none transition ease-in-out duration-100 border border-transparent origin-[0_0] peer-disabled:opacity-50 peer-disabled:pointer-events-none peer-focus:scale-90 peer-focus:translate-x-0.5 peer-focus:-translate-y-1.5 peer-focus:text-gray-500 peer-[:not(:placeholder-shown)]:scale-90 peer-[:not(:placeholder-shown)]:translate-x-0.5 peer-[:not(:placeholder-shown)]:-translate-y-1.5 peer-[:not(:placeholder-shown)]:text-gray-500"
+                        >Username</label
+                      >
+                    </div>
+
+                    <!-- Form Group for Password with Eye Toggle -->
+                    <div class="relative flex-1">
+                      <input
+                        type="password"
+                        id="hs-toggle-password"
+                        class="peer p-4 block w-full border-gray-200 rounded-lg text-sm placeholder:text-transparent focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none focus:pt-6 focus:pb-2 [&:not(:placeholder-shown)]:pt-6 [&:not(:placeholder-shown)]:pb-2 autofill:pt-6 autofill:pb-2"
+                        placeholder=""
+                      />
+
+                      <label
+                        for="hs-floating-input-password-value"
+                        class="absolute top-0 start-0 p-4 h-full text-sm truncate pointer-events-none transition ease-in-out duration-100 border border-transparent origin-[0_0] peer-disabled:opacity-50 peer-disabled:pointer-events-none peer-focus:scale-90 peer-focus:translate-x-0.5 peer-focus:-translate-y-1.5 peer-focus:text-gray-500 peer-[:not(:placeholder-shown)]:scale-90 peer-[:not(:placeholder-shown)]:translate-x-0.5 peer-[:not(:placeholder-shown)]:-translate-y-1.5 peer-[:not(:placeholder-shown)]:text-gray-500"
+                        >Password</label
+                      >
+
+                      <button
+                        type="button"
+                        data-hs-toggle-password='{
+                                        "target": "#hs-toggle-password"
+                                    }'
+                        class="absolute inset-y-0 end-0 flex items-center z-20 px-3 cursor-pointer text-gray-400 rounded-e-md focus:outline-none focus:text-blue-600"
+                      >
+                        <svg
+                          class="shrink-0 size-3.5"
+                          width="24"
+                          height="24"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-width="2"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        >
+                          <path
+                            class="hs-password-active:hidden"
+                            d="M9.88 9.88a3 3 0 1 0 4.24 4.24"
+                          ></path>
+                          <path
+                            class="hs-password-active:hidden"
+                            d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68"
+                          ></path>
+                          <path
+                            class="hs-password-active:hidden"
+                            d="M6.61 6.61A13.526 13.526 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61"
+                          ></path>
+                          <line
+                            class="hs-password-active:hidden"
+                            x1="2"
+                            x2="22"
+                            y1="2"
+                            y2="22"
+                          ></line>
+                          <path
+                            class="hidden hs-password-active:block"
+                            d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"
+                          ></path>
+                          <circle
+                            class="hidden hs-password-active:block"
+                            cx="12"
+                            cy="12"
+                            r="3"
+                          ></circle>
+                        </svg>
+                      </button>
+                    </div>
+                  </div>
+                  <!-- End Grid with 2 cols -->
+
+                  <!-- Grid with 4 cols -->
+                  <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 lg:gap-4">
+                    <!-- Input Number -->
+                    <div
+                      class="py-2 px-3 bg-white border border-gray-200 rounded-lg"
+                      data-hs-input-number=""
+                    >
+                      <div
+                        class="w-full flex justify-between items-center gap-x-5"
+                      >
+                        <div class="grow">
+                          <span class="block text-xs text-gray-500">
+                            SSH Port
+                          </span>
+                          <input
+                            class="w-full p-0 bg-transparent border-0 text-gray-800 focus:ring-0 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+                            aria-roledescription="Number field"
+                            value="1"
+                            data-hs-input-number-input=""
+                          />
+                        </div>
+                        <div class="flex justify-end items-center gap-x-1.5">
+                          <button
+                            type="button"
+                            class="size-6 inline-flex justify-center items-center gap-x-2 text-sm font-medium rounded-full border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 focus:outline-none focus:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none"
+                            tabindex="-1"
+                            aria-label="Decrease"
+                            data-hs-input-number-decrement=""
+                          >
+                            <svg
+                              class="shrink-0 size-3.5"
+                              xmlns="http://www.w3.org/2000/svg"
+                              width="24"
+                              height="24"
+                              viewBox="0 0 24 24"
+                              fill="none"
+                              stroke="currentColor"
+                              stroke-width="2"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                            >
+                              <path d="M5 12h14"></path>
+                            </svg>
+                          </button>
+                          <button
+                            type="button"
+                            class="size-6 inline-flex justify-center items-center gap-x-2 text-sm font-medium rounded-full border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 focus:outline-none focus:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none"
+                            tabindex="-1"
+                            aria-label="Increase"
+                            data-hs-input-number-increment=""
+                          >
+                            <svg
+                              class="shrink-0 size-3.5"
+                              xmlns="http://www.w3.org/2000/svg"
+                              width="24"
+                              height="24"
+                              viewBox="0 0 24 24"
+                              fill="none"
+                              stroke="currentColor"
+                              stroke-width="2"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                            >
+                              <path d="M5 12h14"></path>
+                              <path d="M12 5v14"></path>
+                            </svg>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- End Input Number -->
+
+                    <!-- Input Number -->
+                    <div
+                      class="py-2 px-3 bg-white border border-gray-200 rounded-lg"
+                      data-hs-input-number=""
+                    >
+                      <div
+                        class="w-full flex justify-between items-center gap-x-5"
+                      >
+                        <div class="grow">
+                          <span class="block text-xs text-gray-500">
+                            FTP Port
+                          </span>
+                          <input
+                            class="w-full p-0 bg-transparent border-0 text-gray-800 focus:ring-0 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+                            aria-roledescription="Number field"
+                            value="1"
+                            data-hs-input-number-input=""
+                          />
+                        </div>
+                        <div class="flex justify-end items-center gap-x-1.5">
+                          <button
+                            type="button"
+                            class="size-6 inline-flex justify-center items-center gap-x-2 text-sm font-medium rounded-full border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 focus:outline-none focus:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none"
+                            tabindex="-1"
+                            aria-label="Decrease"
+                            data-hs-input-number-decrement=""
+                          >
+                            <svg
+                              class="shrink-0 size-3.5"
+                              xmlns="http://www.w3.org/2000/svg"
+                              width="24"
+                              height="24"
+                              viewBox="0 0 24 24"
+                              fill="none"
+                              stroke="currentColor"
+                              stroke-width="2"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                            >
+                              <path d="M5 12h14"></path>
+                            </svg>
+                          </button>
+                          <button
+                            type="button"
+                            class="size-6 inline-flex justify-center items-center gap-x-2 text-sm font-medium rounded-full border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 focus:outline-none focus:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none"
+                            tabindex="-1"
+                            aria-label="Increase"
+                            data-hs-input-number-increment=""
+                          >
+                            <svg
+                              class="shrink-0 size-3.5"
+                              xmlns="http://www.w3.org/2000/svg"
+                              width="24"
+                              height="24"
+                              viewBox="0 0 24 24"
+                              fill="none"
+                              stroke="currentColor"
+                              stroke-width="2"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                            >
+                              <path d="M5 12h14"></path>
+                              <path d="M12 5v14"></path>
+                            </svg>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- End Input Number -->
+
+                    <!-- Select -->
+                    <select
+                      multiple=""
+                      data-hs-select='{
+                                    "placeholder": "Select multiple options...",
+                                    "toggleTag": "<button type=\"button\" aria-expanded=\"false\"></button>",
+                                    "toggleClasses": "hs-select-disabled:pointer-events-none hs-select-disabled:opacity-50 relative py-4 ps-4 pe-9 flex gap-x-2 text-nowrap w-full cursor-pointer bg-white border border-gray-200 rounded-lg text-start text-sm focus:outline-none focus:ring-2 focus:ring-blue-500",
+                                    "toggleCountText": "selected",
+                                    "dropdownClasses": "mt-2 z-50 w-full max-h-72 p-1 space-y-0.5 bg-white border border-gray-200 rounded-lg overflow-hidden overflow-y-auto [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:bg-gray-300",
+                                    "optionClasses": "py-2 px-4 w-full text-sm text-gray-800 cursor-pointer hover:bg-gray-100 rounded-lg focus:outline-none focus:bg-gray-100",
+                                    "optionTemplate": "<div class=\"flex items-center\"><div class=\"me-2\" data-icon></div><div><div class=\"hs-selected:font-semibold text-sm text-gray-800 \" data-title></div></div><div class=\"ms-auto\"><span class=\"hidden hs-selected:block\"><svg class=\"shrink-0 size-4 text-blue-600\" xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\" fill=\"currentColor\" viewBox=\"0 0 16 16\"><path d=\"M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425a.247.247 0 0 1 .02-.022Z\"/></svg></span></div></div>",
+                                    "extraMarkup": "<div class=\"absolute top-1/2 end-3 -translate-y-1/2\"><svg class=\"shrink-0 size-3.5 text-gray-500 \" xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"m7 15 5 5 5-5\"/><path d=\"m7 9 5-5 5 5\"/></svg></div>"
+                                }'
+                      class="hidden"
+                    >
+                      <option value="">Choose</option>
+                      <option
+                        selected=""
+                        value="1"
+                        data-hs-select-option='{
+                                    "icon": "<img class=\"shrink-0 size-5 rounded-full\" src=\"https://images.unsplash.com/photo-1659482633369-9fe69af50bfb?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=facearea&facepad=3&w=320&h=320&q=80\" alt=\"James Collins\" />"}'
+                      >
+                        James Collins
+                      </option>
+                      <option
+                        value="2"
+                        data-hs-select-option='{
+                                    "icon": "<img class=\"shrink-0 size-5 rounded-full\" src=\"https://images.unsplash.com/photo-1541101767792-f9b2b1c4f127?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=facearea&facepad=3&w=320&h=320&q=80\" alt=\"Amanda Harvey\" />"}'
+                      >
+                        Amanda Harvey
+                      </option>
+                      <option
+                        value="3"
+                        data-hs-select-option='{
+                                    "icon": "<img class=\"shrink-0 size-5 rounded-full\" src=\"https://images.unsplash.com/photo-1601935111741-ae98b2b230b0?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=facearea&facepad=2.5&w=320&h=320&q=80\" alt=\"Costa Quinn\" />"}'
+                      >
+                        Costa Quinn
+                      </option>
+                    </select>
+                    <!-- End Select -->
+                  </div>
+                  <!-- End Grid with 4 cols -->
+
+                  <!-- Buttons -->
+                  <div class="inline-flex justify-end gap-x-2">
+                    <a
+                      class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none focus:outline-none focus:bg-gray-50"
+                      href="#"
+                    >
+                      Reset
+                    </a>
+
+                    <a
+                      class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 focus:outline-none focus:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none"
+                      href="#"
+                    >
+                      Save
+                    </a>
+                  </div>
+                  <!-- End Buttons -->
+                </div>
+              </div>
+              <!-- End Body -->
+            </div>
+          </div>
+          <!-- Card -->
+        </div>
+        <!-- Form -->
+      </div>
+    </div>
+  </div>
+</div>

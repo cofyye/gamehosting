@@ -12,10 +12,10 @@ import { HostBy } from 'src/shared/enums/game.enum';
 
 export class AddGameDto {
   @MaxLength(50, {
-    message: 'The name must contain a maximum of 50 characters.',
+    message: 'The game must contain a maximum of 50 characters.',
   })
-  @MinLength(2, { message: 'The name must contain at least 2 characters.' })
-  @IsNotEmpty({ message: 'The name field must not be empty.' })
+  @MinLength(2, { message: 'The game must contain at least 2 characters.' })
+  @IsNotEmpty({ message: 'The game field must not be empty.' })
   public readonly name: string;
 
   @MaxLength(30, {
@@ -43,7 +43,7 @@ export class AddGameDto {
   @IsNotEmpty({ message: 'The end port field must not be empty.' })
   public readonly endPort: number;
 
-  @IsEnum(HostBy, { message: 'Host By must be: slot or custom_resources' })
+  @IsEnum(HostBy, { message: 'Host By must be: slot or custom_resources.' })
   @IsNotEmpty({ message: 'The host by field must not be empty.' })
   public readonly hostBy: HostBy;
 

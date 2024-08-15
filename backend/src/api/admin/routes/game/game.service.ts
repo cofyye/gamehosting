@@ -82,6 +82,7 @@ export class GameService {
       game.startPort = body.startPort;
       game.endPort = body.endPort;
       game.description = body.description;
+      game.hostBy = body.hostBy;
 
       // filename = await this._fileUploadService.uploadImage('game', icon);
 

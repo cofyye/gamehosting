@@ -4,10 +4,8 @@ import {
   ElementRef,
   EventEmitter,
   Input,
-  OnChanges,
   Output,
   Renderer2,
-  SimpleChanges,
 } from '@angular/core';
 import { environment } from '../../../../environments/environment';
 import { ISelectedGame } from '../../models/game.model';
@@ -17,10 +15,9 @@ import { ISelectedGame } from '../../models/game.model';
   templateUrl: './game-select.component.html',
   styleUrl: './game-select.component.css',
 })
-export class GameSelectComponent implements AfterViewChecked, OnChanges {
+export class GameSelectComponent implements AfterViewChecked {
   @Input() ngClass: string = '';
   @Output() selectionChange = new EventEmitter<ISelectedGame>();
-  @Output() selectionBlur = new EventEmitter<boolean>();
 
   constructor(
     private readonly _renderer: Renderer2,
@@ -35,11 +32,11 @@ export class GameSelectComponent implements AfterViewChecked, OnChanges {
       'block w-full text-sm border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500 before:absolute before:inset-0 before:z-[1] py-2 px-3',
     searchWrapperClasses: 'bg-white p-2 -mx-1 sticky top-0',
     placeholder: 'Select game...',
-    toggleTag: `<button type="button" aria-expanded="false"><span class="me-2" data-icon></span><span class="text-gray-800" data-title></span></button>`,
+    toggleTag: `<button type="button" aria-expanded="false"><span class="me-2" data-game-icon data-icon></span><span class="text-gray-800" data-game-title data-title></span></button>`,
     toggleClasses:
       'hs-select-disabled:pointer-events-none hs-select-disabled:opacity-50 relative py-4 ps-4 pe-9 flex gap-x-2 text-nowrap w-full cursor-pointer bg-white border border-gray-200 rounded-lg text-start text-sm focus:outline-none focus:ring-2 focus:ring-blue-500',
     dropdownClasses:
-      'mt-2 max-h-48 pb-1 px-1 space-y-0.5 z-20 w-full bg-white border border-gray-200 rounded-lg overflow-hidden overflow-y-auto [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:bg-gray-300',
+      'mt-2 max-h-72 pb-1 px-1 space-y-0.5 z-20 w-full bg-white border border-gray-200 rounded-lg overflow-hidden overflow-y-auto [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:bg-gray-300',
     optionClasses:
       'py-2 px-4 w-full text-sm text-gray-800 cursor-pointer hover:bg-gray-100 rounded-lg focus:outline-none focus:bg-gray-100',
     optionTemplate:
@@ -2439,55 +2436,14 @@ export class GameSelectComponent implements AfterViewChecked, OnChanges {
 
   public ngAfterViewChecked(): void {
     if (!this.buttonInitialized) {
-      this.addBlurEventToButton();
       this.addNameToInputSearch();
-    }
-  }
-
-  public ngOnChanges(changes: SimpleChanges): void {
-    if (changes['ngClass']) {
-      this.applyClassesToElement(changes);
-    }
-  }
-
-  private addBlurEventToButton(): void {
-    const button = this._el.nativeElement.querySelector('button');
-    if (button && !this.buttonInitialized) {
-      this._renderer.listen(button, 'blur', (_) => {
-        this.selectionBlur.emit(true);
-      });
-      this.buttonInitialized = true;
     }
   }
 
   private addNameToInputSearch(): void {
     const input = this._el.nativeElement.querySelector('input');
     if (input) {
-      this._renderer.setAttribute(input, 'id', 'search-country-input');
-    }
-  }
-
-  private applyClassesToElement(changes: SimpleChanges): void {
-    const button = this._el.nativeElement.querySelector('button');
-    if (button) {
-      const currentClasses: string = changes['ngClass'].currentValue || '';
-      const previousClasses: string = changes['ngClass'].previousValue || '';
-
-      // Removing all from `previousValue`
-      const previousClassesArray = previousClasses.split(' ');
-      previousClassesArray.forEach((className) => {
-        if (className) {
-          this._renderer.removeClass(button, className);
-        }
-      });
-
-      // Adding all from `currentValue`
-      const newClassesArray = currentClasses.split(' ');
-      newClassesArray.forEach((className) => {
-        if (className) {
-          this._renderer.addClass(button, className);
-        }
-      });
+      this._renderer.setAttribute(input, 'id', 'search-game-input');
     }
   }
 

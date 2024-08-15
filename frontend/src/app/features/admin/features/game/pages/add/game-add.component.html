@@ -1,693 +1,213 @@
-<!-- Content -->
 <div class="w-full lg:ps-64">
   <div class="p-4 sm:p-6 space-y-4 sm:space-y-6">
-    <!-- Card -->
-    <div class="flex flex-col">
-      <div class="-m-1.5 overflow-x-auto">
-        <div class="p-1.5 min-w-full inline-block align-middle">
-          <div
-            class="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden"
-          >
-            <!-- Header -->
-            <div
-              class="px-6 py-4 grid gap-3 md:flex md:justify-between md:items-center border-b border-gray-200"
-            >
-              <div>
-                <h2 class="text-xl font-semibold text-gray-800">Add Game</h2>
-                <p class="text-sm text-gray-600">
-                  On this page, you can add a new game.
-                </p>
+    <!-- Form -->
+    <div class="mx-auto">
+      <!-- Card -->
+      <div class="flex flex-col">
+        <div class="-m-1.5">
+          <!-- Header -->
+          <div class="p-1.5 min-w-full inline-block align-middle">
+            <div class="bg-white border border-gray-200 rounded-xl shadow-sm">
+              <div
+                class="px-6 py-4 grid gap-3 md:flex md:justify-between md:items-center border-b border-gray-200"
+              >
+                <div>
+                  <h2 class="text-lg/[26px] font-semibold mb-0 text-gray-800">
+                    Games
+                  </h2>
+                  <p class="text-xs text-gray-600">
+                    Add new games to your library by filling out the required
+                    details.
+                  </p>
+                </div>
+                <div>
+                  <div class="inline-flex gap-x-2">
+                    <a
+                      class="py-2 px-3 inline-flex items-center gap-x-2 text-sm/[15px] font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none focus:outline-none focus:bg-gray-50"
+                      routerLink="/admin/games"
+                    >
+                      View All
+                    </a>
+                  </div>
+                </div>
               </div>
-            </div>
-            <!-- End Header -->
+              <!-- End Header -->
 
-            <!-- Body -->
-            <div class="p-4 md:p-5">
-              <!-- Form -->
+              <!-- Body -->
               <form [formGroup]="gameAddForm">
-                <div class="grid gap-y-4">
-                  <div class="flex gap-4">
-                    <!-- Form Group for Name -->
-                    <div class="flex-1">
-                      <app-game-select
-                        (selectionChange)="onGameSelected($event)"
-                        (selectionBlur)="onGameBlur()"
-                        autocomplete="false"
-                        [ngClass]="
-                          gameAddForm.controls['name'].invalid &&
-                          (gameAddForm.controls['name'].dirty ||
-                            gameAddForm.controls['name'].touched)
-                            ? 'border-red-500 focus:border-red-500 focus:ring-red-500'
-                            : gameAddForm.controls['name'].valid
-                            ? 'border-teal-500 focus:border-teal-500 focus:ring-teal-500'
-                            : ''
-                        "
-                      ></app-game-select>
-                      <p
-                        class="text-sm text-red-600 mt-2"
-                        *ngIf="
-                          gameAddForm.controls['name'].invalid &&
-                          (gameAddForm.controls['name'].dirty ||
-                            gameAddForm.controls['name'].touched)
-                        "
-                      >
-                        {{
-                          gameAddForm.controls['name'].errors?.['required'] && 'The name field must not be empty.' ||
-                          gameAddForm.controls['name'].errors?.['minlength'] && 'The name must contain at least 2 characters.' ||
-                          gameAddForm.controls['name'].errors?.['maxlength'] && 'The name must contain a maximum of 30 characters.'
-                        }}
-                      </p>
-                    </div>
-                    <!-- End Form Group for Name -->
+                <div class="p-4 md:p-5">
+                  <div class="grid gap-y-4">
+                    <!-- Grid with 2 cols -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 lg:gap-4">
+                      <!-- Form Group -->
+                      <div class="relative flex-1">
+                        <app-game-select
+                          (selectionChange)="onGameSelected($event)"
+                          autocomplete="false"
+                        ></app-game-select>
+                      </div>
 
-                    <!-- Form Group for HostBy -->
-                    <div class="flex-1">
+                      <!-- Select -->
+                      <select
+                        data-hs-select='{
+                                    "placeholder": "Select hosting type...",
+                                    "toggleTag": "<button type=\"button\" aria-expanded=\"false\"><span class=\"me-2\" data-hosting-type-icon data-icon></span><span class=\"text-gray-800 \" data-hosting-type-title data-title></span></button>",
+                                    "toggleClasses": "hs-select-disabled:pointer-events-none hs-select-disabled:opacity-50 relative py-4 px-4 pe-9 flex items-center text-nowrap w-full cursor-pointer bg-white border border-gray-200 rounded-lg text-start text-sm focus:border-blue-500 focus:ring-blue-500 before:absolute before:inset-0 before:z-[1]",
+                                    "dropdownClasses": "mt-2 z-50 w-full max-h-72 p-1 space-y-0.5 bg-white border border-gray-200 rounded-lg overflow-hidden overflow-y-auto [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:bg-gray-300",
+                                    "optionClasses": "py-2 px-4 w-full text-sm text-gray-800 cursor-pointer hover:bg-gray-100 rounded-lg focus:outline-none focus:bg-gray-100",
+                                    "optionTemplate": "<div><div class=\"flex items-center\"><div class=\"me-2\" data-icon></div><div class=\"font-semibold text-gray-800 \" data-title></div></div><div class=\"mt-1.5 text-sm text-gray-500 \" data-description></div></div>",
+                                    "extraMarkup": "<div class=\"absolute top-1/2 end-3 -translate-y-1/2\"><svg class=\"shrink-0 size-3.5 text-gray-500 \" xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"m7 15 5 5 5-5\"/><path d=\"m7 9 5-5 5 5\"/></svg></div>"
+                                }'
+                        class="hidden"
+                        formControlName="hostBy"
+                        id="hostBy"
+                      >
+                        <option value="" selected>Choose</option>
+                        <option
+                          [value]="hostBy.SLOT"
+                          data-hs-select-option='{
+                                        "description": "Host your server by player slots.",
+                                        "icon": "<svg class=\"shrink-0 size-4 text-gray-800 \" xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><line x1=\"22\" x2=\"2\" y1=\"12\" y2=\"12\"/><path d=\"M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z\"/><line x1=\"6\" x2=\"6.01\" y1=\"16\" y2=\"16\"/><line x1=\"10\" x2=\"10.01\" y1=\"16\" y2=\"16\"/></svg>"
+                                    }'
+                        >
+                          Slots
+                        </option>
+                        <option
+                          [value]="hostBy.CUSTOM_RESOURCES"
+                          data-hs-select-option='{
+                                        "description": "Customize server with CPU & RAM.",
+                                        "icon": "<svg class=\"shrink-0 size-4 text-gray-800\" xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M19.439 7.85c-.049.322.059.648.289.878l1.568 1.568c.47.47.706 1.087.706 1.704s-.235 1.233-.706 1.704l-1.611 1.611a.98.98 0 0 1-.837.276c-.47-.07-.802-.48-.968-.925a2.501 2.501 0 1 0-3.214 3.214c.446.166.855.497.925.968a.979.979 0 0 1-.276.837l-1.61 1.61a2.404 2.404 0 0 1-1.705.707 2.402 2.402 0 0 1-1.704-.706l-1.568-1.568a1.026 1.026 0 0 0-.877-.29c-.493.074-.84.504-1.02.968a2.5 2.5 0 1 1-3.237-3.237c.464-.18.894-.527.967-1.02a1.026 1.026 0 0 0-.289-.877l-1.568-1.568A2.402 2.402 0 0 1 1.998 12c0-.617.236-1.234.706-1.704L4.23 8.77c.24-.24.581-.353.917-.303.515.077.877.528 1.073 1.01a2.5 2.5 0 1 0 3.259-3.259c-.482-.196-.933-.558-1.01-1.073-.05-.336.062-.676.303-.917l1.525-1.525A2.402 2.402 0 0 1 12 1.998c.617 0 1.234.236 1.704.706l1.568 1.568c.23.23.556.338.877.29.493-.074.84-.504 1.02-.968a2.5 2.5 0 1 1 3.237 3.237c-.464.18-.894.527-.967 1.02Z\"/></svg>"
+                                    }'
+                        >
+                          Custom Resources
+                        </option>
+                      </select>
+                      <!-- End Select -->
+                    </div>
+                    <!-- End Grid with 2 cols -->
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 lg:gap-4">
+                      <!-- Form Group -->
+                      <div class="relative flex-1">
+                        <input
+                          type="text"
+                          id="hs-floating-input-startPort-value"
+                          class="peer p-4 block w-full border-gray-200 rounded-lg text-sm placeholder:text-transparent focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none focus:pt-6 focus:pb-2 [&amp;:not(:placeholder-shown)]:pt-6 [&amp;:not(:placeholder-shown)]:pb-2 autofill:pt-6 autofill:pb-2"
+                          placeholder=" "
+                          formControlName="startPort"
+                        />
+                        <label
+                          for="hs-floating-input-startPort-value"
+                          class="absolute top-0 start-0 p-4 h-full text-sm truncate pointer-events-none transition ease-in-out duration-100 border border-transparent origin-[0_0] peer-disabled:opacity-50 peer-disabled:pointer-events-none peer-focus:scale-90 peer-focus:translate-x-0.5 peer-focus:-translate-y-1.5 peer-focus:text-gray-500 peer-[:not(:placeholder-shown)]:scale-90 peer-[:not(:placeholder-shown)]:translate-x-0.5 peer-[:not(:placeholder-shown)]:-translate-y-1.5 peer-[:not(:placeholder-shown)]:text-gray-500"
+                          >Start Port</label
+                        >
+                      </div>
+
+                      <!-- Form Group -->
+                      <div class="relative flex-1">
+                        <input
+                          type="text"
+                          id="hs-floating-input-endPort-value"
+                          class="peer p-4 block w-full border-gray-200 rounded-lg text-sm placeholder:text-transparent focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none focus:pt-6 focus:pb-2 [&amp;:not(:placeholder-shown)]:pt-6 [&amp;:not(:placeholder-shown)]:pb-2 autofill:pt-6 autofill:pb-2"
+                          placeholder=" "
+                          formControlName="endPort"
+                        />
+                        <label
+                          for="hs-floating-input-endPort-value"
+                          class="absolute top-0 start-0 p-4 h-full text-sm truncate pointer-events-none transition ease-in-out duration-100 border border-transparent origin-[0_0] peer-disabled:opacity-50 peer-disabled:pointer-events-none peer-focus:scale-90 peer-focus:translate-x-0.5 peer-focus:-translate-y-1.5 peer-focus:text-gray-500 peer-[:not(:placeholder-shown)]:scale-90 peer-[:not(:placeholder-shown)]:translate-x-0.5 peer-[:not(:placeholder-shown)]:-translate-y-1.5 peer-[:not(:placeholder-shown)]:text-gray-500"
+                          >End Port</label
+                        >
+                      </div>
+                    </div>
+
+                    <div class="relative">
+                      <textarea
+                        id="hs-floating-description"
+                        rows="4"
+                        class="peer p-4 block w-full border-gray-200 rounded-lg text-sm placeholder:text-transparent focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none focus:pt-6 focus:pb-2 [&amp;:not(:placeholder-shown)]:pt-6 [&amp;:not(:placeholder-shown)]:pb-2 autofill:pt-6 autofill:pb-2"
+                        placeholder="Description"
+                        formControlName="description"
+                      ></textarea>
+                      <label
+                        for="hs-floating-description"
+                        class="absolute top-0 start-0 p-4 h-full text-sm truncate pointer-events-none transition ease-in-out duration-100 border border-transparent origin-[0_0] peer-disabled:opacity-50 peer-disabled:pointer-events-none peer-focus:text-xs peer-focus:-translate-y-1.5 peer-focus:text-gray-500 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:-translate-y-1.5 peer-[:not(:placeholder-shown)]:text-gray-500"
+                        >Description</label
+                      >
+                    </div>
+
+                    <!-- Form Group for Game Banner -->
+                    <div class="hidden">
                       <div class="relative">
                         <div>
-                          <label
-                            for="hs-floating-input-hostby-value"
-                            class="block text-sm font-medium mb-2 dark:text-white"
-                            >Host By</label
+                          <button
+                            type="button"
+                            class="relative flex w-full border overflow-hidden border-gray-200 shadow-sm rounded-lg text-sm focus:outline-none focus:z-10 focus:border-blue-500 disabled:opacity-50 disabled:pointer-events-none"
+                            (click)="fileInput.click()"
                           >
-                          <div class="relative">
-                            <select
-                              id="hs-floating-input-hostby-value"
-                              class="py-3 px-4 pe-16 block w-full border-red-500 rounded-lg text-sm focus:border-red-500 focus:ring-red-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-800 dark:border-neutral-700 dark:text-neutral-400 dark:focus:ring-neutral-600"
-                              required
-                              formControlName="hostBy"
-                              [ngClass]="
-                                gameAddForm.controls['hostBy'].invalid &&
-                                (gameAddForm.controls['hostBy'].dirty ||
-                                  gameAddForm.controls['hostBy'].touched)
-                                  ? 'border-red-500 focus:border-red-500 focus:ring-red-500'
-                                  : gameAddForm.controls['hostBy'].valid
-                                  ? 'border-teal-500 focus:border-teal-500 focus:ring-teal-500'
-                                  : ''
-                              "
+                            <span
+                              class="h-full py-3 px-4 bg-gray-100 text-nowrap"
+                              >Choose File</span
                             >
-                              <option
-                                selected
-                                [value]="hostBy.CUSTOM_RESOURCES"
-                              >
-                                Custom Resources
-                              </option>
-                              <option [value]="hostBy.SLOT">Slot</option>
-                            </select>
-                          </div>
-                          <!-- Failure Input -->
-                          <div
-                            class="absolute inset-y-0 end-0 flex items-center pointer-events-none pe-3"
-                            *ngIf="
-                              gameAddForm.controls['hostBy'].invalid &&
-                              (gameAddForm.controls['hostBy'].dirty ||
-                                gameAddForm.controls['hostBy'].touched)
-                            "
-                          >
-                            <svg
-                              class="shrink-0 size-4 text-red-500"
-                              xmlns="http://www.w3.org/2000/svg"
-                              width="24"
-                              height="24"
-                              viewBox="0 0 24 24"
-                              fill="none"
-                              stroke="currentColor"
-                              stroke-width="3"
-                              stroke-linecap="round"
-                              stroke-linejoin="round"
+                            <span
+                              class="group grow flex overflow-hidden h-full py-3 px-4"
                             >
-                              <circle cx="12" cy="12" r="10"></circle>
-                              <line x1="12" x2="12" y1="8" y2="12"></line>
-                              <line x1="12" x2="12.01" y1="16" y2="16"></line>
-                            </svg>
-                          </div>
-
-                          <!-- Success Input -->
-                          <div
-                            class="absolute inset-y-0 end-0 flex items-center pointer-events-none pe-3"
-                            *ngIf="
-                              gameAddForm.controls['hostBy'].invalid &&
-                              (gameAddForm.controls['hostBy'].dirty ||
-                                gameAddForm.controls['hostBy'].touched)
-                                ? false
-                                : gameAddForm.controls['hostBy'].valid
-                                ? true
-                                : false
-                            "
-                          >
-                            <svg
-                              class="shrink-0 size-4 text-teal-500"
-                              xmlns="http://www.w3.org/2000/svg"
-                              width="24"
-                              height="24"
-                              viewBox="0 0 24 24"
-                              fill="none"
-                              stroke="currentColor"
-                              stroke-width="3"
-                              stroke-linecap="round"
-                              stroke-linejoin="round"
-                            >
-                              <polyline points="20 6 9 17 4 12"></polyline>
-                            </svg>
-                          </div>
+                              <span *ngIf="!fileName">No Chosen File</span>
+                              <span *ngIf="fileName">{{ fileName }}</span>
+                            </span>
+                          </button>
                         </div>
-                        <p
-                          class="text-sm text-red-600 mt-2"
-                          *ngIf="
-                            gameAddForm.controls['hostBy'].invalid &&
-                            (gameAddForm.controls['hostBy'].dirty ||
-                              gameAddForm.controls['hostBy'].touched)
-                          "
-                        >
-                          {{
-                            gameAddForm.controls['hostBy'].errors?.['required'] && 'The host by field must not be empty.'
-                          }}
-                        </p>
-                      </div>
-                      <!-- End Form Group for HostBy -->
-                    </div>
-                  </div>
-
-                  <div class="grid gap-y-4">
-                    <div class="flex gap-4">
-                      <!-- Form Group for Start Port -->
-                      <div class="flex-1">
-                        <div class="relative">
-                          <input
-                            type="text"
-                            id="hs-floating-input-startport-value"
-                            class="peer p-4 block w-full border-gray-200 rounded-lg text-sm placeholder:text-transparent focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none focus:pt-6 focus:pb-2 [&amp;:not(:placeholder-shown)]:pt-6 [&amp;:not(:placeholder-shown)]:pb-2 autofill:pt-6 autofill:pb-2"
-                            placeholder=""
-                            required
-                            formControlName="startPort"
-                            autocomplete="false"
-                            [ngClass]="
-                              gameAddForm.controls['startPort'].invalid &&
-                              (gameAddForm.controls['startPort'].dirty ||
-                                gameAddForm.controls['startPort'].touched)
-                                ? 'border-red-500 focus:border-red-500 focus:ring-red-500'
-                                : gameAddForm.controls['startPort'].valid
-                                ? 'border-teal-500 focus:border-teal-500 focus:ring-teal-500'
-                                : ''
-                            "
-                          />
-                          <label
-                            for="hs-floating-input-startport-value"
-                            class="absolute top-0 start-0 p-4 h-full text-sm truncate pointer-events-none transition ease-in-out duration-100 border border-transparent origin-[0_0] peer-disabled:opacity-50 peer-disabled:pointer-events-none peer-focus:scale-90 peer-focus:translate-x-0.5 peer-focus:-translate-y-1.5 peer-focus:text-gray-500 peer-[:not(:placeholder-shown)]:scale-90 peer-[:not(:placeholder-shown)]:translate-x-0.5 peer-[:not(:placeholder-shown)]:-translate-y-1.5 peer-[:not(:placeholder-shown)]:text-gray-500"
-                            >Start Port</label
-                          >
-
-                          <!-- Failure Input -->
-                          <div
-                            class="absolute inset-y-0 end-0 flex items-center pointer-events-none pe-3"
-                            *ngIf="
-                              gameAddForm.controls['startPort'].invalid &&
-                              (gameAddForm.controls['startPort'].dirty ||
-                                gameAddForm.controls['startPort'].touched)
-                            "
-                          >
-                            <svg
-                              class="shrink-0 size-4 text-red-500"
-                              xmlns="http://www.w3.org/2000/svg"
-                              width="24"
-                              height="24"
-                              viewBox="0 0 24 24"
-                              fill="none"
-                              stroke="currentColor"
-                              stroke-width="3"
-                              stroke-linecap="round"
-                              stroke-linejoin="round"
-                            >
-                              <circle cx="12" cy="12" r="10"></circle>
-                              <line x1="12" x2="12" y1="8" y2="12"></line>
-                              <line x1="12" x2="12.01" y1="16" y2="16"></line>
-                            </svg>
-                          </div>
-
-                          <!-- Success Input -->
-                          <div
-                            class="absolute inset-y-0 end-0 flex items-center pointer-events-none pe-3"
-                            *ngIf="
-                              gameAddForm.controls['startPort'].invalid &&
-                              (gameAddForm.controls['startPort'].dirty ||
-                                gameAddForm.controls['startPort'].touched)
-                                ? false
-                                : gameAddForm.controls['startPort'].valid
-                                ? true
-                                : false
-                            "
-                          >
-                            <svg
-                              class="shrink-0 size-4 text-teal-500"
-                              xmlns="http://www.w3.org/2000/svg"
-                              width="24"
-                              height="24"
-                              viewBox="0 0 24 24"
-                              fill="none"
-                              stroke="currentColor"
-                              stroke-width="3"
-                              stroke-linecap="round"
-                              stroke-linejoin="round"
-                            >
-                              <polyline points="20 6 9 17 4 12"></polyline>
-                            </svg>
-                          </div>
-                        </div>
-                        <p
-                          class="text-sm text-red-600 mt-2"
-                          *ngIf="
-                            gameAddForm.controls['startPort'].invalid &&
-                            (gameAddForm.controls['startPort'].dirty ||
-                              gameAddForm.controls['startPort'].touched)
-                          "
-                        >
-                          {{
-                            gameAddForm.controls['startPort'].errors?.['required'] && 'The start port field must not be empty.' ||
-                            gameAddForm.controls['startPort'].errors?.['min'] && 'The minimum value for the start port must be 1.' ||
-                            gameAddForm.controls['startPort'].errors?.['max'] && 'The maximum value for the start port must be 65535.' ||
-                            gameAddForm.controls['startPort'].errors?.['pattern'] && 'The start port must be in numeric format.'
-                          }}
-                        </p>
-                      </div>
-                      <!-- End Form Group for Start Port -->
-
-                      <!-- Form Group for End Port -->
-                      <div class="flex-1">
-                        <div class="relative">
-                          <input
-                            type="text"
-                            id="hs-floating-input-endport-value"
-                            class="peer p-4 block w-full border-gray-200 rounded-lg text-sm placeholder:text-transparent focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none focus:pt-6 focus:pb-2 [&amp;:not(:placeholder-shown)]:pt-6 [&amp;:not(:placeholder-shown)]:pb-2 autofill:pt-6 autofill:pb-2"
-                            placeholder=""
-                            required
-                            formControlName="endPort"
-                            autocomplete="false"
-                            [ngClass]="
-                              gameAddForm.controls['endPort'].invalid &&
-                              (gameAddForm.controls['endPort'].dirty ||
-                                gameAddForm.controls['endPort'].touched)
-                                ? 'border-red-500 focus:border-red-500 focus:ring-red-500'
-                                : gameAddForm.controls['endPort'].valid
-                                ? 'border-teal-500 focus:border-teal-500 focus:ring-teal-500'
-                                : ''
-                            "
-                          />
-                          <label
-                            for="hs-floating-input-endport-value"
-                            class="absolute top-0 start-0 p-4 h-full text-sm truncate pointer-events-none transition ease-in-out duration-100 border border-transparent origin-[0_0] peer-disabled:opacity-50 peer-disabled:pointer-events-none peer-focus:scale-90 peer-focus:translate-x-0.5 peer-focus:-translate-y-1.5 peer-focus:text-gray-500 peer-[:not(:placeholder-shown)]:scale-90 peer-[:not(:placeholder-shown)]:translate-x-0.5 peer-[:not(:placeholder-shown)]:-translate-y-1.5 peer-[:not(:placeholder-shown)]:text-gray-500"
-                            >End Port</label
-                          >
-
-                          <!-- Failure Input -->
-                          <div
-                            class="absolute inset-y-0 end-0 flex items-center pointer-events-none pe-3"
-                            *ngIf="
-                              gameAddForm.controls['endPort'].invalid &&
-                              (gameAddForm.controls['endPort'].dirty ||
-                                gameAddForm.controls['endPort'].touched)
-                            "
-                          >
-                            <svg
-                              class="shrink-0 size-4 text-red-500"
-                              xmlns="http://www.w3.org/2000/svg"
-                              width="24"
-                              height="24"
-                              viewBox="0 0 24 24"
-                              fill="none"
-                              stroke="currentColor"
-                              stroke-width="3"
-                              stroke-linecap="round"
-                              stroke-linejoin="round"
-                            >
-                              <circle cx="12" cy="12" r="10"></circle>
-                              <line x1="12" x2="12" y1="8" y2="12"></line>
-                              <line x1="12" x2="12.01" y1="16" y2="16"></line>
-                            </svg>
-                          </div>
-
-                          <!-- Success Input -->
-                          <div
-                            class="absolute inset-y-0 end-0 flex items-center pointer-events-none pe-3"
-                            *ngIf="
-                              gameAddForm.controls['endPort'].invalid &&
-                              (gameAddForm.controls['endPort'].dirty ||
-                                gameAddForm.controls['endPort'].touched)
-                                ? false
-                                : gameAddForm.controls['endPort'].valid
-                                ? true
-                                : false
-                            "
-                          >
-                            <svg
-                              class="shrink-0 size-4 text-teal-500"
-                              xmlns="http://www.w3.org/2000/svg"
-                              width="24"
-                              height="24"
-                              viewBox="0 0 24 24"
-                              fill="none"
-                              stroke="currentColor"
-                              stroke-width="3"
-                              stroke-linecap="round"
-                              stroke-linejoin="round"
-                            >
-                              <polyline points="20 6 9 17 4 12"></polyline>
-                            </svg>
-                          </div>
-                        </div>
-                        <p
-                          class="text-sm text-red-600 mt-2"
-                          *ngIf="
-                            gameAddForm.controls['endPort'].invalid &&
-                            (gameAddForm.controls['endPort'].dirty ||
-                              gameAddForm.controls['endPort'].touched)
-                          "
-                        >
-                          {{
-                            gameAddForm.controls['endPort'].errors?.['required'] && 'The end port field must not be empty.' ||
-                            gameAddForm.controls['endPort'].errors?.['min'] && 'The minimum value for the end port must be 1.' ||
-                            gameAddForm.controls['endPort'].errors?.['max'] && 'The maximum value for the end port must be 65535.' ||
-                            gameAddForm.controls['endPort'].errors?.['pattern'] && 'The end port must be in numeric format.'
-                          }}
-                        </p>
-                      </div>
-                      <!-- End Form Group for End Port -->
-                    </div>
-                  </div>
-
-                  <div class="grid gap-y-4">
-                    <div class="flex gap-4">
-                      <!-- Form Group for Description -->
-                      <div class="flex-1">
-                        <div class="relative">
-                          <textarea
-                            id="hs-floating-textarea-description-value"
-                            class="peer p-4 block w-full border-gray-200 rounded-lg text-sm placeholder:text-transparent focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none focus:pt-6 focus:pb-2 [&amp;:not(:placeholder-shown)]:pt-6 [&amp;:not(:placeholder-shown)]:pb-2 autofill:pt-6 autofill:pb-2"
-                            placeholder=""
-                            required
-                            formControlName="description"
-                            autocomplete="false"
-                            [ngClass]="
-                              gameAddForm.controls['description'].invalid &&
-                              (gameAddForm.controls['description'].dirty ||
-                                gameAddForm.controls['description'].touched)
-                                ? 'border-red-500 focus:border-red-500 focus:ring-red-500'
-                                : gameAddForm.controls['description'].valid
-                                ? 'border-teal-500 focus:border-teal-500 focus:ring-teal-500'
-                                : ''
-                            "
-                          ></textarea>
-                          <label
-                            for="hs-floating-textarea-description-value"
-                            class="absolute top-0 start-0 p-4 h-full text-sm truncate pointer-events-none transition ease-in-out duration-100 border border-transparent origin-[0_0] peer-disabled:opacity-50 peer-disabled:pointer-events-none peer-focus:scale-90 peer-focus:translate-x-0.5 peer-focus:-translate-y-1.5 peer-focus:text-gray-500 peer-[:not(:placeholder-shown)]:scale-90 peer-[:not(:placeholder-shown)]:translate-x-0.5 peer-[:not(:placeholder-shown)]:-translate-y-1.5 peer-[:not(:placeholder-shown)]:text-gray-500"
-                            >Description</label
-                          >
-
-                          <!-- Failure Input -->
-                          <div
-                            class="absolute inset-y-0 end-0 flex items-center pointer-events-none pe-3"
-                            *ngIf="
-                              gameAddForm.controls['description'].invalid &&
-                              (gameAddForm.controls['description'].dirty ||
-                                gameAddForm.controls['description'].touched)
-                            "
-                          >
-                            <svg
-                              class="shrink-0 size-4 text-red-500"
-                              xmlns="http://www.w3.org/2000/svg"
-                              width="24"
-                              height="24"
-                              viewBox="0 0 24 24"
-                              fill="none"
-                              stroke="currentColor"
-                              stroke-width="3"
-                              stroke-linecap="round"
-                              stroke-linejoin="round"
-                            >
-                              <circle cx="12" cy="12" r="10"></circle>
-                              <line x1="12" x2="12" y1="8" y2="12"></line>
-                              <line x1="12" x2="12.01" y1="16" y2="16"></line>
-                            </svg>
-                          </div>
-
-                          <!-- Success Input -->
-                          <div
-                            class="absolute inset-y-0 end-0 flex items-center pointer-events-none pe-3"
-                            *ngIf="
-                              gameAddForm.controls['description'].invalid &&
-                              (gameAddForm.controls['description'].dirty ||
-                                gameAddForm.controls['description'].touched)
-                                ? false
-                                : gameAddForm.controls['description'].valid
-                                ? true
-                                : false
-                            "
-                          >
-                            <svg
-                              class="shrink-0 size-4 text-teal-500"
-                              xmlns="http://www.w3.org/2000/svg"
-                              width="24"
-                              height="24"
-                              viewBox="0 0 24 24"
-                              fill="none"
-                              stroke="currentColor"
-                              stroke-width="3"
-                              stroke-linecap="round"
-                              stroke-linejoin="round"
-                            >
-                              <polyline points="20 6 9 17 4 12"></polyline>
-                            </svg>
-                          </div>
-                        </div>
-                        <p
-                          class="text-sm text-red-600 mt-2"
-                          *ngIf="
-                            gameAddForm.controls['description'].invalid &&
-                            (gameAddForm.controls['description'].dirty ||
-                              gameAddForm.controls['description'].touched)
-                          "
-                        >
-                          {{
-                            gameAddForm.controls['description'].errors?.['required'] && 'The description field must not be empty.' ||
-                            gameAddForm.controls['description'].errors?.['minlength'] && 'The description must contain at least 10 characters.' ||
-                            gameAddForm.controls['description'].errors?.['maxlength'] && 'The description must contain a maximum of 2500 characters.'
-                          }}
-                        </p>
-                      </div>
-                      <!-- End Form Group for Description -->
-                    </div>
-                  </div>
-
-                  <!-- Form Group for Game Banner -->
-                  <div>
-                    <div
-                      id="dismiss-alert"
-                      class="hs-removing:opacity-0 transition duration-300 bg-blue-50 border border-blue-200 text-sm text-blue-800 rounded-lg p-4 mb-1"
-                      role="alert"
-                      tabindex="-1"
-                      aria-labelledby="hs-dismiss-button-label"
-                    >
-                      <div class="flex">
-                        <div class="shrink-0">
-                          <svg
-                            class="shrink-0 size-4 mt-0.5"
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="24"
-                            height="24"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="2"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            class="lucide lucide-info"
-                          >
-                            <circle cx="12" cy="12" r="10" />
-                            <path d="M12 16v-4" />
-                            <path d="M12 8h.01" />
-                          </svg>
-                        </div>
-                        <div class="ms-2">
-                          <h3
-                            id="hs-dismiss-button-label"
-                            class="text-sm font-medium"
-                          >
-                            Supported extensions are: {{ allowedExtenstions }}
-                          </h3>
-                        </div>
-                        <div class="ps-3 ms-auto">
-                          <div class="-mx-1.5 -my-1.5">
-                            <button
-                              type="button"
-                              class="inline-flex bg-blue-50 rounded-lg p-1.5 text-blue-500 hover:bg-blue-100 focus:outline-none focus:bg-blue-100"
-                              data-hs-remove-element="#dismiss-alert"
-                            >
-                              <span class="sr-only">Dismiss</span>
-                              <svg
-                                class="shrink-0 size-4"
-                                xmlns="http://www.w3.org/2000/svg"
-                                width="24"
-                                height="24"
-                                viewBox="0 0 24 24"
-                                fill="none"
-                                stroke="currentColor"
-                                stroke-width="2"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                              >
-                                <path d="M18 6 6 18"></path>
-                                <path d="m6 6 12 12"></path>
-                              </svg>
-                            </button>
-                          </div>
-                        </div>
+                        <input
+                          id="hs-floating-input-banner-value"
+                          type="file"
+                          (change)="onIconChange($event)"
+                          #fileInput
+                          class="hidden"
+                          required
+                          autocomplete="false"
+                        />
                       </div>
                     </div>
-                    <div class="relative">
-                      <div>
-                        <button
-                          type="button"
-                          class="relative flex w-full border overflow-hidden border-gray-200 shadow-sm rounded-lg text-sm focus:outline-none focus:z-10 focus:border-blue-500 disabled:opacity-50 disabled:pointer-events-none"
-                          (click)="fileInput.click()"
-                          [ngClass]="
-                            gameAddForm.controls['banner'].invalid &&
-                            (gameAddForm.controls['banner'].dirty ||
-                              gameAddForm.controls['banner'].touched)
-                              ? 'border-red-500 focus:border-red-500 focus:ring-red-500'
-                              : gameAddForm.controls['banner'].valid
-                              ? 'border-teal-500 focus:border-teal-500 focus:ring-teal-500'
-                              : ''
-                          "
-                        >
-                          <span class="h-full py-3 px-4 bg-gray-100 text-nowrap"
-                            >Choose File</span
-                          >
-                          <span
-                            class="group grow flex overflow-hidden h-full py-3 px-4"
-                          >
-                            <span *ngIf="!fileName">No Chosen File</span>
-                            <span *ngIf="fileName">{{ fileName }}</span>
-                          </span>
-                        </button>
+                    <!-- End Form Group for Game Banner -->
 
-                        <!-- Failure Input -->
-                        <div
-                          class="absolute inset-y-0 end-0 flex items-center pointer-events-none pe-3"
-                          *ngIf="
-                            gameAddForm.controls['banner'].invalid &&
-                            (gameAddForm.controls['banner'].dirty ||
-                              gameAddForm.controls['banner'].touched)
-                          "
-                        >
-                          <svg
-                            class="shrink-0 size-4 text-red-500"
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="24"
-                            height="24"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="3"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                          >
-                            <circle cx="12" cy="12" r="10"></circle>
-                            <line x1="12" x2="12" y1="8" y2="12"></line>
-                            <line x1="12" x2="12.01" y1="16" y2="16"></line>
-                          </svg>
-                        </div>
-
-                        <!-- Success Input -->
-                        <div
-                          class="absolute inset-y-0 end-0 flex items-center pointer-events-none pe-3"
-                          *ngIf="
-                            gameAddForm.controls['banner'].invalid &&
-                            (gameAddForm.controls['banner'].dirty ||
-                              gameAddForm.controls['banner'].touched)
-                              ? false
-                              : gameAddForm.controls['banner'].valid
-                              ? true
-                              : false
-                          "
-                        >
-                          <svg
-                            class="shrink-0 size-4 text-teal-500"
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="24"
-                            height="24"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="3"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                          >
-                            <polyline points="20 6 9 17 4 12"></polyline>
-                          </svg>
-                        </div>
-                      </div>
-                      <input
-                        id="hs-floating-input-banner-value"
-                        type="file"
-                        (change)="onIconChange($event)"
-                        #fileInput
-                        class="hidden"
-                        required
-                        autocomplete="false"
-                      />
-                    </div>
-                    <p
-                      class="text-sm text-red-600 mt-2"
-                      *ngIf="
-                        gameAddForm.controls['banner'].invalid &&
-                        (gameAddForm.controls['banner'].dirty ||
-                          gameAddForm.controls['banner'].touched)
-                      "
-                    >
-                      {{
-                        gameAddForm.controls['banner'].errors?.['required'] && 'The banner field must not be empty.' ||
-                        gameAddForm.controls['banner'].errors?.['imageExtension'] && 'The image extension of ' + fileName + ' is not supported.' ||
-                        gameAddForm.controls['banner'].errors?.['imageSize'] && 'The size of your image ' + fileName + ' is ' + gameAddForm.controls['banner'].errors?.['imageSize'].actualSize + ', the maximum size is ' + gameAddForm.controls['banner'].errors?.['imageSize'].maxSize + '.'
-                      }}
-                    </p>
-                  </div>
-                  <!-- End Form Group for Game Banner -->
-
-                  <!-- Buttons -->
-                  <div class="inline-flex justify-end gap-x-2">
-                    <button
-                      type="submit"
-                      class="py-3 px-4 inline-flex justify-center items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 focus:outline-none focus:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none"
-                      (click)="onGameAdd()"
-                    >
-                      <div
-                        class="absolute animate-spin inline-block size-4 border-[2px] border-current border-t-transparent text-white rounded-full"
-                        role="status"
-                        aria-label="loading"
-                        *ngIf="isLoadingGameAdd"
+                    <!-- Buttons -->
+                    <div class="inline-flex justify-end gap-x-2">
+                      <button
+                        class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none focus:outline-none focus:bg-gray-50"
+                        (click)="onGameReset()"
                       >
-                        <span class="sr-only">Loading...</span>
-                      </div>
-                      <span
-                        [ngClass]="isLoadingGameAdd ? 'invisible' : 'visible'"
-                        >Add</span
+                        Reset
+                      </button>
+
+                      <button
+                        type="submit"
+                        class="py-2 px-3 inline-flex justify-center items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 focus:outline-none focus:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none"
+                        (click)="onGameAdd()"
                       >
-                    </button>
+                        <div
+                          class="absolute animate-spin inline-block size-4 border-[2px] border-current border-t-transparent text-white rounded-full"
+                          role="status"
+                          aria-label="loading"
+                          *ngIf="isLoadingGameAdd"
+                        >
+                          <span class="sr-only">Loading...</span>
+                        </div>
+                        <span
+                          [ngClass]="isLoadingGameAdd ? 'invisible' : 'visible'"
+                          >Add</span
+                        >
+                      </button>
+                    </div>
+                    <!-- End Buttons -->
                   </div>
-                  <!-- End Buttons -->
                 </div>
               </form>
-              <!-- End Form -->
+              <!-- End Body -->
             </div>
-            <!-- End Body -->
-
-            <!-- Footer -->
-            <div
-              class="px-6 py-4 grid gap-3 md:flex md:justify-between md:items-center border-t border-gray-200"
-            ></div>
-            <!-- End Footer -->
           </div>
+          <!-- Card -->
         </div>
+        <!-- Form -->
       </div>
     </div>
-    <!-- End Card -->
   </div>
 </div>

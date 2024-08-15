@@ -24,6 +24,7 @@ import { ISelectedGame } from '../../../../../../shared/models/game.model';
 import { SELECT_HTTP_RESPONSE } from '../../../../../../shared/stores/http/http.selectors';
 import { IGameAddRequest } from '../../models/game-request.model';
 import { ADD_GAME } from '../../store/game.actions';
+import { ToasterService } from '../../../../../../shared/services/toaster.service';
 
 @Component({
   selector: 'app-game-add',
@@ -42,6 +43,7 @@ export class GameAddComponent implements OnInit, OnDestroy {
     private readonly _el: ElementRef,
     private readonly _renderer: Renderer2,
     private readonly _fb: FormBuilder,
+    private readonly _toaster: ToasterService,
     private readonly _store: Store<AppState>
   ) {}
 
@@ -68,9 +70,7 @@ export class GameAddComponent implements OnInit, OnDestroy {
       Validators.max(65535),
       Validators.pattern(/^-?\d+$/),
     ]),
-    hostBy: new FormControl<HostBy>(HostBy.CUSTOM_RESOURCES, [
-      Validators.required,
-    ]),
+    hostBy: new FormControl<string>('', [Validators.required]),
     banner: new FormControl<File | null>(null, []),
     description: new FormControl<string>('', [
       Validators.required,
@@ -87,22 +87,8 @@ export class GameAddComponent implements OnInit, OnDestroy {
       .select(SELECT_HTTP_RESPONSE('ADD_GAME'))
       .subscribe((response) => {
         if (response?.success) {
-          const gameDataIcon =
-            this._el.nativeElement.querySelector('[data-icon]');
-          const gameDataTitle =
-            this._el.nativeElement.querySelector('[data-title]');
-
-          if (gameDataIcon) {
-            this._renderer.addClass(gameDataIcon, 'hidden');
-            this._renderer.setProperty(gameDataIcon, 'innerHTML', 'null');
-          }
-          if (gameDataTitle) {
-            this._renderer.setProperty(
-              gameDataTitle,
-              'innerHTML',
-              'Select game...'
-            );
-          }
+          this.resetSelectGame();
+          this.resetSelectHostingType();
 
           this.gameAddForm.reset();
         }
@@ -139,7 +125,6 @@ export class GameAddComponent implements OnInit, OnDestroy {
   }
 
   public onGameSelected(selectedGame: ISelectedGame): void {
-    console.log(selectedGame);
     if (selectedGame.value) {
       this.gameAddForm.patchValue({
         name: selectedGame.label,
@@ -147,8 +132,6 @@ export class GameAddComponent implements OnInit, OnDestroy {
       this.gameAddForm.patchValue({
         tag: selectedGame.value,
       });
-
-      this.gameAddForm.get('name')?.markAsTouched();
     } else {
       this.gameAddForm.patchValue({
         name: '',
@@ -156,17 +139,11 @@ export class GameAddComponent implements OnInit, OnDestroy {
       this.gameAddForm.patchValue({
         tag: '',
       });
-      this.gameAddForm.get('name')?.markAsTouched();
     }
   }
 
-  public onGameBlur(): void {
-    this.gameAddForm.get('name')?.markAsTouched();
-  }
-
   public onGameAdd(): void {
-    if (this.gameAddForm.invalid) {
-      this.gameAddForm.markAllAsTouched();
+    if (this.gameAddFormHasErrors()) {
       return;
     }
 
@@ -181,5 +158,176 @@ export class GameAddComponent implements OnInit, OnDestroy {
 
     this._store.dispatch(START_LOADING({ key: 'ADD_GAME_BTN' }));
     this._store.dispatch(ADD_GAME({ payload: data }));
+  }
+
+  public onGameReset(): void {
+    this.resetSelectGame();
+    this.resetSelectHostingType();
+    this.gameAddForm.reset();
+  }
+
+  private resetSelectGame(): void {
+    const gameDataIcon =
+      this._el.nativeElement.querySelector('[data-game-icon]');
+    const gameDataTitle =
+      this._el.nativeElement.querySelector('[data-game-title]');
+
+    if (gameDataIcon) {
+      this._renderer.addClass(gameDataIcon, 'hidden');
+      this._renderer.setProperty(gameDataIcon, 'innerHTML', 'null');
+    }
+    if (gameDataTitle) {
+      this._renderer.setProperty(gameDataTitle, 'innerHTML', 'Select game...');
+    }
+  }
+
+  private resetSelectHostingType(): void {
+    const hostingTypeIcon = this._el.nativeElement.querySelector(
+      '[data-hosting-type-icon]'
+    );
+    const hostingTypeDataTitle = this._el.nativeElement.querySelector(
+      '[data-hosting-type-title]'
+    );
+
+    if (hostingTypeIcon) {
+      this._renderer.addClass(hostingTypeIcon, 'hidden');
+      this._renderer.setProperty(hostingTypeIcon, 'innerHTML', 'null');
+    }
+    if (hostingTypeDataTitle) {
+      this._renderer.setProperty(
+        hostingTypeDataTitle,
+        'innerHTML',
+        'Select hosting type...'
+      );
+    }
+  }
+
+  private gameAddFormHasErrors(): boolean {
+    // Name Errors
+    if (this.gameAddForm.get('name')?.errors?.['required']) {
+      this._toaster.error('The game field must not be empty.', 'Error');
+      return true;
+    } else if (this.gameAddForm.get('name')?.errors?.['minlength']) {
+      this._toaster.error(
+        'The game must contain at least 2 characters.',
+        'Error'
+      );
+      return true;
+    } else if (this.gameAddForm.get('name')?.errors?.['maxlength']) {
+      this._toaster.error(
+        'The game must contain a maximum of 50 characters.',
+        'Error'
+      );
+      return true;
+    }
+
+    // Tag Errors
+    if (this.gameAddForm.get('tag')?.errors?.['required']) {
+      this._toaster.error('The tag field must not be empty.', 'Error');
+      return true;
+    } else if (this.gameAddForm.get('tag')?.errors?.['minlength']) {
+      this._toaster.error(
+        'The tag must contain at least 2 characters.',
+        'Error'
+      );
+      return true;
+    } else if (this.gameAddForm.get('tag')?.errors?.['maxlength']) {
+      this._toaster.error(
+        'The tag must contain a maximum of 30 characters.',
+        'Error'
+      );
+      return true;
+    }
+
+    // HostBy Errors
+    if (this.gameAddForm.get('hostBy')?.errors?.['required']) {
+      this._toaster.error('The host by field must not be empty.', 'Error');
+      return true;
+    }
+
+    // Start Port Errors
+    if (this.gameAddForm.get('startPort')?.errors?.['required']) {
+      this._toaster.error('The start port field must not be empty.', 'Error');
+      return true;
+    } else if (this.gameAddForm.get('startPort')?.errors?.['min']) {
+      this._toaster.error(
+        'The minimum value for the start port must be 1.',
+        'Error'
+      );
+      return true;
+    } else if (this.gameAddForm.get('startPort')?.errors?.['max']) {
+      this._toaster.error(
+        'The maximum value for the start port must be 65535.',
+        'Error'
+      );
+      return true;
+    } else if (this.gameAddForm.get('startPort')?.errors?.['pattern']) {
+      this._toaster.error('The start port must be in numeric format.', 'Error');
+      return true;
+    }
+
+    // End Port Errors
+    if (this.gameAddForm.get('endPort')?.errors?.['required']) {
+      this._toaster.error('The end port field must not be empty.', 'Error');
+      return true;
+    } else if (this.gameAddForm.get('endPort')?.errors?.['min']) {
+      this._toaster.error(
+        'The minimum value for the end port must be 1.',
+        'Error'
+      );
+      return true;
+    } else if (this.gameAddForm.get('endPort')?.errors?.['max']) {
+      this._toaster.error(
+        'The maximum value for the end port must be 65535.',
+        'Error'
+      );
+      return true;
+    } else if (this.gameAddForm.get('endPort')?.errors?.['pattern']) {
+      this._toaster.error('The end port must be in numeric format.', 'Error');
+      return true;
+    }
+
+    // Description Errors
+    if (this.gameAddForm.get('description')?.errors?.['required']) {
+      this._toaster.error('The description field must not be empty.', 'Error');
+      return true;
+    } else if (this.gameAddForm.get('description')?.errors?.['minlength']) {
+      this._toaster.error(
+        'The description must contain at least 10 characters.',
+        'Error'
+      );
+      return true;
+    } else if (this.gameAddForm.get('description')?.errors?.['maxlength']) {
+      this._toaster.error(
+        'The description must contain a maximum of 2500 characters.',
+        'Error'
+      );
+      return true;
+    }
+
+    // Custom Errors
+    if (
+      this.gameAddForm.get('hostBy')?.value != HostBy.SLOT &&
+      this.gameAddForm.get('hostBy')?.value != HostBy.CUSTOM_RESOURCES
+    ) {
+      this._toaster.error(
+        'Host By must be: slot or custom_resources.',
+        'Error'
+      );
+      return true;
+    }
+
+    if (
+      this.gameAddForm.get('startPort')?.value >=
+      this.gameAddForm.get('endPort')?.value
+    ) {
+      this._toaster.error(
+        'Start port must not be greater than or equal to end port.',
+        'Error'
+      );
+      return true;
+    }
+
+    return false;
   }
 }

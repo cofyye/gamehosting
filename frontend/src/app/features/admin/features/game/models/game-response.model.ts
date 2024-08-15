@@ -1,3 +1,5 @@
+import { HostBy } from '../../../../../shared/enums/game.enum';
+
 export interface IGameResponse {
   id: string;
   name: string;
@@ -6,7 +8,7 @@ export interface IGameResponse {
   endPort: number;
   slotMin: number;
   slotMax: number;
-  hostBy: string;
+  hostBy: HostBy;
   description: string;
   active: boolean;
   createdAt: Date;

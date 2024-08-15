@@ -15,6 +15,7 @@ import {
   DESELECT_GAME,
   SELECT_GAME,
 } from '../../store/game.actions';
+import { HostBy } from '../../../../../../shared/enums/game.enum';
 
 @Component({
   selector: 'app-game-all',
@@ -34,6 +35,7 @@ export class GameAllComponent implements OnInit {
   public selectedGame: IGameResponse | null | undefined = null;
   public selectedGameSub!: Subscription;
   public isLoadingGameDelete: boolean = false;
+  public hostBy = HostBy;
 
   constructor(
     private readonly _toaster: ToasterService,

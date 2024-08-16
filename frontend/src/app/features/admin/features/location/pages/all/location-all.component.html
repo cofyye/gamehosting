@@ -1,159 +1,167 @@
-<!-- Content -->
 <div class="w-full lg:ps-64">
   <div class="p-4 sm:p-6 space-y-4 sm:space-y-6">
-    <!-- Table Section -->
-    <!-- Card -->
-    <div class="flex flex-col">
-      <div class="-m-1.5 overflow-x-auto">
-        <div class="p-1.5 min-w-full inline-block align-middle">
-          <div
-            class="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden"
-          >
-            <!-- Header -->
-            <div
-              class="px-6 py-4 grid gap-3 md:flex md:justify-between md:items-center border-b border-gray-200"
-            >
-              <div>
-                <h2 class="text-xl font-semibold text-gray-800">Locations</h2>
-                <p class="text-sm text-gray-600">
-                  Add locations, edit and more.
-                </p>
-              </div>
-
-              <div>
-                <div class="inline-flex gap-x-2">
-                  <a
-                    class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none focus:outline-none focus:bg-gray-50"
-                    routerLink="/admin/locations"
-                  >
-                    View all
-                  </a>
-
-                  <a
-                    class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 focus:outline-none focus:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none"
-                    routerLink="/admin/locations/add"
-                  >
-                    <svg
-                      class="shrink-0 size-4"
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="24"
-                      height="24"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      stroke-width="2"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
+    <!-- Form -->
+    <div class="mx-auto">
+      <!-- Card -->
+      <div class="flex flex-col">
+        <div class="-m-1.5">
+          <!-- Header -->
+          <div class="p-1.5 min-w-full inline-block align-middle">
+            <div class="bg-white border border-gray-200 rounded-xl shadow-sm">
+              <div
+                class="px-6 py-4 grid gap-3 md:flex md:justify-between md:items-center border-b border-gray-200"
+              >
+                <div>
+                  <h2 class="text-lg/[26px] font-semibold mb-0 text-gray-800">
+                    Locations
+                  </h2>
+                  <p class="text-xs text-gray-600">Manage machine locations.</p>
+                </div>
+                <div>
+                  <div class="inline-flex gap-x-2">
+                    <a
+                      class="py-2 px-3 inline-flex items-center gap-x-2 text-sm/[15px] font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none focus:outline-none focus:bg-gray-50"
+                      routerLink="/admin/locations/add"
                     >
-                      <path d="M5 12h14" />
-                      <path d="M12 5v14" />
-                    </svg>
-                    Add location
-                  </a>
+                      Add Location
+                    </a>
+                  </div>
                 </div>
               </div>
-            </div>
-            <!-- End Header -->
+              <!-- End Header -->
 
-            <!-- Table -->
-            <table class="min-w-full divide-y divide-gray-200">
-              <thead class="bg-gray-50">
-                <tr>
-                  <th scope="col" class="px-6 py-3 text-start">
-                    <div class="flex items-center gap-x-2">
-                      <span
-                        class="text-xs font-semibold uppercase tracking-wide text-gray-800"
+              <!-- Body -->
+              <div class="p-4 md:p-5">
+                <div class="py-3">
+                  <div class="relative max-w-xs">
+                    <label for="hs-table-input-search" class="sr-only"
+                      >Search</label
+                    >
+                    <input
+                      type="text"
+                      name="hs-table-search"
+                      id="hs-table-input-search"
+                      class="py-2 px-3 ps-9 block w-full border-gray-200 shadow-sm rounded-lg text-sm focus:z-10 focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
+                      placeholder="Search for items"
+                      data-hs-datatable-search=""
+                    />
+                    <div
+                      class="absolute inset-y-0 start-0 flex items-center pointer-events-none ps-3"
+                    >
+                      <svg
+                        class="size-4 text-gray-400"
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
                       >
-                        Country
-                      </span>
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <path d="m21 21-4.3-4.3"></path>
+                      </svg>
                     </div>
-                  </th>
+                  </div>
+                </div>
+                <div class="flex flex-col">
+                  <div class="-m-1.5 overflow-x-auto">
+                    <div class="p-1.5 min-w-full inline-block align-middle">
+                      <div class="border rounded-lg overflow-hidden">
+                        <table class="min-w-full divide-y divide-gray-200">
+                          <thead class="bg-gray-50">
+                            <tr>
+                              <th
+                                scope="col"
+                                class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase"
+                              >
+                                Country
+                              </th>
+                              <th
+                                scope="col"
+                                class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase"
+                              >
+                                City
+                              </th>
+                              <th
+                                scope="col"
+                                class="px-6 py-3 text-end text-xs font-medium text-gray-500 uppercase"
+                              >
+                                Actions
+                              </th>
+                            </tr>
+                          </thead>
 
-                  <th scope="col" class="px-6 py-3 text-start">
-                    <div class="flex items-center gap-x-2">
-                      <span
-                        class="text-xs font-semibold uppercase tracking-wide text-gray-800"
-                      >
-                        Town
-                      </span>
+                          <tbody class="bg-white divide-y divide-gray-200">
+                            <tr
+                              class="odd:bg-white even:bg-gray-100"
+                              *ngFor="let location of locations"
+                            >
+                              <td
+                                data-label="Country"
+                                class="px-6 py-4 whitespace-nowrap text-sm text-gray-800"
+                              >
+                                <div class="flex items-center">
+                                  <img
+                                    class="size-5 shrink-0 rounded-md shadow-sm me-1"
+                                    src="{{
+                                      environment.API_URL
+                                    }}/assets/flags/1x1/{{
+                                      location.countryTag
+                                    }}.svg"
+                                    alt="{{ location.country }}"
+                                  />
+                                  {{ location.country }}
+                                </div>
+                              </td>
+                              <td
+                                data-label="City"
+                                class="px-6 py-4 whitespace-nowrap text-sm text-gray-800"
+                              >
+                                {{ location.town }}
+                              </td>
+                              <td
+                                data-label="Actions"
+                                class="px-6 py-4 whitespace-nowrap text-end text-sm font-medium"
+                              >
+                                <div class="flex gap-2 justify-end">
+                                  <button
+                                    routerLink="/admin/locations/edit/1"
+                                    type="button"
+                                    class="py-1.5 px-3 inline-flex items-center gap-x-2 text-xs font-semibold rounded-lg border border-transparent bg-yellow-500 text-white hover:bg-yellow-600 focus:outline-none focus:bg-yellow-600 disabled:opacity-50 disabled:pointer-events-none"
+                                    routerLink="/admin/locations/edit/{{
+                                      location.id
+                                    }}"
+                                  >
+                                    Edit
+                                  </button>
+                                  <button
+                                    type="button"
+                                    class="py-1.5 px-3 inline-flex items-center gap-x-2 text-xs font-semibold rounded-lg border border-transparent bg-red-500 text-white hover:bg-red-600 focus:outline-none focus:bg-red-600 disabled:opacity-50 disabled:pointer-events-none"
+                                    aria-haspopup="dialog"
+                                    aria-expanded="false"
+                                    aria-controls="hs-scale-animation-modal"
+                                    data-hs-overlay="#hs-scale-animation-modal"
+                                    (click)="onSelectLocation(location.id)"
+                                  >
+                                    Delete
+                                  </button>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
                     </div>
-                  </th>
-
-                  <th scope="col" class="px-6 py-3 text-end"></th>
-                </tr>
-              </thead>
-
-              <tbody class="divide-y divide-gray-200">
-                <tr *ngFor="let location of locations">
-                  <td class="size-px whitespace-nowrap">
-                    <div class="px-6 py-3">
-                      <img
-                        class="inline-block size-[16px] rounded-full"
-                        src="{{ environment.API_URL }}/assets/flags/1x1/{{
-                          location.countryTag
-                        }}.svg"
-                        alt="{{ location.country }}"
-                      />
-                      <a
-                        class="ml-1 inline-flex items-center gap-x-1 text-sm text-blue-600 decoration-2 hover:underline focus:outline-none focus:underline font-medium"
-                        routerLink="/admin/locations/edit/{{ location.id }}"
-                      >
-                        {{ location.country }}
-                      </a>
-                    </div>
-                  </td>
-                  <td class="size-px whitespace-nowrap">
-                    <div class="px-6 py-3">
-                      <span class="block text-sm text-gray-500">{{
-                        location.town
-                      }}</span>
-                    </div>
-                  </td>
-                  <td class="size-px whitespace-nowrap">
-                    <div class="px-6 py-3 inline-flex gap-x-4">
-                      <a
-                        class="inline-flex items-center gap-x-1 text-sm text-blue-600 decoration-2 hover:underline focus:outline-none focus:underline font-medium"
-                        routerLink="/admin/locations/edit/{{ location.id }}"
-                      >
-                        Edit
-                      </a>
-                      <a
-                        class="inline-flex items-center gap-x-1 text-sm text-red-600 decoration-2 hover:underline focus:outline-none focus:underline font-medium"
-                        routerLink="./"
-                        aria-haspopup="dialog"
-                        aria-expanded="false"
-                        aria-controls="hs-delete-location-alert"
-                        data-hs-overlay="#hs-delete-location-alert"
-                        (click)="onSelectLocation(location.id)"
-                      >
-                        Delete
-                      </a>
-                    </div>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-            <!-- End Table -->
-
-            <!-- Footer -->
-            <div
-              class="px-6 py-4 grid gap-3 md:flex md:justify-between md:items-center border-t border-gray-200"
-            >
-              <div>
-                <p class="text-sm text-gray-600">
-                  <span class="font-semibold text-gray-800">{{
-                    locations.length
-                  }}</span>
-                  results
-                </p>
-              </div>
-
-              <div>
-                <div class="inline-flex gap-x-2">
-                  <button
-                    type="button"
-                    class="py-1.5 px-2 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none focus:outline-none focus:bg-gray-50"
-                    disabled
+                  </div>
+                </div>
+                <div class="hidden items-center justify-end space-x-4 py-3">
+                  <!-- Previous Button -->
+                  <a
+                    href=""
+                    class="py-2 px-3 inline-flex items-center gap-x-0 text-sm/[15px] font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none focus:outline-none focus:bg-gray-50"
                   >
                     <svg
                       class="shrink-0 size-4"
@@ -170,12 +178,27 @@
                       <path d="m15 18-6-6 6-6" />
                     </svg>
                     Prev
-                  </button>
+                  </a>
 
-                  <button
-                    type="button"
-                    class="py-1.5 px-2 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none focus:outline-none focus:bg-gray-50"
-                    disabled
+                  <!-- Page Indicator -->
+                  <div
+                    class="flex items-center space-x-2 text-sm font-medium text-gray-700"
+                  >
+                    <input
+                      type="text"
+                      value="2"
+                      class="py-2 block w-[38px] text-center border-gray-200 rounded-md text-sm focus:border--gray-600 focus:ring--gray-600 disabled:opacity-50 disabled:pointer-events-none"
+                      autocomplete="false"
+                      id="page-input"
+                    />
+                    <span>of</span>
+                    <span class="font-semibold">10</span>
+                  </div>
+
+                  <!-- Next Button -->
+                  <a
+                    href=""
+                    class="py-2 px-3 inline-flex items-center gap-x-0 text-sm/[15px] font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none focus:outline-none focus:bg-gray-50"
                   >
                     Next
                     <svg
@@ -192,127 +215,102 @@
                     >
                       <path d="m9 18 6-6-6-6" />
                     </svg>
-                  </button>
+                  </a>
                 </div>
               </div>
             </div>
-            <!-- End Footer -->
           </div>
         </div>
       </div>
     </div>
-    <!-- End Card -->
-    <!-- End Table Section -->
-  </div>
-</div>
 
-<!-- Delete Location Alert -->
-<div
-  id="hs-delete-location-alert"
-  class="hs-overlay hidden size-full fixed top-0 start-0 z-[80] overflow-x-hidden overflow-y-auto"
-  role="dialog"
-  tabindex="-1"
-  aria-labelledby="hs-delete-location-alert-label"
->
-  <div
-    class="hs-overlay-open:mt-7 hs-overlay-open:opacity-100 hs-overlay-open:duration-500 mt-0 opacity-0 ease-out transition-all sm:max-w-lg sm:w-full m-3 sm:mx-auto"
-  >
-    <div class="relative flex flex-col bg-white shadow-lg rounded-xl">
-      <div class="absolute top-2 end-2">
-        <button
-          type="button"
-          class="size-8 inline-flex justify-center items-center gap-x-2 rounded-full border border-transparent bg-gray-100 text-gray-800 hover:bg-gray-200 focus:outline-none focus:bg-gray-200 disabled:opacity-50 disabled:pointer-events-none"
-          aria-label="Close"
-          data-hs-overlay="#hs-delete-location-alert"
+    <div
+      id="hs-scale-animation-modal"
+      class="hs-overlay hidden size-full fixed top-0 start-0 z-[80] overflow-x-hidden overflow-y-auto pointer-events-none"
+      role="dialog"
+      tabindex="-1"
+      aria-labelledby="hs-scale-animation-modal-label"
+    >
+      <div
+        class="hs-overlay-animation-target hs-overlay-open:scale-100 hs-overlay-open:opacity-100 scale-95 opacity-0 ease-in-out transition-all duration-200 sm:max-w-lg sm:w-full m-3 sm:mx-auto min-h-[calc(100%-3.5rem)] flex items-center"
+      >
+        <div
+          class="w-full flex flex-col bg-white border shadow-sm rounded-xl pointer-events-auto"
         >
-          <span class="sr-only">Close</span>
-          <svg
-            class="shrink-0 size-4"
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          >
-            <path d="M18 6 6 18" />
-            <path d="m6 6 12 12" />
-          </svg>
-        </button>
-      </div>
-
-      <div class="p-4 sm:p-10 text-center overflow-y-auto">
-        <!-- Icon -->
-        <span
-          class="mb-4 inline-flex justify-center items-center size-[62px] rounded-full border-4 border-yellow-50 bg-yellow-100 text-yellow-500"
-        >
-          <svg
-            class="shrink-0 size-5"
-            xmlns="http://www.w3.org/2000/svg"
-            width="16"
-            height="16"
-            fill="currentColor"
-            viewBox="0 0 16 16"
-          >
-            <path
-              d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"
-            />
-          </svg>
-        </span>
-        <!-- End Icon -->
-
-        <h3
-          id="hs-delete-location-alert-label"
-          class="mb-2 text-2xl font-bold text-gray-800"
-        >
-          Delete location
-        </h3>
-        <p class="text-gray-500">
-          Are you sure you would like to delete
-          {{ selectedLocation?.country }},
-          {{ selectedLocation?.town }} location?
-        </p>
-
-        <div class="mt-6 flex justify-center gap-x-4">
-          <button
-            class="hidden"
-            data-hs-overlay="#hs-delete-location-alert"
-            #deleteLocationAlertCloseButton
-          >
-            close alert
-          </button>
-
-          <button
-            type="submit"
-            class="py-2 px-3 inline-flex justify-center items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-red-600 text-white hover:bg-red-700 focus:outline-none focus:bg-red-700 disabled:opacity-50 disabled:pointer-events-none"
-            (click)="onDeleteLocation()"
-          >
-            <div
-              class="absolute animate-spin inline-block size-4 border-[2px] border-current border-t-transparent text-white rounded-full"
-              role="status"
-              aria-label="loading"
-              *ngIf="isLoadingLocationDelete"
+          <div class="flex justify-between items-center py-3 px-4 border-b">
+            <h3
+              id="hs-scale-animation-modal-label"
+              class="font-bold text-gray-800"
             >
-              <span class="sr-only">Loading...</span>
-            </div>
-            <span [ngClass]="isLoadingLocationDelete ? 'invisible' : 'visible'"
-              >Delete</span
+              Delete Location
+            </h3>
+            <button
+              type="button"
+              class="size-8 inline-flex justify-center items-center gap-x-2 rounded-full border border-transparent bg-gray-100 text-gray-800 hover:bg-gray-200 focus:outline-none focus:bg-gray-200 disabled:opacity-50 disabled:pointer-events-none"
+              aria-label="Close"
+              data-hs-overlay="#hs-scale-animation-modal"
             >
-          </button>
-          <button
-            type="button"
-            class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 focus:outline-none focus:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none"
-            data-hs-overlay="#hs-delete-location-alert"
-            (click)="onDeselectLocation()"
-          >
-            Cancel
-          </button>
+              <span class="sr-only">Close</span>
+              <svg
+                class="shrink-0 size-4"
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M18 6 6 18"></path>
+                <path d="m6 6 12 12"></path>
+              </svg>
+            </button>
+          </div>
+          <div class="p-4 overflow-y-auto">
+            <p class="mt-1 text-gray-800">
+              Are you sure want delete {{ selectedLocation?.country }},
+              {{ selectedLocation?.town }} location?
+            </p>
+          </div>
+          <div class="flex justify-end items-center gap-x-2 py-3 px-4 border-t">
+            <button
+              class="hidden"
+              data-hs-overlay="#hs-scale-animation-modal"
+              #deleteLocationAlertCloseButton
+            >
+              close alert
+            </button>
+            <button
+              type="button"
+              class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 focus:outline-none focus:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none"
+              data-hs-overlay="#hs-scale-animation-modal"
+              (click)="onDeselectLocation()"
+            >
+              Close
+            </button>
+            <button
+              type="button"
+              class="py-2 px-3 inline-flex justify-center items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-red-600 text-white hover:bg-red-700 focus:outline-none focus:bg-red-700 disabled:opacity-50 disabled:pointer-events-none"
+              (click)="onDeleteLocation()"
+            >
+              <div
+                class="absolute animate-spin inline-block size-4 border-[2px] border-current border-t-transparent text-white rounded-full"
+                role="status"
+                aria-label="loading"
+                *ngIf="isLoadingLocationDelete"
+              >
+                <span class="sr-only">Loading...</span>
+              </div>
+              <span
+                [ngClass]="isLoadingLocationDelete ? 'invisible' : 'visible'"
+                >Delete</span
+              >
+            </button>
+          </div>
         </div>
       </div>
     </div>
   </div>
 </div>
-<!-- End Delete Location Alert -->

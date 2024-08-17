@@ -27,7 +27,7 @@ export class LocationService {
       let location = await this._locationRepo.findOne({
         where: {
           country: body.country,
-          town: body.town,
+          city: body.city,
         },
       });
 
@@ -42,7 +42,7 @@ export class LocationService {
       location = new LocationEntity();
       location.country = body.country;
       location.countryTag = body.countryTag;
-      location.town = body.town;
+      location.city = body.city;
 
       await this._locationRepo.save(this._locationRepo.create(location));
     } catch (err) {
@@ -62,7 +62,7 @@ export class LocationService {
 
       location.country = body.country;
       location.countryTag = body.countryTag;
-      location.town = body.town;
+      location.city = body.city;
 
       await this._locationRepo.save(location);
     } catch (err) {

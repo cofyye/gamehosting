@@ -25,8 +25,8 @@ export class LocationEntity {
   })
   public countryTag: string;
 
-  @Column({ name: 'town', nullable: false, length: 50 })
-  public town: string;
+  @Column({ name: 'city', nullable: false, length: 50 })
+  public city: string;
 
   @CreateDateColumn({
     name: 'created_at',

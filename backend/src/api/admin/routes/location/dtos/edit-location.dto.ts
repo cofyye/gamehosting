@@ -18,9 +18,9 @@ export class EditLocationDto {
   public countryTag: string;
 
   @MaxLength(50, {
-    message: 'The town must contain a maximum of 50 characters.',
+    message: 'The city must contain a maximum of 50 characters.',
   })
-  @MinLength(2, { message: 'The town must contain at least 2 characters.' })
-  @IsNotEmpty({ message: 'The town field must not be empty.' })
-  public readonly town: string;
+  @MinLength(2, { message: 'The city must contain at least 2 characters.' })
+  @IsNotEmpty({ message: 'The city field must not be empty.' })
+  public readonly city: string;
 }

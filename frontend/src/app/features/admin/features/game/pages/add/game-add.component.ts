@@ -142,7 +142,7 @@ export class GameAddComponent implements OnInit, OnDestroy {
     }
   }
 
-  public onGameAdd(): void {
+  public onAddGame(): void {
     if (this.gameAddFormHasErrors()) {
       return;
     }
@@ -160,7 +160,7 @@ export class GameAddComponent implements OnInit, OnDestroy {
     this._store.dispatch(ADD_GAME({ payload: data }));
   }
 
-  public onGameReset(): void {
+  public onResetGame(): void {
     this.resetSelectGame();
     this.resetSelectHostingType();
     this.gameAddForm.reset();

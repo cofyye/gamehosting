@@ -1,5 +1,5 @@
 import { createReducer, on } from '@ngrx/store';
-import { SET_FULL_RESPONSE, SET_LOAD, SET_RESPONSE } from './http.actions';
+import { SET_FULL_RESPONSE, SET_RESPONSE } from './http.actions';
 import { initialState } from './http.state';
 
 export const httpReducer = createReducer(
@@ -25,15 +25,6 @@ export const httpReducer = createReducer(
           success: response.success,
           message: response.message,
         },
-      },
-    },
-  })),
-  on(SET_LOAD, (state, { key, load }) => ({
-    ...state,
-    http: {
-      [key]: {
-        ...state.http[key],
-        load,
       },
     },
   }))

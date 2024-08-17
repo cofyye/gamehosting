@@ -1,215 +1,107 @@
-<!-- Content -->
 <div class="w-full lg:ps-64">
   <div class="p-4 sm:p-6 space-y-4 sm:space-y-6">
-    <!-- Card -->
-    <div class="flex flex-col">
-      <div class="-m-1.5">
-        <div class="p-1.5 min-w-full inline-block align-middle">
-          <div class="bg-white border border-gray-200 rounded-xl shadow-sm">
-            <!-- Header -->
-            <div
-              class="px-6 py-4 grid gap-3 md:flex md:justify-between md:items-center border-b border-gray-200"
-            >
-              <div>
-                <h2 class="text-xl font-semibold text-gray-800">
-                  Add Location
-                </h2>
-                <p class="text-sm text-gray-600">
-                  On this page, you can add a new location.
-                </p>
-              </div>
-              <div>
-                <div class="inline-flex gap-x-2">
-                  <a
-                    class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none focus:outline-none focus:bg-gray-50"
-                    routerLink="/admin/locations"
-                  >
-                    View all
-                  </a>
+    <div class="mx-auto">
+      <!-- Card -->
+      <div class="flex flex-col">
+        <div class="-m-1.5">
+          <!-- Header -->
+          <div class="p-1.5 min-w-full inline-block align-middle">
+            <div class="bg-white border border-gray-200 rounded-xl shadow-sm">
+              <div
+                class="px-6 py-4 grid gap-3 md:flex md:justify-between md:items-center border-b border-gray-200"
+              >
+                <div>
+                  <h2 class="text-lg/[26px] font-semibold mb-0 text-gray-800">
+                    Locations
+                  </h2>
+                  <p class="text-xs text-gray-600">
+                    Add new locations to expand your server network.
+                  </p>
+                </div>
+                <div>
+                  <div class="inline-flex gap-x-2">
+                    <a
+                      class="py-2 px-3 inline-flex items-center gap-x-2 text-sm/[15px] font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none focus:outline-none focus:bg-gray-50"
+                      routerLink="/admin/locations"
+                    >
+                      View All
+                    </a>
+                  </div>
                 </div>
               </div>
-            </div>
-            <!-- End Header -->
+              <!-- End Header -->
 
-            <!-- Body -->
-            <div class="p-4 md:p-5">
-              <!-- Form -->
+              <!-- Body -->
               <form [formGroup]="locationAddForm">
-                <div class="grid gap-y-4">
-                  <div class="flex gap-4">
-                    <!-- Form Group for Country -->
-                    <div class="flex-1">
-                      <app-country-select
-                        (selectionChange)="onCountrySelected($event)"
-                        (selectionBlur)="onCountryBlur()"
-                        autocomplete="false"
-                        [ngClass]="
-                          locationAddForm.controls['country'].invalid &&
-                          (locationAddForm.controls['country'].dirty ||
-                            locationAddForm.controls['country'].touched)
-                            ? 'border-red-500 focus:border-red-500 focus:ring-red-500'
-                            : locationAddForm.controls['country'].valid
-                            ? 'border-teal-500 focus:border-teal-500 focus:ring-teal-500'
-                            : ''
-                        "
-                      ></app-country-select>
-                      <p
-                        class="text-sm text-red-600 mt-2"
-                        *ngIf="
-                          locationAddForm.controls['country'].invalid &&
-                          (locationAddForm.controls['country'].dirty ||
-                            locationAddForm.controls['country'].touched)
-                        "
-                      >
-                        {{
-                        locationAddForm.controls['country'].errors?.['required'] && 'The country field must not be empty.' ||
-                        locationAddForm.controls['country'].errors?.['minlength'] && 'The country must contain at least 2 characters.' ||
-                        locationAddForm.controls['country'].errors?.['maxlength'] && 'The country must contain a maximum of 50 characters.'
-                        }}
-                      </p>
-                    </div>
-                    <!-- End Form Group for Country -->
+                <div class="p-4 md:p-5">
+                  <div class="grid gap-y-4">
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-4">
+                      <!-- Form Group -->
+                      <div class="relative flex-1">
+                        <app-country-select
+                          (selectionChange)="onCountrySelected($event)"
+                          autocomplete="false"
+                        ></app-country-select>
+                      </div>
 
-                    <!-- Form Group for Town -->
-                    <div class="flex-1">
-                      <div class="relative">
+                      <!-- Form Group -->
+                      <div class="relative flex-1">
                         <input
                           type="text"
-                          id="hs-floating-input-town-value"
+                          id="hs-floating-input-city-value"
                           class="peer p-4 block w-full border-gray-200 rounded-lg text-sm placeholder:text-transparent focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none focus:pt-6 focus:pb-2 [&amp;:not(:placeholder-shown)]:pt-6 [&amp;:not(:placeholder-shown)]:pb-2 autofill:pt-6 autofill:pb-2"
                           placeholder=""
-                          required
-                          formControlName="town"
+                          formControlName="city"
                           autocomplete="false"
-                          [ngClass]="
-                            locationAddForm.controls['town'].invalid &&
-                            (locationAddForm.controls['town'].dirty ||
-                              locationAddForm.controls['town'].touched)
-                              ? 'border-red-500 focus:border-red-500 focus:ring-red-500'
-                              : locationAddForm.controls['town'].valid
-                              ? 'border-teal-500 focus:border-teal-500 focus:ring-teal-500'
-                              : ''
-                          "
                         />
                         <label
-                          for="hs-floating-input-town-value"
+                          for="hs-floating-input-city-value"
                           class="absolute top-0 start-0 p-4 h-full text-sm truncate pointer-events-none transition ease-in-out duration-100 border border-transparent origin-[0_0] peer-disabled:opacity-50 peer-disabled:pointer-events-none peer-focus:scale-90 peer-focus:translate-x-0.5 peer-focus:-translate-y-1.5 peer-focus:text-gray-500 peer-[:not(:placeholder-shown)]:scale-90 peer-[:not(:placeholder-shown)]:translate-x-0.5 peer-[:not(:placeholder-shown)]:-translate-y-1.5 peer-[:not(:placeholder-shown)]:text-gray-500"
-                          >Town</label
+                          >City</label
                         >
-
-                        <!-- Failure Input -->
-                        <div
-                          class="absolute inset-y-0 end-0 flex items-center pointer-events-none pe-3"
-                          *ngIf="
-                            locationAddForm.controls['town'].invalid &&
-                            (locationAddForm.controls['town'].dirty ||
-                              locationAddForm.controls['town'].touched)
-                          "
-                        >
-                          <svg
-                            class="shrink-0 size-4 text-red-500"
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="24"
-                            height="24"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="3"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                          >
-                            <circle cx="12" cy="12" r="10"></circle>
-                            <line x1="12" x2="12" y1="8" y2="12"></line>
-                            <line x1="12" x2="12.01" y1="16" y2="16"></line>
-                          </svg>
-                        </div>
-
-                        <!-- Success Input -->
-                        <div
-                          class="absolute inset-y-0 end-0 flex items-center pointer-events-none pe-3"
-                          *ngIf="
-                            locationAddForm.controls['town'].invalid &&
-                            (locationAddForm.controls['town'].dirty ||
-                              locationAddForm.controls['town'].touched)
-                              ? false
-                              : locationAddForm.controls['town'].valid
-                              ? true
-                              : false
-                          "
-                        >
-                          <svg
-                            class="shrink-0 size-4 text-teal-500"
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="24"
-                            height="24"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="3"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                          >
-                            <polyline points="20 6 9 17 4 12"></polyline>
-                          </svg>
-                        </div>
                       </div>
-                      <p
-                        class="text-sm text-red-600 mt-2"
-                        *ngIf="
-                          locationAddForm.controls['town'].invalid &&
-                          (locationAddForm.controls['town'].dirty ||
-                            locationAddForm.controls['town'].touched)
-                        "
-                      >
-                        {{
-                          locationAddForm.controls['town'].errors?.['required'] && 'The town field must not be empty.' ||
-                          locationAddForm.controls['town'].errors?.['minlength'] && 'The town must contain at least 2 characters.' ||
-                          locationAddForm.controls['town'].errors?.['maxlength'] && 'The town must contain a maximum of 50 characters.'
-                        }}
-                      </p>
                     </div>
-                    <!-- End Form Group for Town -->
-                  </div>
 
-                  <!-- Buttons -->
-                  <div class="inline-flex justify-end gap-x-2">
-                    <button
-                      type="submit"
-                      class="py-3 px-4 inline-flex justify-center items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 focus:outline-none focus:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none"
-                      (click)="onAddLocation()"
-                    >
-                      <div
-                        class="absolute animate-spin inline-block size-4 border-[2px] border-current border-t-transparent text-white rounded-full"
-                        role="status"
-                        aria-label="loading"
-                        *ngIf="isLoadingLocationAdd"
+                    <!-- Buttons -->
+                    <div class="inline-flex justify-end gap-x-2">
+                      <button
+                        class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none focus:outline-none focus:bg-gray-50"
+                        (click)="onResetLocation()"
                       >
-                        <span class="sr-only">Loading...</span>
-                      </div>
-                      <span
-                        [ngClass]="
-                          isLoadingLocationAdd ? 'invisible' : 'visible'
-                        "
-                        >Add</span
+                        Reset
+                      </button>
+
+                      <button
+                        type="submit"
+                        class="py-2 px-3 inline-flex justify-center items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 focus:outline-none focus:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none"
+                        (click)="onAddLocation()"
                       >
-                    </button>
+                        <div
+                          class="absolute animate-spin inline-block size-4 border-[2px] border-current border-t-transparent text-white rounded-full"
+                          role="status"
+                          aria-label="loading"
+                          *ngIf="isLoadingLocationAdd"
+                        >
+                          <span class="sr-only">Loading...</span>
+                        </div>
+                        <span
+                          [ngClass]="
+                            isLoadingLocationAdd ? 'invisible' : 'visible'
+                          "
+                          >Add</span
+                        >
+                      </button>
+                    </div>
+                    <!-- End Buttons -->
                   </div>
-                  <!-- End Buttons -->
                 </div>
               </form>
-              <!-- End Form -->
+              <!-- End Body -->
             </div>
-            <!-- End Body -->
-
-            <!-- Footer -->
-            <div
-              class="px-6 py-4 grid gap-3 md:flex md:justify-between md:items-center border-t border-gray-200"
-            ></div>
-            <!-- End Footer -->
           </div>
+          <!-- Card -->
         </div>
       </div>
     </div>
-    <!-- End Card -->
   </div>
 </div>

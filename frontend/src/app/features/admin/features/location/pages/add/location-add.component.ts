@@ -20,6 +20,7 @@ import { ILocationAddRequest } from '../../models/location-request.model';
 import { ADD_LOCATION } from '../../store/location.actions';
 import { ISelectedCountry } from '../../../../../../shared/models/country.model';
 import { SELECT_HTTP_RESPONSE } from '../../../../../../shared/stores/http/http.selectors';
+import { ToasterService } from '../../../../../../shared/services/toaster.service';
 
 @Component({
   selector: 'app-location-add',
@@ -35,6 +36,7 @@ export class LocationAddComponent implements OnInit, OnDestroy {
     private readonly _el: ElementRef,
     private readonly _renderer: Renderer2,
     private readonly _fb: FormBuilder,
+    private readonly _toaster: ToasterService,
     private readonly _store: Store<AppState>
   ) {}
 
@@ -49,7 +51,7 @@ export class LocationAddComponent implements OnInit, OnDestroy {
       Validators.minLength(2),
       Validators.maxLength(10),
     ]),
-    town: new FormControl<string>('', [
+    city: new FormControl<string>('', [
       Validators.required,
       Validators.minLength(2),
       Validators.maxLength(50),
@@ -64,22 +66,7 @@ export class LocationAddComponent implements OnInit, OnDestroy {
       .select(SELECT_HTTP_RESPONSE('ADD_LOCATION'))
       .subscribe((response) => {
         if (response?.success) {
-          const countryDataIcon =
-            this._el.nativeElement.querySelector('[data-icon]');
-          const countryDataTitle =
-            this._el.nativeElement.querySelector('[data-title]');
-
-          if (countryDataIcon) {
-            this._renderer.addClass(countryDataIcon, 'hidden');
-            this._renderer.setProperty(countryDataIcon, 'innerHTML', 'null');
-          }
-          if (countryDataTitle) {
-            this._renderer.setProperty(
-              countryDataTitle,
-              'innerHTML',
-              'Select country...'
-            );
-          }
+          this.resetSelectLocation();
 
           this.locationAddForm.reset();
         }
@@ -103,8 +90,6 @@ export class LocationAddComponent implements OnInit, OnDestroy {
       this.locationAddForm.patchValue({
         countryTag: selectedCountry.value,
       });
-
-      this.locationAddForm.get('country')?.markAsTouched();
     } else {
       this.locationAddForm.patchValue({
         country: '',
@@ -112,27 +97,102 @@ export class LocationAddComponent implements OnInit, OnDestroy {
       this.locationAddForm.patchValue({
         countryTag: '',
       });
-      this.locationAddForm.get('country')?.markAsTouched();
     }
   }
 
-  public onCountryBlur(): void {
-    this.locationAddForm.get('country')?.markAsTouched();
-  }
-
   public onAddLocation(): void {
-    if (this.locationAddForm.invalid) {
-      this.locationAddForm.markAllAsTouched();
+    if (this.locationAddFormHasErrors()) {
       return;
     }
 
     const data: ILocationAddRequest = {
       country: this.locationAddForm.get('country')?.value,
       countryTag: this.locationAddForm.get('countryTag')?.value,
-      town: this.locationAddForm.get('town')?.value,
+      city: this.locationAddForm.get('city')?.value,
     };
 
     this._store.dispatch(START_LOADING({ key: 'ADD_LOCATION_BTN' }));
     this._store.dispatch(ADD_LOCATION({ payload: data }));
+  }
+
+  public onResetLocation(): void {
+    this.resetSelectLocation();
+    this.locationAddForm.reset();
+  }
+
+  private resetSelectLocation(): void {
+    const countryDataIcon = this._el.nativeElement.querySelector('[data-icon]');
+    const countryDataTitle =
+      this._el.nativeElement.querySelector('[data-title]');
+
+    if (countryDataIcon) {
+      this._renderer.addClass(countryDataIcon, 'hidden');
+      this._renderer.setProperty(countryDataIcon, 'innerHTML', 'null');
+    }
+    if (countryDataTitle) {
+      this._renderer.setProperty(
+        countryDataTitle,
+        'innerHTML',
+        'Select country...'
+      );
+    }
+  }
+
+  private locationAddFormHasErrors(): boolean {
+    // Country Errors
+    if (this.locationAddForm.get('country')?.errors?.['required']) {
+      this._toaster.error('The country field must not be empty.', 'Error');
+      return true;
+    } else if (this.locationAddForm.get('country')?.errors?.['minlength']) {
+      this._toaster.error(
+        'The country must contain at least 2 characters.',
+        'Error'
+      );
+      return true;
+    } else if (this.locationAddForm.get('country')?.errors?.['maxlength']) {
+      this._toaster.error(
+        'The country must contain a maximum of 50 characters.',
+        'Error'
+      );
+      return true;
+    }
+
+    // Tag Errors
+    if (this.locationAddForm.get('tag')?.errors?.['required']) {
+      this._toaster.error('The country tag field must not be empty.', 'Error');
+      return true;
+    } else if (this.locationAddForm.get('tag')?.errors?.['minlength']) {
+      this._toaster.error(
+        'The country tag must contain at least 2 characters.',
+        'Error'
+      );
+      return true;
+    } else if (this.locationAddForm.get('tag')?.errors?.['maxlength']) {
+      this._toaster.error(
+        'The country tag must contain a maximum of 10 characters.',
+        'Error'
+      );
+      return true;
+    }
+
+    // City Errors
+    if (this.locationAddForm.get('city')?.errors?.['required']) {
+      this._toaster.error('The city field must not be empty.', 'Error');
+      return true;
+    } else if (this.locationAddForm.get('city')?.errors?.['minlength']) {
+      this._toaster.error(
+        'The city must contain at least 2 characters.',
+        'Error'
+      );
+      return true;
+    } else if (this.locationAddForm.get('city')?.errors?.['maxlength']) {
+      this._toaster.error(
+        'The city must contain a maximum of 50 characters.',
+        'Error'
+      );
+      return true;
+    }
+
+    return false;
   }
 }

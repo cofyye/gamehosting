@@ -104,7 +104,7 @@ export class LocationAllComponent implements OnInit, OnDestroy {
   }
 
   onDeselectLocation(): void {
-    this._store.dispatch(DESELECT_LOCATION());
+    setTimeout(() => this._store.dispatch(DESELECT_LOCATION()), 100);
   }
 
   onDeleteLocation(): void {

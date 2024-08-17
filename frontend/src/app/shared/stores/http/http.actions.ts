@@ -10,8 +10,3 @@ export const SET_RESPONSE = createAction(
   '[HTTP] Set Response',
   props<{ key: string; response: IAcceptResponse }>()
 );
-
-export const SET_LOAD = createAction(
-  '[HTTP] Set Load',
-  props<{ key: string; load: boolean }>()
-);

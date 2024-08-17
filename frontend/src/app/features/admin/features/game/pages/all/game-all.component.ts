@@ -95,7 +95,7 @@ export class GameAllComponent implements OnInit {
   }
 
   onDeselectGame(): void {
-    this._store.dispatch(DESELECT_GAME());
+    setTimeout(() => this._store.dispatch(DESELECT_GAME()), 100);
   }
 
   onDeleteGame(): void {

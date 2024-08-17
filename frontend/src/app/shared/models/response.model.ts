@@ -10,6 +10,5 @@ export interface IDataAcceptResponse<T> extends IAcceptResponse {
 export interface _httpResponse {
   [key: string]: {
     response: IAcceptResponse;
-    load: boolean;
   };
 }

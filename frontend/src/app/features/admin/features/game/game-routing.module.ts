@@ -25,7 +25,7 @@ const routes: Routes = [
         pathMatch: 'full',
       },
       {
-        path: ':gameId',
+        path: 'edit/:gameId',
         component: GameEditComponent,
         pathMatch: 'full',
       },

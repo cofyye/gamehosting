@@ -40,6 +40,11 @@ const routes: Routes = [
           ),
       },
       {
+        path: 'plans',
+        loadChildren: () =>
+          import('./features/plan/plan.module').then((m) => m.PlanModule),
+      },
+      {
         path: 'users',
         loadChildren: () =>
           import('./features/user/user.module').then((m) => m.UserModule),

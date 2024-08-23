@@ -1,72 +1,3 @@
-<div class="-mt-px">
-  <!-- Breadcrumb -->
-  <div
-    class="sticky top-0 inset-x-0 z-20 bg-white border-y px-4 sm:px-6 lg:px-8 lg:hidden"
-  >
-    <div class="flex items-center py-2">
-      <!-- Navigation Toggle -->
-      <button
-        type="button"
-        class="size-8 flex justify-center items-center gap-x-2 border border-gray-200 text-gray-800 hover:text-gray-500 rounded-lg focus:outline-none focus:text-gray-500 disabled:opacity-50 disabled:pointer-events-none"
-        aria-haspopup="dialog"
-        aria-expanded="false"
-        aria-controls="hs-application-sidebar"
-        aria-label="Toggle navigation"
-        data-hs-overlay="#hs-application-sidebar"
-      >
-        <span class="sr-only">Toggle Navigation</span>
-        <svg
-          class="shrink-0 size-4"
-          xmlns="http://www.w3.org/2000/svg"
-          width="24"
-          height="24"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-        >
-          <rect width="18" height="18" x="3" y="3" rx="2" />
-          <path d="M15 3v18" />
-          <path d="m8 9 3 3-3 3" />
-        </svg>
-      </button>
-      <!-- End Navigation Toggle -->
-
-      <!-- Breadcrumb -->
-      <ol class="ms-3 flex items-center whitespace-nowrap">
-        <li class="flex items-center text-sm text-gray-800">
-          Application Layout
-          <svg
-            class="shrink-0 mx-3 overflow-visible size-2.5 text-gray-400"
-            width="16"
-            height="16"
-            viewBox="0 0 16 16"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M5 1L10.6869 7.16086C10.8637 7.35239 10.8637 7.64761 10.6869 7.83914L5 14"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-            />
-          </svg>
-        </li>
-        <li
-          class="text-sm font-semibold text-gray-800 truncate"
-          aria-current="page"
-        >
-          Dashboard
-        </li>
-      </ol>
-      <!-- End Breadcrumb -->
-    </div>
-  </div>
-  <!-- End Breadcrumb -->
-</div>
-
 <!-- Sidebar -->
 <div
   id="hs-application-sidebar"
@@ -76,18 +7,6 @@
   aria-label="Sidebar"
 >
   <div class="relative flex flex-col h-full max-h-full">
-    <div class="px-8 pt-4">
-      <!-- Logo -->
-      <a
-        class="flex-none rounded-xl text-xl inline-block font-semibold focus:outline-none focus:opacity-80 text-white"
-        href="#"
-        aria-label="Preline"
-      >
-        Logo
-      </a>
-      <!-- End Logo -->
-    </div>
-
     <!-- Content -->
     <div
       class="h-full overflow-y-auto [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:bg-gray-300"
@@ -100,8 +19,8 @@
           <!-- Dasboard -->
           <li>
             <a
-              class="flex items-center gap-x-3.5 py-3 px-2.5 bg-white/10 text-sm text-white rounded-lg hover:bg-white/10 focus:outline-none focus:bg-white/10"
-              routerLink="/admin"
+              class="flex items-center gap-x-2 py-3 px-2.5 bg-white/10 text-sm text-white rounded-lg hover:bg-white/10 focus:outline-none focus:bg-white/10"
+              routerLink="dashboard"
             >
               <svg
                 class="shrink-0 size-4"
@@ -122,189 +41,16 @@
             </a>
           </li>
 
-          <!-- Locations -->
-          <li class="hs-accordion" id="locations-accordion">
-            <button
-              type="button"
-              class="hs-accordion-toggle w-full text-start flex items-center gap-x-3.5 py-3 px-2.5 text-sm text-white rounded-lg hover:bg-white/10 focus:outline-none focus:bg-white/10"
-              aria-expanded="true"
-              aria-controls="locations-accordion-child"
-            >
-              <svg
-                class="shrink-0 mt-0.5 size-4"
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                class="lucide lucide-map-pin"
-              >
-                <path
-                  d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"
-                />
-                <circle cx="12" cy="10" r="3" />
-              </svg>
-              Locations
-
-              <svg
-                class="hs-accordion-active:block ms-auto hidden size-4"
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              >
-                <path d="m18 15-6-6-6 6" />
-              </svg>
-
-              <svg
-                class="hs-accordion-active:hidden ms-auto block size-4"
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              >
-                <path d="m6 9 6 6 6-6" />
-              </svg>
-            </button>
-
-            <div
-              id="locations-accordion-child"
-              class="hs-accordion-content w-full overflow-hidden transition-[height] duration-300 hidden"
-              role="region"
-              aria-labelledby="locations-accordion"
-            >
-              <ul class="ps-6 pt-1 space-y-1">
-                <li>
-                  <a
-                    class="flex items-center gap-x-3.5 py-2 px-2.5 text-sm text-white rounded-lg hover:bg-white/10 focus:outline-none focus:bg-white/10"
-                    routerLink="/admin/locations/add"
-                  >
-                    Add Location
-                  </a>
-                </li>
-                <li>
-                  <a
-                    class="flex items-center gap-x-3.5 py-2 px-2.5 text-sm text-white rounded-lg hover:bg-white/10 focus:outline-none focus:bg-white/10"
-                    routerLink="/admin/locations"
-                  >
-                    List of Locations
-                  </a>
-                </li>
-              </ul>
-            </div>
-          </li>
-
-          <!-- Games -->
-          <li class="hs-accordion" id="games-accordion">
-            <button
-              type="button"
-              class="hs-accordion-toggle w-full text-start flex items-center gap-x-3.5 py-3 px-2.5 text-sm text-white rounded-lg hover:bg-white/10 focus:outline-none focus:bg-white/10"
-              aria-expanded="true"
-              aria-controls="games-accordion-child"
-            >
-              <svg
-                class="shrink-0 mt-0.5 size-4"
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                class="lucide lucide-gamepad"
-              >
-                <line x1="6" x2="10" y1="12" y2="12" />
-                <line x1="8" x2="8" y1="10" y2="14" />
-                <line x1="15" x2="15.01" y1="13" y2="13" />
-                <line x1="18" x2="18.01" y1="11" y2="11" />
-                <rect width="20" height="12" x="2" y="6" rx="2" />
-              </svg>
-              Games
-
-              <svg
-                class="hs-accordion-active:block ms-auto hidden size-4"
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              >
-                <path d="m18 15-6-6-6 6" />
-              </svg>
-
-              <svg
-                class="hs-accordion-active:hidden ms-auto block size-4"
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              >
-                <path d="m6 9 6 6 6-6" />
-              </svg>
-            </button>
-
-            <div
-              id="games-accordion-child"
-              class="hs-accordion-content w-full overflow-hidden transition-[height] duration-300 hidden"
-              role="region"
-              aria-labelledby="games-accordion"
-            >
-              <ul class="ps-6 pt-1 space-y-1">
-                <li>
-                  <a
-                    class="flex items-center gap-x-3.5 py-2 px-2.5 text-sm text-white rounded-lg hover:bg-white/10 focus:outline-none focus:bg-white/10"
-                    routerLink="/admin/games/add"
-                  >
-                    Add Game
-                  </a>
-                </li>
-                <li>
-                  <a
-                    class="flex items-center gap-x-3.5 py-2 px-2.5 text-sm text-white rounded-lg hover:bg-white/10 focus:outline-none focus:bg-white/10"
-                    routerLink="/admin/games"
-                  >
-                    List of Games
-                  </a>
-                </li>
-              </ul>
-            </div>
-          </li>
-
           <!-- Machines -->
           <li class="hs-accordion" id="machines-accordion">
             <button
               type="button"
-              class="hs-accordion-toggle w-full text-start flex items-center gap-x-3.5 py-3 px-2.5 text-sm text-white rounded-lg hover:bg-white/10 focus:outline-none focus:bg-white/10"
+              class="hs-accordion-toggle w-full text-start flex items-center gap-x-2 py-3 px-2.5 text-sm text-white rounded-lg hover:bg-white/10 focus:outline-none focus:bg-white/10"
               aria-expanded="true"
               aria-controls="machines-accordion-child"
             >
               <svg
-                class="shrink-0 mt-0.5 size-4"
+                class="shrink-0 size-4"
                 xmlns="http://www.w3.org/2000/svg"
                 width="24"
                 height="24"
@@ -314,7 +60,6 @@
                 stroke-width="2"
                 stroke-linecap="round"
                 stroke-linejoin="round"
-                class="lucide lucide-server"
               >
                 <rect width="20" height="8" x="2" y="2" rx="2" ry="2" />
                 <rect width="20" height="8" x="2" y="14" rx="2" ry="2" />
@@ -363,7 +108,7 @@
               <ul class="ps-6 pt-1 space-y-1">
                 <li>
                   <a
-                    class="flex items-center gap-x-3.5 py-2 px-2.5 text-sm text-white rounded-lg hover:bg-white/10 focus:outline-none focus:bg-white/10"
+                    class="flex items-center gap-x-2 py-2 px-2.5 text-sm text-white rounded-lg hover:bg-white/10 focus:outline-none focus:bg-white/10"
                     routerLink="/admin/machines/add"
                   >
                     Add Machines
@@ -371,10 +116,95 @@
                 </li>
                 <li>
                   <a
-                    class="flex items-center gap-x-3.5 py-2 px-2.5 text-sm text-white rounded-lg hover:bg-white/10 focus:outline-none focus:bg-white/10"
+                    class="flex items-center gap-x-2 py-2 px-2.5 text-sm text-white rounded-lg hover:bg-white/10 focus:outline-none focus:bg-white/10"
                     routerLink="/admin/machines"
                   >
                     List of Machines
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </li>
+
+          <!-- Locations -->
+          <li class="hs-accordion" id="locations-accordion">
+            <button
+              type="button"
+              class="hs-accordion-toggle w-full text-start flex items-center gap-x-2 py-3 px-2.5 text-sm text-white rounded-lg hover:bg-white/10 focus:outline-none focus:bg-white/10"
+              aria-expanded="true"
+              aria-controls="locations-accordion-child"
+            >
+              <svg
+                class="shrink-0 size-4"
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path
+                  d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"
+                />
+                <circle cx="12" cy="10" r="3" />
+              </svg>
+              Locations
+
+              <svg
+                class="hs-accordion-active:block ms-auto hidden size-4"
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="m18 15-6-6-6 6" />
+              </svg>
+
+              <svg
+                class="hs-accordion-active:hidden ms-auto block size-4"
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="m6 9 6 6 6-6" />
+              </svg>
+            </button>
+
+            <div
+              id="locations-accordion-child"
+              class="hs-accordion-content w-full overflow-hidden transition-[height] duration-300 hidden"
+              role="region"
+              aria-labelledby="locations-accordion"
+            >
+              <ul class="ps-6 pt-1 space-y-1">
+                <li>
+                  <a
+                    class="flex items-center gap-x-2 py-2 px-2.5 text-sm text-white rounded-lg hover:bg-white/10 focus:outline-none focus:bg-white/10"
+                    routerLink="/admin/locations/add"
+                  >
+                    Add Location
+                  </a>
+                </li>
+                <li>
+                  <a
+                    class="flex items-center gap-x-2 py-2 px-2.5 text-sm text-white rounded-lg hover:bg-white/10 focus:outline-none focus:bg-white/10"
+                    routerLink="/admin/locations"
+                  >
+                    List of Locations
                   </a>
                 </li>
               </ul>
@@ -385,12 +215,12 @@
           <li class="hs-accordion" id="servers-accordion">
             <button
               type="button"
-              class="hs-accordion-toggle w-full text-start flex items-center gap-x-3.5 py-3 px-2.5 text-sm text-white rounded-lg hover:bg-white/10 focus:outline-none focus:bg-white/10"
+              class="hs-accordion-toggle w-full text-start flex items-center gap-x-2 py-3 px-2.5 text-sm text-white rounded-lg hover:bg-white/10 focus:outline-none focus:bg-white/10"
               aria-expanded="true"
               aria-controls="servers-accordion-child"
             >
               <svg
-                class="shrink-0 mt-0.5 size-4"
+                class="shrink-0 size-4"
                 xmlns="http://www.w3.org/2000/svg"
                 width="24"
                 height="24"
@@ -400,7 +230,6 @@
                 stroke-width="2"
                 stroke-linecap="round"
                 stroke-linejoin="round"
-                class="lucide lucide-hard-drive"
               >
                 <line x1="22" x2="2" y1="12" y2="12" />
                 <path
@@ -451,26 +280,201 @@
               <ul class="ps-6 pt-1 space-y-1">
                 <li>
                   <a
-                    class="flex items-center gap-x-3.5 py-2 px-2.5 text-sm text-white rounded-lg hover:bg-white/10 focus:outline-none focus:bg-white/10"
-                    href="#"
+                    class="flex items-center gap-x-2 py-2 px-2.5 text-sm text-white rounded-lg hover:bg-white/10 focus:outline-none focus:bg-white/10"
+                    routerLink="/admin/servers/add"
                   >
                     Add Server
                   </a>
                 </li>
                 <li>
                   <a
-                    class="flex items-center gap-x-3.5 py-2 px-2.5 text-sm text-white rounded-lg hover:bg-white/10 focus:outline-none focus:bg-white/10"
-                    href="#"
+                    class="flex items-center gap-x-2 py-2 px-2.5 text-sm text-white rounded-lg hover:bg-white/10 focus:outline-none focus:bg-white/10"
+                    routerLink="/admin/servers"
                   >
                     List of Services
                   </a>
                 </li>
                 <li>
                   <a
-                    class="flex items-center gap-x-3.5 py-2 px-2.5 text-sm text-white rounded-lg hover:bg-white/10 focus:outline-none focus:bg-white/10"
-                    href="#"
+                    class="flex items-center gap-x-2 py-2 px-2.5 text-sm text-white rounded-lg hover:bg-white/10 focus:outline-none focus:bg-white/10"
+                    routerLink="#"
                   >
                     Backup Servers
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </li>
+
+          <!-- Games -->
+          <li class="hs-accordion" id="games-accordion">
+            <button
+              type="button"
+              class="hs-accordion-toggle w-full text-start flex items-center gap-x-2 py-3 px-2.5 text-sm text-white rounded-lg hover:bg-white/10 focus:outline-none focus:bg-white/10"
+              aria-expanded="true"
+              aria-controls="games-accordion-child"
+            >
+              <svg
+                class="shrink-0 size-4"
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <line x1="6" x2="10" y1="12" y2="12" />
+                <line x1="8" x2="8" y1="10" y2="14" />
+                <line x1="15" x2="15.01" y1="13" y2="13" />
+                <line x1="18" x2="18.01" y1="11" y2="11" />
+                <rect width="20" height="12" x="2" y="6" rx="2" />
+              </svg>
+              Games
+
+              <svg
+                class="hs-accordion-active:block ms-auto hidden size-4"
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="m18 15-6-6-6 6" />
+              </svg>
+
+              <svg
+                class="hs-accordion-active:hidden ms-auto block size-4"
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="m6 9 6 6 6-6" />
+              </svg>
+            </button>
+
+            <div
+              id="games-accordion-child"
+              class="hs-accordion-content w-full overflow-hidden transition-[height] duration-300 hidden"
+              role="region"
+              aria-labelledby="games-accordion"
+            >
+              <ul class="ps-6 pt-1 space-y-1">
+                <li>
+                  <a
+                    class="flex items-center gap-x-2 py-2 px-2.5 text-sm text-white rounded-lg hover:bg-white/10 focus:outline-none focus:bg-white/10"
+                    routerLink="/admin/games/add"
+                  >
+                    Add Game
+                  </a>
+                </li>
+                <li>
+                  <a
+                    class="flex items-center gap-x-2 py-2 px-2.5 text-sm text-white rounded-lg hover:bg-white/10 focus:outline-none focus:bg-white/10"
+                    routerLink="/admin/games"
+                  >
+                    List of Games
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </li>
+
+          <!-- Plans -->
+          <li class="hs-accordion" id="plans-accordion">
+            <button
+              type="button"
+              class="hs-accordion-toggle w-full text-start flex items-center gap-x-2 py-3 px-2.5 text-sm text-white rounded-lg hover:bg-white/10 focus:outline-none focus:bg-white/10"
+              aria-expanded="true"
+              aria-controls="plans-accordion-child"
+            >
+              <svg
+                class="shrink-0 size-4"
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <rect width="12" height="12" x="2" y="10" rx="2" ry="2" />
+                <path
+                  d="m17.92 14 3.5-3.5a2.24 2.24 0 0 0 0-3l-5-4.92a2.24 2.24 0 0 0-3 0L10 6"
+                />
+                <path d="M6 18h.01" />
+                <path d="M10 14h.01" />
+                <path d="M15 6h.01" />
+                <path d="M18 9h.01" />
+              </svg>
+              Plans
+
+              <svg
+                class="hs-accordion-active:block ms-auto hidden size-4"
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="m18 15-6-6-6 6" />
+              </svg>
+
+              <svg
+                class="hs-accordion-active:hidden ms-auto block size-4"
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="m6 9 6 6 6-6" />
+              </svg>
+            </button>
+
+            <div
+              id="plans-accordion-child"
+              class="hs-accordion-content w-full overflow-hidden transition-[height] duration-300 hidden"
+              role="region"
+              aria-labelledby="plans-accordion"
+            >
+              <ul class="ps-6 pt-1 space-y-1">
+                <li>
+                  <a
+                    class="flex items-center gap-x-2 py-2 px-2.5 text-sm text-white rounded-lg hover:bg-white/10 focus:outline-none focus:bg-white/10"
+                    routerLink="/admin/plans/add"
+                  >
+                    Add Plan
+                  </a>
+                </li>
+                <li>
+                  <a
+                    class="flex items-center gap-x-2 py-2 px-2.5 text-sm text-white rounded-lg hover:bg-white/10 focus:outline-none focus:bg-white/10"
+                    routerLink="/admin/plans"
+                  >
+                    List of Plans
                   </a>
                 </li>
               </ul>
@@ -481,12 +485,12 @@
           <li class="hs-accordion" id="users-accordion">
             <button
               type="button"
-              class="hs-accordion-toggle w-full text-start flex items-center gap-x-3.5 py-3 px-2.5 text-sm text-white rounded-lg hover:bg-white/10 focus:outline-none focus:bg-white/10"
+              class="hs-accordion-toggle w-full text-start flex items-center gap-x-2 py-3 px-2.5 text-sm text-white rounded-lg hover:bg-white/10 focus:outline-none focus:bg-white/10"
               aria-expanded="true"
               aria-controls="users-accordion-child"
             >
               <svg
-                class="shrink-0 mt-0.5 size-4"
+                class="shrink-0 size-4"
                 xmlns="http://www.w3.org/2000/svg"
                 width="24"
                 height="24"
@@ -496,7 +500,6 @@
                 stroke-width="2"
                 stroke-linecap="round"
                 stroke-linejoin="round"
-                class="lucide lucide-users"
               >
                 <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
                 <circle cx="9" cy="7" r="4" />
@@ -545,16 +548,16 @@
               <ul class="ps-6 pt-1 space-y-1">
                 <li>
                   <a
-                    class="flex items-center gap-x-3.5 py-2 px-2.5 text-sm text-white rounded-lg hover:bg-white/10 focus:outline-none focus:bg-white/10"
-                    routerLink="/admin/users/add"
+                    class="flex items-center gap-x-2 py-2 px-2.5 text-sm text-white rounded-lg hover:bg-white/10 focus:outline-none focus:bg-white/10"
+                    href="#"
                   >
                     Add User
                   </a>
                 </li>
                 <li>
                   <a
-                    class="flex items-center gap-x-3.5 py-2 px-2.5 text-sm text-white rounded-lg hover:bg-white/10 focus:outline-none focus:bg-white/10"
-                    routerLink="/admin/users"
+                    class="flex items-center gap-x-2 py-2 px-2.5 text-sm text-white rounded-lg hover:bg-white/10 focus:outline-none focus:bg-white/10"
+                    href="#"
                   >
                     List of Users
                   </a>
@@ -567,12 +570,12 @@
           <li class="hs-accordion" id="plugins-accordion">
             <button
               type="button"
-              class="hs-accordion-toggle w-full text-start flex items-center gap-x-3.5 py-3 px-2.5 text-sm text-white rounded-lg hover:bg-white/10 focus:outline-none focus:bg-white/10"
+              class="hs-accordion-toggle w-full text-start flex items-center gap-x-2 py-3 px-2.5 text-sm text-white rounded-lg hover:bg-white/10 focus:outline-none focus:bg-white/10"
               aria-expanded="true"
               aria-controls="plugins-accordion-child"
             >
               <svg
-                class="shrink-0 mt-0.5 size-4"
+                class="shrink-0 size-4"
                 xmlns="http://www.w3.org/2000/svg"
                 width="24"
                 height="24"
@@ -582,7 +585,6 @@
                 stroke-width="2"
                 stroke-linecap="round"
                 stroke-linejoin="round"
-                class="lucide lucide-puzzle"
               >
                 <path
                   d="M19.439 7.85c-.049.322.059.648.289.878l1.568 1.568c.47.47.706 1.087.706 1.704s-.235 1.233-.706 1.704l-1.611 1.611a.98.98 0 0 1-.837.276c-.47-.07-.802-.48-.968-.925a2.501 2.501 0 1 0-3.214 3.214c.446.166.855.497.925.968a.979.979 0 0 1-.276.837l-1.61 1.61a2.404 2.404 0 0 1-1.705.707 2.402 2.402 0 0 1-1.704-.706l-1.568-1.568a1.026 1.026 0 0 0-.877-.29c-.493.074-.84.504-1.02.968a2.5 2.5 0 1 1-3.237-3.237c.464-.18.894-.527.967-1.02a1.026 1.026 0 0 0-.289-.877l-1.568-1.568A2.402 2.402 0 0 1 1.998 12c0-.617.236-1.234.706-1.704L4.23 8.77c.24-.24.581-.353.917-.303.515.077.877.528 1.073 1.01a2.5 2.5 0 1 0 3.259-3.259c-.482-.196-.933-.558-1.01-1.073-.05-.336.062-.676.303-.917l1.525-1.525A2.402 2.402 0 0 1 12 1.998c.617 0 1.234.236 1.704.706l1.568 1.568c.23.23.556.338.877.29.493-.074.84-.504 1.02-.968a2.5 2.5 0 1 1 3.237 3.237c-.464.18-.894.527-.967 1.02Z"
@@ -630,7 +632,7 @@
               <ul class="ps-6 pt-1 space-y-1">
                 <li>
                   <a
-                    class="flex items-center gap-x-3.5 py-2 px-2.5 text-sm text-white rounded-lg hover:bg-white/10 focus:outline-none focus:bg-white/10"
+                    class="flex items-center gap-x-2 py-2 px-2.5 text-sm text-white rounded-lg hover:bg-white/10 focus:outline-none focus:bg-white/10"
                     href="#"
                   >
                     Add Plugin
@@ -638,7 +640,7 @@
                 </li>
                 <li>
                   <a
-                    class="flex items-center gap-x-3.5 py-2 px-2.5 text-sm text-white rounded-lg hover:bg-white/10 focus:outline-none focus:bg-white/10"
+                    class="flex items-center gap-x-2 py-2 px-2.5 text-sm text-white rounded-lg hover:bg-white/10 focus:outline-none focus:bg-white/10"
                     href="#"
                   >
                     List of Plugins
@@ -652,12 +654,12 @@
           <li class="hs-accordion" id="mods-accordion">
             <button
               type="button"
-              class="hs-accordion-toggle w-full text-start flex items-center gap-x-3.5 py-3 px-2.5 text-sm text-white rounded-lg hover:bg-white/10 focus:outline-none focus:bg-white/10"
+              class="hs-accordion-toggle w-full text-start flex items-center gap-x-2 py-3 px-2.5 text-sm text-white rounded-lg hover:bg-white/10 focus:outline-none focus:bg-white/10"
               aria-expanded="true"
               aria-controls="mods-accordion-child"
             >
               <svg
-                class="shrink-0 mt-0.5 size-4"
+                class="shrink-0 size-4"
                 xmlns="http://www.w3.org/2000/svg"
                 width="24"
                 height="24"
@@ -667,7 +669,6 @@
                 stroke-width="2"
                 stroke-linecap="round"
                 stroke-linejoin="round"
-                class="lucide lucide-package"
               >
                 <path d="m7.5 4.27 9 5.15" />
                 <path
@@ -718,7 +719,7 @@
               <ul class="ps-6 pt-1 space-y-1">
                 <li>
                   <a
-                    class="flex items-center gap-x-3.5 py-2 px-2.5 text-sm text-white rounded-lg hover:bg-white/10 focus:outline-none focus:bg-white/10"
+                    class="flex items-center gap-x-2 py-2 px-2.5 text-sm text-white rounded-lg hover:bg-white/10 focus:outline-none focus:bg-white/10"
                     href="#"
                   >
                     Add Mods
@@ -726,7 +727,7 @@
                 </li>
                 <li>
                   <a
-                    class="flex items-center gap-x-3.5 py-2 px-2.5 text-sm text-white rounded-lg hover:bg-white/10 focus:outline-none focus:bg-white/10"
+                    class="flex items-center gap-x-2 py-2 px-2.5 text-sm text-white rounded-lg hover:bg-white/10 focus:outline-none focus:bg-white/10"
                     href="#"
                   >
                     List of Mods
@@ -740,12 +741,12 @@
           <li class="hs-accordion" id="tickets-accordion">
             <button
               type="button"
-              class="hs-accordion-toggle w-full text-start flex items-center gap-x-3.5 py-3 px-2.5 text-sm text-white rounded-lg hover:bg-white/10 focus:outline-none focus:bg-white/10"
+              class="hs-accordion-toggle w-full text-start flex items-center gap-x-2 py-3 px-2.5 text-sm text-white rounded-lg hover:bg-white/10 focus:outline-none focus:bg-white/10"
               aria-expanded="true"
               aria-controls="tickets-accordion-child"
             >
               <svg
-                class="shrink-0 mt-0.5 size-4"
+                class="shrink-0 size-4"
                 xmlns="http://www.w3.org/2000/svg"
                 width="24"
                 height="24"
@@ -755,7 +756,6 @@
                 stroke-width="2"
                 stroke-linecap="round"
                 stroke-linejoin="round"
-                class="lucide lucide-messages-square"
               >
                 <path
                   d="M14 9a2 2 0 0 1-2 2H6l-4 4V4c0-1.1.9-2 2-2h8a2 2 0 0 1 2 2z"
@@ -804,7 +804,7 @@
               <ul class="ps-6 pt-1 space-y-1">
                 <li>
                   <a
-                    class="flex items-center gap-x-3.5 py-2 px-2.5 text-sm text-white rounded-lg hover:bg-white/10 focus:outline-none focus:bg-white/10"
+                    class="flex items-center gap-x-2 py-2 px-2.5 text-sm text-white rounded-lg hover:bg-white/10 focus:outline-none focus:bg-white/10"
                     href="#"
                   >
                     Create Ticket
@@ -812,7 +812,7 @@
                 </li>
                 <li>
                   <a
-                    class="flex items-center gap-x-3.5 py-2 px-2.5 text-sm text-white rounded-lg hover:bg-white/10 focus:outline-none focus:bg-white/10"
+                    class="flex items-center gap-x-2 py-2 px-2.5 text-sm text-white rounded-lg hover:bg-white/10 focus:outline-none focus:bg-white/10"
                     href="#"
                   >
                     List of Tickets
@@ -826,12 +826,12 @@
           <li class="hs-accordion" id="announcements-accordion">
             <button
               type="button"
-              class="hs-accordion-toggle w-full text-start flex items-center gap-x-3.5 py-3 px-2.5 text-sm text-white rounded-lg hover:bg-white/10 focus:outline-none focus:bg-white/10"
+              class="hs-accordion-toggle w-full text-start flex items-center gap-x-2 py-3 px-2.5 text-sm text-white rounded-lg hover:bg-white/10 focus:outline-none focus:bg-white/10"
               aria-expanded="true"
               aria-controls="announcements-accordion-child"
             >
               <svg
-                class="shrink-0 mt-0.5 size-4"
+                class="shrink-0 size-4"
                 xmlns="http://www.w3.org/2000/svg"
                 width="24"
                 height="24"
@@ -841,7 +841,6 @@
                 stroke-width="2"
                 stroke-linecap="round"
                 stroke-linejoin="round"
-                class="lucide lucide-newspaper"
               >
                 <path
                   d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2Zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2"
@@ -892,7 +891,7 @@
               <ul class="ps-6 pt-1 space-y-1">
                 <li>
                   <a
-                    class="flex items-center gap-x-3.5 py-2 px-2.5 text-sm text-white rounded-lg hover:bg-white/10 focus:outline-none focus:bg-white/10"
+                    class="flex items-center gap-x-2 py-2 px-2.5 text-sm text-white rounded-lg hover:bg-white/10 focus:outline-none focus:bg-white/10"
                     href="#"
                   >
                     Create Announcements
@@ -900,7 +899,7 @@
                 </li>
                 <li>
                   <a
-                    class="flex items-center gap-x-3.5 py-2 px-2.5 text-sm text-white rounded-lg hover:bg-white/10 focus:outline-none focus:bg-white/10"
+                    class="flex items-center gap-x-2 py-2 px-2.5 text-sm text-white rounded-lg hover:bg-white/10 focus:outline-none focus:bg-white/10"
                     href="#"
                   >
                     List of Announcements
@@ -912,7 +911,7 @@
 
           <li>
             <a
-              class="w-full flex items-center gap-x-3.5 py-3 px-2.5 text-sm text-white rounded-lg hover:bg-white/10"
+              class="w-full flex items-center gap-x-2 py-3 px-2.5 text-sm text-white rounded-lg hover:bg-white/10"
               href="#"
             >
               <svg
@@ -926,7 +925,6 @@
                 stroke-width="2"
                 stroke-linecap="round"
                 stroke-linejoin="round"
-                class="lucide lucide-credit-card"
               >
                 <rect width="20" height="14" x="2" y="5" rx="2" />
                 <line x1="2" x2="22" y1="10" y2="10" />
@@ -939,12 +937,12 @@
           <li class="hs-accordion" id="settings-accordion">
             <button
               type="button"
-              class="hs-accordion-toggle w-full text-start flex items-center gap-x-3.5 py-3 px-2.5 text-sm text-white rounded-lg hover:bg-white/10 focus:outline-none focus:bg-white/10"
+              class="hs-accordion-toggle w-full text-start flex items-center gap-x-2 py-3 px-2.5 text-sm text-white rounded-lg hover:bg-white/10 focus:outline-none focus:bg-white/10"
               aria-expanded="true"
               aria-controls="settings-accordion-child"
             >
               <svg
-                class="shrink-0 mt-0.5 size-4"
+                class="shrink-0 size-4"
                 xmlns="http://www.w3.org/2000/svg"
                 width="24"
                 height="24"
@@ -954,7 +952,6 @@
                 stroke-width="2"
                 stroke-linecap="round"
                 stroke-linejoin="round"
-                class="lucide lucide-sliders-horizontal"
               >
                 <line x1="21" x2="14" y1="4" y2="4" />
                 <line x1="10" x2="3" y1="4" y2="4" />
@@ -1008,7 +1005,7 @@
               <ul class="ps-6 pt-1 space-y-1">
                 <li>
                   <a
-                    class="flex items-center gap-x-3.5 py-2 px-2.5 text-sm text-white rounded-lg hover:bg-white/10 focus:outline-none focus:bg-white/10"
+                    class="flex items-center gap-x-2 py-2 px-2.5 text-sm text-white rounded-lg hover:bg-white/10 focus:outline-none focus:bg-white/10"
                     href="#"
                   >
                     General Settings
@@ -1016,7 +1013,7 @@
                 </li>
                 <li>
                   <a
-                    class="flex items-center gap-x-3.5 py-2 px-2.5 text-sm text-white rounded-lg hover:bg-white/10 focus:outline-none focus:bg-white/10"
+                    class="flex items-center gap-x-2 py-2 px-2.5 text-sm text-white rounded-lg hover:bg-white/10 focus:outline-none focus:bg-white/10"
                     href="#"
                   >
                     Payment Gateaway
@@ -1024,7 +1021,7 @@
                 </li>
                 <li>
                   <a
-                    class="flex items-center gap-x-3.5 py-2 px-2.5 text-sm text-white rounded-lg hover:bg-white/10 focus:outline-none focus:bg-white/10"
+                    class="flex items-center gap-x-2 py-2 px-2.5 text-sm text-white rounded-lg hover:bg-white/10 focus:outline-none focus:bg-white/10"
                     href="#"
                   >
                     System Logs

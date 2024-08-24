@@ -16,8 +16,8 @@ export class AddMachineDto {
   @IsNotEmpty({ message: 'The location ID field must not be empty.' })
   public readonly locationId: string;
 
-  @MaxLength(40, {
-    message: 'The name must contain a maximum of 40 characters.',
+  @MaxLength(50, {
+    message: 'The name must contain a maximum of 50 characters.',
   })
   @MinLength(2, { message: 'The name must contain at least 2 characters.' })
   @IsNotEmpty({ message: 'The name field must not be empty.' })
@@ -57,14 +57,6 @@ export class AddMachineDto {
   @IsInt({ message: 'The FTP port must be in numeric format.' })
   @IsNotEmpty({ message: 'The FTP port field must not be empty.' })
   public readonly ftpPort: number;
-
-  // @Max(65535, {
-  //   message: 'The maximum value for the maximum servers must be 65535.',
-  // })
-  // @Min(1, { message: 'The minimum value for the maximum servers must be 1.' })
-  // @IsInt({ message: 'The maximum servers must be in numeric format.' })
-  // @IsNotEmpty({ message: 'The maximum servers field must not be empty.' })
-  // public readonly maxServers: number;
 
   @IsNotEmpty({ message: 'The games field must not be empty.' })
   public games: string;

@@ -17,10 +17,10 @@ import { Subscription } from 'rxjs';
 import { IS_LOADING } from '../../../../../../shared/stores/loader/loader.selectors';
 import { START_LOADING } from '../../../../../../shared/stores/loader/loader.actions';
 import { ILocationAddRequest } from '../../../../shared/models/location-request.model';
-import { ADD_LOCATION } from '../../store/location.actions';
 import { ISelectedCountry } from '../../../../../../shared/models/country.model';
 import { SELECT_HTTP_RESPONSE } from '../../../../../../shared/stores/http/http.selectors';
 import { ToasterService } from '../../../../../../shared/services/toaster.service';
+import { ADD_LOCATION } from '../../../../shared/stores/location/location.actions';
 
 @Component({
   selector: 'app-location-add',

@@ -22,8 +22,8 @@ import { environment } from '../../../../../../../environments/environment';
 import { HostBy } from '../../../../../../shared/enums/game.enum';
 import { ISelectedGame } from '../../../../../../shared/models/game.model';
 import { SELECT_HTTP_RESPONSE } from '../../../../../../shared/stores/http/http.selectors';
-import { IGameAddRequest } from '../../models/game-request.model';
-import { ADD_GAME } from '../../store/game.actions';
+import { IGameAddRequest } from '../../../../shared/models/game-request.model';
+import { ADD_GAME } from '../../../../shared/stores/game/game.actions';
 import { ToasterService } from '../../../../../../shared/services/toaster.service';
 
 @Component({

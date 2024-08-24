@@ -4,6 +4,8 @@ import { MachineAllComponent } from './pages/all/machine-all.component';
 import { MachineAddComponent } from './pages/add/machine-add.component';
 import { MachineEditComponent } from './pages/edit/machine-edit.component';
 import { getLocationsResolver } from '../../shared/resolvers/get-locations.resolver';
+import { getGamesResolver } from '../../shared/resolvers/get-games.resolver';
+import { getLocationsGamesResolver } from './resolvers/get-locations-games.resolver';
 
 const routes: Routes = [
   {
@@ -20,7 +22,7 @@ const routes: Routes = [
         component: MachineAddComponent,
         pathMatch: 'full',
         resolve: {
-          locations: getLocationsResolver,
+          data: getLocationsGamesResolver,
         },
       },
       {

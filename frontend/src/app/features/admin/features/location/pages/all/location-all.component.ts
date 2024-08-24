@@ -11,19 +11,19 @@ import { Subscription } from 'rxjs';
 import { environment } from '../../../../../../../environments/environment';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../../../../../app.state';
-import {
-  DELETE_LOCATION,
-  DESELECT_LOCATION,
-  SELECT_LOCATION,
-} from '../../store/location.actions';
-import {
-  SELECT_LOCATIONS,
-  SELECT_SELECTED_LOCATION,
-} from '../../store/location.selectors';
 import { ToasterService } from '../../../../../../shared/services/toaster.service';
 import { IS_LOADING } from '../../../../../../shared/stores/loader/loader.selectors';
 import { START_LOADING } from '../../../../../../shared/stores/loader/loader.actions';
 import { SELECT_HTTP_RESPONSE } from '../../../../../../shared/stores/http/http.selectors';
+import {
+  SELECT_LOCATIONS,
+  SELECT_SELECTED_LOCATION,
+} from '../../../../shared/stores/location/location.selectors';
+import {
+  DELETE_LOCATION,
+  DESELECT_LOCATION,
+  SELECT_LOCATION,
+} from '../../../../shared/stores/location/location.actions';
 
 @Component({
   selector: 'app-location-all',

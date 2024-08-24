@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Actions, ofType, createEffect } from '@ngrx/effects';
 import { catchError, map, mergeMap, of, tap } from 'rxjs';
-import * as GameActions from './game.actions';
+import * as MachineActions from './machine.actions';
 import * as HttpActions from '../../../../../shared/stores/http/http.actions';
 import { HttpErrorResponse } from '@angular/common/http';
 import { IAcceptResponse } from '../../../../../shared/models/response.model';
@@ -9,43 +9,43 @@ import { Store } from '@ngrx/store';
 import { AppState } from '../../../../../app.state';
 import { UtilsService } from '../../../../../shared/services/utils.service';
 import { STOP_LOADING } from '../../../../../shared/stores/loader/loader.actions';
-import { GameService } from '../services/game.service';
+import { MachineService } from '../../../shared/services/machine.service';
 
 @Injectable()
-export class GameEffects {
+export class MachineEffects {
   constructor(
     private readonly _actions$: Actions,
-    private readonly _gameService: GameService,
+    private readonly _machineService: MachineService,
     private readonly _utilsService: UtilsService,
     private readonly _store: Store<AppState>
   ) {}
 
-  addGame$ = createEffect(() =>
+  addMachine$ = createEffect(() =>
     this._actions$.pipe(
-      ofType(GameActions.ADD_GAME),
+      ofType(MachineActions.ADD_MACHINE),
       mergeMap((action) =>
-        this._gameService.addGame(action.payload).pipe(
+        this._machineService.addMachine(action.payload).pipe(
           tap((response) => {
             this._utilsService.handleResponseToaster(response);
 
-            this._store.dispatch(STOP_LOADING({ key: 'ADD_GAME_BTN' }));
+            this._store.dispatch(STOP_LOADING({ key: 'ADD_MACHINE_BTN' }));
 
             return response;
           }),
           map((response) =>
             HttpActions.SET_RESPONSE({
-              key: 'ADD_GAME',
+              key: 'ADD_MACHINE',
               response,
             })
           ),
           catchError((err: HttpErrorResponse) => {
             const response: IAcceptResponse = err.error as IAcceptResponse;
 
-            this._store.dispatch(STOP_LOADING({ key: 'ADD_GAME_BTN' }));
+            this._store.dispatch(STOP_LOADING({ key: 'ADD_MACHINE_BTN' }));
 
             return of(
               HttpActions.SET_RESPONSE({
-                key: 'ADD_GAME',
+                key: 'ADD_MACHINE',
                 response,
               })
             );
@@ -55,37 +55,37 @@ export class GameEffects {
     )
   );
 
-  deleteGame$ = createEffect(() =>
+  deleteMachine$ = createEffect(() =>
     this._actions$.pipe(
-      ofType(GameActions.DELETE_GAME),
+      ofType(MachineActions.DELETE_MACHINE),
       mergeMap((action) =>
-        this._gameService.deleteGame(action.payload).pipe(
+        this._machineService.deleteMachine(action.payload).pipe(
           tap((response) => {
             this._utilsService.handleResponseToaster(response);
 
-            this._store.dispatch(STOP_LOADING({ key: 'DELETE_GAME_BTN' }));
+            this._store.dispatch(STOP_LOADING({ key: 'DELETE_MACHINE_BTN' }));
 
             return response;
           }),
           map((response) => {
             this._store.dispatch(
-              HttpActions.SET_RESPONSE({ key: 'DELETE_GAME', response })
+              HttpActions.SET_RESPONSE({ key: 'DELETE_MACHINE', response })
             );
 
-            return GameActions.DELETE_GAME_RESPONSE({
+            return MachineActions.DELETE_MACHINE_RESPONSE({
               data: action.payload,
             });
           }),
           catchError((err: HttpErrorResponse) => {
             const response: IAcceptResponse = err.error as IAcceptResponse;
 
-            this._store.dispatch(STOP_LOADING({ key: 'DELETE_GAME_BTN' }));
+            this._store.dispatch(STOP_LOADING({ key: 'DELETE_MACHINE_BTN' }));
             this._store.dispatch(
-              HttpActions.SET_RESPONSE({ key: 'DELETE_GAME', response })
+              HttpActions.SET_RESPONSE({ key: 'DELETE_MACHINE', response })
             );
 
             return of(
-              GameActions.DELETE_GAME_RESPONSE({
+              MachineActions.DELETE_MACHINE_RESPONSE({
                 data: '',
               })
             );
@@ -95,21 +95,20 @@ export class GameEffects {
     )
   );
 
-  loadGames$ = createEffect(() =>
+  loadMachines$ = createEffect(() =>
     this._actions$.pipe(
-      ofType(GameActions.LOAD_GAMES),
+      ofType(MachineActions.LOAD_MACHINES),
       mergeMap(() =>
-        this._gameService.getGames().pipe(
+        this._machineService.getMachines().pipe(
           map((response) => {
             this._store.dispatch(
-              HttpActions.SET_FULL_RESPONSE({
-                key: 'LOAD_GAMES',
+              HttpActions.SET_RESPONSE({
+                key: 'LOAD_MACHINES',
                 response,
-                load: false,
               })
             );
 
-            return GameActions.LOAD_GAMES_RESPONSE({
+            return MachineActions.LOAD_MACHINES_RESPONSE({
               data: response.data,
             });
           }),
@@ -117,15 +116,14 @@ export class GameEffects {
             const response: IAcceptResponse = err.error as IAcceptResponse;
 
             this._store.dispatch(
-              HttpActions.SET_FULL_RESPONSE({
-                key: 'LOAD_GAMES',
+              HttpActions.SET_RESPONSE({
+                key: 'LOAD_MACHINES',
                 response,
-                load: false,
               })
             );
 
             return of(
-              GameActions.LOAD_GAMES_RESPONSE({
+              MachineActions.LOAD_MACHINES_RESPONSE({
                 data: [],
               })
             );

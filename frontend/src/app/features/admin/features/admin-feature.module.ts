@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
 import { DashboardModule } from './dashboard/dashboard.module';
 import { LocationModule } from './location/location.module';
 import { SidebarComponent } from '../shared/components/sidebar/sidebar.component';
@@ -9,6 +8,16 @@ import { HeaderComponent } from '../shared/components/header/header.component';
 import { AdminIndexComponent } from './admin-index.component';
 import { RouterModule } from '@angular/router';
 import { UserModule } from './user/user.module';
+import { StoreModule } from '@ngrx/store';
+import { locationReducer } from '../shared/stores/location/location.reducer';
+import { EffectsModule } from '@ngrx/effects';
+import { LocationEffects } from '../shared/stores/location/location.effects';
+import { GameEffects } from '../shared/stores/game/game.effects';
+import { GameService } from '../shared/services/game.service';
+import { LocationService } from '../shared/services/location.service';
+import { MachineService } from '../shared/services/machine.service';
+import { machineReducer } from '../shared/stores/machine/machine.reducer';
+import { gameReducer } from '../shared/stores/game/game.reducer';
 
 @NgModule({
   declarations: [
@@ -23,6 +32,11 @@ import { UserModule } from './user/user.module';
     DashboardModule,
     LocationModule,
     UserModule,
+    StoreModule.forFeature('location', locationReducer),
+    StoreModule.forFeature('game', gameReducer),
+    StoreModule.forFeature('machine', machineReducer),
+    EffectsModule.forFeature([LocationEffects, GameEffects, MachineService]),
   ],
+  providers: [GameService, LocationService, MachineService],
 })
 export class AdminFeatureModule {}

@@ -1,6 +1,6 @@
 import { createAction, props } from '@ngrx/store';
-import { IGameAddRequest } from '../models/game-request.model';
-import { IGameResponse } from '../models/game-response.model';
+import { IGameAddRequest } from '../../models/game-request.model';
+import { IGameResponse } from '../../models/game-response.model';
 
 export const ADD_GAME = createAction(
   '[Game] Add Game',

@@ -2,11 +2,11 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
-import { environment } from '../../../../../../environments/environment';
+import { environment } from '../../../../../environments/environment';
 import {
   IAcceptResponse,
   IDataAcceptResponse,
-} from '../../../../../shared/models/response.model';
+} from '../../../../shared/models/response.model';
 import { IGameAddRequest } from '../models/game-request.model';
 import { IGameResponse } from '../models/game-response.model';
 

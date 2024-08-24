@@ -5,12 +5,11 @@ import {
   ResolveFn,
 } from '@angular/router';
 import { catchError, first, Observable, of, switchMap } from 'rxjs';
-
 import { select, Store } from '@ngrx/store';
-import { AppState } from '../../../../../app.state';
+import { AppState } from '../../../../app.state';
 import { IGameResponse } from '../models/game-response.model';
-import { LOAD_GAMES, LOAD_GAMES_RESPONSE } from '../store/game.actions';
-import { SELECT_GAMES } from '../store/game.selectors';
+import { LOAD_GAMES, LOAD_GAMES_RESPONSE } from '../stores/game/game.actions';
+import { SELECT_GAMES } from '../stores/game/game.selectors';
 import { Actions, ofType } from '@ngrx/effects';
 
 @Injectable({

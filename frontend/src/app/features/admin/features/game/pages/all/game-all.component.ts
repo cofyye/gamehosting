@@ -1,7 +1,7 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { IGameResponse } from '../../models/game-response.model';
+import { IGameResponse } from '../../../../shared/models/game-response.model';
 import { environment } from '../../../../../../../environments/environment';
 import { ToasterService } from '../../../../../../shared/services/toaster.service';
 import { AppState } from '../../../../../../app.state';
@@ -9,12 +9,15 @@ import { Store } from '@ngrx/store';
 import { IS_LOADING } from '../../../../../../shared/stores/loader/loader.selectors';
 import { SELECT_HTTP_RESPONSE } from '../../../../../../shared/stores/http/http.selectors';
 import { START_LOADING } from '../../../../../../shared/stores/loader/loader.actions';
-import { SELECT_GAMES, SELECT_SELECTED_GAME } from '../../store/game.selectors';
+import {
+  SELECT_GAMES,
+  SELECT_SELECTED_GAME,
+} from '../../../../shared/stores/game/game.selectors';
 import {
   DELETE_GAME,
   DESELECT_GAME,
   SELECT_GAME,
-} from '../../store/game.actions';
+} from '../../../../shared/stores/game/game.actions';
 import { HostBy } from '../../../../../../shared/enums/game.enum';
 
 @Component({

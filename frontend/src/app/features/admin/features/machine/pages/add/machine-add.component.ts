@@ -17,26 +17,25 @@ import { Subscription } from 'rxjs';
 import { IS_LOADING } from '../../../../../../shared/stores/loader/loader.selectors';
 import { START_LOADING } from '../../../../../../shared/stores/loader/loader.actions';
 import { environment } from '../../../../../../../environments/environment';
-import { HostBy } from '../../../../../../shared/enums/game.enum';
-import { ISelectedGame } from '../../../../../../shared/models/game.model';
-import { SELECT_HTTP_RESPONSE } from '../../../../../../shared/stores/http/http.selectors';
 import { ActivatedRoute } from '@angular/router';
 import { ILocationResponse } from '../../../../shared/models/location-response.model';
+import { IMachineAddRequest } from '../../../../shared/models/machine-request.model';
+import { IGameResponse } from '../../../../shared/models/game-response.model';
+import { ADD_MACHINE } from '../../../../shared/stores/machine/machine.actions';
 
 @Component({
   selector: 'app-machine-add',
   templateUrl: './machine-add.component.html',
   styleUrl: './machine-add.component.css',
 })
-export class MachineAddComponent {
-  // private loadingGameAddSub!: Subscription;
-  // private gameAddSub!: Subscription;
-  // public isLoadingGameAdd: boolean = false;
-  // public allowedExtenstions = environment.IMAGE_EXTENSIONS.join(', ');
-  // public fileName: string | null = null;
-  // public hostBy = HostBy;
-  private locationsRouteSub!: Subscription;
+export class MachineAddComponent implements OnInit, OnDestroy {
+  private loadingMachineAddSub!: Subscription;
+  private machineAddSub!: Subscription;
+  private routeSub!: Subscription;
+  public isLoadingMachineAdd: boolean = false;
   public locations: ILocationResponse[] = [];
+  public games: IGameResponse[] = [];
+
   constructor(
     private readonly _el: ElementRef,
     private readonly _renderer: Renderer2,
@@ -44,47 +43,53 @@ export class MachineAddComponent {
     private readonly _route: ActivatedRoute,
     private readonly _store: Store<AppState>
   ) {}
-  // public gameAddForm: FormGroup = this._fb.group({
-  //   name: new FormControl<string>('', [
-  //     Validators.required,
-  //     Validators.minLength(2),
-  //     Validators.maxLength(50),
-  //   ]),
-  //   tag: new FormControl<string>('', [
-  //     Validators.required,
-  //     Validators.minLength(2),
-  //     Validators.maxLength(30),
-  //   ]),
-  //   startPort: new FormControl<string>('', [
-  //     Validators.required,
-  //     Validators.min(1),
-  //     Validators.max(65535),
-  //     Validators.pattern(/^-?\d+$/),
-  //   ]),
-  //   endPort: new FormControl<string>('', [
-  //     Validators.required,
-  //     Validators.min(1),
-  //     Validators.max(65535),
-  //     Validators.pattern(/^-?\d+$/),
-  //   ]),
-  //   hostBy: new FormControl<HostBy>(HostBy.CUSTOM_RESOURCES, [
-  //     Validators.required,
-  //   ]),
-  //   banner: new FormControl<File | null>(null, []),
-  //   description: new FormControl<string>('', [
-  //     Validators.required,
-  //     Validators.minLength(10),
-  //     Validators.maxLength(2500),
-  //   ]),
-  // });
+
+  public machineAddForm: FormGroup = this._fb.group({
+    locationId: new FormControl<string>('', [Validators.required]),
+    name: new FormControl<string>('', [
+      Validators.required,
+      Validators.minLength(2),
+      Validators.maxLength(50),
+    ]),
+    ip: new FormControl<string>('', [
+      Validators.required,
+      Validators.maxLength(15),
+      Validators.pattern(
+        /^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/
+      ),
+    ]),
+    username: new FormControl<string>('', [
+      Validators.required,
+      Validators.maxLength(20),
+    ]),
+    password: new FormControl<string>('', [
+      Validators.required,
+      Validators.maxLength(100),
+    ]),
+    sshPort: new FormControl<number>(22, [
+      Validators.required,
+      Validators.min(1),
+      Validators.max(65535),
+      Validators.pattern(/^-?\d+$/),
+    ]),
+    ftpPort: new FormControl<number>(21, [
+      Validators.required,
+      Validators.min(1),
+      Validators.max(65535),
+      Validators.pattern(/^-?\d+$/),
+    ]),
+    games: new FormControl<string>('', [Validators.required]),
+  });
+
   public ngOnInit(): void {
-    this.locationsRouteSub = this._route.data.subscribe((data) => {
-      this.locations = data['locations'];
+    this.routeSub = this._route.data.subscribe((data) => {
+      this.locations = data['data']?.locations as ILocationResponse[];
+      this.games = data['data']?.games as IGameResponse[];
     });
 
-    // this.loadingGameAddSub = this._store
-    //   .select(IS_LOADING('ADD_GAME_BTN'))
-    //   .subscribe((value) => (this.isLoadingGameAdd = value));
+    this.loadingMachineAddSub = this._store
+      .select(IS_LOADING('ADD_MACHINE_BTN'))
+      .subscribe((value) => (this.isLoadingMachineAdd = value));
     // this.gameAddSub = this._store
     //   .select(SELECT_HTTP_RESPONSE('ADD_GAME'))
     //   .subscribe((response) => {
@@ -108,34 +113,18 @@ export class MachineAddComponent {
     //     }
     //   });
   }
+
   public ngOnDestroy(): void {
-    // if (this.loadingGameAddSub) {
-    //   this.loadingGameAddSub.unsubscribe();
-    // }
-    // if (this.gameAddSub) {
-    //   this.gameAddSub.unsubscribe();
-    // }
-    if (this.locationsRouteSub) {
-      this.locationsRouteSub.unsubscribe();
+    if (this.loadingMachineAddSub) {
+      this.loadingMachineAddSub.unsubscribe();
+    }
+    if (this.machineAddSub) {
+      this.machineAddSub.unsubscribe();
+    }
+    if (this.routeSub) {
+      this.routeSub.unsubscribe();
     }
   }
-  // onIconChange(event: Event) {
-  //   const input = event.target as HTMLInputElement;
-  //   const file = input.files?.[0];
-  //   if (file) {
-  //     this.fileName = file.name;
-  //     this.gameAddForm.patchValue({
-  //       icon: file,
-  //     });
-  //     this.gameAddForm.get('icon')?.markAsTouched();
-  //   } else {
-  //     this.fileName = null;
-  //     this.gameAddForm.patchValue({
-  //       icon: null,
-  //     });
-  //     this.gameAddForm.get('icon')?.markAsTouched();
-  //   }
-  // }
   // public onGameSelected(selectedGame: ISelectedGame): void {
   //   console.log(selectedGame);
   //   if (selectedGame.value) {
@@ -156,29 +145,102 @@ export class MachineAddComponent {
   //     this.gameAddForm.get('name')?.markAsTouched();
   //   }
   // }
-  // public onGameBlur(): void {
-  //   this.gameAddForm.get('name')?.markAsTouched();
-  // }
-  // public onGameAdd(): void {
-  //   if (this.gameAddForm.invalid) {
-  //     this.gameAddForm.markAllAsTouched();
-  //     return;
-  //   }
-  //   const data: IGameAddRequest = {
-  //     name: this.gameAddForm.get('name')?.value,
-  //     tag: this.gameAddForm.get('tag')?.value,
-  //     startPort: this.gameAddForm.get('startPort')?.value,
-  //     endPort: this.gameAddForm.get('endPort')?.value,
-  //     hostBy: this.gameAddForm.get('hostBy')?.value,
-  //     description: this.gameAddForm.get('description')?.value,
-  //   };
-  //   this._store.dispatch(START_LOADING({ key: 'ADD_GAME_BTN' }));
-  //   this._store.dispatch(ADD_GAME({ payload: data }));
-  // }
 
-  generateLocationSelectOption(location: ILocationResponse): string {
+  public onAddMachine(): void {
+    // if (this.locationAddFormHasErrors()) {
+    //   return;
+    // }
+
+    const data: IMachineAddRequest = {
+      locationId: this.machineAddForm.get('locationId')?.value,
+      name: this.machineAddForm.get('name')?.value,
+      ip: this.machineAddForm.get('ip')?.value,
+      username: this.machineAddForm.get('username')?.value,
+      password: this.machineAddForm.get('password')?.value,
+      sshPort: this.machineAddForm.get('sshPort')?.value,
+      ftpPort: this.machineAddForm.get('ftpPort')?.value,
+      games: this.machineAddForm.get('games')?.value,
+    };
+
+    this._store.dispatch(START_LOADING({ key: 'ADD_MACHINE_BTN' }));
+    this._store.dispatch(ADD_MACHINE({ payload: data }));
+  }
+
+  public onResetMachine(): void {
+    this.resetSelectGames();
+    this.resetSelectLocation();
+    this.machineAddForm.reset();
+    this.machineAddForm.patchValue({
+      sshPort: 22,
+      ftpPort: 21,
+    });
+  }
+
+  public onSelectLocation(event: Event) {
+    const selectEl = event.target as HTMLSelectElement;
+    this.machineAddForm.patchValue({
+      locationId: selectEl.value,
+    });
+  }
+
+  public generateLocationSelectOption(location: ILocationResponse): string {
     return JSON.stringify({
       icon: `<img class="shrink-0 size-5 rounded-md" src="${environment.API_URL}/assets/flags/1x1/${location.countryTag}.svg" alt="${location.country}" />`,
     });
+  }
+
+  public generateGameSelectOption(game: IGameResponse): string {
+    return JSON.stringify({
+      icon: `<img class="shrink-0 size-5 rounded-md" src="${environment.API_URL}/assets/games/${game.tag}.png" alt="${game.name}" />`,
+    });
+  }
+
+  private resetSelectLocation(): void {
+    const countryDataIcon = this._el.nativeElement.querySelector(
+      'button[id="machine-location-btn"] > [data-icon]'
+    );
+    const countryDataTitle = this._el.nativeElement.querySelector(
+      'button[id="machine-location-btn"] > [data-title]'
+    );
+    const selectedLocation = this._el.nativeElement.querySelector(
+      'div.data-machine-location > div.selected'
+    );
+
+    if (countryDataIcon) {
+      this._renderer.addClass(countryDataIcon, 'hidden');
+      this._renderer.setProperty(countryDataIcon, 'innerHTML', 'null');
+    }
+    if (countryDataTitle) {
+      this._renderer.setProperty(
+        countryDataTitle,
+        'innerHTML',
+        'Select machine location...'
+      );
+    }
+    if (selectedLocation) {
+      this._renderer.removeClass(selectedLocation, 'selected');
+    }
+  }
+
+  private resetSelectGames(): void {
+    const gameSpanText = this._el.nativeElement.querySelector(
+      'button[id="machine-games-btn"] > span'
+    );
+
+    const allGames = this._el.nativeElement.querySelectorAll(
+      '[data-value]'
+    ) as HTMLDivElement[];
+
+    allGames.forEach(
+      (item) => item.classList.contains('selected') && item.click()
+    );
+
+    if (gameSpanText) {
+      this._renderer.setProperty(
+        gameSpanText,
+        'innerHTML',
+        'Select games for machine...'
+      );
+    }
   }
 }

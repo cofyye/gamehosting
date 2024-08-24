@@ -2447,7 +2447,7 @@ export class GameSelectComponent implements AfterViewChecked {
     }
   }
 
-  onSelectionChange(event: Event) {
+  public onSelectionChange(event: Event) {
     const selectEl = event.target as HTMLSelectElement;
 
     this.selectionChange.emit({

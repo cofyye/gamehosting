@@ -2,13 +2,13 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
-import { environment } from '../../../../../../environments/environment';
+import { environment } from '../../../../../environments/environment';
 import {
   IAcceptResponse,
   IDataAcceptResponse,
-} from '../../../../../shared/models/response.model';
-import { ILocationAddRequest } from '../../../shared/models/location-request.model';
-import { ILocationResponse } from '../../../shared/models/location-response.model';
+} from '../../../../shared/models/response.model';
+import { ILocationAddRequest } from '../models/location-request.model';
+import { ILocationResponse } from '../models/location-response.model';
 
 @Injectable()
 export class LocationService {

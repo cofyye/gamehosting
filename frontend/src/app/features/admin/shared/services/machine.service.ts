@@ -2,13 +2,13 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
-import { environment } from '../../../../../../environments/environment';
+import { environment } from '../../../../../environments/environment';
 import {
   IAcceptResponse,
   IDataAcceptResponse,
-} from '../../../../../shared/models/response.model';
-import { IMachineAddRequest } from '../../../shared/models/machine-request.model';
-import { IMachineResponse } from '../../../shared/models/machine-response.model';
+} from '../../../../shared/models/response.model';
+import { IMachineAddRequest } from '../models/machine-request.model';
+import { IMachineResponse } from '../models/machine-response.model';
 
 @Injectable()
 export class MachineService {

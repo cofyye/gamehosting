@@ -9,12 +9,12 @@ import { catchError, first, Observable, of, switchMap } from 'rxjs';
 import { select, Store } from '@ngrx/store';
 import { AppState } from '../../../../app.state';
 import { ILocationResponse } from '../models/location-response.model';
+import { Actions, ofType } from '@ngrx/effects';
+import { SELECT_LOCATIONS } from '../stores/location/location.selectors';
 import {
   LOAD_LOCATIONS,
   LOAD_LOCATIONS_RESPONSE,
-} from '../../features/location/store/location.actions';
-import { SELECT_LOCATIONS } from '../../features/location/store/location.selectors';
-import { Actions, ofType } from '@ngrx/effects';
+} from '../stores/location/location.actions';
 
 @Injectable({
   providedIn: 'root',

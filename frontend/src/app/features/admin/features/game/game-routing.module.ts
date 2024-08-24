@@ -4,7 +4,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { GameAllComponent } from './pages/all/game-all.component';
 import { GameEditComponent } from './pages/edit/game-edit.component';
 import { GameAddComponent } from './pages/add/game-add.component';
-import { getGamesResolver } from './resolvers/get-games.resolver';
+import { getGamesResolver } from '../../shared/resolvers/get-games.resolver';
 
 const routes: Routes = [
   {

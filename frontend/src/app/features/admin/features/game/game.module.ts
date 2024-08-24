@@ -3,11 +3,6 @@ import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { GameAddComponent } from './pages/add/game-add.component';
 import { GameRoutingModule } from './game-routing.module';
-import { GameService } from './services/game.service';
-import { StoreModule } from '@ngrx/store';
-import { gameReducer } from './store/game.reducer';
-import { GameEffects } from './store/game.effects';
-import { EffectsModule } from '@ngrx/effects';
 import { GameAllComponent } from './pages/all/game-all.component';
 import { GameEditComponent } from './pages/edit/game-edit.component';
 import { GameSelectComponent } from '../../shared/components/game-select/game-select.component';
@@ -19,13 +14,6 @@ import { GameSelectComponent } from '../../shared/components/game-select/game-se
     GameEditComponent,
     GameSelectComponent,
   ],
-  imports: [
-    CommonModule,
-    GameRoutingModule,
-    ReactiveFormsModule,
-    StoreModule.forFeature('game', gameReducer),
-    EffectsModule.forFeature(GameEffects),
-  ],
-  providers: [GameService],
+  imports: [CommonModule, GameRoutingModule, ReactiveFormsModule],
 })
 export class GameModule {}

@@ -13,8 +13,8 @@ import { IMachineResponse } from '../models/machine-response.model';
 import {
   LOAD_MACHINES,
   LOAD_MACHINES_RESPONSE,
-} from '../../features/machine/store/machine.actions';
-import { SELECT_MACHINES } from '../../features/machine/store/machine.selectors';
+} from '../stores/machine/machine.actions';
+import { SELECT_MACHINES } from '../stores/machine/machine.selectors';
 
 @Injectable({
   providedIn: 'root',

@@ -1,4 +1,4 @@
-import { HostBy } from '../../../../../shared/enums/game.enum';
+import { HostBy } from '../../../../shared/enums/game.enum';
 
 export interface IGameResponse {
   id: string;

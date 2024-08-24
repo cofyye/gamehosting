@@ -9,7 +9,7 @@ import { Store } from '@ngrx/store';
 import { AppState } from '../../../../../app.state';
 import { UtilsService } from '../../../../../shared/services/utils.service';
 import { STOP_LOADING } from '../../../../../shared/stores/loader/loader.actions';
-import { LocationService } from '../services/location.service';
+import { LocationService } from '../../services/location.service';
 
 @Injectable()
 export class LocationEffects {
@@ -102,10 +102,9 @@ export class LocationEffects {
         this._locationService.getLocations().pipe(
           map((response) => {
             this._store.dispatch(
-              HttpActions.SET_FULL_RESPONSE({
+              HttpActions.SET_RESPONSE({
                 key: 'LOAD_LOCATIONS',
                 response,
-                load: false,
               })
             );
 
@@ -117,10 +116,9 @@ export class LocationEffects {
             const response: IAcceptResponse = err.error as IAcceptResponse;
 
             this._store.dispatch(
-              HttpActions.SET_FULL_RESPONSE({
+              HttpActions.SET_RESPONSE({
                 key: 'LOAD_LOCATIONS',
                 response,
-                load: false,
               })
             );
 

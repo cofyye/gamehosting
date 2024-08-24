@@ -10,7 +10,7 @@ import { GameEffects } from './store/game.effects';
 import { EffectsModule } from '@ngrx/effects';
 import { GameAllComponent } from './pages/all/game-all.component';
 import { GameEditComponent } from './pages/edit/game-edit.component';
-import { GameSelectComponent } from '../../../../shared/components/game-select/game-select.component';
+import { GameSelectComponent } from '../../shared/components/game-select/game-select.component';
 
 @NgModule({
   declarations: [

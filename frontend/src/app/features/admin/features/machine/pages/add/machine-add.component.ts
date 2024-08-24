@@ -20,6 +20,8 @@ import { environment } from '../../../../../../../environments/environment';
 import { HostBy } from '../../../../../../shared/enums/game.enum';
 import { ISelectedGame } from '../../../../../../shared/models/game.model';
 import { SELECT_HTTP_RESPONSE } from '../../../../../../shared/stores/http/http.selectors';
+import { ActivatedRoute } from '@angular/router';
+import { ILocationResponse } from '../../../../shared/models/location-response.model';
 
 @Component({
   selector: 'app-machine-add',
@@ -33,12 +35,15 @@ export class MachineAddComponent {
   // public allowedExtenstions = environment.IMAGE_EXTENSIONS.join(', ');
   // public fileName: string | null = null;
   // public hostBy = HostBy;
-  // constructor(
-  //   private readonly _el: ElementRef,
-  //   private readonly _renderer: Renderer2,
-  //   private readonly _fb: FormBuilder,
-  //   private readonly _store: Store<AppState>
-  // ) {}
+  private locationsRouteSub!: Subscription;
+  public locations: ILocationResponse[] = [];
+  constructor(
+    private readonly _el: ElementRef,
+    private readonly _renderer: Renderer2,
+    private readonly _fb: FormBuilder,
+    private readonly _route: ActivatedRoute,
+    private readonly _store: Store<AppState>
+  ) {}
   // public gameAddForm: FormGroup = this._fb.group({
   //   name: new FormControl<string>('', [
   //     Validators.required,
@@ -72,41 +77,48 @@ export class MachineAddComponent {
   //     Validators.maxLength(2500),
   //   ]),
   // });
-  // public ngOnInit(): void {
-  //   this.loadingGameAddSub = this._store
-  //     .select(IS_LOADING('ADD_GAME_BTN'))
-  //     .subscribe((value) => (this.isLoadingGameAdd = value));
-  //   this.gameAddSub = this._store
-  //     .select(SELECT_HTTP_RESPONSE('ADD_GAME'))
-  //     .subscribe((response) => {
-  //       if (response?.success) {
-  //         const gameDataIcon =
-  //           this._el.nativeElement.querySelector('[data-icon]');
-  //         const gameDataTitle =
-  //           this._el.nativeElement.querySelector('[data-title]');
-  //         if (gameDataIcon) {
-  //           this._renderer.addClass(gameDataIcon, 'hidden');
-  //           this._renderer.setProperty(gameDataIcon, 'innerHTML', 'null');
-  //         }
-  //         if (gameDataTitle) {
-  //           this._renderer.setProperty(
-  //             gameDataTitle,
-  //             'innerHTML',
-  //             'Select game...'
-  //           );
-  //         }
-  //         this.gameAddForm.reset();
-  //       }
-  //     });
-  // }
-  // public ngOnDestroy(): void {
-  //   if (this.loadingGameAddSub) {
-  //     this.loadingGameAddSub.unsubscribe();
-  //   }
-  //   if (this.gameAddSub) {
-  //     this.gameAddSub.unsubscribe();
-  //   }
-  // }
+  public ngOnInit(): void {
+    this.locationsRouteSub = this._route.data.subscribe((data) => {
+      this.locations = data['locations'];
+    });
+
+    // this.loadingGameAddSub = this._store
+    //   .select(IS_LOADING('ADD_GAME_BTN'))
+    //   .subscribe((value) => (this.isLoadingGameAdd = value));
+    // this.gameAddSub = this._store
+    //   .select(SELECT_HTTP_RESPONSE('ADD_GAME'))
+    //   .subscribe((response) => {
+    //     if (response?.success) {
+    //       const gameDataIcon =
+    //         this._el.nativeElement.querySelector('[data-icon]');
+    //       const gameDataTitle =
+    //         this._el.nativeElement.querySelector('[data-title]');
+    //       if (gameDataIcon) {
+    //         this._renderer.addClass(gameDataIcon, 'hidden');
+    //         this._renderer.setProperty(gameDataIcon, 'innerHTML', 'null');
+    //       }
+    //       if (gameDataTitle) {
+    //         this._renderer.setProperty(
+    //           gameDataTitle,
+    //           'innerHTML',
+    //           'Select game...'
+    //         );
+    //       }
+    //       this.gameAddForm.reset();
+    //     }
+    //   });
+  }
+  public ngOnDestroy(): void {
+    // if (this.loadingGameAddSub) {
+    //   this.loadingGameAddSub.unsubscribe();
+    // }
+    // if (this.gameAddSub) {
+    //   this.gameAddSub.unsubscribe();
+    // }
+    if (this.locationsRouteSub) {
+      this.locationsRouteSub.unsubscribe();
+    }
+  }
   // onIconChange(event: Event) {
   //   const input = event.target as HTMLInputElement;
   //   const file = input.files?.[0];
@@ -163,4 +175,10 @@ export class MachineAddComponent {
   //   this._store.dispatch(START_LOADING({ key: 'ADD_GAME_BTN' }));
   //   this._store.dispatch(ADD_GAME({ payload: data }));
   // }
+
+  generateLocationSelectOption(location: ILocationResponse): string {
+    return JSON.stringify({
+      icon: `<img class="shrink-0 size-5 rounded-md" src="${environment.API_URL}/assets/flags/1x1/${location.countryTag}.svg" alt="${location.country}" />`,
+    });
+  }
 }

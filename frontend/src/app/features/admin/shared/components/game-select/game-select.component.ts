@@ -7,8 +7,8 @@ import {
   Output,
   Renderer2,
 } from '@angular/core';
-import { environment } from '../../../../environments/environment';
-import { ISelectedGame } from '../../models/game.model';
+import { environment } from '../../../../../../environments/environment';
+import { ISelectedGame } from '../../../../../shared/models/game.model';
 
 @Component({
   selector: 'app-game-select',

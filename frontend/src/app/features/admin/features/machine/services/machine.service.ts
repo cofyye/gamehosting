@@ -7,8 +7,8 @@ import {
   IAcceptResponse,
   IDataAcceptResponse,
 } from '../../../../../shared/models/response.model';
-import { IMachineAddRequest } from '../models/machine-request.model';
-import { IMachineResponse } from '../models/machine-response.model';
+import { IMachineAddRequest } from '../../../shared/models/machine-request.model';
+import { IMachineResponse } from '../../../shared/models/machine-response.model';
 
 @Injectable()
 export class MachineService {
@@ -16,7 +16,7 @@ export class MachineService {
 
   public addMachine(data: IMachineAddRequest): Observable<IAcceptResponse> {
     return this._httpClient.post<IAcceptResponse>(
-      `${environment.API_URL}/admin/location`,
+      `${environment.API_URL}/admin/machine`,
       data
     );
   }

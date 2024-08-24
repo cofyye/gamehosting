@@ -1,6 +1,6 @@
 import { createAction, props } from '@ngrx/store';
-import { IMachineAddRequest } from '../models/machine-request.model';
-import { IMachineResponse } from '../models/machine-response.model';
+import { IMachineAddRequest } from '../../../shared/models/machine-request.model';
+import { IMachineResponse } from '../../../shared/models/machine-response.model';
 
 export const ADD_MACHINE = createAction(
   '[Machine] Add Machine',

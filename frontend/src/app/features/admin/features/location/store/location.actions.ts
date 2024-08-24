@@ -1,6 +1,6 @@
 import { createAction, props } from '@ngrx/store';
-import { ILocationAddRequest } from '../models/location-request.model';
-import { ILocationResponse } from '../models/location-response.model';
+import { ILocationAddRequest } from '../../../shared/models/location-request.model';
+import { ILocationResponse } from '../../../shared/models/location-response.model';
 
 export const ADD_LOCATION = createAction(
   '[Location] Add Location',

@@ -6,7 +6,7 @@ import {
   ViewChild,
 } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { ILocationResponse } from '../../models/location-response.model';
+import { ILocationResponse } from '../../../../shared/models/location-response.model';
 import { Subscription } from 'rxjs';
 import { environment } from '../../../../../../../environments/environment';
 import { Store } from '@ngrx/store';

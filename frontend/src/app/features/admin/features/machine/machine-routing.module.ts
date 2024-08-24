@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { MachineAllComponent } from './pages/all/machine-all.component';
 import { MachineAddComponent } from './pages/add/machine-add.component';
 import { MachineEditComponent } from './pages/edit/machine-edit.component';
+import { getLocationsResolver } from '../../shared/resolvers/get-locations.resolver';
 
 const routes: Routes = [
   {
@@ -18,6 +19,9 @@ const routes: Routes = [
         path: 'add',
         component: MachineAddComponent,
         pathMatch: 'full',
+        resolve: {
+          locations: getLocationsResolver,
+        },
       },
       {
         path: 'edit/:machineId',

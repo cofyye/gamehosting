@@ -1,5 +1,5 @@
 import { EntityState, EntityAdapter, createEntityAdapter } from '@ngrx/entity';
-import { ILocationResponse } from '../models/location-response.model';
+import { ILocationResponse } from '../../../shared/models/location-response.model';
 import { _httpResponse } from '../../../../../shared/models/response.model';
 
 export interface LocationState extends EntityState<ILocationResponse> {

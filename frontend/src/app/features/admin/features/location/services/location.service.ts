@@ -7,8 +7,8 @@ import {
   IAcceptResponse,
   IDataAcceptResponse,
 } from '../../../../../shared/models/response.model';
-import { ILocationAddRequest } from '../models/location-request.model';
-import { ILocationResponse } from '../models/location-response.model';
+import { ILocationAddRequest } from '../../../shared/models/location-request.model';
+import { ILocationResponse } from '../../../shared/models/location-response.model';
 
 @Injectable()
 export class LocationService {

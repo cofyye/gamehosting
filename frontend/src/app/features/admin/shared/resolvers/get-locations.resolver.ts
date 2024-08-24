@@ -7,13 +7,13 @@ import {
 import { catchError, first, Observable, of, switchMap } from 'rxjs';
 
 import { select, Store } from '@ngrx/store';
-import { AppState } from '../../../../../app.state';
+import { AppState } from '../../../../app.state';
 import { ILocationResponse } from '../models/location-response.model';
 import {
   LOAD_LOCATIONS,
   LOAD_LOCATIONS_RESPONSE,
-} from '../store/location.actions';
-import { SELECT_LOCATIONS } from '../store/location.selectors';
+} from '../../features/location/store/location.actions';
+import { SELECT_LOCATIONS } from '../../features/location/store/location.selectors';
 import { Actions, ofType } from '@ngrx/effects';
 
 @Injectable({

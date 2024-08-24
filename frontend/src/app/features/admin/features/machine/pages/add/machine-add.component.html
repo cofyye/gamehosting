@@ -73,7 +73,7 @@
                     <!-- Select -->
                     <select
                       data-hs-select='{
-                                    "placeholder": "Select option...",
+                                    "placeholder": "Select machine location...",
                                     "toggleTag": "<button type=\"button\" aria-expanded=\"false\"></button>",
                                     "toggleClasses": "hs-select-disabled:pointer-events-none hs-select-disabled:opacity-50 relative py-4 ps-4 pe-9 flex gap-x-2 text-nowrap w-full cursor-pointer bg-white border border-gray-200 rounded-lg text-start text-sm focus:outline-none focus:ring-2 focus:ring-blue-500",
                                     "dropdownClasses": "mt-2 z-50 w-full max-h-72 p-1 space-y-0.5 bg-white border border-gray-200 rounded-lg overflow-hidden overflow-y-auto [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:bg-gray-300",
@@ -85,25 +85,13 @@
                     >
                       <option value="">Choose Location</option>
                       <option
-                        value="1"
-                        data-hs-select-option='{
-                                    "icon": "<img class=\"shrink-0 size-5 rounded-md\" src=\"https://raw.githubusercontent.com/lipis/flag-icons/b919a036693ee1ee0434ef5ae05f93543fc4f437/flags/4x3/rs.svg\" alt=\"James Collins\" />"}'
+                        *ngFor="let location of locations"
+                        [value]="location.id"
+                        [attr.data-hs-select-option]="
+                          generateLocationSelectOption(location)
+                        "
                       >
-                        Serbia
-                      </option>
-                      <option
-                        value="2"
-                        data-hs-select-option='{
-                                    "icon": "<img class=\"shrink-0 size-5 rounded-md\" src=\"https://raw.githubusercontent.com/lipis/flag-icons/b919a036693ee1ee0434ef5ae05f93543fc4f437/flags/4x3/de.svg\" />"}'
-                      >
-                        Germany
-                      </option>
-                      <option
-                        value="3"
-                        data-hs-select-option='{
-                                    "icon": "<img class=\"shrink-0 size-5 rounded-md\" src=\"https://raw.githubusercontent.com/lipis/flag-icons/b919a036693ee1ee0434ef5ae05f93543fc4f437/flags/4x3/bg.svg\" alt=\"Costa Quinn\" />"}'
-                      >
-                        Bulgaria
+                        {{ location.city }}, {{ location.country }}
                       </option>
                     </select>
 

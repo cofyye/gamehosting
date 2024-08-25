@@ -96,7 +96,18 @@ export class MachineService {
 
   public async getMachines(): Promise<MachineEntity[]> {
     try {
-      return await this._machineRepo.find();
+      return await this._machineRepo.find({
+        select: {
+          id: true,
+          name: true,
+          ip: true,
+          ftpPort: true,
+          sshPort: true,
+          locationId: true,
+          username: true,
+          createdAt: true,
+        },
+      });
     } catch (err) {
       functions.handleHttpException(
         err,

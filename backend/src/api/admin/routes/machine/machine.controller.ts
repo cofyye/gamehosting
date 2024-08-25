@@ -53,7 +53,7 @@ export class MachineController {
   @UseGuards(new RoleGuard([UserRole.FOUNDER]))
   @Get('')
   @HttpCode(HttpStatus.OK)
-  public async getServers(): Promise<IDataSendResponse<MachineEntity[]>> {
+  public async getMachines(): Promise<IDataSendResponse<MachineEntity[]>> {
     try {
       return {
         success: true,

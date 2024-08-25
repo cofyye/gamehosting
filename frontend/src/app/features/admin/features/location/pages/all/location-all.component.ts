@@ -99,15 +99,15 @@ export class LocationAllComponent implements OnInit, OnDestroy {
     }
   }
 
-  onSelectLocation(id: string): void {
+  public onSelectLocation(id: string): void {
     this._store.dispatch(SELECT_LOCATION({ id }));
   }
 
-  onDeselectLocation(): void {
+  public onDeselectLocation(): void {
     setTimeout(() => this._store.dispatch(DESELECT_LOCATION()), 100);
   }
 
-  onDeleteLocation(): void {
+  public onDeleteLocation(): void {
     const id = this.selectedLocation?.id;
     if (id) {
       this._store.dispatch(START_LOADING({ key: 'DELETE_LOCATION_BTN' }));

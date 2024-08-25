@@ -3,9 +3,8 @@ import { RouterModule, Routes } from '@angular/router';
 import { MachineAllComponent } from './pages/all/machine-all.component';
 import { MachineAddComponent } from './pages/add/machine-add.component';
 import { MachineEditComponent } from './pages/edit/machine-edit.component';
-import { getLocationsResolver } from '../../shared/resolvers/get-locations.resolver';
-import { getGamesResolver } from '../../shared/resolvers/get-games.resolver';
 import { getLocationsGamesResolver } from './resolvers/get-locations-games.resolver';
+import { getMachinesResolver } from '../../shared/resolvers/get-machines.resolver';
 
 const routes: Routes = [
   {
@@ -16,6 +15,9 @@ const routes: Routes = [
         path: '',
         component: MachineAllComponent,
         pathMatch: 'full',
+        resolve: {
+          machines: getMachinesResolver,
+        },
       },
       {
         path: 'add',

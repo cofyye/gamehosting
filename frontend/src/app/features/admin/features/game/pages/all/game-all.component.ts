@@ -93,15 +93,15 @@ export class GameAllComponent implements OnInit {
     }
   }
 
-  onSelectGame(id: string): void {
+  public onSelectGame(id: string): void {
     this._store.dispatch(SELECT_GAME({ id }));
   }
 
-  onDeselectGame(): void {
+  public onDeselectGame(): void {
     setTimeout(() => this._store.dispatch(DESELECT_GAME()), 100);
   }
 
-  onDeleteGame(): void {
+  public onDeleteGame(): void {
     const id = this.selectedGame?.id;
     if (id) {
       this._store.dispatch(START_LOADING({ key: 'DELETE_GAME_BTN' }));

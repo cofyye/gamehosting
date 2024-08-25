@@ -443,6 +443,14 @@ function validateProvidedGamesForMachine(games: string): string[] {
   try {
     const _games = JSON.parse(games) as string[];
 
+    if (!Array.isArray(_games)) {
+      functions.throwHttpException(
+        false,
+        'The games are not provided in a valid JSON format.',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
     if (_games.length < 1) {
       functions.throwHttpException(
         false,

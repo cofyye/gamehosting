@@ -25,9 +25,9 @@ export class AddMachineDto {
 
   @IsIP('4', { message: 'Please enter a valid IP address.' })
   @MaxLength(15, {
-    message: 'The ip must contain a maximum of 15 characters.',
+    message: 'The IP must contain a maximum of 15 characters.',
   })
-  @IsNotEmpty({ message: 'The ip field must not be empty.' })
+  @IsNotEmpty({ message: 'The IP field must not be empty.' })
   public readonly ip: string;
 
   @MaxLength(20, {

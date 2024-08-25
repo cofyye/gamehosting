@@ -87,10 +87,7 @@ export class GameAddComponent implements OnInit, OnDestroy {
       .select(SELECT_HTTP_RESPONSE('ADD_GAME'))
       .subscribe((response) => {
         if (response?.success) {
-          this.resetSelectGame();
-          this.resetSelectHostingType();
-
-          this.gameAddForm.reset();
+          this.onResetGame();
         }
       });
   }

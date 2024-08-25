@@ -18,6 +18,7 @@ import { LocationService } from '../shared/services/location.service';
 import { MachineService } from '../shared/services/machine.service';
 import { machineReducer } from '../shared/stores/machine/machine.reducer';
 import { gameReducer } from '../shared/stores/game/game.reducer';
+import { MachineEffects } from '../shared/stores/machine/machine.effects';
 
 @NgModule({
   declarations: [
@@ -35,7 +36,7 @@ import { gameReducer } from '../shared/stores/game/game.reducer';
     StoreModule.forFeature('location', locationReducer),
     StoreModule.forFeature('game', gameReducer),
     StoreModule.forFeature('machine', machineReducer),
-    EffectsModule.forFeature([LocationEffects, GameEffects, MachineService]),
+    EffectsModule.forFeature([LocationEffects, GameEffects, MachineEffects]),
   ],
   providers: [GameService, LocationService, MachineService],
 })

@@ -66,9 +66,7 @@ export class LocationAddComponent implements OnInit, OnDestroy {
       .select(SELECT_HTTP_RESPONSE('ADD_LOCATION'))
       .subscribe((response) => {
         if (response?.success) {
-          this.resetSelectLocation();
-
-          this.locationAddForm.reset();
+          this.onResetLocation();
         }
       });
   }

@@ -7,7 +7,6 @@ export const httpReducer = createReducer(
   on(SET_RESPONSE, (state, { key, response }) => ({
     ...state,
     http: {
-      ...state.http,
       [key]: {
         ...state.http[key],
         response: {

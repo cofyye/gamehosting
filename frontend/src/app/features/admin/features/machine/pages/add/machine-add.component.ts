@@ -22,6 +22,11 @@ import { ILocationResponse } from '../../../../shared/models/location-response.m
 import { IMachineAddRequest } from '../../../../shared/models/machine-request.model';
 import { IGameResponse } from '../../../../shared/models/game-response.model';
 import { ADD_MACHINE } from '../../../../shared/stores/machine/machine.actions';
+import { SELECT_HTTP_RESPONSE } from '../../../../../../shared/stores/http/http.selectors';
+import { ToasterService } from '../../../../../../shared/services/toaster.service';
+import { uuidValidator } from '../../../../../../shared/validators/uuid.validator';
+import { ipv4Validator } from '../../../../../../shared/validators/ipv4.validator';
+import { isIntValidator } from '../../../../../../shared/validators/integer.validator';
 
 @Component({
   selector: 'app-machine-add',
@@ -41,11 +46,15 @@ export class MachineAddComponent implements OnInit, OnDestroy {
     private readonly _renderer: Renderer2,
     private readonly _fb: FormBuilder,
     private readonly _route: ActivatedRoute,
+    private readonly _toaster: ToasterService,
     private readonly _store: Store<AppState>
   ) {}
 
   public machineAddForm: FormGroup = this._fb.group({
-    locationId: new FormControl<string>('', [Validators.required]),
+    locationId: new FormControl<string>('', [
+      Validators.required,
+      uuidValidator(),
+    ]),
     name: new FormControl<string>('', [
       Validators.required,
       Validators.minLength(2),
@@ -54,9 +63,7 @@ export class MachineAddComponent implements OnInit, OnDestroy {
     ip: new FormControl<string>('', [
       Validators.required,
       Validators.maxLength(15),
-      Validators.pattern(
-        /^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/
-      ),
+      ipv4Validator(),
     ]),
     username: new FormControl<string>('', [
       Validators.required,
@@ -70,15 +77,15 @@ export class MachineAddComponent implements OnInit, OnDestroy {
       Validators.required,
       Validators.min(1),
       Validators.max(65535),
-      Validators.pattern(/^-?\d+$/),
+      isIntValidator(),
     ]),
     ftpPort: new FormControl<number>(21, [
       Validators.required,
       Validators.min(1),
       Validators.max(65535),
-      Validators.pattern(/^-?\d+$/),
+      isIntValidator(),
     ]),
-    games: new FormControl<string>('', [Validators.required]),
+    games: new FormControl<string>('123', [Validators.required]),
   });
 
   public ngOnInit(): void {
@@ -90,28 +97,14 @@ export class MachineAddComponent implements OnInit, OnDestroy {
     this.loadingMachineAddSub = this._store
       .select(IS_LOADING('ADD_MACHINE_BTN'))
       .subscribe((value) => (this.isLoadingMachineAdd = value));
-    // this.gameAddSub = this._store
-    //   .select(SELECT_HTTP_RESPONSE('ADD_GAME'))
-    //   .subscribe((response) => {
-    //     if (response?.success) {
-    //       const gameDataIcon =
-    //         this._el.nativeElement.querySelector('[data-icon]');
-    //       const gameDataTitle =
-    //         this._el.nativeElement.querySelector('[data-title]');
-    //       if (gameDataIcon) {
-    //         this._renderer.addClass(gameDataIcon, 'hidden');
-    //         this._renderer.setProperty(gameDataIcon, 'innerHTML', 'null');
-    //       }
-    //       if (gameDataTitle) {
-    //         this._renderer.setProperty(
-    //           gameDataTitle,
-    //           'innerHTML',
-    //           'Select game...'
-    //         );
-    //       }
-    //       this.gameAddForm.reset();
-    //     }
-    //   });
+
+    this.machineAddSub = this._store
+      .select(SELECT_HTTP_RESPONSE('ADD_MACHINE'))
+      .subscribe((response) => {
+        if (response?.success) {
+          this.onResetMachine();
+        }
+      });
   }
 
   public ngOnDestroy(): void {
@@ -125,31 +118,11 @@ export class MachineAddComponent implements OnInit, OnDestroy {
       this.routeSub.unsubscribe();
     }
   }
-  // public onGameSelected(selectedGame: ISelectedGame): void {
-  //   console.log(selectedGame);
-  //   if (selectedGame.value) {
-  //     this.gameAddForm.patchValue({
-  //       name: selectedGame.label,
-  //     });
-  //     this.gameAddForm.patchValue({
-  //       tag: selectedGame.value,
-  //     });
-  //     this.gameAddForm.get('name')?.markAsTouched();
-  //   } else {
-  //     this.gameAddForm.patchValue({
-  //       name: '',
-  //     });
-  //     this.gameAddForm.patchValue({
-  //       tag: '',
-  //     });
-  //     this.gameAddForm.get('name')?.markAsTouched();
-  //   }
-  // }
 
   public onAddMachine(): void {
-    // if (this.locationAddFormHasErrors()) {
-    //   return;
-    // }
+    if (this.machineAddFormHasErrors()) {
+      return;
+    }
 
     const data: IMachineAddRequest = {
       locationId: this.machineAddForm.get('locationId')?.value,
@@ -180,6 +153,16 @@ export class MachineAddComponent implements OnInit, OnDestroy {
     const selectEl = event.target as HTMLSelectElement;
     this.machineAddForm.patchValue({
       locationId: selectEl.value,
+    });
+  }
+
+  public onSelectGames(event: Event) {
+    const selectEl = event.target as HTMLSelectElement;
+    const selectedValues = Array.from(selectEl.selectedOptions).map(
+      (option) => option.value
+    );
+    this.machineAddForm.patchValue({
+      games: JSON.stringify(selectedValues),
     });
   }
 
@@ -242,5 +225,137 @@ export class MachineAddComponent implements OnInit, OnDestroy {
         'Select games for machine...'
       );
     }
+  }
+
+  private machineAddFormHasErrors(): boolean {
+    // LocationId Errors
+    if (this.machineAddForm.get('locationId')?.errors?.['required']) {
+      this._toaster.error('The location ID field must not be empty.', 'Error');
+      return true;
+    }
+
+    if (this.machineAddForm.get('locationId')?.errors?.['invalidUuid']) {
+      this._toaster.error('The location ID is not valid.', 'Error');
+      return true;
+    }
+
+    // Name Errors
+    if (this.machineAddForm.get('name')?.errors?.['required']) {
+      this._toaster.error('The name field must not be empty.', 'Error');
+      return true;
+    }
+    if (this.machineAddForm.get('name')?.errors?.['minlength']) {
+      this._toaster.error(
+        'The name must contain at least 2 characters.',
+        'Error'
+      );
+      return true;
+    }
+    if (this.machineAddForm.get('name')?.errors?.['maxlength']) {
+      this._toaster.error(
+        'The name must contain a maximum of 50 characters.',
+        'Error'
+      );
+      return true;
+    }
+
+    // IP Errors
+    if (this.machineAddForm.get('ip')?.errors?.['required']) {
+      this._toaster.error('The IP field must not be empty.', 'Error');
+      return true;
+    }
+    if (this.machineAddForm.get('ip')?.errors?.['invalidIPv4']) {
+      this._toaster.error('Please enter a valid IP address.', 'Error');
+      return true;
+    }
+    if (this.machineAddForm.get('ip')?.errors?.['maxlength']) {
+      this._toaster.error(
+        'The IP must contain a maximum of 15 characters.',
+        'Error'
+      );
+      return true;
+    }
+
+    // Username Errors
+    if (this.machineAddForm.get('username')?.errors?.['required']) {
+      this._toaster.error('The username field must not be empty.', 'Error');
+      return true;
+    }
+    if (this.machineAddForm.get('username')?.errors?.['maxlength']) {
+      this._toaster.error(
+        'The username must contain a maximum of 20 characters.',
+        'Error'
+      );
+      return true;
+    }
+
+    // Password Errors
+    if (this.machineAddForm.get('password')?.errors?.['required']) {
+      this._toaster.error('The password field must not be empty.', 'Error');
+      return true;
+    }
+    if (this.machineAddForm.get('password')?.errors?.['maxlength']) {
+      this._toaster.error(
+        'The password must contain a maximum of 100 characters.',
+        'Error'
+      );
+      return true;
+    }
+
+    // SSH Port Errors
+    if (this.machineAddForm.get('sshPort')?.errors?.['required']) {
+      this._toaster.error('The SSH port field must not be empty.', 'Error');
+      return true;
+    }
+    if (this.machineAddForm.get('sshPort')?.errors?.['notInteger']) {
+      this._toaster.error('The SSH port must be in numeric format.', 'Error');
+      return true;
+    }
+    if (this.machineAddForm.get('sshPort')?.errors?.['min']) {
+      this._toaster.error(
+        'The minimum value for the SSH port must be 1.',
+        'Error'
+      );
+      return true;
+    }
+    if (this.machineAddForm.get('sshPort')?.errors?.['max']) {
+      this._toaster.error(
+        'The maximum value for the SSH port must be 65535.',
+        'Error'
+      );
+      return true;
+    }
+
+    // FTP Port Errors
+    if (this.machineAddForm.get('ftpPort')?.errors?.['required']) {
+      this._toaster.error('The FTP port field must not be empty.', 'Error');
+      return true;
+    }
+    if (this.machineAddForm.get('ftpPort')?.errors?.['notInteger']) {
+      this._toaster.error('The FTP port must be in numeric format.', 'Error');
+      return true;
+    }
+    if (this.machineAddForm.get('ftpPort')?.errors?.['min']) {
+      this._toaster.error(
+        'The minimum value for the FTP port must be 1.',
+        'Error'
+      );
+      return true;
+    }
+    if (this.machineAddForm.get('ftpPort')?.errors?.['max']) {
+      this._toaster.error(
+        'The maximum value for the FTP port must be 65535.',
+        'Error'
+      );
+      return true;
+    }
+
+    // Games Errors
+    if (this.machineAddForm.get('games')?.errors?.['required']) {
+      this._toaster.error('The games field must not be empty.', 'Error');
+      return true;
+    }
+
+    return false;
   }
 }

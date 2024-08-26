@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { TooltipDirective } from '../../shared/directives/tooltip.directive';
 import { AuthRoutingModule } from './auth-routing.module';
 import { LoginComponent } from './pages/login/login.component';
 import { RegisterComponent } from './pages/register/register.component';
@@ -10,6 +9,7 @@ import { AuthService } from '../../shared/services/auth.service';
 import { ReactiveFormsModule } from '@angular/forms';
 import { EffectsModule } from '@ngrx/effects';
 import { AuthEffects } from '../../shared/stores/auth/auth.effects';
+import { CountrySelectModule } from '../../shared/components/country-select/country-select.module';
 
 @NgModule({
   declarations: [
@@ -17,13 +17,13 @@ import { AuthEffects } from '../../shared/stores/auth/auth.effects';
     RegisterComponent,
     ForgotPasswordComponent,
     ResetPasswordComponent,
-    TooltipDirective,
   ],
   imports: [
     AuthRoutingModule,
     CommonModule,
     ReactiveFormsModule,
     EffectsModule.forFeature(AuthEffects),
+    CountrySelectModule,
   ],
   providers: [AuthService],
   exports: [],

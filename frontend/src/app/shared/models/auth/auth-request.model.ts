@@ -4,7 +4,8 @@ export interface IRegisterRequest {
   username: string;
   email: string;
   password: string;
-  pinCode: string;
+  country: string;
+  countryTag: string;
 }
 
 export interface ILoginRequest {

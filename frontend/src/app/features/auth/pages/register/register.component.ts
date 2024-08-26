@@ -15,6 +15,7 @@ import { Subscription } from 'rxjs';
 import { IS_LOADING } from '../../../../shared/stores/loader/loader.selectors';
 import { START_LOADING } from '../../../../shared/stores/loader/loader.actions';
 import { REGISTER } from '../../../../shared/stores/auth/auth.actions';
+import { ISelectedCountry } from '../../../../shared/models/country.model';
 
 @Component({
   selector: 'app-register',
@@ -67,12 +68,12 @@ export class RegisterComponent implements OnInit, OnDestroy {
       Validators.minLength(8),
       Validators.maxLength(32),
     ]),
-    pinCode: new FormControl<string>('', [
-      Validators.required,
-      Validators.minLength(5),
-      Validators.maxLength(5),
-      Validators.pattern('^[0-9]+'),
-    ]),
+    // pinCode: new FormControl<string>('', [
+    //   Validators.required,
+    //   Validators.minLength(5),
+    //   Validators.maxLength(5),
+    //   Validators.pattern('^[0-9]+'),
+    // ]),
   });
 
   public ngOnInit(): void {
@@ -99,10 +100,29 @@ export class RegisterComponent implements OnInit, OnDestroy {
       username: this.registerForm.get('username')?.value,
       email: this.registerForm.get('email')?.value,
       password: this.registerForm.get('password')?.value,
-      pinCode: this.registerForm.get('pinCode')?.value,
+      country: this.registerForm.get('country')?.value,
+      countryTag: this.registerForm.get('countryTag')?.value,
     };
 
     this._store.dispatch(START_LOADING({ key: 'REGISTER_BTN' }));
     this._store.dispatch(REGISTER({ payload: data }));
+  }
+
+  public onCountrySelected(selectedCountry: ISelectedCountry) {
+    if (selectedCountry.value) {
+      this.registerForm.patchValue({
+        country: selectedCountry.label,
+      });
+      this.registerForm.patchValue({
+        countryTag: selectedCountry.value,
+      });
+    } else {
+      this.registerForm.patchValue({
+        country: '',
+      });
+      this.registerForm.patchValue({
+        countryTag: '',
+      });
+    }
   }
 }

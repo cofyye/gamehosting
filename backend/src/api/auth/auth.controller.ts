@@ -25,8 +25,8 @@ import {
 
 import { NotAuthenticatedGuard } from 'src/shared/guards/not-authenticated.guard';
 import { AuthenticatedGuard } from 'src/shared/guards/authenticated.guard';
-import { CheckSessionGuard } from 'src/shared/guards/check-session.guard';
 import { JwtRefreshGuard } from './guards/jwt-refresh.guard';
+import { CheckSessionGuard } from './guards/check-session.guard';
 
 import { CreateUserDto } from './dtos/create-user.dto';
 import { LoginUserDto } from './dtos/login-user.dto';
@@ -35,6 +35,7 @@ import { ResetPasswordDto } from './dtos/reset-password.dto';
 import { ChangePasswordDto } from './dtos/change-password.dto';
 import { ConfirmVerificationDto } from './dtos/confirm-verification.dto';
 
+import { UtilsService } from 'src/shared/services/utils/utils.service';
 import { AuthService } from './auth.service';
 
 @Controller('/auth')
@@ -43,6 +44,7 @@ export class AuthController {
     private readonly _configService: ConfigService,
     private readonly _authService: AuthService,
     private readonly _jwtService: JwtService,
+    private readonly _utilsService: UtilsService,
   ) {}
 
   @UseGuards(NotAuthenticatedGuard)
@@ -274,15 +276,43 @@ export class AuthController {
   @HttpCode(HttpStatus.OK)
   public async checkUserSession(
     @Req() req: Request,
+    @Res({ passthrough: true }) response: Response,
   ): Promise<
     IDataSendResponse<Partial<UserEntity & { expirationDate: Date }>>
   > {
     try {
-      const loggedUser: Partial<UserEntity> = req.user;
+      let loggedUser: Partial<UserEntity> = req.user;
+      let accessToken = '';
+
+      // Regenerate Access Token With Refresh Token
+      if (!loggedUser) {
+        console.log('isteklo, regenerate');
+
+        try {
+          const payload = (await this._jwtService.verifyAsync(
+            req?.cookies?.['refresh_token'],
+            {
+              secret: this._configService.get<string>('JWT_REFRESH_TOKEN'),
+            },
+          )) as IJwtPayload;
+
+          accessToken = await this._jwtService.signAsync({
+            id: payload.id,
+          });
+
+          response.cookie('access_token', accessToken, {
+            httpOnly: true,
+            sameSite: 'strict',
+            secure: false,
+          });
+
+          loggedUser = await this._utilsService.getUserById(payload.id);
+        } catch (err: unknown) {}
+      }
 
       if (loggedUser) {
         const token = (await this._jwtService.verifyAsync(
-          req?.cookies?.['access_token'],
+          accessToken || req?.cookies?.['access_token'],
         )) as IJwtPayload;
 
         return {

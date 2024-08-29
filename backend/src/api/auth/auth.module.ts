@@ -10,12 +10,14 @@ import { JwtRefreshStrategy } from './strategies/jwt-refresh.strategy';
 
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
+import { UtilsModule } from 'src/shared/services/utils/utils.module';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([UserEntity]),
     EmailModule,
     FileUploadModule,
+    UtilsModule,
   ],
   controllers: [AuthController],
   providers: [JwtAccessStrategy, JwtRefreshStrategy, AuthService],

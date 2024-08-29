@@ -1,11 +1,12 @@
 import { ExecutionContext, Injectable } from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
 import { AuthGuard } from '@nestjs/passport';
 
-import { UserEntity } from '../entities/user.entity';
+import { UserEntity } from 'src/shared/entities/user.entity';
 
 @Injectable()
 export class CheckSessionGuard extends AuthGuard('jwt-access') {
-  constructor() {
+  constructor(private readonly _jwtService: JwtService) {
     super();
   }
 

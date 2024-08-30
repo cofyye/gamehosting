@@ -10,6 +10,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ToasterComponent } from './shared/components/toaster/toaster.component';
 import { ToasterService } from './shared/services/toaster.service';
+import { AuthService } from './shared/services/auth.service';
 import { NotFoundModule } from './not-found/not-found.module';
 import { HomeModule } from './home/home.module';
 import { EffectsModule } from '@ngrx/effects';
@@ -17,6 +18,7 @@ import { loaderReducer } from './shared/stores/loader/loader.reducer';
 import { environment } from '../environments/environment';
 import { authReducer } from './shared/stores/auth/auth.reducer';
 import { httpReducer } from './shared/stores/http/http.reducer';
+import { AuthEffects } from './shared/stores/auth/auth.effects';
 
 @NgModule({
   declarations: [AppComponent, ToasterComponent],
@@ -29,7 +31,7 @@ import { httpReducer } from './shared/stores/http/http.reducer';
       auth: authReducer,
       http: httpReducer,
     }),
-    EffectsModule.forRoot(),
+    EffectsModule.forRoot([AuthEffects]),
     StoreDevtoolsModule.instrument({
       maxAge: 25,
       logOnly: environment.PRODUCTION,
@@ -39,6 +41,7 @@ import { httpReducer } from './shared/stores/http/http.reducer';
   ],
   providers: [
     ToasterService,
+    AuthService,
     provideHttpClient(
       withInterceptors([httpRequestInterceptor, errorHandlingInterceptor])
     ),

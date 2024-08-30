@@ -7,7 +7,7 @@ import { IToaster } from '../models/toaster.model';
 })
 export class ToasterService {
   private toastSubject = new Subject<IToaster>();
-  toast$ = this.toastSubject.asObservable();
+  public toast$ = this.toastSubject.asObservable();
 
   success(message: string, title: string = 'Success') {
     this.toastSubject.next({ title, message, type: 'success' });

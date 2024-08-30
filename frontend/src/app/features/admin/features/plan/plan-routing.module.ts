@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { PlanAllComponent } from './pages/all/plan-all.component';
 import { PlanAddComponent } from './pages/add/plan-add.component';
 import { PlanEditComponent } from './pages/edit/plan-edit.component';
+import { getGamesResolver } from '../../shared/resolvers/get-games.resolver';
 
 const routes: Routes = [
   {
@@ -18,6 +19,9 @@ const routes: Routes = [
         path: 'add',
         component: PlanAddComponent,
         pathMatch: 'full',
+        resolve: {
+          games: getGamesResolver,
+        },
       },
       {
         path: 'edit/:planId',

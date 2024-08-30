@@ -85,7 +85,7 @@ export class MachineAddComponent implements OnInit, OnDestroy {
       Validators.max(65535),
       isIntValidator(),
     ]),
-    games: new FormControl<string>('123', [Validators.required]),
+    games: new FormControl<string>('', [Validators.required]),
   });
 
   public ngOnInit(): void {

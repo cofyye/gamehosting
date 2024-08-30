@@ -1,6 +1,7 @@
 import {
   IsInt,
   IsNotEmpty,
+  IsNumber,
   IsOptional,
   IsUUID,
   Max,
@@ -46,6 +47,17 @@ export class AddPlanDto {
   @Max(100000, {
     message: 'The maximum value for the price must be 100000.',
   })
+  @IsNumber(
+    {
+      allowInfinity: false,
+      allowNaN: false,
+      maxDecimalPlaces: 2,
+    },
+    {
+      message:
+        'The price must be in numeric format, with a maximum of 2 decimal places.',
+    },
+  )
   @IsNotEmpty({ message: 'The price field must not be empty.' })
   public readonly price: number;
 

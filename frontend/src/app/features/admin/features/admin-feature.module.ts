@@ -19,6 +19,9 @@ import { MachineService } from '../shared/services/machine.service';
 import { machineReducer } from '../shared/stores/machine/machine.reducer';
 import { gameReducer } from '../shared/stores/game/game.reducer';
 import { MachineEffects } from '../shared/stores/machine/machine.effects';
+import { planReducer } from '../shared/stores/plan/plan.reducer';
+import { PlanEffects } from '../shared/stores/plan/plan.effects';
+import { PlanService } from '../shared/services/plan.service';
 
 @NgModule({
   declarations: [
@@ -36,8 +39,14 @@ import { MachineEffects } from '../shared/stores/machine/machine.effects';
     StoreModule.forFeature('location', locationReducer),
     StoreModule.forFeature('game', gameReducer),
     StoreModule.forFeature('machine', machineReducer),
-    EffectsModule.forFeature([LocationEffects, GameEffects, MachineEffects]),
+    StoreModule.forFeature('plan', planReducer),
+    EffectsModule.forFeature([
+      LocationEffects,
+      GameEffects,
+      MachineEffects,
+      PlanEffects,
+    ]),
   ],
-  providers: [GameService, LocationService, MachineService],
+  providers: [GameService, LocationService, MachineService, PlanService],
 })
 export class AdminFeatureModule {}

@@ -21,7 +21,7 @@ export const DELETE_MACHINE_RESPONSE = createAction(
   props<{ data: string }>()
 );
 
-export const LOAD_MACHINES = createAction('[Machines] Load Machines');
+export const LOAD_MACHINES = createAction('[Machine] Load Machines');
 
 export const LOAD_MACHINES_RESPONSE = createAction(
   '[Machine] Load Machines Response',

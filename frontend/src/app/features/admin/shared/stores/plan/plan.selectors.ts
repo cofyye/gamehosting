@@ -17,7 +17,7 @@ export const SELECT_SELECTED_PLAN_ID = createSelector(
   (state: PlanState) => state.selectedPlanId
 );
 
-export const SELECT_SELECTED_MACHINE = createSelector(
+export const SELECT_SELECTED_PLAN = createSelector(
   SELECT_PLANS_ENTITIES,
   SELECT_SELECTED_PLAN_ID,
   (entities, selectedId) => (selectedId ? entities[selectedId] : null)

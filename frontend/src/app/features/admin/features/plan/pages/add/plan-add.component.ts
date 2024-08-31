@@ -18,7 +18,6 @@ import { IS_LOADING } from '../../../../../../shared/stores/loader/loader.select
 import { START_LOADING } from '../../../../../../shared/stores/loader/loader.actions';
 import { environment } from '../../../../../../../environments/environment';
 import { HostBy } from '../../../../../../shared/enums/game.enum';
-import { ISelectedGame } from '../../../../../../shared/models/game.model';
 import { SELECT_HTTP_RESPONSE } from '../../../../../../shared/stores/http/http.selectors';
 import { uuidValidator } from '../../../../../../shared/validators/uuid.validator';
 import { isIntValidator } from '../../../../../../shared/validators/integer.validator';
@@ -26,6 +25,9 @@ import { numericValidator } from '../../../../../../shared/validators/numeric.va
 import { ActivatedRoute } from '@angular/router';
 import { IPlanAddRequest } from '../../../../shared/models/plan-request.model';
 import { IGameResponse } from '../../../../shared/models/game-response.model';
+import { ADD_PLAN } from '../../../../shared/stores/plan/plan.actions';
+import { ToasterService } from '../../../../../../shared/services/toaster.service';
+import { IMachinePlan } from '../../../../../../shared/models/plan.model';
 
 @Component({
   selector: 'app-plan-add',
@@ -38,12 +40,16 @@ export class PlanAddComponent implements OnInit, OnDestroy {
   private routeSub!: Subscription;
   public isLoadingPlanAdd: boolean = false;
   public games: IGameResponse[] = [];
+  public selectedGame: IGameResponse | null = null;
+  public hostBy = HostBy;
+  public machinesPlans: IMachinePlan[] = [];
 
   constructor(
     private readonly _el: ElementRef,
     private readonly _renderer: Renderer2,
     private readonly _fb: FormBuilder,
     private readonly _route: ActivatedRoute,
+    private readonly _toaster: ToasterService,
     private readonly _store: Store<AppState>
   ) {}
 
@@ -54,22 +60,25 @@ export class PlanAddComponent implements OnInit, OnDestroy {
       Validators.minLength(2),
       Validators.maxLength(40),
     ]),
-    slot: new FormControl<number>(10, [
+    slot: new FormControl<string>('', [
+      Validators.required,
       Validators.min(1),
       Validators.max(65535),
       isIntValidator(),
     ]),
-    ram: new FormControl<number>(536870912, [
+    ram: new FormControl<string>('', [
+      Validators.required,
       Validators.min(536870912), // 512 MB in bytes
       Validators.max(109951162777600), // 10 TB in bytes
       isIntValidator(),
     ]),
     cpuCount: new FormControl<number>(1, [
+      Validators.required,
       Validators.min(1),
       Validators.max(65535),
       isIntValidator(),
     ]),
-    price: new FormControl<number>(0.0, [
+    price: new FormControl<string>('', [
       Validators.required,
       Validators.max(100000),
       numericValidator(),
@@ -95,7 +104,7 @@ export class PlanAddComponent implements OnInit, OnDestroy {
       .select(SELECT_HTTP_RESPONSE('ADD_PLAN'))
       .subscribe((response) => {
         if (response?.success) {
-          // this.onResetMachine();
+          this.onResetPlan();
         }
       });
   }
@@ -113,9 +122,9 @@ export class PlanAddComponent implements OnInit, OnDestroy {
   }
 
   public onAddPlan(): void {
-    // if (this.machineAddFormHasErrors()) {
-    //   return;
-    // }
+    if (this.planAddFormHasErrors()) {
+      return;
+    }
 
     const data: IPlanAddRequest = {
       gameId: this.planAddForm.get('locationId')?.value,
@@ -128,23 +137,23 @@ export class PlanAddComponent implements OnInit, OnDestroy {
       machines: this.planAddForm.get('machines')?.value,
     };
 
-    // this._store.dispatch(START_LOADING({ key: 'ADD_PLAN_BTN' }));
-    // this._store.dispatch(ADD_PLAN({ payload: data }));
+    this._store.dispatch(START_LOADING({ key: 'ADD_PLAN_BTN' }));
+    this._store.dispatch(ADD_PLAN({ payload: data }));
   }
 
   public onResetPlan(): void {
     this.resetSelectGame();
     this.planAddForm.reset();
     this.planAddForm.patchValue({
-      slot: 10,
-      ram: 536870912,
       cpuCount: 1,
-      price: 0.0,
     });
   }
 
   public onSelectGame(event: Event) {
     const selectEl = event.target as HTMLSelectElement;
+    this.selectedGame =
+      this.games.find((game) => game.id == selectEl.value) ?? null;
+
     this.planAddForm.patchValue({
       gameId: selectEl.value,
     });
@@ -181,5 +190,169 @@ export class PlanAddComponent implements OnInit, OnDestroy {
     if (selectedGame) {
       this._renderer.removeClass(selectedGame, 'selected');
     }
+
+    this.selectedGame = null;
+  }
+
+  private planAddFormHasErrors(): boolean {
+    console.log(this.planAddForm.get('cpuCount')?.value);
+
+    // GameId Errors
+    if (this.planAddForm.get('gameId')?.errors?.['required']) {
+      this._toaster.error('The game ID field must not be empty.', 'Error');
+      return true;
+    }
+
+    if (this.planAddForm.get('gameId')?.errors?.['invalidUuid']) {
+      this._toaster.error('The game ID is not valid.', 'Error');
+      return true;
+    }
+
+    // Name Errors
+    if (this.planAddForm.get('name')?.errors?.['required']) {
+      this._toaster.error('The name field must not be empty.', 'Error');
+      return true;
+    }
+    if (this.planAddForm.get('name')?.errors?.['minlength']) {
+      this._toaster.error(
+        'The name must contain at least 2 characters.',
+        'Error'
+      );
+      return true;
+    }
+    if (this.planAddForm.get('name')?.errors?.['maxlength']) {
+      this._toaster.error(
+        'The name must contain a maximum of 40 characters.',
+        'Error'
+      );
+      return true;
+    }
+
+    // Slot Errors
+    if (this.selectedGame?.hostBy === HostBy.SLOT) {
+      if (this.planAddForm.get('slot')?.errors?.['required']) {
+        this._toaster.error('The slot field must not be empty.', 'Error');
+        return true;
+      }
+      if (this.planAddForm.get('slot')?.errors?.['notInteger']) {
+        this._toaster.error('The slot must be in numeric format.', 'Error');
+        return true;
+      }
+      if (this.planAddForm.get('slot')?.errors?.['min']) {
+        this._toaster.error(
+          'The minimum value for the slot must be 1.',
+          'Error'
+        );
+        return true;
+      }
+      if (this.planAddForm.get('slot')?.errors?.['max']) {
+        this._toaster.error(
+          'The maximum value for the slot must be 65535.',
+          'Error'
+        );
+        return true;
+      }
+    }
+
+    if (this.selectedGame?.hostBy === HostBy.CUSTOM_RESOURCES) {
+      // Ram Errors
+      if (this.planAddForm.get('ram')?.errors?.['required']) {
+        this._toaster.error('The ram field must not be empty.', 'Error');
+        return true;
+      }
+      if (this.planAddForm.get('ram')?.errors?.['notInteger']) {
+        this._toaster.error('The ram must be in numeric format.', 'Error');
+        return true;
+      }
+      if (this.planAddForm.get('ram')?.errors?.['min']) {
+        this._toaster.error(
+          'The minimum value for the ram must be 512 MB in bytes.',
+          'Error'
+        );
+        return true;
+      }
+      if (this.planAddForm.get('ram')?.errors?.['max']) {
+        this._toaster.error(
+          'The maximum value for the ram must be 10 TB in bytes.',
+          'Error'
+        );
+        return true;
+      }
+
+      // CPUs Count Errors
+      if (this.planAddForm.get('cpuCount')?.errors?.['required']) {
+        this._toaster.error('The CPU count field must not be empty.', 'Error');
+        return true;
+      }
+      if (this.planAddForm.get('cpuCount')?.errors?.['notInteger']) {
+        this._toaster.error(
+          'The CPU count must be in numeric format.',
+          'Error'
+        );
+        return true;
+      }
+      if (this.planAddForm.get('cpuCount')?.errors?.['min']) {
+        this._toaster.error(
+          'The minimum value for the CPU count must be 1.',
+          'Error'
+        );
+        return true;
+      }
+      if (this.planAddForm.get('cpuCount')?.errors?.['max']) {
+        this._toaster.error(
+          'The maximum value for the CPU count must be 65535.',
+          'Error'
+        );
+        return true;
+      }
+    }
+
+    // Price Errors
+    if (this.planAddForm.get('price')?.errors?.['required']) {
+      this._toaster.error('The price field must not be empty.', 'Error');
+      return true;
+    }
+    if (this.planAddForm.get('price')?.errors?.['max']) {
+      this._toaster.error(
+        'The maximum value for the price must be 100000.',
+        'Error'
+      );
+      return true;
+    }
+    if (this.planAddForm.get('price')?.errors?.['numeric']) {
+      this._toaster.error(
+        this.planAddForm.get('price')?.errors?.['numeric'],
+        'Error'
+      );
+      return true;
+    }
+
+    // Description Errors
+    if (this.planAddForm.get('description')?.errors?.['required']) {
+      this._toaster.error('The description field must not be empty.', 'Error');
+      return true;
+    }
+    if (this.planAddForm.get('description')?.errors?.['minlength']) {
+      this._toaster.error(
+        'The description must contain at least 10 characters.',
+        'Error'
+      );
+      return true;
+    }
+    if (this.planAddForm.get('description')?.errors?.['maxlength']) {
+      this._toaster.error(
+        'The description must contain a maximum of 2500 characters.',
+        'Error'
+      );
+      return true;
+    }
+
+    // Machines Errors
+    if (this.planAddForm.get('machines')?.errors?.['required']) {
+      this._toaster.error('The machines field must not be empty.', 'Error');
+      return true;
+    }
+
+    return false;
   }
 }

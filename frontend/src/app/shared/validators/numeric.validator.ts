@@ -8,7 +8,10 @@ export function numericValidator(): ValidatorFn {
       return null;
     }
 
-    if (typeof value !== 'number' && typeof value !== 'string') {
+    if (
+      (typeof value !== 'number' && typeof value !== 'string') ||
+      !/^-?\d*\.?\d*$/.test(value.toString())
+    ) {
       return { numeric: 'The value must be a number.' };
     }
 

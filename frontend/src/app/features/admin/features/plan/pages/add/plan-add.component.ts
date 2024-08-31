@@ -27,7 +27,11 @@ import { IPlanAddRequest } from '../../../../shared/models/plan-request.model';
 import { IGameResponse } from '../../../../shared/models/game-response.model';
 import { ADD_PLAN } from '../../../../shared/stores/plan/plan.actions';
 import { ToasterService } from '../../../../../../shared/services/toaster.service';
-import { IMachinePlan } from '../../../../../../shared/models/plan.model';
+import {
+  IMachinePlan,
+  IMachinePlanRequest,
+} from '../../../../../../shared/models/plan.model';
+import { IMachineResponse } from '../../../../shared/models/machine-response.model';
 
 @Component({
   selector: 'app-plan-add',
@@ -40,9 +44,11 @@ export class PlanAddComponent implements OnInit, OnDestroy {
   private routeSub!: Subscription;
   public isLoadingPlanAdd: boolean = false;
   public games: IGameResponse[] = [];
+  public machines: IMachineResponse[] = [];
   public selectedGame: IGameResponse | null = null;
   public hostBy = HostBy;
   public machinesPlans: IMachinePlan[] = [];
+  public machinesPlansRequest: IMachinePlanRequest[] = [];
 
   constructor(
     private readonly _el: ElementRef,
@@ -81,7 +87,7 @@ export class PlanAddComponent implements OnInit, OnDestroy {
     price: new FormControl<string>('', [
       Validators.required,
       Validators.max(100000),
-      numericValidator(),
+      numericValidator('price'),
     ]),
     description: new FormControl<string>('', [
       Validators.required,
@@ -89,11 +95,25 @@ export class PlanAddComponent implements OnInit, OnDestroy {
       Validators.maxLength(2500),
     ]),
     machines: new FormControl<string>('', [Validators.required]),
+    addMachinePlan: this._fb.group({
+      machineId: new FormControl<string>('', [
+        Validators.required,
+        uuidValidator(),
+      ]),
+      machineName: new FormControl<string>('', [Validators.required]),
+      maxServers: new FormControl<string>('', [
+        Validators.required,
+        Validators.min(1),
+        Validators.max(65535),
+        isIntValidator(),
+      ]),
+    }),
   });
 
   public ngOnInit(): void {
     this.routeSub = this._route.data.subscribe((data) => {
-      this.games = data['games'] as IGameResponse[];
+      this.games = data['data']?.games as IGameResponse[];
+      this.machines = data['data']?.machines as IMachineResponse[];
     });
 
     this.loadingPlanAddSub = this._store
@@ -122,19 +142,29 @@ export class PlanAddComponent implements OnInit, OnDestroy {
   }
 
   public onAddPlan(): void {
+    this.planAddForm.patchValue({
+      machines: JSON.stringify(this.machinesPlansRequest),
+    });
+
     if (this.planAddFormHasErrors()) {
       return;
     }
 
     const data: IPlanAddRequest = {
-      gameId: this.planAddForm.get('locationId')?.value,
+      gameId: this.planAddForm.get('gameId')?.value,
       name: this.planAddForm.get('name')?.value,
-      slot: this.planAddForm.get('slot')?.value,
-      ram: this.planAddForm.get('ram')?.value,
-      cpuCount: this.planAddForm.get('cpuCount')?.value,
       price: this.planAddForm.get('price')?.value,
       description: this.planAddForm.get('description')?.value,
       machines: this.planAddForm.get('machines')?.value,
+      ...(this.selectedGame?.hostBy === HostBy.SLOT
+        ? { slot: this.planAddForm.get('slot')?.value }
+        : {}),
+      ...(this.selectedGame?.hostBy === HostBy.CUSTOM_RESOURCES
+        ? {
+            ram: this.planAddForm.get('ram')?.value,
+            cpuCount: this.planAddForm.get('cpuCount')?.value,
+          }
+        : {}),
     };
 
     this._store.dispatch(START_LOADING({ key: 'ADD_PLAN_BTN' }));
@@ -143,10 +173,14 @@ export class PlanAddComponent implements OnInit, OnDestroy {
 
   public onResetPlan(): void {
     this.resetSelectGame();
+    this.resetMachinePlan();
     this.planAddForm.reset();
     this.planAddForm.patchValue({
       cpuCount: 1,
     });
+    this.selectedGame = null;
+    this.machinesPlans = [];
+    this.machinesPlansRequest = [];
   }
 
   public onSelectGame(event: Event) {
@@ -156,6 +190,19 @@ export class PlanAddComponent implements OnInit, OnDestroy {
 
     this.planAddForm.patchValue({
       gameId: selectEl.value,
+    });
+  }
+
+  public onSelectMachine(event: Event) {
+    const selectEl = event.target as HTMLSelectElement;
+
+    this.planAddForm.patchValue({
+      addMachinePlan: {
+        machineId: selectEl.value,
+        machineName: this._el.nativeElement
+          .querySelector(`option[id='${selectEl.value}'`)
+          ?.textContent?.trim(),
+      },
     });
   }
 
@@ -194,9 +241,119 @@ export class PlanAddComponent implements OnInit, OnDestroy {
     this.selectedGame = null;
   }
 
-  private planAddFormHasErrors(): boolean {
-    console.log(this.planAddForm.get('cpuCount')?.value);
+  private resetMachinePlan(): void {
+    const machinePlanDataTitle = this._el.nativeElement.querySelector(
+      'button[id="machine-plan-btn"] > [data-title]'
+    );
+    const selectedMachine = this._el.nativeElement.querySelector(
+      'div.data-machine-plan > div.selected'
+    );
 
+    if (machinePlanDataTitle) {
+      this._renderer.setProperty(
+        machinePlanDataTitle,
+        'innerHTML',
+        'Select machine for plan...'
+      );
+    }
+
+    if (selectedMachine) {
+      this._renderer.removeClass(selectedMachine, 'selected');
+    }
+
+    this.planAddForm.get('addMachinePlan')?.reset();
+  }
+
+  public addMachinePlan(): void {
+    if (this.addMachinePlanHasErrors()) {
+      return;
+    }
+
+    this.machinesPlans.push(this.planAddForm.get('addMachinePlan')?.value);
+    this.machinesPlansRequest.push({
+      id: this.planAddForm.get('addMachinePlan.machineId')?.value,
+      server_count: this.planAddForm.get('addMachinePlan.maxServers')?.value,
+    });
+    this.resetMachinePlan();
+  }
+
+  private addMachinePlanHasErrors(): boolean {
+    // MachineId Errors
+    if (
+      this.planAddForm.get('addMachinePlan.machineId')?.errors?.['required']
+    ) {
+      this._toaster.error(
+        'You must select a machine and enter the maximum number of servers for this plan.',
+        'Error'
+      );
+      return true;
+    }
+
+    if (
+      this.planAddForm.get('addMachinePlan.machineId')?.errors?.['invalidUuid']
+    ) {
+      this._toaster.error('The machine ID is not valid.', 'Error');
+      return true;
+    }
+
+    // Name Errors
+    if (
+      this.planAddForm.get('addMachinePlan.machineName')?.errors?.['required']
+    ) {
+      this._toaster.error('The machine name field must not be empty.', 'Error');
+      return true;
+    }
+
+    // MaxServers Errors
+    if (
+      this.planAddForm.get('addMachinePlan.maxServers')?.errors?.['required']
+    ) {
+      this._toaster.error(
+        'The machine max servers field must not be empty.',
+        'Error'
+      );
+      return true;
+    }
+    if (this.planAddForm.get('addMachinePlan.maxServers')?.errors?.['min']) {
+      this._toaster.error(
+        'The minimum value for the max servers must be 1.',
+        'Error'
+      );
+      return true;
+    }
+    if (this.planAddForm.get('addMachinePlan.maxServers')?.errors?.['max']) {
+      this._toaster.error(
+        'The maximum value for the max servers must be 65535.',
+        'Error'
+      );
+      return true;
+    }
+    if (
+      this.planAddForm.get('addMachinePlan.maxServers')?.errors?.['notInteger']
+    ) {
+      this._toaster.error(
+        'The max servers must be in numeric format.',
+        'Error'
+      );
+      return true;
+    }
+
+    // Custom Errors
+    if (
+      this.machinesPlans.findIndex(
+        (mp) =>
+          mp.machineId ===
+          this.planAddForm.get('addMachinePlan.machineId')?.value
+      ) !== -1
+    ) {
+      this._toaster.error('You have already selected this machine.', 'Error');
+      return true;
+    }
+
+    return false;
+  }
+
+  private planAddFormHasErrors(): boolean {
     // GameId Errors
     if (this.planAddForm.get('gameId')?.errors?.['required']) {
       this._toaster.error('The game ID field must not be empty.', 'Error');
@@ -349,7 +506,39 @@ export class PlanAddComponent implements OnInit, OnDestroy {
 
     // Machines Errors
     if (this.planAddForm.get('machines')?.errors?.['required']) {
-      this._toaster.error('The machines field must not be empty.', 'Error');
+      this._toaster.error(
+        'You must select a machine and enter the maximum number of servers for this plan.',
+        'Error'
+      );
+      return true;
+    }
+
+    // Custom Errors
+    try {
+      const machines: unknown[] = JSON.parse(
+        this.planAddForm.get('machines')?.value
+      );
+
+      if (!machines.length) {
+        this._toaster.error(
+          'You must select a machine and enter the maximum number of servers for this plan.',
+          'Error'
+        );
+        return true;
+      }
+
+      if (!Array.isArray(machines)) {
+        this._toaster.error(
+          'You must select a machine and enter the maximum number of servers for this plan.',
+          'Error'
+        );
+        return true;
+      }
+    } catch (err: unknown) {
+      this._toaster.error(
+        'You must select a machine and enter the maximum number of servers for this plan.',
+        'Error'
+      );
       return true;
     }
 

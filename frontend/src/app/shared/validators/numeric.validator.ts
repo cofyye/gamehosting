@@ -1,6 +1,6 @@
 import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
 
-export function numericValidator(): ValidatorFn {
+export function numericValidator(controlName: string): ValidatorFn {
   return (control: AbstractControl): ValidationErrors | null => {
     const value = control.value;
 
@@ -12,19 +12,19 @@ export function numericValidator(): ValidatorFn {
       (typeof value !== 'number' && typeof value !== 'string') ||
       !/^-?\d*\.?\d*$/.test(value.toString())
     ) {
-      return { numeric: 'The value must be a number.' };
+      return { numeric: `The ${controlName} must be a number.` };
     }
 
     const numberValue = typeof value === 'string' ? parseFloat(value) : value;
 
     if (isNaN(numberValue) || !isFinite(numberValue)) {
-      return { numeric: 'The value must be a valid number.' };
+      return { numeric: `The ${controlName} must be a valid number.` };
     }
 
     const decimalPlaces = value.toString().split('.')[1];
     if (decimalPlaces && decimalPlaces.length > 2) {
       return {
-        numeric: 'The value must have a maximum of 2 decimal places.',
+        numeric: `The ${controlName} must have a maximum of 2 decimal places.`,
       };
     }
 

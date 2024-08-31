@@ -4,27 +4,35 @@ import {
   RouterStateSnapshot,
   ResolveFn,
 } from '@angular/router';
-import { catchError, first, forkJoin, Observable, of, switchMap } from 'rxjs';
+import {
+  catchError,
+  combineLatest,
+  first,
+  map,
+  Observable,
+  of,
+  switchMap,
+} from 'rxjs';
 import { select, Store } from '@ngrx/store';
 import { Actions, ofType } from '@ngrx/effects';
-import { ILocationResponse } from '../../../shared/models/location-response.model';
 import { AppState } from '../../../../../app.state';
 import { IGameResponse } from '../../../shared/models/game-response.model';
-import {
-  LOAD_LOCATIONS,
-  LOAD_LOCATIONS_RESPONSE,
-} from '../../../shared/stores/location/location.actions';
 import {
   LOAD_GAMES,
   LOAD_GAMES_RESPONSE,
 } from '../../../shared/stores/game/game.actions';
-import { SELECT_LOCATIONS } from '../../../shared/stores/location/location.selectors';
 import { SELECT_GAMES } from '../../../shared/stores/game/game.selectors';
+import { IMachineResponse } from '../../../shared/models/machine-response.model';
+import {
+  LOAD_MACHINES,
+  LOAD_MACHINES_RESPONSE,
+} from '../../../shared/stores/machine/machine.actions';
+import { SELECT_MACHINES } from '../../../shared/stores/machine/machine.selectors';
 
 @Injectable({
   providedIn: 'root',
 })
-class GetLocationsGamesService {
+class GetGamesMachinesService {
   constructor(
     private readonly _actions$: Actions,
     private readonly _store: Store<AppState>
@@ -33,12 +41,12 @@ class GetLocationsGamesService {
   resolve(
     _: ActivatedRouteSnapshot,
     __: RouterStateSnapshot
-  ): Observable<{ locations: ILocationResponse[]; games: IGameResponse[] }> {
+  ): Observable<{ games: IGameResponse[]; machines: IMachineResponse[] }> {
     this._store.dispatch(LOAD_GAMES());
-    this._store.dispatch(LOAD_LOCATIONS());
+    this._store.dispatch(LOAD_MACHINES());
 
-    return forkJoin({
-      games: this._actions$.pipe(
+    return combineLatest([
+      this._actions$.pipe(
         ofType(LOAD_GAMES_RESPONSE),
         first(),
         switchMap(() =>
@@ -50,25 +58,25 @@ class GetLocationsGamesService {
         ),
         catchError(() => of([]))
       ),
-      locations: this._actions$.pipe(
-        ofType(LOAD_LOCATIONS_RESPONSE),
+      this._actions$.pipe(
+        ofType(LOAD_MACHINES_RESPONSE),
         first(),
         switchMap(() =>
           this._store.pipe(
-            select(SELECT_LOCATIONS),
+            select(SELECT_MACHINES),
             first(),
             catchError(() => of([]))
           )
         ),
         catchError(() => of([]))
       ),
-    });
+    ]).pipe(map(([games, machines]) => ({ games, machines })));
   }
 }
 
-export const getLocationsGamesResolver: ResolveFn<{
-  locations: ILocationResponse[];
+export const getGamesMachinesResolver: ResolveFn<{
   games: IGameResponse[];
+  machines: IMachineResponse[];
 }> = (route, state) => {
-  return inject(GetLocationsGamesService).resolve(route, state);
+  return inject(GetGamesMachinesService).resolve(route, state);
 };

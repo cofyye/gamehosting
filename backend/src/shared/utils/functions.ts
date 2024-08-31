@@ -474,11 +474,20 @@ function validateProvidedMachinesForPlan(
 ): IProvidedMachinesForPlan[] {
   try {
     const _machines = JSON.parse(machines) as IProvidedMachinesForPlan[];
+    const INTEGER_REGEX = /^-?\d+$/;
 
     if (_machines.length < 1) {
       functions.throwHttpException(
         false,
         'You must select at least one machine.',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
+    if (!Array.isArray(_machines)) {
+      functions.throwHttpException(
+        false,
+        'The machines are not provided in a valid JSON format.',
         HttpStatus.BAD_REQUEST,
       );
     }
@@ -500,7 +509,7 @@ function validateProvidedMachinesForPlan(
         );
       }
 
-      if (isNaN(item?.server_count)) {
+      if (!INTEGER_REGEX.test(item?.server_count.toString())) {
         functions.throwHttpException(
           false,
           'The server count field must be a number.',

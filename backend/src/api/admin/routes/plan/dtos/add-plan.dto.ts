@@ -77,7 +77,6 @@ export class AddPlanDto {
     message: 'The description must contain at least 10 characters.',
   })
   @IsNotEmpty({ message: 'The description field must not be empty.' })
-  @IsOptional()
   public readonly description: string;
 
   @IsNotEmpty({ message: 'The machines field must not be empty.' })

@@ -1,3 +1,5 @@
+import { ILocationResponse } from './location-response.model';
+
 export interface IMachineResponse {
   id: string;
   locationId: string;
@@ -7,4 +9,5 @@ export interface IMachineResponse {
   sshPort: number;
   ftpPort: number;
   createdAt: Date;
+  location?: ILocationResponse;
 }

@@ -57,7 +57,11 @@ export class PlanService {
 
   public async getPlans(): Promise<PlanEntity[]> {
     try {
-      return await this._planRepo.find();
+      return await this._planRepo.find({
+        relations: {
+          game: true,
+        },
+      });
     } catch (err) {
       functions.handleHttpException(
         err,

@@ -26,7 +26,7 @@ import { SELECT_HTTP_RESPONSE } from '../../../../../../shared/stores/http/http.
 import { ToasterService } from '../../../../../../shared/services/toaster.service';
 import { uuidValidator } from '../../../../../../shared/validators/uuid.validator';
 import { ipv4Validator } from '../../../../../../shared/validators/ipv4.validator';
-import { isUnsignedIntValidator } from '../../../../../../shared/validators/integer.validator';
+import { isUnsignedIntValidator } from '../../../../../../shared/validators/unsigned-integer.validator';
 
 @Component({
   selector: 'app-machine-add',
@@ -307,7 +307,7 @@ export class MachineAddComponent implements OnInit, OnDestroy {
       this._toaster.error('The SSH port field must not be empty.', 'Error');
       return true;
     }
-    if (this.machineAddForm.get('sshPort')?.errors?.['notInteger']) {
+    if (this.machineAddForm.get('sshPort')?.errors?.['notUnsignedInteger']) {
       this._toaster.error('The SSH port must be in numeric format.', 'Error');
       return true;
     }
@@ -331,7 +331,7 @@ export class MachineAddComponent implements OnInit, OnDestroy {
       this._toaster.error('The FTP port field must not be empty.', 'Error');
       return true;
     }
-    if (this.machineAddForm.get('ftpPort')?.errors?.['notInteger']) {
+    if (this.machineAddForm.get('ftpPort')?.errors?.['notUnsignedInteger']) {
       this._toaster.error('The FTP port must be in numeric format.', 'Error');
       return true;
     }

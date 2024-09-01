@@ -20,8 +20,8 @@ import { environment } from '../../../../../../../environments/environment';
 import { HostBy } from '../../../../../../shared/enums/game.enum';
 import { SELECT_HTTP_RESPONSE } from '../../../../../../shared/stores/http/http.selectors';
 import { uuidValidator } from '../../../../../../shared/validators/uuid.validator';
-import { isUnsignedIntValidator } from '../../../../../../shared/validators/integer.validator';
-import { unsignedNumericValidator } from '../../../../../../shared/validators/numeric.validator';
+import { isUnsignedIntValidator } from '../../../../../../shared/validators/unsigned-integer.validator';
+import { unsignedNumericValidator } from '../../../../../../shared/validators/unsigned-numeric.validator';
 import { ActivatedRoute } from '@angular/router';
 import { IPlanAddRequest } from '../../../../shared/models/plan-request.model';
 import { IGameResponse } from '../../../../shared/models/game-response.model';
@@ -87,7 +87,7 @@ export class PlanAddComponent implements OnInit, OnDestroy {
     price: new FormControl<string>('', [
       Validators.required,
       Validators.max(100000),
-      unsignedNumericValidator('price'),
+      unsignedNumericValidator(),
     ]),
     description: new FormControl<string>('', [
       Validators.required,
@@ -329,7 +329,9 @@ export class PlanAddComponent implements OnInit, OnDestroy {
       return true;
     }
     if (
-      this.planAddForm.get('addMachinePlan.maxServers')?.errors?.['notInteger']
+      this.planAddForm.get('addMachinePlan.maxServers')?.errors?.[
+        'notUnsignedInteger'
+      ]
     ) {
       this._toaster.error(
         'The maximum servers must be in numeric format.',
@@ -391,7 +393,7 @@ export class PlanAddComponent implements OnInit, OnDestroy {
         this._toaster.error('The slot field must not be empty.', 'Error');
         return true;
       }
-      if (this.planAddForm.get('slot')?.errors?.['notInteger']) {
+      if (this.planAddForm.get('slot')?.errors?.['notUnsignedInteger']) {
         this._toaster.error('The slot must be in numeric format.', 'Error');
         return true;
       }
@@ -417,7 +419,7 @@ export class PlanAddComponent implements OnInit, OnDestroy {
         this._toaster.error('The ram field must not be empty.', 'Error');
         return true;
       }
-      if (this.planAddForm.get('ram')?.errors?.['notInteger']) {
+      if (this.planAddForm.get('ram')?.errors?.['notUnsignedInteger']) {
         this._toaster.error('The ram must be in numeric format.', 'Error');
         return true;
       }
@@ -441,7 +443,7 @@ export class PlanAddComponent implements OnInit, OnDestroy {
         this._toaster.error('The CPU count field must not be empty.', 'Error');
         return true;
       }
-      if (this.planAddForm.get('cpuCount')?.errors?.['notInteger']) {
+      if (this.planAddForm.get('cpuCount')?.errors?.['notUnsignedInteger']) {
         this._toaster.error(
           'The CPU count must be in numeric format.',
           'Error'
@@ -476,9 +478,9 @@ export class PlanAddComponent implements OnInit, OnDestroy {
       );
       return true;
     }
-    if (this.planAddForm.get('price')?.errors?.['numeric']) {
+    if (this.planAddForm.get('price')?.errors?.['notUnsignedNumeric']) {
       this._toaster.error(
-        this.planAddForm.get('price')?.errors?.['numeric'],
+        `The price must be a non-negative number with a maximum of 2 decimal places.`,
         'Error'
       );
       return true;

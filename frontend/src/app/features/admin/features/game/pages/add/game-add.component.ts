@@ -25,7 +25,7 @@ import { SELECT_HTTP_RESPONSE } from '../../../../../../shared/stores/http/http.
 import { IGameAddRequest } from '../../../../shared/models/game-request.model';
 import { ADD_GAME } from '../../../../shared/stores/game/game.actions';
 import { ToasterService } from '../../../../../../shared/services/toaster.service';
-import { isUnsignedIntValidator } from '../../../../../../shared/validators/integer.validator';
+import { isUnsignedIntValidator } from '../../../../../../shared/validators/unsigned-integer.validator';
 
 @Component({
   selector: 'app-game-add',

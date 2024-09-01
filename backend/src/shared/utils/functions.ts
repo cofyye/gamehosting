@@ -10,6 +10,7 @@ import {
 } from '../interfaces/startup.interface';
 import { IProvidedMachinesForPlan } from '../interfaces/plan.interface';
 import { HostBy } from '../enums/game.enum';
+import { UNSIGNED_INTEGER_REGEX, UUID_V4_REGEX } from './regex.constants';
 
 const handleHttpException = (
   err: unknown,
@@ -474,7 +475,6 @@ function validateProvidedMachinesForPlan(
 ): IProvidedMachinesForPlan[] {
   try {
     const _machines = JSON.parse(machines) as IProvidedMachinesForPlan[];
-    const INTEGER_REGEX = /^-?\d+$/;
 
     if (_machines.length < 1) {
       functions.throwHttpException(
@@ -501,18 +501,42 @@ function validateProvidedMachinesForPlan(
         );
       }
 
-      if (!item?.server_count) {
+      if (!UUID_V4_REGEX.test(item?.id)) {
         functions.throwHttpException(
           false,
-          'The server count field must not be empty.',
+          'The machine ID is not valid.',
           HttpStatus.BAD_REQUEST,
         );
       }
 
-      if (!INTEGER_REGEX.test(item?.server_count.toString())) {
+      if (!item?.maxServers) {
         functions.throwHttpException(
           false,
-          'The server count field must be a number.',
+          'The maximum servers field must not be empty.',
+          HttpStatus.BAD_REQUEST,
+        );
+      }
+
+      if (item?.maxServers < 1) {
+        functions.throwHttpException(
+          false,
+          'The minimum value for the maximum servers field must be 1.',
+          HttpStatus.BAD_REQUEST,
+        );
+      }
+
+      if (item?.maxServers > 65535) {
+        functions.throwHttpException(
+          false,
+          'The maximum value for the maximum servers field must be 65535.',
+          HttpStatus.BAD_REQUEST,
+        );
+      }
+
+      if (!UNSIGNED_INTEGER_REGEX.test(item?.maxServers.toString())) {
+        functions.throwHttpException(
+          false,
+          'The maximum servers field must be a number.',
           HttpStatus.BAD_REQUEST,
         );
       }

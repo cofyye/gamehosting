@@ -24,12 +24,12 @@ export class PlanMachinesEntity {
   public machineId: string;
 
   @Column({
-    name: 'server_count',
+    name: 'max_servers',
     nullable: false,
     type: 'smallint',
     unsigned: true,
   })
-  public serverCount: number;
+  public maxServers: number;
 
   @CreateDateColumn({
     name: 'created_at',

@@ -197,7 +197,7 @@ export class UtilsService {
         },
       });
 
-      return planMachine.serverCount >= getAllServerOnThisMachinePlanCount + 1;
+      return planMachine.maxServers >= getAllServerOnThisMachinePlanCount + 1;
     } catch (err: unknown) {
       functions.handleHttpException(
         err,
@@ -329,7 +329,7 @@ export class UtilsService {
         const planMachine = new PlanMachinesEntity();
         planMachine.planId = plan.id;
         planMachine.machineId = machineItem.id;
-        planMachine.serverCount = machineItem.server_count;
+        planMachine.maxServers = machineItem.maxServers;
 
         await this._planMachinesRepo.save(
           this._planMachinesRepo.create(planMachine),

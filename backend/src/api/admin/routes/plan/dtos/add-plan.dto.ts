@@ -3,6 +3,7 @@ import {
   IsNotEmpty,
   IsNumber,
   IsOptional,
+  IsPositive,
   IsUUID,
   Max,
   MaxLength,
@@ -47,6 +48,7 @@ export class AddPlanDto {
   @Max(100000, {
     message: 'The maximum value for the price must be 100000.',
   })
+  @IsPositive({ message: 'The price value must be greater than zero.' })
   @IsNumber(
     {
       allowInfinity: false,

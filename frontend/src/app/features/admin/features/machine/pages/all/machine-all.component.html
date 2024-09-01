@@ -1,13 +1,12 @@
 <div class="w-full lg:ps-64">
   <div class="p-4 sm:p-6 space-y-4 sm:space-y-6">
-    <!-- Form -->
     <div class="mx-auto">
       <!-- Card -->
       <div class="flex flex-col">
         <div class="-m-1.5">
-          <!-- Header -->
           <div class="p-1.5 min-w-full inline-block align-middle">
             <div class="bg-white border border-gray-200 rounded-xl shadow-sm">
+              <!-- Header -->
               <div
                 class="px-6 py-4 grid gap-3 md:flex md:justify-between md:items-center border-b border-gray-200"
               >
@@ -68,6 +67,8 @@
                     </div>
                   </div>
                 </div>
+
+                <!-- Table -->
                 <div class="flex flex-col">
                   <div class="-m-1.5 overflow-x-auto">
                     <div class="p-1.5 min-w-full inline-block align-middle">
@@ -197,6 +198,9 @@
                     </div>
                   </div>
                 </div>
+                <!-- End Table -->
+
+                <!-- Pagination -->
                 <div class="hidden items-center justify-end space-x-4 py-3">
                   <!-- Previous Button -->
                   <a
@@ -219,6 +223,7 @@
                     </svg>
                     Prev
                   </a>
+                  <!-- End Previous Button -->
 
                   <!-- Page Indicator -->
                   <div
@@ -234,6 +239,7 @@
                     <span>of</span>
                     <span class="font-semibold">10</span>
                   </div>
+                  <!-- End Page Indicator -->
 
                   <!-- Next Button -->
                   <a
@@ -256,14 +262,19 @@
                       <path d="m9 18 6-6-6-6" />
                     </svg>
                   </a>
+                  <!-- End Next Button -->
                 </div>
+                <!-- End Pagination -->
               </div>
+              <!-- End Body -->
             </div>
           </div>
         </div>
       </div>
+      <!-- End Card -->
     </div>
 
+    <!-- Delete Machine Modal -->
     <div
       id="hs-scale-animation-modal"
       class="hs-overlay hidden size-full fixed top-0 start-0 z-[80] overflow-x-hidden overflow-y-auto pointer-events-none"
@@ -334,5 +345,6 @@
         </div>
       </div>
     </div>
+    <!-- End Delete Machine Modal -->
   </div>
 </div>

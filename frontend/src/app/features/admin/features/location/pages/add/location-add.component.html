@@ -4,9 +4,9 @@
       <!-- Card -->
       <div class="flex flex-col">
         <div class="-m-1.5">
-          <!-- Header -->
           <div class="p-1.5 min-w-full inline-block align-middle">
             <div class="bg-white border border-gray-200 rounded-xl shadow-sm">
+              <!-- Header -->
               <div
                 class="px-6 py-4 grid gap-3 md:flex md:justify-between md:items-center border-b border-gray-200"
               >
@@ -35,16 +35,18 @@
               <form [formGroup]="locationAddForm">
                 <div class="p-4 md:p-5">
                   <div class="grid gap-y-4">
+                    <!-- Grid with 2 cols -->
                     <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-4">
-                      <!-- Form Group -->
+                      <!-- Form Group Country Select -->
                       <div class="relative flex-1">
                         <app-country-select
                           (selectionChange)="onCountrySelected($event)"
                           autocomplete="false"
                         ></app-country-select>
                       </div>
+                      <!-- End Form Group Country Select -->
 
-                      <!-- Form Group -->
+                      <!-- Form Group City -->
                       <div class="relative flex-1">
                         <input
                           type="text"
@@ -60,7 +62,9 @@
                           >City</label
                         >
                       </div>
+                      <!-- End Form Group City -->
                     </div>
+                    <!-- End Grid with 2 cols -->
 
                     <!-- Buttons -->
                     <div class="inline-flex justify-end gap-x-2">
@@ -100,9 +104,9 @@
               <!-- End Body -->
             </div>
           </div>
-          <!-- Card -->
         </div>
       </div>
+      <!-- Card -->
     </div>
   </div>
 </div>

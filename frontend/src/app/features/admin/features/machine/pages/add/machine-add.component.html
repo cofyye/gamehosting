@@ -1,13 +1,12 @@
 <div class="w-full lg:ps-64">
   <div class="p-4 sm:p-6 space-y-4 sm:space-y-6">
-    <!-- Form -->
     <div class="mx-auto">
       <!-- Card -->
       <div class="flex flex-col">
         <div class="-m-1.5">
-          <!-- Header -->
           <div class="p-1.5 min-w-full inline-block align-middle">
             <div class="bg-white border border-gray-200 rounded-xl shadow-sm">
+              <!-- Header -->
               <div
                 class="px-6 py-4 grid gap-3 md:flex md:justify-between md:items-center border-b border-gray-200"
               >
@@ -39,7 +38,7 @@
                   <div class="grid gap-y-4">
                     <!-- Grid with 3 cols -->
                     <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 lg:gap-4">
-                      <!-- Form Group -->
+                      <!-- Form Group Name -->
                       <div class="relative flex-1">
                         <input
                           type="text"
@@ -55,8 +54,9 @@
                           >Name</label
                         >
                       </div>
+                      <!-- End Form Group Name -->
 
-                      <!-- Form Group -->
+                      <!-- Form Group IP Address -->
                       <div class="relative flex-1">
                         <input
                           type="text"
@@ -72,8 +72,9 @@
                           >IP Address</label
                         >
                       </div>
+                      <!-- End Form Group IP Address -->
 
-                      <!-- Select -->
+                      <!-- Form Group Location Select -->
                       <select
                         (change)="onSelectLocation($event)"
                         data-hs-select='{
@@ -99,13 +100,13 @@
                           {{ location.city }}, {{ location.country }}
                         </option>
                       </select>
-                      <!-- End Select -->
+                      <!-- End Form Group Location Select -->
                     </div>
                     <!-- End Grid with 3 cols -->
 
                     <!-- Grid with 2 cols -->
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 lg:gap-4">
-                      <!-- Form Group for First Name -->
+                      <!-- Form Group Username -->
                       <div class="relative flex-1">
                         <input
                           type="text"
@@ -121,8 +122,9 @@
                           >Username</label
                         >
                       </div>
+                      <!-- End Form Group Username -->
 
-                      <!-- Form Group for Password with Eye Toggle -->
+                      <!-- Form Group Password with Eye Toggle -->
                       <div class="relative flex-1">
                         <input
                           type="password"
@@ -189,6 +191,7 @@
                           </svg>
                         </button>
                       </div>
+                      <!-- End Form Group Password with Eye Toggle -->
                     </div>
                     <!-- End Grid with 2 cols -->
 
@@ -340,7 +343,7 @@
                       </div>
                       <!-- End Input Number -->
 
-                      <!-- Select -->
+                      <!-- Form Group Game Select -->
                       <select
                         (change)="onSelectGames($event)"
                         multiple=""
@@ -368,7 +371,7 @@
                           {{ game.name }}
                         </option>
                       </select>
-                      <!-- End Select -->
+                      <!-- End Form Group Game Select -->
                     </div>
                     <!-- End Grid with 4 cols -->
 
@@ -410,10 +413,9 @@
               <!-- End Body -->
             </div>
           </div>
-          <!-- Card -->
         </div>
-        <!-- Form -->
       </div>
+      <!-- Card -->
     </div>
   </div>
 </div>

@@ -1,13 +1,12 @@
 <div class="w-full lg:ps-64">
   <div class="p-4 sm:p-6 space-y-4 sm:space-y-6">
-    <!-- Form -->
     <div class="mx-auto">
       <!-- Card -->
       <div class="flex flex-col">
         <div class="-m-1.5">
-          <!-- Header -->
           <div class="p-1.5 min-w-full inline-block align-middle">
             <div class="bg-white border border-gray-200 rounded-xl shadow-sm">
+              <!-- Header -->
               <div
                 class="px-6 py-4 grid gap-3 md:flex md:justify-between md:items-center border-b border-gray-200"
               >
@@ -38,9 +37,8 @@
                   <div class="grid gap-y-4">
                     <!-- Grid with 2 cols -->
                     <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 lg:gap-4">
-                      <!-- Form Group -->
+                      <!-- Form Group Game Select -->
                       <div class="relative flex-1">
-                        <!-- Select -->
                         <select
                           (change)="onSelectGame($event)"
                           data-hs-select='{
@@ -66,10 +64,10 @@
                             {{ game.name }}
                           </option>
                         </select>
-                        <!-- End Select -->
                       </div>
+                      <!-- End Form Group Game Select -->
 
-                      <!-- Form Group -->
+                      <!-- Form Group Name -->
                       <div class="relative flex-1">
                         <input
                           type="text"
@@ -85,8 +83,9 @@
                           >Name</label
                         >
                       </div>
+                      <!-- End Form Group Name -->
 
-                      <!-- Form Group -->
+                      <!-- Form Group Price -->
                       <div class="relative flex-1">
                         <input
                           type="text"
@@ -102,10 +101,11 @@
                           >Price</label
                         >
                       </div>
+                      <!-- End Form Group Price -->
                     </div>
                     <!-- End Grid with 2 cols -->
 
-                    <!-- Form Group -->
+                    <!-- Form Group Slots -->
                     <div
                       class="relative"
                       [ngClass]="
@@ -128,8 +128,9 @@
                         >Slots</label
                       >
                     </div>
-                    <!-- End Form Group -->
+                    <!-- End Form Group Slots -->
 
+                    <!-- Grid with 2 cols -->
                     <div
                       class="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-4"
                       [ngClass]="
@@ -138,7 +139,7 @@
                           : 'hidden'
                       "
                     >
-                      <!-- Form Group -->
+                      <!-- Form Group Ram -->
                       <div class="relative flex-1">
                         <input
                           type="text"
@@ -154,10 +155,10 @@
                           >RAM (In bytes)</label
                         >
                       </div>
+                      <!-- End Form Group Ram -->
 
-                      <!-- Form Group -->
+                      <!-- Form Group CPU Count -->
                       <div class="relative flex-1">
-                        <!-- CPUs Count Form Group -->
                         <input
                           type="text"
                           id="hs-floating-input-cpuCount-value"
@@ -171,10 +172,12 @@
                           class="absolute top-0 start-0 p-4 h-full text-sm truncate pointer-events-none transition ease-in-out duration-100 border border-transparent origin-[0_0] peer-disabled:opacity-50 peer-disabled:pointer-events-none peer-focus:scale-90 peer-focus:translate-x-0.5 peer-focus:-translate-y-1.5 peer-focus:text-gray-500 peer-[:not(:placeholder-shown)]:scale-90 peer-[:not(:placeholder-shown)]:translate-x-0.5 peer-[:not(:placeholder-shown)]:-translate-y-1.5 peer-[:not(:placeholder-shown)]:text-gray-500"
                           >CPUs</label
                         >
-                        <!-- End CPUs Count Form Group -->
                       </div>
+                      <!-- End Form Group CPU Count -->
                     </div>
+                    <!-- End Grid with 2 cols -->
 
+                    <!-- Form Group Description -->
                     <div class="relative">
                       <textarea
                         id="hs-floating-textarea"
@@ -190,6 +193,7 @@
                         >Description</label
                       >
                     </div>
+                    <!-- End Form Group Description -->
 
                     <div>
                       <div
@@ -197,11 +201,13 @@
                       >
                         Link Machine to Plan
                       </div>
+
                       <!-- Grid with 2 cols -->
                       <div
                         class="grid grid-cols-1 md:grid-cols-2 gap-4 lg:gap-4 mb-3"
                         *ngFor="let machinePlan of machinesPlans"
                       >
+                        <!-- Form Group Machine Readonly -->
                         <div class="relative flex-1">
                           <input
                             type="text"
@@ -226,7 +232,9 @@
                             >Machine</label
                           >
                         </div>
+                        <!-- End Form Group Machine Readonly -->
 
+                        <!-- Form Group Maximum Servers Readonly -->
                         <div class="relative flex-1">
                           <input
                             type="text"
@@ -251,15 +259,16 @@
                             >Maximum Servers</label
                           >
                         </div>
+                        <!-- End Form Group Maximum Servers Readonly -->
                       </div>
+                      <!-- End Grid with 2 cols -->
 
                       <div
                         class="grid grid-cols-1 md:grid-cols-2 gap-4 lg:gap-4"
                         formGroupName="addMachinePlan"
                       >
-                        <!-- Form Group -->
+                        <!-- Form Group Machine Select -->
                         <div class="relative flex-1">
-                          <!-- Select -->
                           <select
                             (change)="onSelectMachine($event)"
                             data-hs-select='{
@@ -283,10 +292,10 @@
                               {{ machine.name }}
                             </option>
                           </select>
-                          <!-- End Select -->
                         </div>
+                        <!-- End Form Group Machine Select -->
 
-                        <!-- Form Group -->
+                        <!-- Form Group Maximum Servers -->
                         <div class="relative flex-1">
                           <input
                             type="text"
@@ -302,9 +311,10 @@
                             >Maximum Servers</label
                           >
                         </div>
-                        <!-- End Form Group -->
+                        <!-- End Form Group Maximum Servers -->
                       </div>
                       <!-- End Grid with 2 cols -->
+
                       <div class="flex justify-end py-5">
                         <button
                           class="inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-md text-xs font-medium border border-gray-200 bg-white text-gray-800 shadow-sm"
@@ -351,10 +361,9 @@
               <!-- End Body -->
             </div>
           </div>
-          <!-- Card -->
         </div>
-        <!-- Form -->
       </div>
+      <!-- Card -->
     </div>
   </div>
 </div>

@@ -45,6 +45,11 @@ const routes: Routes = [
           import('./features/plan/plan.module').then((m) => m.PlanModule),
       },
       {
+        path: 'mods',
+        loadChildren: () =>
+          import('./features/mod/mod.module').then((m) => m.ModModule),
+      },
+      {
         path: 'users',
         loadChildren: () =>
           import('./features/user/user.module').then((m) => m.UserModule),

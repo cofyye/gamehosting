@@ -1,10 +1,9 @@
 import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
+import { UNSIGNED_INTEGER_REGEX } from '../utils/regex.constants';
 
-const INTEGER_REGEX = /^-?\d+$/;
-
-export function isIntValidator(): ValidatorFn {
+export function isUnsignedIntValidator(): ValidatorFn {
   return (control: AbstractControl): ValidationErrors | null => {
-    const isValid = INTEGER_REGEX.test(control.value);
+    const isValid = UNSIGNED_INTEGER_REGEX.test(control.value);
     return isValid ? null : { notInteger: true };
   };
 }

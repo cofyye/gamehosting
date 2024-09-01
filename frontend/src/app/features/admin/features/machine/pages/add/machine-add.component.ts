@@ -26,7 +26,7 @@ import { SELECT_HTTP_RESPONSE } from '../../../../../../shared/stores/http/http.
 import { ToasterService } from '../../../../../../shared/services/toaster.service';
 import { uuidValidator } from '../../../../../../shared/validators/uuid.validator';
 import { ipv4Validator } from '../../../../../../shared/validators/ipv4.validator';
-import { isIntValidator } from '../../../../../../shared/validators/integer.validator';
+import { isUnsignedIntValidator } from '../../../../../../shared/validators/integer.validator';
 
 @Component({
   selector: 'app-machine-add',
@@ -77,13 +77,13 @@ export class MachineAddComponent implements OnInit, OnDestroy {
       Validators.required,
       Validators.min(1),
       Validators.max(65535),
-      isIntValidator(),
+      isUnsignedIntValidator(),
     ]),
     ftpPort: new FormControl<number>(21, [
       Validators.required,
       Validators.min(1),
       Validators.max(65535),
-      isIntValidator(),
+      isUnsignedIntValidator(),
     ]),
     games: new FormControl<string>('', [Validators.required]),
   });

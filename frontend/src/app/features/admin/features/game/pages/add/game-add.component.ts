@@ -25,6 +25,7 @@ import { SELECT_HTTP_RESPONSE } from '../../../../../../shared/stores/http/http.
 import { IGameAddRequest } from '../../../../shared/models/game-request.model';
 import { ADD_GAME } from '../../../../shared/stores/game/game.actions';
 import { ToasterService } from '../../../../../../shared/services/toaster.service';
+import { isUnsignedIntValidator } from '../../../../../../shared/validators/integer.validator';
 
 @Component({
   selector: 'app-game-add',
@@ -62,13 +63,13 @@ export class GameAddComponent implements OnInit, OnDestroy {
       Validators.required,
       Validators.min(1),
       Validators.max(65535),
-      Validators.pattern(/^-?\d+$/),
+      isUnsignedIntValidator(),
     ]),
     endPort: new FormControl<string>('', [
       Validators.required,
       Validators.min(1),
       Validators.max(65535),
-      Validators.pattern(/^-?\d+$/),
+      isUnsignedIntValidator(),
     ]),
     hostBy: new FormControl<string>('', [Validators.required]),
     banner: new FormControl<File | null>(null, []),

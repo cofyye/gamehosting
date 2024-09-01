@@ -6,5 +6,5 @@ export interface IMachinePlan {
 
 export interface IMachinePlanRequest {
   id: string;
-  server_count: number;
+  maxServers: number;
 }

@@ -20,8 +20,8 @@ import { environment } from '../../../../../../../environments/environment';
 import { HostBy } from '../../../../../../shared/enums/game.enum';
 import { SELECT_HTTP_RESPONSE } from '../../../../../../shared/stores/http/http.selectors';
 import { uuidValidator } from '../../../../../../shared/validators/uuid.validator';
-import { isIntValidator } from '../../../../../../shared/validators/integer.validator';
-import { numericValidator } from '../../../../../../shared/validators/numeric.validator';
+import { isUnsignedIntValidator } from '../../../../../../shared/validators/integer.validator';
+import { unsignedNumericValidator } from '../../../../../../shared/validators/numeric.validator';
 import { ActivatedRoute } from '@angular/router';
 import { IPlanAddRequest } from '../../../../shared/models/plan-request.model';
 import { IGameResponse } from '../../../../shared/models/game-response.model';
@@ -70,24 +70,24 @@ export class PlanAddComponent implements OnInit, OnDestroy {
       Validators.required,
       Validators.min(1),
       Validators.max(65535),
-      isIntValidator(),
+      isUnsignedIntValidator(),
     ]),
     ram: new FormControl<string>('', [
       Validators.required,
       Validators.min(536870912), // 512 MB in bytes
       Validators.max(109951162777600), // 10 TB in bytes
-      isIntValidator(),
+      isUnsignedIntValidator(),
     ]),
     cpuCount: new FormControl<number>(1, [
       Validators.required,
       Validators.min(1),
       Validators.max(65535),
-      isIntValidator(),
+      isUnsignedIntValidator(),
     ]),
     price: new FormControl<string>('', [
       Validators.required,
       Validators.max(100000),
-      numericValidator('price'),
+      unsignedNumericValidator('price'),
     ]),
     description: new FormControl<string>('', [
       Validators.required,
@@ -105,7 +105,7 @@ export class PlanAddComponent implements OnInit, OnDestroy {
         Validators.required,
         Validators.min(1),
         Validators.max(65535),
-        isIntValidator(),
+        isUnsignedIntValidator(),
       ]),
     }),
   });
@@ -272,7 +272,7 @@ export class PlanAddComponent implements OnInit, OnDestroy {
     this.machinesPlans.push(this.planAddForm.get('addMachinePlan')?.value);
     this.machinesPlansRequest.push({
       id: this.planAddForm.get('addMachinePlan.machineId')?.value,
-      server_count: this.planAddForm.get('addMachinePlan.maxServers')?.value,
+      maxServers: this.planAddForm.get('addMachinePlan.maxServers')?.value,
     });
     this.resetMachinePlan();
   }
@@ -309,21 +309,21 @@ export class PlanAddComponent implements OnInit, OnDestroy {
       this.planAddForm.get('addMachinePlan.maxServers')?.errors?.['required']
     ) {
       this._toaster.error(
-        'The machine max servers field must not be empty.',
+        'The machine maximum servers field must not be empty.',
         'Error'
       );
       return true;
     }
     if (this.planAddForm.get('addMachinePlan.maxServers')?.errors?.['min']) {
       this._toaster.error(
-        'The minimum value for the max servers must be 1.',
+        'The minimum value for the maximum servers must be 1.',
         'Error'
       );
       return true;
     }
     if (this.planAddForm.get('addMachinePlan.maxServers')?.errors?.['max']) {
       this._toaster.error(
-        'The maximum value for the max servers must be 65535.',
+        'The maximum value for the maximum servers must be 65535.',
         'Error'
       );
       return true;
@@ -332,7 +332,7 @@ export class PlanAddComponent implements OnInit, OnDestroy {
       this.planAddForm.get('addMachinePlan.maxServers')?.errors?.['notInteger']
     ) {
       this._toaster.error(
-        'The max servers must be in numeric format.',
+        'The maximum servers must be in numeric format.',
         'Error'
       );
       return true;

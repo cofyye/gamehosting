@@ -1,6 +1,7 @@
 import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
+import { UNSIGNED_INTEGER_REGEX } from '../utils/regex.constants';
 
-export function numericValidator(controlName: string): ValidatorFn {
+export function unsignedNumericValidator(controlName: string): ValidatorFn {
   return (control: AbstractControl): ValidationErrors | null => {
     const value = control.value;
 
@@ -10,7 +11,7 @@ export function numericValidator(controlName: string): ValidatorFn {
 
     if (
       (typeof value !== 'number' && typeof value !== 'string') ||
-      !/^-?\d*\.?\d*$/.test(value.toString())
+      !UNSIGNED_INTEGER_REGEX.test(value.toString())
     ) {
       return { numeric: `The ${controlName} must be a number.` };
     }

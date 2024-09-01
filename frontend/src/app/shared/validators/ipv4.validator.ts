@@ -1,7 +1,5 @@
 import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
-
-const IPV4_REGEX =
-  /^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/;
+import { IPV4_REGEX } from '../utils/regex.constants';
 
 export function ipv4Validator(): ValidatorFn {
   return (control: AbstractControl): ValidationErrors | null => {

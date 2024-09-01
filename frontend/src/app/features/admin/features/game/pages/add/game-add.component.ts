@@ -259,7 +259,9 @@ export class GameAddComponent implements OnInit, OnDestroy {
         'Error'
       );
       return true;
-    } else if (this.gameAddForm.get('startPort')?.errors?.['pattern']) {
+    } else if (
+      this.gameAddForm.get('startPort')?.errors?.['notUnsignedInteger']
+    ) {
       this._toaster.error('The start port must be in numeric format.', 'Error');
       return true;
     }
@@ -280,7 +282,9 @@ export class GameAddComponent implements OnInit, OnDestroy {
         'Error'
       );
       return true;
-    } else if (this.gameAddForm.get('endPort')?.errors?.['pattern']) {
+    } else if (
+      this.gameAddForm.get('endPort')?.errors?.['notUnsignedInteger']
+    ) {
       this._toaster.error('The end port must be in numeric format.', 'Error');
       return true;
     }

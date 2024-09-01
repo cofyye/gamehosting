@@ -1,7 +1,6 @@
 import { HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { UploadedFile } from 'express-fileupload';
 
 import { LocationEntity } from 'src/shared/entities/location.entity';
 import { FileUploadService } from 'src/shared/services/file-upload/file-upload.service';
@@ -21,8 +20,6 @@ export class LocationService {
   ) {}
 
   public async addLocation(body: AddLocationDto): Promise<void> {
-    let filename = '';
-
     try {
       let location = await this._locationRepo.findOne({
         where: {
@@ -46,8 +43,6 @@ export class LocationService {
 
       await this._locationRepo.save(this._locationRepo.create(location));
     } catch (err) {
-      this._fileUploadService.deleteFile(filename);
-
       functions.handleHttpException(
         err,
         false,

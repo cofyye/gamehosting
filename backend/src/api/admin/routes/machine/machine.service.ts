@@ -57,14 +57,6 @@ export class MachineService {
         );
       }
 
-      await this._ssh2Service.checkConnection({
-        host: body.ip,
-        port: body.sshPort,
-        username: body.username,
-        password: body.password,
-        readyTimeout: 3000,
-      });
-
       await this._ssh2Service.autoInstallationWizard({
         host: body.ip,
         port: body.sshPort,

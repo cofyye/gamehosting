@@ -24,7 +24,7 @@ export class GameService {
     body: AddGameDto,
     icon: UploadedFile | UploadedFile[],
   ): Promise<void> {
-    let filename = '';
+    // let filename = '';
 
     try {
       // if (!icon) {
@@ -46,7 +46,7 @@ export class GameService {
       if (!functions.checkListOfSupportedGames(body.tag)) {
         functions.throwHttpException(
           false,
-          'Supported tags for games currently are: counterstrike16 & counterstrike2.',
+          'The game you entered is not supported.',
           HttpStatus.BAD_REQUEST,
         );
       }
@@ -98,7 +98,7 @@ export class GameService {
 
       await this._gameRepo.save(this._gameRepo.create(game));
     } catch (err) {
-      this._fileUploadService.deleteFile(filename);
+      // this._fileUploadService.deleteFile(filename);
 
       functions.handleHttpException(
         err,
@@ -113,9 +113,17 @@ export class GameService {
     body: EditGameDto,
     icon: UploadedFile | UploadedFile[],
   ): Promise<void> {
-    let filename: string = '';
+    // let filename: string = '';
 
     try {
+      if (body.startPort >= body.endPort) {
+        functions.throwHttpException(
+          false,
+          'Start port must not be greater than or equal to end port.',
+          HttpStatus.BAD_REQUEST,
+        );
+      }
+
       const game = await this._utilsService.getGameById(id);
 
       game.name = body.name;
@@ -142,7 +150,7 @@ export class GameService {
 
       await this._gameRepo.save(game);
     } catch (err) {
-      this._fileUploadService.deleteFile(filename);
+      // this._fileUploadService.deleteFile(filename);
 
       functions.handleHttpException(
         err,

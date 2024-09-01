@@ -399,6 +399,9 @@ export class UtilsService {
           username: true,
           createdAt: true,
         },
+        relations: {
+          location: true,
+        },
       });
 
       if (!machine) {

@@ -99,6 +99,9 @@ export class MachineService {
           username: true,
           createdAt: true,
         },
+        relations: {
+          location: true,
+        },
       });
     } catch (err) {
       functions.handleHttpException(

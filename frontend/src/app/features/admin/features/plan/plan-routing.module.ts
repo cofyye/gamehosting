@@ -4,6 +4,7 @@ import { PlanAllComponent } from './pages/all/plan-all.component';
 import { PlanAddComponent } from './pages/add/plan-add.component';
 import { PlanEditComponent } from './pages/edit/plan-edit.component';
 import { getGamesMachinesResolver } from './resolvers/get-games-machines.resolver';
+import { getPlansResolver } from '../../shared/resolvers/get-plans.resolver';
 
 const routes: Routes = [
   {
@@ -14,6 +15,9 @@ const routes: Routes = [
         path: '',
         component: PlanAllComponent,
         pathMatch: 'full',
+        resolve: {
+          plans: getPlansResolver,
+        },
       },
       {
         path: 'add',

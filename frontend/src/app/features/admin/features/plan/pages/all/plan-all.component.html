@@ -68,6 +68,8 @@
                     </div>
                   </div>
                 </div>
+
+                <!-- Table -->
                 <div class="flex flex-col">
                   <div class="-m-1.5 overflow-x-auto">
                     <div class="p-1.5 min-w-full inline-block align-middle">
@@ -103,12 +105,23 @@
                           </thead>
 
                           <tbody class="bg-white divide-y divide-gray-200">
-                            <tr class="odd:bg-white even:bg-gray-100">
+                            <tr *ngIf="plans.length < 1">
+                              <td
+                                colspan="4"
+                                class="text-center px-6 py-4 whitespace-nowrap text-sm text-gray-800"
+                              >
+                                Currently no data.
+                              </td>
+                            </tr>
+                            <tr
+                              *ngFor="let plan of plans"
+                              class="odd:bg-white even:bg-gray-100"
+                            >
                               <td
                                 data-label="Name"
                                 class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800"
                               >
-                                Counter-Strike 1.6 Glock
+                                {{ plan.name }}
                               </td>
                               <td
                                 data-label="Game"
@@ -117,16 +130,19 @@
                                 <div class="flex items-center">
                                   <img
                                     class="size-5 shrink-0 rounded-md shadow-sm me-1"
-                                    src="https://raw.githubusercontent.com/lipis/flag-icons/b919a036693ee1ee0434ef5ae05f93543fc4f437/flags/4x3/rs.svg"
+                                    src="{{
+                                      environment.API_URL
+                                    }}/assets/games/{{ plan.game?.tag }}.png"
+                                    alt="{{ plan.game?.name }}"
                                   />
-                                  Counter-Strike 1.6
+                                  {{ plan.game?.name }}
                                 </div>
                               </td>
                               <td
                                 data-label="Price"
                                 class="px-6 py-4 whitespace-nowrap text-sm text-gray-800"
                               >
-                                8 EUR
+                                {{ plan.price }} &euro;
                               </td>
                               <td
                                 data-label="Actions"
@@ -134,7 +150,7 @@
                               >
                                 <div class="flex gap-2 justify-end">
                                   <button
-                                    routerLink="/admin/plans/edit/1"
+                                    routerLink="/admin/plans/edit/{{ plan.id }}"
                                     type="button"
                                     class="py-1.5 px-3 inline-flex items-center gap-x-2 text-xs font-semibold rounded-lg border border-transparent bg-yellow-500 text-white hover:bg-yellow-600 focus:outline-none focus:bg-yellow-600 disabled:opacity-50 disabled:pointer-events-none"
                                   >
@@ -147,6 +163,7 @@
                                     aria-expanded="false"
                                     aria-controls="hs-scale-animation-modal"
                                     data-hs-overlay="#hs-scale-animation-modal"
+                                    (click)="onSelectPlan(plan.id)"
                                   >
                                     Delete
                                   </button>
@@ -159,6 +176,9 @@
                     </div>
                   </div>
                 </div>
+                <!-- End Table -->
+
+                <!-- Pagination -->
                 <div class="flex items-center justify-end space-x-4 py-3">
                   <!-- Previous Button -->
                   <a
@@ -181,6 +201,7 @@
                     </svg>
                     Prev
                   </a>
+                  <!-- End Previous Button -->
 
                   <!-- Page Indicator -->
                   <div
@@ -190,11 +211,13 @@
                       type="text"
                       value="2"
                       class="py-2 block w-[38px] text-center border-gray-200 rounded-md text-sm focus:border--gray-600 focus:ring--gray-600 disabled:opacity-50 disabled:pointer-events-none"
-                      autofocus=""
+                      autocomplete="false"
+                      id="page-input"
                     />
                     <span>of</span>
                     <span class="font-semibold">10</span>
                   </div>
+                  <!-- End Page Indicator -->
 
                   <!-- Next Button -->
                   <a
@@ -217,7 +240,9 @@
                       <path d="m9 18 6-6-6-6" />
                     </svg>
                   </a>
+                  <!-- End Next Button -->
                 </div>
+                <!-- End Pagination -->
               </div>
             </div>
           </div>
@@ -225,6 +250,7 @@
       </div>
     </div>
 
+    <!-- Delete Plan Modal -->
     <div
       id="hs-scale-animation-modal"
       class="hs-overlay hidden size-full fixed top-0 start-0 z-[80] overflow-x-hidden overflow-y-auto pointer-events-none"
@@ -243,13 +269,14 @@
               id="hs-scale-animation-modal-label"
               class="font-bold text-gray-800"
             >
-              Delete Machine
+              Delete Plan
             </h3>
             <button
               type="button"
               class="size-8 inline-flex justify-center items-center gap-x-2 rounded-full border border-transparent bg-gray-100 text-gray-800 hover:bg-gray-200 focus:outline-none focus:bg-gray-200 disabled:opacity-50 disabled:pointer-events-none"
               aria-label="Close"
               data-hs-overlay="#hs-scale-animation-modal"
+              (click)="onDeselectPlan()"
             >
               <span class="sr-only">Close</span>
               <svg
@@ -270,21 +297,42 @@
             </button>
           </div>
           <div class="p-4 overflow-y-auto">
-            <p class="mt-1 text-gray-800">Are you sure want delete plan?</p>
+            <p class="mt-1 text-gray-800">
+              Are you sure want delete {{ selectedPlan?.name }} plan?
+            </p>
           </div>
           <div class="flex justify-end items-center gap-x-2 py-3 px-4 border-t">
+            <button
+              class="hidden"
+              data-hs-overlay="#hs-scale-animation-modal"
+              #deletePlanAlertCloseButton
+            >
+              close alert
+            </button>
             <button
               type="button"
               class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 focus:outline-none focus:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none"
               data-hs-overlay="#hs-scale-animation-modal"
+              (click)="onDeselectPlan()"
             >
               Close
             </button>
             <button
               type="button"
-              class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-red-600 text-white hover:bg-red-700 focus:outline-none focus:bg-red-700 disabled:opacity-50 disabled:pointer-events-none"
+              class="py-2 px-3 inline-flex justify-center items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-red-600 text-white hover:bg-red-700 focus:outline-none focus:bg-red-700 disabled:opacity-50 disabled:pointer-events-none"
+              (click)="onDeletePlan()"
             >
-              Delete
+              <div
+                class="absolute animate-spin inline-block size-4 border-[2px] border-current border-t-transparent text-white rounded-full"
+                role="status"
+                aria-label="loading"
+                *ngIf="isLoadingPlanDelete"
+              >
+                <span class="sr-only">Loading...</span>
+              </div>
+              <span [ngClass]="isLoadingPlanDelete ? 'invisible' : 'visible'"
+                >Delete</span
+              >
             </button>
           </div>
         </div>

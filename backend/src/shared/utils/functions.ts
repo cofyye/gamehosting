@@ -69,6 +69,15 @@ function generateCode(length: number = 10): string {
   return randomString;
 }
 
+function generatePinCode(): string {
+  let pinCode = '';
+  for (let i = 0; i < 5; i++) {
+    const randomDigit = Math.floor(Math.random() * 10);
+    pinCode += randomDigit;
+  }
+  return pinCode;
+}
+
 function generateRandomString(length: number = 15): string {
   const array = new Uint16Array(length / 2);
   crypto.getRandomValues(array);
@@ -778,6 +787,7 @@ export const functions = {
   throwHttpException,
   throwHttpExceptionData,
   generateCode,
+  generatePinCode,
   generateRandomString,
   formatBytes,
   checkListOfSupportedGames,

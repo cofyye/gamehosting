@@ -52,7 +52,9 @@ export class AuthService {
       user.email = body.email;
       user.username = body.username;
       user.password = body.password;
-      user.pinCode = body.pinCode;
+      user.pinCode = functions.generatePinCode();
+      user.country = body.country;
+      user.countryTag = body.countryTag;
 
       const salt = await bcrypt.genSalt(10);
       const password = await bcrypt.hash(user.password, salt);

@@ -28,7 +28,6 @@ export class EmailService {
 
       return true;
     } catch (_: unknown) {
-      console.log(_);
       return false;
     }
   }

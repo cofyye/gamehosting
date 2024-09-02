@@ -56,7 +56,8 @@ export class AuthController {
 
       return {
         success: true,
-        message: 'You have successfully registered.',
+        message:
+          'You have successfully registered. You can now verify your account before logging in.',
       };
     } catch (err: unknown) {
       functions.handleHttpException(
@@ -286,8 +287,6 @@ export class AuthController {
 
       // Regenerate Access Token With Refresh Token
       if (!loggedUser) {
-        console.log('isteklo, regenerate');
-
         try {
           const payload = (await this._jwtService.verifyAsync(
             req?.cookies?.['refresh_token'],

@@ -32,6 +32,16 @@ export class UserEntity {
   @Column({ name: 'password', nullable: false, length: 100 })
   public password: string;
 
+  @Column({ name: 'country', nullable: false, length: 50 })
+  public country: string;
+
+  @Column({
+    name: 'country_tag',
+    nullable: false,
+    length: 10,
+  })
+  public countryTag: string;
+
   @Column({ name: 'pin_code', nullable: false, length: 5 })
   public pinCode: string;
 
@@ -62,12 +72,12 @@ export class UserEntity {
   })
   public role: UserRole;
 
-  @Column({ name: 'money', nullable: true, length: 10, default: '0' })
+  @Column({ name: 'money', nullable: false, length: 10, default: '0' })
   public money: string;
 
   @Column({
     name: 'avatar',
-    unique: true,
+    unique: false,
     nullable: true,
     default: 'default-avatar.png',
     length: 100,

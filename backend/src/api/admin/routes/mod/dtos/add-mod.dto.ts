@@ -5,6 +5,7 @@ import {
   MaxLength,
   MinLength,
 } from 'class-validator';
+import { DOCKER_IMAGE_REGEX } from 'src/shared/utils/regex.constants';
 
 export class AddModDto {
   @IsUUID('4', {
@@ -20,7 +21,7 @@ export class AddModDto {
   @IsNotEmpty({ message: 'The mod name field must not be empty.' })
   public readonly modName: string;
 
-  @Matches(new RegExp('^[a-z0-9_-]+([_-]?[a-z0-9]+)*$', 'gm'), {
+  @Matches(DOCKER_IMAGE_REGEX, {
     message:
       'Allowed characters for the Docker image are: a-z (lowercase only), 0-9, - (hyphen), and _ (underscore).',
   })

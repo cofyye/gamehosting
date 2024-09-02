@@ -46,6 +46,8 @@ export class AuthEffects {
 
             this._store.dispatch(STOP_LOADING({ key: 'REGISTER_BTN' }));
 
+            this._router.navigate(['/auth/login']);
+
             return response;
           }),
           map(() => AuthActions.REGISTER_SUCCESS()),

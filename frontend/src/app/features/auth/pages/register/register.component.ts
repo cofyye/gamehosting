@@ -16,6 +16,12 @@ import { IS_LOADING } from '../../../../shared/stores/loader/loader.selectors';
 import { START_LOADING } from '../../../../shared/stores/loader/loader.actions';
 import { REGISTER } from '../../../../shared/stores/auth/auth.actions';
 import { ISelectedCountry } from '../../../../shared/models/country.model';
+import {
+  ALPHABETS_AND_SPACE_REGEX,
+  EMAIL_REGEX,
+  USERNAME_REGEX,
+} from '../../../../shared/utils/regex.constants';
+import { PasswordValidators } from '../../../../shared/validators/password.validator';
 
 @Component({
   selector: 'app-register',
@@ -38,20 +44,20 @@ export class RegisterComponent implements OnInit, OnDestroy {
       Validators.required,
       Validators.minLength(2),
       Validators.maxLength(20),
-      Validators.pattern('^[a-zA-Z ]+'),
+      Validators.pattern(ALPHABETS_AND_SPACE_REGEX),
     ]),
     lastName: new FormControl<string>('', [
       Validators.required,
       Validators.minLength(2),
       Validators.maxLength(20),
-      Validators.pattern('^[a-zA-Z ]+'),
+      Validators.pattern(ALPHABETS_AND_SPACE_REGEX),
     ]),
     username: new FormControl<string>('', {
       validators: [
         Validators.required,
         Validators.minLength(3),
         Validators.maxLength(20),
-        Validators.pattern('^[a-z0-9._]+([._]?[a-z0-9]+)*$'),
+        Validators.pattern(USERNAME_REGEX),
       ],
       asyncValidators: [usernameAvailabilityValidator(this._httpClient)],
     }),
@@ -59,21 +65,29 @@ export class RegisterComponent implements OnInit, OnDestroy {
       validators: [
         Validators.required,
         Validators.maxLength(100),
-        Validators.pattern('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+$'),
+        Validators.pattern(EMAIL_REGEX),
       ],
       asyncValidators: [emailAvailabilityValidator(this._httpClient)],
     }),
     password: new FormControl<string>('', [
       Validators.required,
-      Validators.minLength(8),
+      Validators.minLength(6),
       Validators.maxLength(32),
+      PasswordValidators.containsSpecialChar(),
+      PasswordValidators.containsNumber(),
+      PasswordValidators.containsUppercase(),
+      PasswordValidators.containsLowercase(),
     ]),
-    // pinCode: new FormControl<string>('', [
-    //   Validators.required,
-    //   Validators.minLength(5),
-    //   Validators.maxLength(5),
-    //   Validators.pattern('^[0-9]+'),
-    // ]),
+    country: new FormControl<string>('', [
+      Validators.required,
+      Validators.minLength(2),
+      Validators.maxLength(50),
+    ]),
+    countryTag: new FormControl<string>('', [
+      Validators.required,
+      Validators.minLength(2),
+      Validators.maxLength(10),
+    ]),
   });
 
   public ngOnInit(): void {
@@ -112,17 +126,17 @@ export class RegisterComponent implements OnInit, OnDestroy {
     if (selectedCountry.value) {
       this.registerForm.patchValue({
         country: selectedCountry.label,
-      });
-      this.registerForm.patchValue({
         countryTag: selectedCountry.value,
       });
     } else {
       this.registerForm.patchValue({
         country: '',
-      });
-      this.registerForm.patchValue({
         countryTag: '',
       });
     }
+  }
+
+  public onCountryBlur(): void {
+    this.registerForm.get('country')?.markAsTouched();
   }
 }

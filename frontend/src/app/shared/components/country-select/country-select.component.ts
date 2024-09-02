@@ -7,6 +7,7 @@ import {
   OnChanges,
   Output,
   Renderer2,
+  SimpleChanges,
 } from '@angular/core';
 import { environment } from '../../../../environments/environment';
 import { ISelectedCountry } from '../../models/country.model';
@@ -16,9 +17,10 @@ import { ISelectedCountry } from '../../models/country.model';
   templateUrl: './country-select.component.html',
   styleUrl: './country-select.component.css',
 })
-export class CountrySelectComponent implements AfterViewChecked {
+export class CountrySelectComponent implements AfterViewChecked, OnChanges {
   @Input() ngClass: string = '';
   @Output() selectionChange = new EventEmitter<ISelectedCountry>();
+  @Output() selectionBlur = new EventEmitter<boolean>();
 
   constructor(
     private readonly _renderer: Renderer2,
@@ -1800,7 +1802,37 @@ export class CountrySelectComponent implements AfterViewChecked {
 
   public ngAfterViewChecked(): void {
     if (!this.buttonInitialized) {
+      this.addBlurEventToButton();
       this.addNameToInputSearch();
+    }
+  }
+
+  public ngOnChanges(changes: SimpleChanges): void {
+    if (changes['ngClass']) {
+      this.applyClassesToElement();
+    }
+  }
+
+  private addBlurEventToButton(): void {
+    const button = this._el.nativeElement.querySelector('button');
+    if (button && !this.buttonInitialized) {
+      this._renderer.listen(button, 'blur', (_) => {
+        this.selectionBlur.emit(true);
+      });
+      this.buttonInitialized = true;
+    }
+  }
+
+  private applyClassesToElement(): void {
+    const button = this._el.nativeElement.querySelector('button');
+    if (button) {
+      const currentClasses = button.getAttribute('class') || '';
+      const newClasses = this.ngClass.split(' ');
+      newClasses.forEach((className) => {
+        if (currentClasses.indexOf(className) === -1) {
+          this._renderer.addClass(button, className);
+        }
+      });
     }
   }
 

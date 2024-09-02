@@ -12,6 +12,7 @@ import { Subscription } from 'rxjs';
 import { IS_LOADING } from '../../../../shared/stores/loader/loader.selectors';
 import { START_LOADING } from '../../../../shared/stores/loader/loader.actions';
 import { LOGIN } from '../../../../shared/stores/auth/auth.actions';
+import { EMAIL_REGEX } from '../../../../shared/utils/regex.constants';
 
 @Component({
   selector: 'app-login',
@@ -32,7 +33,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     email: new FormControl<string>('', [
       Validators.required,
       Validators.maxLength(100),
-      Validators.pattern('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+$'),
+      Validators.pattern(EMAIL_REGEX),
     ]),
     password: new FormControl<string>('', [Validators.required]),
   });

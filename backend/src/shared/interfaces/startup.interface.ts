@@ -1,10 +1,10 @@
 export interface ICustomStartupVariable {
   name: string;
-  docker_env?: string;
+  dockerEnvironment?: string;
   value?: string;
   show: boolean;
   editable: boolean;
-  default_value: string;
+  defaultValue: string;
 }
 
 export interface IRequiredStartupVariable {

@@ -10,7 +10,11 @@ import {
 } from '../interfaces/startup.interface';
 import { IProvidedMachinesForPlan } from '../interfaces/plan.interface';
 import { HostBy } from '../enums/game.enum';
-import { UNSIGNED_INTEGER_REGEX, UUID_V4_REGEX } from './regex.constants';
+import {
+  STARTUP_DOCKER_ENVIRONMENT_NAME_REGEX,
+  UNSIGNED_INTEGER_REGEX,
+  UUID_V4_REGEX,
+} from './regex.constants';
 
 const handleHttpException = (
   err: unknown,
@@ -577,6 +581,14 @@ function validateProvidedCustomStartupVariables(
       );
     }
 
+    if (!Array.isArray(_customStartupVariables)) {
+      functions.throwHttpException(
+        false,
+        'The startup variables are not provided in a valid JSON format.',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
     if (_customStartupVariables.length > 10) {
       functions.throwHttpException(
         false,
@@ -618,7 +630,7 @@ function validateProvidedCustomStartupVariables(
         );
       }
 
-      if (!item?.default_value) {
+      if (!item?.defaultValue) {
         functions.throwHttpException(
           false,
           'The default value field must not be empty.',
@@ -626,7 +638,7 @@ function validateProvidedCustomStartupVariables(
         );
       }
 
-      if (item?.default_value?.length > 40) {
+      if (item?.defaultValue?.length > 40) {
         functions.throwHttpException(
           false,
           'The default value field must be at most 40 characters long.',
@@ -637,15 +649,23 @@ function validateProvidedCustomStartupVariables(
       if (!('docker_env' in item)) {
         functions.throwHttpException(
           false,
-          'The docker env field must be present.',
+          'The docker environment field must be present.',
           HttpStatus.BAD_REQUEST,
         );
       }
 
-      if (item?.docker_env?.length > 40) {
+      if (item?.dockerEnvironment?.length > 40) {
         functions.throwHttpException(
           false,
-          'The docker env field must be at most 40 characters long.',
+          'The Docker environment field must be at most 40 characters long.',
+          HttpStatus.BAD_REQUEST,
+        );
+      }
+
+      if (!STARTUP_DOCKER_ENVIRONMENT_NAME_REGEX.test(item?.name.toString())) {
+        functions.throwHttpException(
+          false,
+          'The Docker environment name must contain lowercase letters, uppercase letters, and underscores (_).',
           HttpStatus.BAD_REQUEST,
         );
       }
@@ -682,7 +702,7 @@ function replaceCustomStartupVariables(
   variables: ICustomStartupVariable[],
 ): string {
   variables.forEach((variable) => {
-    const regex = new RegExp(`\\$\\{${variable.docker_env}\\}`, 'g');
+    const regex = new RegExp(`\\$\\{${variable.dockerEnvironment}\\}`, 'g');
     command = command.replace(regex, variable.value);
   });
 

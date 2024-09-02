@@ -36,6 +36,8 @@ export class ModService {
 
       functions.validateProvidedCustomStartupVariables(body.startupVariables);
 
+      functions.throwHttpException(false, 'Test mode.', HttpStatus.CONFLICT);
+
       let mod = await this._modRepo.findOne({
         where: [
           {

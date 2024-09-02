@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { ModAddComponent } from './pages/add/mod-add.component';
+import { getGamesResolver } from '../../shared/resolvers/get-games.resolver';
 
 const routes: Routes = [
   {
@@ -16,6 +17,9 @@ const routes: Routes = [
         path: 'add',
         component: ModAddComponent,
         pathMatch: 'full',
+        resolve: {
+          games: getGamesResolver,
+        },
       },
       // {
       //   path: 'edit/:planId',

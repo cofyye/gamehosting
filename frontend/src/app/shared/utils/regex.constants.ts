@@ -1,6 +1,8 @@
 export const UNSIGNED_INTEGER_REGEX = /^[0-9]+$/;
 export const SIGNED_INTEGER_REGEX = /^-?\d*\.?\d*$/;
 export const ALPHABETS_AND_SPACE_REGEX = /^[a-zA-Z ]+$/;
+export const DOCKER_IMAGE_REGEX = /^[a-z0-9_-]+([_-]?[a-z0-9]+)*$/;
+export const STARTUP_DOCKER_ENVIRONMENT_NAME_REGEX = /^[a-zA-Z_]+$/;
 export const USERNAME_REGEX = /^[a-z0-9._]+([._]?[a-z0-9]+)*$/;
 export const PASSWORD_LOWERCASE_REGEX = /[a-z]/;
 export const PASSWORD_UPPERCASE_REGEX = /[A-Z]/;

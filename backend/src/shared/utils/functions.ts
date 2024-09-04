@@ -1,5 +1,4 @@
 import { HttpException, HttpStatus } from '@nestjs/common';
-
 import {
   IDataSendResponse,
   ISendResponse,
@@ -487,7 +486,7 @@ function validateProvidedMachinesForPlan(
   machines: string,
 ): IProvidedMachinesForPlan[] {
   try {
-    const _machines = JSON.parse(machines) as IProvidedMachinesForPlan[];
+    let _machines = JSON.parse(machines) as IProvidedMachinesForPlan[];
 
     if (_machines.length < 1) {
       functions.throwHttpException(
@@ -569,7 +568,7 @@ function validateProvidedCustomStartupVariables(
   startupVariables: string,
 ): ICustomStartupVariable[] {
   try {
-    const _customStartupVariables = JSON.parse(
+    let _customStartupVariables = JSON.parse(
       startupVariables,
     ) as ICustomStartupVariable[];
 
@@ -597,24 +596,48 @@ function validateProvidedCustomStartupVariables(
       );
     }
 
+    _customStartupVariables = trimArrayObject<ICustomStartupVariable>(
+      _customStartupVariables,
+    );
+
+    if (
+      !hasUniqueFields(_customStartupVariables, ['name', 'dockerEnvironment'])
+    ) {
+      functions.throwHttpException(
+        false,
+        'The fields name and Docker environment within the startup variable object must be unique.',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
     _customStartupVariables.forEach((item) => {
-      if (!item?.name) {
+      if (
+        !('name' in item) ||
+        !item.name ||
+        item.name === '' ||
+        item.name.length < 1
+      ) {
         functions.throwHttpException(
           false,
-          'The name field must not be empty.',
+          'The startup variable name field must not be empty.',
           HttpStatus.BAD_REQUEST,
         );
       }
 
-      if (item?.name?.length > 40) {
+      if (item.name.length > 40) {
         functions.throwHttpException(
           false,
-          'The name field must be at most 40 characters long.',
+          'The startup variable name field must be at most 40 characters long.',
           HttpStatus.BAD_REQUEST,
         );
       }
 
-      if (!item?.value) {
+      if (
+        !('value' in item) ||
+        !item.value ||
+        item.value === '' ||
+        item.value.length < 1
+      ) {
         functions.throwHttpException(
           false,
           'The value field must not be empty.',
@@ -622,7 +645,7 @@ function validateProvidedCustomStartupVariables(
         );
       }
 
-      if (item?.value?.length > 40) {
+      if (item.value.length > 40) {
         functions.throwHttpException(
           false,
           'The value field must be at most 40 characters long.',
@@ -630,7 +653,12 @@ function validateProvidedCustomStartupVariables(
         );
       }
 
-      if (!item?.defaultValue) {
+      if (
+        !('defaultValue' in item) ||
+        !item.defaultValue ||
+        item.defaultValue === '' ||
+        item.defaultValue.length < 1
+      ) {
         functions.throwHttpException(
           false,
           'The default value field must not be empty.',
@@ -638,7 +666,7 @@ function validateProvidedCustomStartupVariables(
         );
       }
 
-      if (item?.defaultValue?.length > 40) {
+      if (item.defaultValue.length > 40) {
         functions.throwHttpException(
           false,
           'The default value field must be at most 40 characters long.',
@@ -646,15 +674,20 @@ function validateProvidedCustomStartupVariables(
         );
       }
 
-      if (!('docker_env' in item)) {
+      if (
+        !('dockerEnvironment' in item) ||
+        !item.dockerEnvironment ||
+        item.dockerEnvironment === '' ||
+        item.dockerEnvironment.length < 1
+      ) {
         functions.throwHttpException(
           false,
-          'The docker environment field must be present.',
+          'The Docker environment field must not be empty.',
           HttpStatus.BAD_REQUEST,
         );
       }
 
-      if (item?.dockerEnvironment?.length > 40) {
+      if (item.dockerEnvironment.length > 40) {
         functions.throwHttpException(
           false,
           'The Docker environment field must be at most 40 characters long.',
@@ -662,7 +695,7 @@ function validateProvidedCustomStartupVariables(
         );
       }
 
-      if (!STARTUP_DOCKER_ENVIRONMENT_NAME_REGEX.test(item?.name.toString())) {
+      if (!STARTUP_DOCKER_ENVIRONMENT_NAME_REGEX.test(item.name.toString())) {
         functions.throwHttpException(
           false,
           'The Docker environment name must contain lowercase letters, uppercase letters, and underscores (_).',
@@ -670,7 +703,7 @@ function validateProvidedCustomStartupVariables(
         );
       }
 
-      if (!item?.show) {
+      if (!('show' in item) || typeof item.show !== 'boolean') {
         functions.throwHttpException(
           false,
           'The show field must not be empty.',
@@ -678,7 +711,7 @@ function validateProvidedCustomStartupVariables(
         );
       }
 
-      if (!item?.editable) {
+      if (!('editable' in item) || typeof item.editable !== 'boolean') {
         functions.throwHttpException(
           false,
           'The editable field must not be empty.',
@@ -802,6 +835,42 @@ function checkParametersForGameHostType(
   }
 }
 
+function trimArrayObject<T extends object>(arr: T[]): T[] {
+  return arr.map((item) => {
+    return Object.fromEntries(
+      Object.entries(item).map(([key, value]) => [
+        key,
+        typeof value === 'string' ? value.trim() : value,
+      ]),
+    ) as T;
+  });
+}
+
+function hasUniqueFields<T extends object>(
+  arr: T[],
+  fields: (keyof T)[],
+): boolean {
+  for (const field of fields) {
+    const valuesSet = new Set<string>();
+
+    for (const item of arr) {
+      const value = item[field];
+
+      if (value !== undefined && value !== null) {
+        const valueStr = value.toString().toLowerCase();
+
+        if (valuesSet.has(valueStr)) {
+          return false;
+        }
+
+        valuesSet.add(valueStr);
+      }
+    }
+  }
+
+  return true;
+}
+
 export const functions = {
   handleHttpException,
   throwHttpException,
@@ -819,4 +888,6 @@ export const functions = {
   getCompleteReplacedDockerCommand,
   checkRequiredStartupCommandParameters,
   checkParametersForGameHostType,
+  trimArrayObject,
+  hasUniqueFields,
 };

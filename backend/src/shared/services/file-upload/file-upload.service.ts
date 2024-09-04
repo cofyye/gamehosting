@@ -154,7 +154,7 @@ export class FileUploadService {
         if (docker.name !== 'Dockerfile.zip') {
           functions.throwHttpException(
             false,
-            'The file name must be Dockerfile.zip.',
+            'The file name must be Dockerfile.zip',
             HttpStatus.BAD_REQUEST,
           );
         }

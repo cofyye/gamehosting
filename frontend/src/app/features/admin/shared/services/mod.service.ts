@@ -14,9 +14,19 @@ export class ModService {
   constructor(private readonly _httpClient: HttpClient) {}
 
   public addMod(data: IModAddRequest): Observable<IAcceptResponse> {
+    const formData: FormData = new FormData();
+
+    formData.append('gameId', data.gameId);
+    formData.append('modName', data.modName);
+    formData.append('dockerImage', data.dockerImage);
+    formData.append('description', data.description);
+    formData.append('dockerFile', data.dockerFile);
+    formData.append('startupCommand', data.startupCommand);
+    formData.append('startupVariables', data.startupVariables);
+
     return this._httpClient.post<IAcceptResponse>(
       `${environment.API_URL}/admin/mod`,
-      data
+      formData
     );
   }
 

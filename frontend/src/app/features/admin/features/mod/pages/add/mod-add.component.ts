@@ -29,6 +29,8 @@ import {
   STARTUP_DOCKER_ENVIRONMENT_NAME_REGEX,
 } from '../../../../../../shared/utils/regex.constants';
 import { IStartupVariable } from '../../../../../../shared/models/mod.model';
+import { IModAddRequest } from '../../../../shared/models/mod-request.model';
+import { ADD_MOD } from '../../../../shared/stores/mod/mod.actions';
 
 @Component({
   selector: 'app-mod-add',
@@ -41,9 +43,7 @@ export class ModAddComponent implements OnInit, OnDestroy {
   private routeSub!: Subscription;
   public isLoadingModAdd: boolean = false;
   public games: IGameResponse[] = [];
-  public selectedGame: IGameResponse | null = null;
   public startupVariables: IStartupVariable[] = [];
-  // public machinesPlansRequest: IMachinePlanRequest[] = [];
   public dockerFile: string | null = null;
 
   constructor(
@@ -96,8 +96,8 @@ export class ModAddComponent implements OnInit, OnDestroy {
       Validators.maxLength(40),
       Validators.pattern(STARTUP_DOCKER_ENVIRONMENT_NAME_REGEX),
     ]),
-    show: new FormControl<string>('true', [Validators.required]),
-    editable: new FormControl<string>('true', [Validators.required]),
+    show: new FormControl<boolean>(true, [Validators.required]),
+    editable: new FormControl<boolean>(true, [Validators.required]),
   });
 
   public ngOnInit(): void {
@@ -154,27 +154,34 @@ export class ModAddComponent implements OnInit, OnDestroy {
     // if (this.planAddFormHasErrors()) {
     //   return;
     // }
-    // const data: IPlanAddRequest = {
-    //   gameId: this.planAddForm.get('gameId')?.value,
-    //   name: this.planAddForm.get('name')?.value,
-    //   price: this.planAddForm.get('price')?.value,
-    //   description: this.planAddForm.get('description')?.value,
-    //   machines: this.planAddForm.get('machines')?.value,
-    // };
-    // this._store.dispatch(START_LOADING({ key: 'ADD_PLAN_BTN' }));
-    // this._store.dispatch(ADD_PLAN({ payload: data }));
+
+    this.modAddForm.patchValue({
+      startupVariables: JSON.stringify(this.startupVariables),
+    });
+
+    const data: IModAddRequest = {
+      gameId: this.modAddForm.get('gameId')?.value,
+      modName: this.modAddForm.get('modName')?.value,
+      dockerImage: this.modAddForm.get('dockerImage')?.value,
+      description: this.modAddForm.get('description')?.value,
+      dockerFile: this.modAddForm.get('dockerFile')?.value,
+      startupCommand: this.modAddForm.get('startupCommand')?.value,
+      startupVariables: this.modAddForm.get('startupVariables')?.value,
+    };
+
+    this._store.dispatch(START_LOADING({ key: 'ADD_MOD_BTN' }));
+    this._store.dispatch(ADD_MOD({ payload: data }));
   }
 
   public onResetMod(): void {
-    // this.resetSelectGame();
-    // this.resetMachinePlan();
-    // this.planAddForm.reset();
-    // this.planAddForm.patchValue({
-    //   cpuCount: 1,
-    // });
-    // this.selectedGame = null;
-    // this.machinesPlans = [];
-    // this.machinesPlansRequest = [];
+    this.resetSelectGame();
+    this.modAddForm.reset();
+    this.addStartupVariableForm.reset();
+    this.addStartupVariableForm.patchValue({
+      show: 'true',
+      editable: 'true',
+    });
+    this.startupVariables = [];
   }
 
   public onSelectGame(event: Event) {
@@ -184,48 +191,67 @@ export class ModAddComponent implements OnInit, OnDestroy {
     });
   }
 
-  // public onSelectMachine(event: Event) {
-  //   const selectEl = event.target as HTMLSelectElement;
-  //   this.planAddForm.patchValue({
-  //     addMachinePlan: {
-  //       machineId: selectEl.value,
-  //       machineName: this._el.nativeElement
-  //         .querySelector(`option[id='${selectEl.value}'`)
-  //         ?.textContent?.trim(),
-  //     },
-  //   });
-  // }
   public generateGameSelectOption(game: IGameResponse): string {
     return JSON.stringify({
       icon: `<img class="shrink-0 size-5 rounded-md" src="${environment.API_URL}/assets/games/${game.tag}.png" alt="${game.name}" />`,
     });
   }
-  // private resetSelectGame(): void {
-  //   const gameDataIcon = this._el.nativeElement.querySelector(
-  //     'button[id="game-plan-btn"] > [data-icon]'
-  //   );
-  //   const gameDataTitle = this._el.nativeElement.querySelector(
-  //     'button[id="game-plan-btn"] > [data-title]'
-  //   );
-  //   const selectedGame = this._el.nativeElement.querySelector(
-  //     'div.data-game-plan > div.selected'
-  //   );
-  //   if (gameDataIcon) {
-  //     this._renderer.addClass(gameDataIcon, 'hidden');
-  //     this._renderer.setProperty(gameDataIcon, 'innerHTML', 'null');
-  //   }
-  //   if (gameDataTitle) {
-  //     this._renderer.setProperty(
-  //       gameDataTitle,
-  //       'innerHTML',
-  //       'Select game plan...'
-  //     );
-  //   }
-  //   if (selectedGame) {
-  //     this._renderer.removeClass(selectedGame, 'selected');
-  //   }
-  //   this.selectedGame = null;
-  // }
+
+  private resetSelectGame(): void {
+    const gameDataIcon = this._el.nativeElement.querySelector(
+      'button[id="mod-game-btn"] > [data-icon]'
+    );
+    const gameDataTitle = this._el.nativeElement.querySelector(
+      'button[id="mod-game-btn"] > [data-title]'
+    );
+    const selectedGame = this._el.nativeElement.querySelector(
+      'div.data-mod-game > div.selected'
+    );
+    if (gameDataIcon) {
+      this._renderer.addClass(gameDataIcon, 'hidden');
+      this._renderer.setProperty(gameDataIcon, 'innerHTML', 'null');
+    }
+    if (gameDataTitle) {
+      this._renderer.setProperty(
+        gameDataTitle,
+        'innerHTML',
+        'Select game for mod...'
+      );
+    }
+    if (selectedGame) {
+      this._renderer.removeClass(selectedGame, 'selected');
+    }
+  }
+
+  public onAddStartupVariable(): void {
+    const data: IStartupVariable = {
+      name: this.addStartupVariableForm.get('name')?.value,
+      value: this.addStartupVariableForm.get('value')?.value,
+      defaultValue: this.addStartupVariableForm.get('defaultValue')?.value,
+      dockerEnvironment:
+        this.addStartupVariableForm.get('dockerEnvironment')?.value,
+      show: this.addStartupVariableForm.get('show')?.value,
+      editable: this.addStartupVariableForm.get('editable')?.value,
+    };
+
+    this.startupVariables.push(data);
+  }
+
+  public onDeleteStartupVariable(name: string): void {
+    const index = this.startupVariables.findIndex(
+      (variable) => variable.name === name
+    );
+
+    if (index === -1) {
+      this._toaster.error(
+        'This startup variable does not exist, deletion aborted.',
+        'Error'
+      );
+    }
+
+    this.startupVariables.splice(index, 1);
+  }
+
   // private resetMachinePlan(): void {
   //   const machinePlanDataTitle = this._el.nativeElement.querySelector(
   //     'button[id="machine-plan-btn"] > [data-title]'

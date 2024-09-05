@@ -614,6 +614,7 @@ function validateProvidedCustomStartupVariables(
       if (
         !('name' in item) ||
         !item.name ||
+        typeof item.name !== 'string' ||
         item.name === '' ||
         item.name.length < 1
       ) {
@@ -635,6 +636,7 @@ function validateProvidedCustomStartupVariables(
       if (
         !('value' in item) ||
         !item.value ||
+        typeof item.value !== 'string' ||
         item.value === '' ||
         item.value.length < 1
       ) {
@@ -656,6 +658,7 @@ function validateProvidedCustomStartupVariables(
       if (
         !('defaultValue' in item) ||
         !item.defaultValue ||
+        typeof item.defaultValue !== 'string' ||
         item.defaultValue === '' ||
         item.defaultValue.length < 1
       ) {
@@ -677,6 +680,7 @@ function validateProvidedCustomStartupVariables(
       if (
         !('dockerEnvironment' in item) ||
         !item.dockerEnvironment ||
+        typeof item.dockerEnvironment !== 'string' ||
         item.dockerEnvironment === '' ||
         item.dockerEnvironment.length < 1
       ) {

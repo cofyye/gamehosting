@@ -19,8 +19,6 @@ import { START_LOADING } from '../../../../../../shared/stores/loader/loader.act
 import { environment } from '../../../../../../../environments/environment';
 import { SELECT_HTTP_RESPONSE } from '../../../../../../shared/stores/http/http.selectors';
 import { uuidValidator } from '../../../../../../shared/validators/uuid.validator';
-import { isUnsignedIntValidator } from '../../../../../../shared/validators/unsigned-integer.validator';
-import { unsignedNumericValidator } from '../../../../../../shared/validators/unsigned-numeric.validator';
 import { ActivatedRoute } from '@angular/router';
 import { IGameResponse } from '../../../../shared/models/game-response.model';
 import { ToasterService } from '../../../../../../shared/services/toaster.service';
@@ -178,10 +176,18 @@ export class ModAddComponent implements OnInit, OnDestroy {
     this.modAddForm.reset();
     this.addStartupVariableForm.reset();
     this.addStartupVariableForm.patchValue({
-      show: 'true',
-      editable: 'true',
+      show: true,
+      editable: true,
     });
     this.startupVariables = [];
+  }
+
+  public onResetStartupVariable(): void {
+    this.addStartupVariableForm.reset();
+    this.addStartupVariableForm.patchValue({
+      show: true,
+      editable: true,
+    });
   }
 
   public onSelectGame(event: Event) {
@@ -224,6 +230,19 @@ export class ModAddComponent implements OnInit, OnDestroy {
   }
 
   public onAddStartupVariable(): void {
+    if (this.startupVariables.length > 10) {
+      this._toaster.error(
+        'You can select up to 10 startup variables.',
+        'Error'
+      );
+
+      return;
+    }
+
+    if (this.startupVariableAddFormHasErrors()) {
+      return;
+    }
+
     const data: IStartupVariable = {
       name: this.addStartupVariableForm.get('name')?.value,
       value: this.addStartupVariableForm.get('value')?.value,
@@ -235,6 +254,104 @@ export class ModAddComponent implements OnInit, OnDestroy {
     };
 
     this.startupVariables.push(data);
+    this.onResetStartupVariable();
+
+    this._toaster.success(
+      'You have successfully added the startup variable.',
+      'Success'
+    );
+  }
+
+  public startupVariableAddFormHasErrors(): boolean {
+    // Name Errors
+    if (this.addStartupVariableForm.get('name')?.errors?.['required']) {
+      this._toaster.error(
+        'The startup variable name field must not be empty.',
+        'Error'
+      );
+      return true;
+    }
+    if (this.addStartupVariableForm.get('name')?.errors?.['maxlength']) {
+      this._toaster.error(
+        'The startup variable name field must be at most 40 characters long.',
+        'Error'
+      );
+      return true;
+    }
+
+    // Value Errors
+    if (this.addStartupVariableForm.get('value')?.errors?.['required']) {
+      this._toaster.error('The value field must not be empty.', 'Error');
+      return true;
+    }
+    if (this.addStartupVariableForm.get('value')?.errors?.['maxlength']) {
+      this._toaster.error(
+        'The value field must be at most 40 characters long.',
+        'Error'
+      );
+      return true;
+    }
+
+    // Default Value Errors
+    if (this.addStartupVariableForm.get('defaultValue')?.errors?.['required']) {
+      this._toaster.error(
+        'The default value field must not be empty.',
+        'Error'
+      );
+      return true;
+    }
+    if (this.addStartupVariableForm.get('value')?.errors?.['maxlength']) {
+      this._toaster.error(
+        'The default value field must be at most 40 characters long.',
+        'Error'
+      );
+      return true;
+    }
+
+    // Docker Environment Errors
+    if (
+      this.addStartupVariableForm.get('dockerEnvironment')?.errors?.['required']
+    ) {
+      this._toaster.error(
+        'The Docker environment field must not be empty.',
+        'Error'
+      );
+      return true;
+    }
+    if (
+      this.addStartupVariableForm.get('dockerEnvironment')?.errors?.[
+        'maxlength'
+      ]
+    ) {
+      this._toaster.error(
+        'The Docker environment field must be at most 40 characters long.',
+        'Error'
+      );
+      return true;
+    }
+    if (
+      this.addStartupVariableForm.get('dockerEnvironment')?.errors?.['pattern']
+    ) {
+      this._toaster.error(
+        'The Docker environment name must contain lowercase letters, uppercase letters, and underscores (_).',
+        'Error'
+      );
+      return true;
+    }
+
+    // Show Errors
+    if (this.addStartupVariableForm.get('show')?.errors?.['required']) {
+      this._toaster.error('The show field must not be empty.', 'Error');
+      return true;
+    }
+
+    // Editable Errors
+    if (this.addStartupVariableForm.get('editable')?.errors?.['required']) {
+      this._toaster.error('The editable field must not be empty.', 'Error');
+      return true;
+    }
+
+    return false;
   }
 
   public onDeleteStartupVariable(name: string): void {

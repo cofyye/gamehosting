@@ -412,6 +412,7 @@
               class="size-8 inline-flex justify-center items-center gap-x-2 rounded-full border border-transparent bg-gray-100 text-gray-800 hover:bg-gray-200 focus:outline-none focus:bg-gray-200 disabled:opacity-50 disabled:pointer-events-none"
               aria-label="Close"
               data-hs-overlay="#hs-scale-animation-modal"
+              (click)="onResetStartupVariable()"
             >
               <span class="sr-only">Close</span>
               <svg
@@ -530,10 +531,10 @@
                       >
                         <input
                           type="radio"
-                          name="hs-radio-in-show"
                           class="shrink-0 mt-0.5 border-gray-200 rounded-full text-blue-600 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
                           id="hs-radio-in-show"
-                          checked
+                          formControlName="show"
+                          [value]="true"
                         />
                         <span class="text-sm text-gray-500 ms-3">True</span>
                       </label>
@@ -544,9 +545,10 @@
                       >
                         <input
                           type="radio"
-                          name="hs-radio-in-show"
                           class="shrink-0 mt-0.5 border-gray-200 rounded-full text-blue-600 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
                           id="hs-radio-checked-in-show"
+                          formControlName="show"
+                          [value]="false"
                         />
                         <span class="text-sm text-gray-500 ms-3">False</span>
                       </label>
@@ -568,10 +570,10 @@
                       >
                         <input
                           type="radio"
-                          name="hs-radio-in-editable"
                           class="shrink-0 mt-0.5 border-gray-200 rounded-full text-blue-600 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
                           id="hs-radio-in-editable"
-                          checked
+                          formControlName="editable"
+                          [value]="true"
                         />
                         <span class="text-sm text-gray-500 ms-3">True</span>
                       </label>
@@ -582,9 +584,10 @@
                       >
                         <input
                           type="radio"
-                          name="hs-radio-in-editable"
                           class="shrink-0 mt-0.5 border-gray-200 rounded-full text-blue-600 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
                           id="hs-radio-checked-in-editable"
+                          formControlName="editable"
+                          [value]="false"
                         />
                         <span class="text-sm text-gray-500 ms-3">False</span>
                       </label>
@@ -601,6 +604,7 @@
               type="button"
               class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 focus:outline-none focus:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none"
               data-hs-overlay="#hs-scale-animation-modal"
+              (click)="onResetStartupVariable()"
             >
               Close
             </button>

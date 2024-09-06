@@ -107,7 +107,11 @@ export class ModService {
 
   public async getMods(): Promise<ModEntity[]> {
     try {
-      return await this._modRepo.find();
+      return await this._modRepo.find({
+        relations: {
+          game: true,
+        },
+      });
     } catch (err) {
       functions.handleHttpException(
         err,

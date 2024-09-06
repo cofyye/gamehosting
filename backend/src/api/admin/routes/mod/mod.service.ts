@@ -36,8 +36,6 @@ export class ModService {
 
       functions.validateProvidedCustomStartupVariables(body.startupVariables);
 
-      functions.throwHttpException(false, 'Test mode.', HttpStatus.CONFLICT);
-
       let mod = await this._modRepo.findOne({
         where: [
           {
@@ -67,7 +65,7 @@ export class ModService {
 
       functions.checkRequiredStartupCommandParameters(
         game.hostBy,
-        mod.startupCommand,
+        body.startupCommand,
       );
 
       mod = new ModEntity();

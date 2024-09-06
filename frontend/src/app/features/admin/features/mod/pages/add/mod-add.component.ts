@@ -71,7 +71,7 @@ export class ModAddComponent implements OnInit, OnDestroy {
       Validators.minLength(10),
       Validators.maxLength(2500),
     ]),
-    dockerFile: new FormControl<File | null>(null, []),
+    dockerFile: new FormControl<File | null>(null, [Validators.required]),
     startupCommand: new FormControl<string>('', [Validators.required]),
     startupVariables: new FormControl<string>('', [Validators.required]),
   });
@@ -146,16 +146,13 @@ export class ModAddComponent implements OnInit, OnDestroy {
   }
 
   public onAddMod(): void {
-    // this.planAddForm.patchValue({
-    //   machines: JSON.stringify(this.machinesPlansRequest),
-    // });
-    // if (this.planAddFormHasErrors()) {
-    //   return;
-    // }
-
     this.modAddForm.patchValue({
       startupVariables: JSON.stringify(this.startupVariables),
     });
+
+    if (this.modAddFormHasErrors()) {
+      return;
+    }
 
     const data: IModAddRequest = {
       gameId: this.modAddForm.get('gameId')?.value,
@@ -300,7 +297,9 @@ export class ModAddComponent implements OnInit, OnDestroy {
       );
       return true;
     }
-    if (this.addStartupVariableForm.get('value')?.errors?.['maxlength']) {
+    if (
+      this.addStartupVariableForm.get('defaultValue')?.errors?.['maxlength']
+    ) {
       this._toaster.error(
         'The default value field must be at most 40 characters long.',
         'Error'
@@ -351,6 +350,139 @@ export class ModAddComponent implements OnInit, OnDestroy {
       return true;
     }
 
+    // Custom Errors
+    const name = this.addStartupVariableForm.get('name')?.value;
+    const dockerEnvironment =
+      this.addStartupVariableForm.get('dockerEnvironment')?.value;
+
+    if (
+      this.startupVariables.findIndex((item) => item.name === name) !== -1 ||
+      this.startupVariables.findIndex(
+        (item) => item.dockerEnvironment === dockerEnvironment
+      ) !== -1
+    ) {
+      this._toaster.error(
+        'The fields name and Docker environment within the startup variable object must be unique.',
+        'Error'
+      );
+      return true;
+    }
+
+    return false;
+  }
+
+  public modAddFormHasErrors(): boolean {
+    // Game ID Errors
+    if (this.modAddForm.get('gameId')?.errors?.['required']) {
+      this._toaster.error('The game ID field must not be empty.', 'Error');
+      return true;
+    }
+    if (this.modAddForm.get('gameId')?.errors?.['invalidUuid']) {
+      this._toaster.error('The game ID is not valid.', 'Error');
+      return true;
+    }
+
+    // Mod Name Errors
+    if (this.modAddForm.get('modName')?.errors?.['required']) {
+      this._toaster.error('The mod name field must not be empty.', 'Error');
+      return true;
+    }
+    if (this.modAddForm.get('modName')?.errors?.['minlength']) {
+      this._toaster.error(
+        'The mod name must contain at least 2 characters.',
+        'Error'
+      );
+      return true;
+    }
+    if (this.modAddForm.get('modName')?.errors?.['maxlength']) {
+      this._toaster.error(
+        'The mod name must contain a maximum of 40 characters.',
+        'Error'
+      );
+      return true;
+    }
+
+    // Docker Image Errors
+    if (this.modAddForm.get('dockerImage')?.errors?.['required']) {
+      this._toaster.error('The docker image field must not be empty.', 'Error');
+      return true;
+    }
+    if (this.modAddForm.get('dockerImage')?.errors?.['minlength']) {
+      this._toaster.error(
+        'The docker image must contain at least 2 characters.',
+        'Error'
+      );
+      return true;
+    }
+    if (this.modAddForm.get('dockerImage')?.errors?.['maxlength']) {
+      this._toaster.error(
+        'The docker image must contain a maximum of 40 characters.',
+        'Error'
+      );
+      return true;
+    }
+    if (this.modAddForm.get('dockerImage')?.errors?.['pattern']) {
+      this._toaster.error(
+        'Allowed characters for the Docker image are: a-z (lowercase only), 0-9, - (hyphen), and _ (underscore).',
+        'Error'
+      );
+      return true;
+    }
+
+    // Description Errors
+    if (this.modAddForm.get('description')?.errors?.['required']) {
+      this._toaster.error('The description field must not be empty.', 'Error');
+      return true;
+    }
+    if (this.modAddForm.get('description')?.errors?.['minlength']) {
+      this._toaster.error(
+        'The description must contain at least 10 characters.',
+        'Error'
+      );
+      return true;
+    }
+    if (this.modAddForm.get('description')?.errors?.['maxlength']) {
+      this._toaster.error(
+        'The description must contain a maximum of 2500 characters.',
+        'Error'
+      );
+      return true;
+    }
+
+    // Docker File Errors
+    if (this.modAddForm.get('dockerFile')?.errors?.['required']) {
+      this._toaster.error('The docker file field must not be empty.', 'Error');
+      return true;
+    }
+
+    // Startup Command Errors
+    if (this.modAddForm.get('startupCommand')?.errors?.['required']) {
+      this._toaster.error('The show field must not be empty.', 'Error');
+      return true;
+    }
+
+    // Startup Variables Errors
+    if (this.modAddForm.get('startupVariables')?.errors?.['required']) {
+      this._toaster.error('The editable field must not be empty.', 'Error');
+      return true;
+    }
+
+    // Custom Errors
+    const dockerFile = this.modAddForm.get('dockerFile')?.value as File;
+    if (dockerFile.name !== 'Dockerfile.zip') {
+      this._toaster.error('The file name must be Dockerfile.zip', 'Error');
+      return true;
+    }
+
+    if (this.startupVariables.length < 1) {
+      this._toaster.error(
+        'You must select at least one startup variable.',
+        'Error'
+      );
+
+      return true;
+    }
+
     return false;
   }
 
@@ -368,286 +500,4 @@ export class ModAddComponent implements OnInit, OnDestroy {
 
     this.startupVariables.splice(index, 1);
   }
-
-  // private resetMachinePlan(): void {
-  //   const machinePlanDataTitle = this._el.nativeElement.querySelector(
-  //     'button[id="machine-plan-btn"] > [data-title]'
-  //   );
-  //   const selectedMachine = this._el.nativeElement.querySelector(
-  //     'div.data-machine-plan > div.selected'
-  //   );
-  //   if (machinePlanDataTitle) {
-  //     this._renderer.setProperty(
-  //       machinePlanDataTitle,
-  //       'innerHTML',
-  //       'Select machine for plan...'
-  //     );
-  //   }
-  //   if (selectedMachine) {
-  //     this._renderer.removeClass(selectedMachine, 'selected');
-  //   }
-  //   this.planAddForm.get('addMachinePlan')?.reset();
-  // }
-  // public addMachinePlan(): void {
-  //   if (this.addMachinePlanHasErrors()) {
-  //     return;
-  //   }
-  //   this.machinesPlans.push(this.planAddForm.get('addMachinePlan')?.value);
-  //   this.machinesPlansRequest.push({
-  //     id: this.planAddForm.get('addMachinePlan.machineId')?.value,
-  //     maxServers: this.planAddForm.get('addMachinePlan.maxServers')?.value,
-  //   });
-  //   this.resetMachinePlan();
-  // }
-  // private addMachinePlanHasErrors(): boolean {
-  //   // MachineId Errors
-  //   if (
-  //     this.planAddForm.get('addMachinePlan.machineId')?.errors?.['required']
-  //   ) {
-  //     this._toaster.error(
-  //       'You must select a machine and enter the maximum number of servers for this plan.',
-  //       'Error'
-  //     );
-  //     return true;
-  //   }
-  //   if (
-  //     this.planAddForm.get('addMachinePlan.machineId')?.errors?.['invalidUuid']
-  //   ) {
-  //     this._toaster.error('The machine ID is not valid.', 'Error');
-  //     return true;
-  //   }
-  //   // Name Errors
-  //   if (
-  //     this.planAddForm.get('addMachinePlan.machineName')?.errors?.['required']
-  //   ) {
-  //     this._toaster.error('The machine name field must not be empty.', 'Error');
-  //     return true;
-  //   }
-  //   // MaxServers Errors
-  //   if (
-  //     this.planAddForm.get('addMachinePlan.maxServers')?.errors?.['required']
-  //   ) {
-  //     this._toaster.error(
-  //       'The machine maximum servers field must not be empty.',
-  //       'Error'
-  //     );
-  //     return true;
-  //   }
-  //   if (this.planAddForm.get('addMachinePlan.maxServers')?.errors?.['min']) {
-  //     this._toaster.error(
-  //       'The minimum value for the maximum servers must be 1.',
-  //       'Error'
-  //     );
-  //     return true;
-  //   }
-  //   if (this.planAddForm.get('addMachinePlan.maxServers')?.errors?.['max']) {
-  //     this._toaster.error(
-  //       'The maximum value for the maximum servers must be 65535.',
-  //       'Error'
-  //     );
-  //     return true;
-  //   }
-  //   if (
-  //     this.planAddForm.get('addMachinePlan.maxServers')?.errors?.[
-  //       'notUnsignedInteger'
-  //     ]
-  //   ) {
-  //     this._toaster.error(
-  //       'The maximum servers must be in numeric format.',
-  //       'Error'
-  //     );
-  //     return true;
-  //   }
-  //   // Custom Errors
-  //   if (
-  //     this.machinesPlans.findIndex(
-  //       (mp) =>
-  //         mp.machineId ===
-  //         this.planAddForm.get('addMachinePlan.machineId')?.value
-  //     ) !== -1
-  //   ) {
-  //     this._toaster.error('You have already selected this machine.', 'Error');
-  //     return true;
-  //   }
-  //   return false;
-  // }
-  // private planAddFormHasErrors(): boolean {
-  //   // GameId Errors
-  //   if (this.planAddForm.get('gameId')?.errors?.['required']) {
-  //     this._toaster.error('The game ID field must not be empty.', 'Error');
-  //     return true;
-  //   }
-  //   if (this.planAddForm.get('gameId')?.errors?.['invalidUuid']) {
-  //     this._toaster.error('The game ID is not valid.', 'Error');
-  //     return true;
-  //   }
-  //   // Name Errors
-  //   if (this.planAddForm.get('name')?.errors?.['required']) {
-  //     this._toaster.error('The name field must not be empty.', 'Error');
-  //     return true;
-  //   }
-  //   if (this.planAddForm.get('name')?.errors?.['minlength']) {
-  //     this._toaster.error(
-  //       'The name must contain at least 2 characters.',
-  //       'Error'
-  //     );
-  //     return true;
-  //   }
-  //   if (this.planAddForm.get('name')?.errors?.['maxlength']) {
-  //     this._toaster.error(
-  //       'The name must contain a maximum of 40 characters.',
-  //       'Error'
-  //     );
-  //     return true;
-  //   }
-  //   // Slot Errors
-  //   if (this.selectedGame?.hostBy === HostBy.SLOT) {
-  //     if (this.planAddForm.get('slot')?.errors?.['required']) {
-  //       this._toaster.error('The slot field must not be empty.', 'Error');
-  //       return true;
-  //     }
-  //     if (this.planAddForm.get('slot')?.errors?.['notUnsignedInteger']) {
-  //       this._toaster.error('The slot must be in numeric format.', 'Error');
-  //       return true;
-  //     }
-  //     if (this.planAddForm.get('slot')?.errors?.['min']) {
-  //       this._toaster.error(
-  //         'The minimum value for the slot must be 1.',
-  //         'Error'
-  //       );
-  //       return true;
-  //     }
-  //     if (this.planAddForm.get('slot')?.errors?.['max']) {
-  //       this._toaster.error(
-  //         'The maximum value for the slot must be 65535.',
-  //         'Error'
-  //       );
-  //       return true;
-  //     }
-  //   }
-  //   if (this.selectedGame?.hostBy === HostBy.CUSTOM_RESOURCES) {
-  //     // Ram Errors
-  //     if (this.planAddForm.get('ram')?.errors?.['required']) {
-  //       this._toaster.error('The ram field must not be empty.', 'Error');
-  //       return true;
-  //     }
-  //     if (this.planAddForm.get('ram')?.errors?.['notUnsignedInteger']) {
-  //       this._toaster.error('The ram must be in numeric format.', 'Error');
-  //       return true;
-  //     }
-  //     if (this.planAddForm.get('ram')?.errors?.['min']) {
-  //       this._toaster.error(
-  //         'The minimum value for the ram must be 512 MB in bytes.',
-  //         'Error'
-  //       );
-  //       return true;
-  //     }
-  //     if (this.planAddForm.get('ram')?.errors?.['max']) {
-  //       this._toaster.error(
-  //         'The maximum value for the ram must be 10 TB in bytes.',
-  //         'Error'
-  //       );
-  //       return true;
-  //     }
-  //     // CPUs Count Errors
-  //     if (this.planAddForm.get('cpuCount')?.errors?.['required']) {
-  //       this._toaster.error('The CPU count field must not be empty.', 'Error');
-  //       return true;
-  //     }
-  //     if (this.planAddForm.get('cpuCount')?.errors?.['notUnsignedInteger']) {
-  //       this._toaster.error(
-  //         'The CPU count must be in numeric format.',
-  //         'Error'
-  //       );
-  //       return true;
-  //     }
-  //     if (this.planAddForm.get('cpuCount')?.errors?.['min']) {
-  //       this._toaster.error(
-  //         'The minimum value for the CPU count must be 1.',
-  //         'Error'
-  //       );
-  //       return true;
-  //     }
-  //     if (this.planAddForm.get('cpuCount')?.errors?.['max']) {
-  //       this._toaster.error(
-  //         'The maximum value for the CPU count must be 65535.',
-  //         'Error'
-  //       );
-  //       return true;
-  //     }
-  //   }
-  //   // Price Errors
-  //   if (this.planAddForm.get('price')?.errors?.['required']) {
-  //     this._toaster.error('The price field must not be empty.', 'Error');
-  //     return true;
-  //   }
-  //   if (this.planAddForm.get('price')?.errors?.['max']) {
-  //     this._toaster.error(
-  //       'The maximum value for the price must be 100000.',
-  //       'Error'
-  //     );
-  //     return true;
-  //   }
-  //   if (this.planAddForm.get('price')?.errors?.['notUnsignedNumeric']) {
-  //     this._toaster.error(
-  //       `The price must be a non-negative number with a maximum of 2 decimal places.`,
-  //       'Error'
-  //     );
-  //     return true;
-  //   }
-  //   // Description Errors
-  //   if (this.planAddForm.get('description')?.errors?.['required']) {
-  //     this._toaster.error('The description field must not be empty.', 'Error');
-  //     return true;
-  //   }
-  //   if (this.planAddForm.get('description')?.errors?.['minlength']) {
-  //     this._toaster.error(
-  //       'The description must contain at least 10 characters.',
-  //       'Error'
-  //     );
-  //     return true;
-  //   }
-  //   if (this.planAddForm.get('description')?.errors?.['maxlength']) {
-  //     this._toaster.error(
-  //       'The description must contain a maximum of 2500 characters.',
-  //       'Error'
-  //     );
-  //     return true;
-  //   }
-  //   // Machines Errors
-  //   if (this.planAddForm.get('machines')?.errors?.['required']) {
-  //     this._toaster.error(
-  //       'You must select a machine and enter the maximum number of servers for this plan.',
-  //       'Error'
-  //     );
-  //     return true;
-  //   }
-  //   // Custom Errors
-  //   try {
-  //     const machines: unknown[] = JSON.parse(
-  //       this.planAddForm.get('machines')?.value
-  //     );
-  //     if (!machines.length) {
-  //       this._toaster.error(
-  //         'You must select a machine and enter the maximum number of servers for this plan.',
-  //         'Error'
-  //       );
-  //       return true;
-  //     }
-  //     if (!Array.isArray(machines)) {
-  //       this._toaster.error(
-  //         'You must select a machine and enter the maximum number of servers for this plan.',
-  //         'Error'
-  //       );
-  //       return true;
-  //     }
-  //   } catch (err: unknown) {
-  //     this._toaster.error(
-  //       'You must select a machine and enter the maximum number of servers for this plan.',
-  //       'Error'
-  //     );
-  //     return true;
-  //   }
-  //   return false;
-  // }
 }

@@ -3,6 +3,6 @@ export interface IStartupVariable {
   value: string;
   defaultValue: string;
   dockerEnvironment: string;
-  show: string;
-  editable: string;
+  show: boolean;
+  editable: boolean;
 }

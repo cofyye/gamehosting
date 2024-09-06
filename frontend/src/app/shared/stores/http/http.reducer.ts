@@ -10,8 +10,8 @@ export const httpReducer = createReducer(
       [key]: {
         ...state.http[key],
         response: {
-          success: response.success,
-          message: response.message,
+          success: response.success ?? false,
+          message: response.message ?? 'Something went wrong.',
         },
       },
     },

@@ -12,19 +12,19 @@
               >
                 <div>
                   <h2 class="text-lg/[26px] font-semibold mb-0 text-gray-800">
-                    Plans
+                    Mods
                   </h2>
                   <p class="text-xs text-gray-600">
-                    Manage and view all products listed on the site.
+                    Manage and view all mods listed on the site.
                   </p>
                 </div>
                 <div>
                   <div class="inline-flex gap-x-2">
                     <a
                       class="py-2 px-3 inline-flex items-center gap-x-2 text-sm/[15px] font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none focus:outline-none focus:bg-gray-50"
-                      routerLink="/admin/plans/add"
+                      routerLink="/admin/mods/add"
                     >
-                      Add Plan
+                      Add Mods
                     </a>
                   </div>
                 </div>
@@ -92,7 +92,13 @@
                                 scope="col"
                                 class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase"
                               >
-                                Price
+                                Docker Image
+                              </th>
+                              <th
+                                scope="col"
+                                class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase"
+                              >
+                                Status
                               </th>
                               <th
                                 scope="col"
@@ -104,7 +110,7 @@
                           </thead>
 
                           <tbody class="bg-white divide-y divide-gray-200">
-                            <tr *ngIf="plans.length < 1">
+                            <tr *ngIf="mods.length < 1">
                               <td
                                 colspan="4"
                                 class="text-center px-6 py-4 whitespace-nowrap text-sm text-gray-800"
@@ -113,14 +119,14 @@
                               </td>
                             </tr>
                             <tr
-                              *ngFor="let plan of plans"
+                              *ngFor="let mod of mods"
                               class="odd:bg-white even:bg-gray-100"
                             >
                               <td
                                 data-label="Name"
                                 class="px-6 py-4 whitespace-nowrap text-sm text-gray-800"
                               >
-                                {{ plan.name }}
+                                {{ mod.modName }}
                               </td>
                               <td
                                 data-label="Game"
@@ -131,17 +137,32 @@
                                     class="size-5 shrink-0 rounded-md shadow-sm me-1"
                                     src="{{
                                       environment.API_URL
-                                    }}/assets/games/{{ plan.game?.tag }}.png"
-                                    alt="{{ plan.game?.name }}"
+                                    }}/assets/games/{{ mod.game?.tag }}.png"
+                                    alt="{{ mod.game?.name }}"
                                   />
-                                  {{ plan.game?.name }}
+                                  {{ mod.game?.name }}
                                 </div>
                               </td>
                               <td
-                                data-label="Price"
+                                data-label="Docker Image"
                                 class="px-6 py-4 whitespace-nowrap text-sm text-gray-800"
                               >
-                                {{ plan.price }} &euro;
+                                {{ mod.dockerImage }}
+                              </td>
+                              <td
+                                data-label="Status"
+                                class="px-6 py-4 whitespace-nowrap text-sm text-gray-800"
+                              >
+                                <span
+                                  *ngIf="mod.active"
+                                  class="inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-full text-xs font-semibold bg-teal-100 text-teal-800"
+                                  >Active</span
+                                >
+                                <span
+                                  *ngIf="!mod.active"
+                                  class="inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-full text-xs font-semibold bg-red-100 text-red-800"
+                                  >Inactive</span
+                                >
                               </td>
                               <td
                                 data-label="Actions"
@@ -149,7 +170,7 @@
                               >
                                 <div class="flex gap-2 justify-end">
                                   <button
-                                    routerLink="/admin/plans/edit/{{ plan.id }}"
+                                    routerLink="/admin/mods/edit/{{ mod.id }}"
                                     type="button"
                                     class="py-1.5 px-3 inline-flex items-center gap-x-2 text-xs font-semibold rounded-lg border border-transparent bg-yellow-500 text-white hover:bg-yellow-600 focus:outline-none focus:bg-yellow-600 disabled:opacity-50 disabled:pointer-events-none"
                                   >
@@ -162,7 +183,7 @@
                                     aria-expanded="false"
                                     aria-controls="hs-scale-animation-modal"
                                     data-hs-overlay="#hs-scale-animation-modal"
-                                    (click)="onSelectPlan(plan.id)"
+                                    (click)="onSelectMod(mod.id)"
                                   >
                                     Delete
                                   </button>
@@ -251,7 +272,7 @@
       <!-- End Card -->
     </div>
 
-    <!-- Delete Plan Modal -->
+    <!-- Delete Mod Modal -->
     <div
       id="hs-scale-animation-modal"
       class="hs-overlay hidden size-full fixed top-0 start-0 z-[80] overflow-x-hidden overflow-y-auto pointer-events-none"
@@ -270,14 +291,14 @@
               id="hs-scale-animation-modal-label"
               class="font-bold text-gray-800"
             >
-              Delete Plan
+              Delete Mod
             </h3>
             <button
               type="button"
               class="size-8 inline-flex justify-center items-center gap-x-2 rounded-full border border-transparent bg-gray-100 text-gray-800 hover:bg-gray-200 focus:outline-none focus:bg-gray-200 disabled:opacity-50 disabled:pointer-events-none"
               aria-label="Close"
               data-hs-overlay="#hs-scale-animation-modal"
-              (click)="onDeselectPlan()"
+              (click)="onDeselectMod()"
             >
               <span class="sr-only">Close</span>
               <svg
@@ -299,14 +320,14 @@
           </div>
           <div class="p-4 overflow-y-auto">
             <p class="mt-1 text-gray-800">
-              Are you sure want delete {{ selectedPlan?.name }} plan?
+              Are you sure want delete {{ selectedMod?.modName }} mod?
             </p>
           </div>
           <div class="flex justify-end items-center gap-x-2 py-3 px-4 border-t">
             <button
               class="hidden"
               data-hs-overlay="#hs-scale-animation-modal"
-              #deletePlanAlertCloseButton
+              #deleteModAlertCloseButton
             >
               close alert
             </button>
@@ -314,24 +335,24 @@
               type="button"
               class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 focus:outline-none focus:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none"
               data-hs-overlay="#hs-scale-animation-modal"
-              (click)="onDeselectPlan()"
+              (click)="onDeselectMod()"
             >
               Close
             </button>
             <button
               type="button"
               class="py-2 px-3 inline-flex justify-center items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-red-600 text-white hover:bg-red-700 focus:outline-none focus:bg-red-700 disabled:opacity-50 disabled:pointer-events-none"
-              (click)="onDeletePlan()"
+              (click)="onDeleteMod()"
             >
               <div
                 class="absolute animate-spin inline-block size-4 border-[2px] border-current border-t-transparent text-white rounded-full"
                 role="status"
                 aria-label="loading"
-                *ngIf="isLoadingPlanDelete"
+                *ngIf="isLoadingModDelete"
               >
                 <span class="sr-only">Loading...</span>
               </div>
-              <span [ngClass]="isLoadingPlanDelete ? 'invisible' : 'visible'"
+              <span [ngClass]="isLoadingModDelete ? 'invisible' : 'visible'"
                 >Delete</span
               >
             </button>
@@ -339,6 +360,6 @@
         </div>
       </div>
     </div>
-    <!-- End Delete Plan Modal -->
+    <!-- End Delete Mod Modal -->
   </div>
 </div>

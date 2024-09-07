@@ -8,7 +8,7 @@ body {
     sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol,
     Noto Color Emoji;
 
-  @apply bg-gray-100 py-16;
+  @apply bg-gray-100;
 }
 
 /* INPUT VALIDATION CLASSES START */
@@ -26,72 +26,6 @@ body {
 }
 
 /* INPUT VALIDATION CLASSES END */
-
-/* TOOLTIP START */
-
-.tooltip {
-  position: absolute;
-  background-color: rgba(0, 0, 0, 1);
-  color: white;
-  padding: 0.8rem;
-  max-width: 20rem;
-  word-wrap: break-word;
-  border-radius: 0.25rem;
-  white-space: normal;
-  z-index: 1000;
-  opacity: 0;
-  transition: all ease-in-out 300ms;
-}
-
-.tooltip::before {
-  content: "";
-  position: absolute;
-  border-style: solid;
-  border-width: 5px;
-}
-
-.tooltip-show {
-  opacity: 1;
-}
-
-.tooltip-top::before {
-  bottom: -5px;
-  left: 50%;
-  transform: translateX(-50%);
-  border-width: 5px 5px 0;
-  border-color: rgba(0, 0, 0, 1) transparent transparent transparent;
-}
-
-.tooltip-bottom::before {
-  top: -5px;
-  left: 50%;
-  transform: translateX(-50%);
-  border-width: 0 5px 5px;
-  border-color: transparent transparent rgba(0, 0, 0, 1) transparent;
-}
-
-.tooltip-left::before {
-  top: 50%;
-  right: -5px;
-  transform: translateY(-50%) rotate(180deg);
-  border-width: 5px 5px 5px 0;
-  border-color: transparent rgba(0, 0, 0, 1) transparent transparent;
-}
-
-.tooltip-right::before {
-  top: 50%;
-  left: -5px;
-  transform: translateY(-50%) rotate(-180deg);
-  border-width: 5px 0 5px 5px;
-  border-color: transparent transparent transparent rgba(0, 0, 0, 1);
-}
-
-/* TOOLTIP END */
-
-.py-12 {
-  padding-top: 5rem;
-  padding-bottom: 5rem;
-}
 
 @media (max-width: 768px) {
   table thead {

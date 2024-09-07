@@ -11,6 +11,7 @@ import { EffectsModule } from '@ngrx/effects';
 import { AuthEffects } from '../../shared/stores/auth/auth.effects';
 import { CountrySelectModule } from '../../shared/components/country-select/country-select.module';
 import { ResendVerificationComponent } from './pages/resend-verification/resend-verification.component';
+import { ConfirmVerificationComponent } from './pages/confirm-verification/confirm-verification.component';
 
 @NgModule({
   declarations: [
@@ -19,6 +20,7 @@ import { ResendVerificationComponent } from './pages/resend-verification/resend-
     ForgotPasswordComponent,
     ResetPasswordComponent,
     ResendVerificationComponent,
+    ConfirmVerificationComponent,
   ],
   imports: [
     AuthRoutingModule,

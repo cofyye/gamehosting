@@ -4,6 +4,7 @@ import { IDataAcceptResponse } from '../../../shared/models/response.model';
 import {
   ILoginRequest,
   IRegisterRequest,
+  ITokenRequest,
 } from '../../models/auth/auth-request.model';
 
 export const SAVE_AUTH = createAction(
@@ -37,5 +38,12 @@ export const RESEND_VERIFICATION = createAction(
   '[Auth] Resend Verification',
   props<{
     payload: string;
+  }>()
+);
+
+export const CONFIRM_VERIFICATION = createAction(
+  '[Auth] Confirm Verification',
+  props<{
+    payload: ITokenRequest;
   }>()
 );

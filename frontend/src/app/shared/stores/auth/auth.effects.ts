@@ -266,11 +266,44 @@ export class AuthEffects {
           catchError((err: HttpErrorResponse) => {
             const response: IAcceptResponse = err.error as IAcceptResponse;
 
-            this._store.dispatch(STOP_LOADING({ key: '_BTN' }));
+            this._store.dispatch(
+              STOP_LOADING({ key: 'RESEND_VERIFICATION_BTN' })
+            );
 
             return of(
               HttpActions.SET_RESPONSE({
                 key: 'RESEND_VERIFICATION',
+                response,
+              })
+            );
+          })
+        )
+      )
+    )
+  );
+
+  confirmVerification$ = createEffect(() =>
+    this._actions$.pipe(
+      ofType(AuthActions.CONFIRM_VERIFICATION),
+      mergeMap((action) =>
+        this._authService.confirmEmail(action.payload).pipe(
+          tap((response) => {
+            this._utilsService.handleResponseToaster(response);
+
+            return response;
+          }),
+          map((response) =>
+            HttpActions.SET_RESPONSE({
+              key: 'CONFIRM_VERIFICATION',
+              response,
+            })
+          ),
+          catchError((err: HttpErrorResponse) => {
+            const response: IAcceptResponse = err.error as IAcceptResponse;
+
+            return of(
+              HttpActions.SET_RESPONSE({
+                key: 'CONFIRM_VERIFICATION',
                 response,
               })
             );

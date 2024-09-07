@@ -1,11 +1,12 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-
 import { LoginComponent } from './pages/login/login.component';
 import { RegisterComponent } from './pages/register/register.component';
 import { ForgotPasswordComponent } from './pages/forgot-password/forgot-password.component';
 import { ResetPasswordComponent } from './pages/reset-password/reset-password.component';
 import { ResendVerificationComponent } from './pages/resend-verification/resend-verification.component';
+import { ConfirmVerificationComponent } from './pages/confirm-verification/confirm-verification.component';
+import { confirmEmailResolver } from './resolvers/confirm-email.resolver';
 
 const routes: Routes = [
   {
@@ -40,12 +41,12 @@ const routes: Routes = [
     pathMatch: 'full',
     component: ResendVerificationComponent,
   },
-  // {
-  //   path: 'verification/confirm',
-  //   pathMatch: 'full',
-
-  //   // resolve: { isAllowed: confirmEmailResolver },
-  // },
+  {
+    path: 'verification/confirm',
+    pathMatch: 'full',
+    component: ConfirmVerificationComponent,
+    resolve: { confirmed: confirmEmailResolver },
+  },
 ];
 
 @NgModule({

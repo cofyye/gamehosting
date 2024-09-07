@@ -7,6 +7,7 @@ import { IAcceptResponse, IDataAcceptResponse } from '../models/response.model';
 import {
   ILoginRequest,
   IRegisterRequest,
+  ITokenRequest,
 } from '../models/auth/auth-request.model';
 import { ILoginResponse } from '../models/auth/auth-response.model';
 
@@ -47,6 +48,13 @@ export class AuthService {
   public resendVerification(email: string): Observable<IAcceptResponse> {
     return this._httpClient.post<IAcceptResponse>(
       `${environment.API_URL}/auth/verification/resend/${email}`,
+      {}
+    );
+  }
+
+  public confirmEmail(data: ITokenRequest): Observable<IAcceptResponse> {
+    return this._httpClient.post<IAcceptResponse>(
+      `${environment.API_URL}/auth/verification/confirm?email=${data.email}&token=${data.token}`,
       {}
     );
   }

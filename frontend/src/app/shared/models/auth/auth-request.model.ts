@@ -12,3 +12,8 @@ export interface ILoginRequest {
   email: string;
   password: string;
 }
+
+export interface ITokenRequest {
+  email: string;
+  token: string;
+}

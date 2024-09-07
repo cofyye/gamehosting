@@ -12,6 +12,7 @@ import { IS_LOADING } from '../../../../shared/stores/loader/loader.selectors';
 import { START_LOADING } from '../../../../shared/stores/loader/loader.actions';
 import { FORGOT_PW } from '../../../../shared/stores/auth/auth.actions';
 import { EMAIL_REGEX } from '../../../../shared/utils/regex.constants';
+import { SELECT_HTTP_RESPONSE } from '../../../../shared/stores/http/http.selectors';
 
 @Component({
   selector: 'app-forgot-password',
@@ -21,6 +22,7 @@ import { EMAIL_REGEX } from '../../../../shared/utils/regex.constants';
 })
 export class ForgotPasswordComponent implements OnInit, OnDestroy {
   private loadingForgotPwSub!: Subscription;
+  private forgotPwSub!: Subscription;
   public isLoadingForgotPw: boolean = false;
 
   constructor(
@@ -40,11 +42,22 @@ export class ForgotPasswordComponent implements OnInit, OnDestroy {
     this.loadingForgotPwSub = this._store
       .select(IS_LOADING('FORGOT_PW_BTN'))
       .subscribe((value) => (this.isLoadingForgotPw = value));
+
+    this.forgotPwSub = this._store
+      .select(SELECT_HTTP_RESPONSE('FORGOT_PW'))
+      .subscribe((response) => {
+        if (response?.success) {
+          this.forgotPasswordForm.reset();
+        }
+      });
   }
 
   public ngOnDestroy(): void {
     if (this.loadingForgotPwSub) {
       this.loadingForgotPwSub.unsubscribe();
+    }
+    if (this.forgotPwSub) {
+      this.forgotPwSub.unsubscribe();
     }
   }
 

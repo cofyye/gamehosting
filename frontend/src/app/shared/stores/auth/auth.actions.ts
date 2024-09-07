@@ -16,23 +16,9 @@ export const REGISTER = createAction(
   props<{ payload: IRegisterRequest }>()
 );
 
-export const REGISTER_SUCCESS = createAction('[Auth] Register Success');
-
-export const REGISTER_FAILURE = createAction(
-  '[Auth] Register Failure',
-  props<{ error: string }>()
-);
-
 export const LOGIN = createAction(
   '[Auth] Login',
   props<{ payload: ILoginRequest }>()
-);
-
-export const LOGIN_SUCCESS = createAction('[Auth] Login Success');
-
-export const LOGIN_FAILURE = createAction(
-  '[Auth] Login Failure',
-  props<{ error: string }>()
 );
 
 export const REGENERATE_TOKEN = createAction(
@@ -47,9 +33,9 @@ export const FORGOT_PW = createAction(
   }>()
 );
 
-export const FORGOT_PW_SUCCESS = createAction('[Auth] Forgot Password Success');
-
-export const FORGOT_PW_FAILURE = createAction(
-  '[Auth] Forgot Password Failure',
-  props<{ error: string }>()
+export const RESEND_VERIFICATION = createAction(
+  '[Auth] Resend Verification',
+  props<{
+    payload: string;
+  }>()
 );

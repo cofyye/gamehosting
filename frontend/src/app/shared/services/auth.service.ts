@@ -43,4 +43,11 @@ export class AuthService {
       {}
     );
   }
+
+  public resendVerification(email: string): Observable<IAcceptResponse> {
+    return this._httpClient.post<IAcceptResponse>(
+      `${environment.API_URL}/auth/verification/resend/${email}`,
+      {}
+    );
+  }
 }

@@ -10,6 +10,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { EffectsModule } from '@ngrx/effects';
 import { AuthEffects } from '../../shared/stores/auth/auth.effects';
 import { CountrySelectModule } from '../../shared/components/country-select/country-select.module';
+import { ResendVerificationComponent } from './pages/resend-verification/resend-verification.component';
 
 @NgModule({
   declarations: [
@@ -17,6 +18,7 @@ import { CountrySelectModule } from '../../shared/components/country-select/coun
     RegisterComponent,
     ForgotPasswordComponent,
     ResetPasswordComponent,
+    ResendVerificationComponent,
   ],
   imports: [
     AuthRoutingModule,

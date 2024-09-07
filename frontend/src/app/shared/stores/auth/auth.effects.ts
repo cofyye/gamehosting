@@ -24,6 +24,12 @@ import { Router } from '@angular/router';
 import { ToasterService } from '../../../shared/services/toaster.service';
 import { AuthService } from '../../services/auth.service';
 import { STOP_LOADING } from '../loader/loader.actions';
+import { HttpErrorResponse } from '@angular/common/http';
+import {
+  IAcceptResponse,
+  IDataAcceptResponse,
+} from '../../models/response.model';
+import * as HttpActions from '../http/http.actions';
 
 @Injectable()
 export class AuthEffects {
@@ -50,11 +56,23 @@ export class AuthEffects {
 
             return response;
           }),
-          map(() => AuthActions.REGISTER_SUCCESS()),
-          catchError(() => {
+          map((response) =>
+            HttpActions.SET_RESPONSE({
+              key: 'REGISTER',
+              response,
+            })
+          ),
+          catchError((err: HttpErrorResponse) => {
+            const response: IAcceptResponse = err.error as IAcceptResponse;
+
             this._store.dispatch(STOP_LOADING({ key: 'REGISTER_BTN' }));
 
-            return of(AuthActions.REGISTER_FAILURE({ error: '' }));
+            return of(
+              HttpActions.SET_RESPONSE({
+                key: 'REGISTER',
+                response,
+              })
+            );
           })
         )
       )
@@ -87,10 +105,22 @@ export class AuthEffects {
               },
             })
           ),
-          catchError(() => {
+          catchError((err: HttpErrorResponse) => {
+            const response: IDataAcceptResponse<{ verified: boolean }> =
+              err.error as IDataAcceptResponse<{ verified: boolean }>;
+
             this._store.dispatch(STOP_LOADING({ key: 'LOGIN_BTN' }));
 
-            return of(AuthActions.LOGIN_FAILURE({ error: '' }));
+            if (response?.data?.verified === false) {
+              this._router.navigate(['/auth/verification/resend']);
+            }
+
+            return of(
+              HttpActions.SET_RESPONSE({
+                key: 'LOGIN',
+                response,
+              })
+            );
           })
         )
       )
@@ -190,11 +220,60 @@ export class AuthEffects {
 
             return response;
           }),
-          map(() => AuthActions.FORGOT_PW_SUCCESS()),
-          catchError(() => {
+          map((response) =>
+            HttpActions.SET_RESPONSE({
+              key: 'FORGOT_PW',
+              response,
+            })
+          ),
+          catchError((err: HttpErrorResponse) => {
+            const response: IAcceptResponse = err.error as IAcceptResponse;
+
             this._store.dispatch(STOP_LOADING({ key: 'FORGOT_PW_BTN' }));
 
-            return of(AuthActions.FORGOT_PW_FAILURE({ error: '' }));
+            return of(
+              HttpActions.SET_RESPONSE({
+                key: 'FORGOT_PW',
+                response,
+              })
+            );
+          })
+        )
+      )
+    )
+  );
+
+  resendVerification$ = createEffect(() =>
+    this._actions$.pipe(
+      ofType(AuthActions.RESEND_VERIFICATION),
+      mergeMap((action) =>
+        this._authService.resendVerification(action.payload).pipe(
+          tap((response) => {
+            this._utilsService.handleResponseToaster(response);
+
+            this._store.dispatch(
+              STOP_LOADING({ key: 'RESEND_VERIFICATION_BTN' })
+            );
+
+            return response;
+          }),
+          map((response) =>
+            HttpActions.SET_RESPONSE({
+              key: 'RESEND_VERIFICATION',
+              response,
+            })
+          ),
+          catchError((err: HttpErrorResponse) => {
+            const response: IAcceptResponse = err.error as IAcceptResponse;
+
+            this._store.dispatch(STOP_LOADING({ key: '_BTN' }));
+
+            return of(
+              HttpActions.SET_RESPONSE({
+                key: 'RESEND_VERIFICATION',
+                response,
+              })
+            );
           })
         )
       )

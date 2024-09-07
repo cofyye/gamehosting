@@ -5,6 +5,7 @@ import { LoginComponent } from './pages/login/login.component';
 import { RegisterComponent } from './pages/register/register.component';
 import { ForgotPasswordComponent } from './pages/forgot-password/forgot-password.component';
 import { ResetPasswordComponent } from './pages/reset-password/reset-password.component';
+import { ResendVerificationComponent } from './pages/resend-verification/resend-verification.component';
 
 const routes: Routes = [
   {
@@ -33,6 +34,11 @@ const routes: Routes = [
     pathMatch: 'full',
 
     // resolve: { isAllowed: resetPasswordResolver },
+  },
+  {
+    path: 'verification/resend',
+    pathMatch: 'full',
+    component: ResendVerificationComponent,
   },
   // {
   //   path: 'verification/confirm',

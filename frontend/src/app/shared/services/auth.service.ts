@@ -7,6 +7,7 @@ import { IAcceptResponse, IDataAcceptResponse } from '../models/response.model';
 import {
   ILoginRequest,
   IRegisterRequest,
+  IResetPasswordRequest,
   ITokenRequest,
 } from '../models/auth/auth-request.model';
 import { ILoginResponse } from '../models/auth/auth-response.model';
@@ -56,6 +57,22 @@ export class AuthService {
     return this._httpClient.post<IAcceptResponse>(
       `${environment.API_URL}/auth/verification/confirm?email=${data.email}&token=${data.token}`,
       {}
+    );
+  }
+
+  public resetPasswordAccess(data: ITokenRequest): Observable<IAcceptResponse> {
+    return this._httpClient.post<IAcceptResponse>(
+      `${environment.API_URL}/auth/password/reset?email=${data.email}&token=${data.token}`,
+      {}
+    );
+  }
+
+  public resetPassword(
+    data: IResetPasswordRequest
+  ): Observable<IAcceptResponse> {
+    return this._httpClient.post<IAcceptResponse>(
+      `${environment.API_URL}/auth/password/change`,
+      data
     );
   }
 }

@@ -17,3 +17,8 @@ export interface ITokenRequest {
   email: string;
   token: string;
 }
+
+export interface IResetPasswordRequest extends ITokenRequest {
+  password: string;
+  confirmPassword: string;
+}

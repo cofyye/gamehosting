@@ -312,4 +312,67 @@ export class AuthEffects {
       )
     )
   );
+
+  resetPasswordAccess$ = createEffect(() =>
+    this._actions$.pipe(
+      ofType(AuthActions.RESET_PASSWORD_ACCESS),
+      mergeMap((action) =>
+        this._authService.resetPasswordAccess(action.payload).pipe(
+          map((response) =>
+            HttpActions.SET_RESPONSE({
+              key: 'RESET_PASSWORD_ACCESS',
+              response,
+            })
+          ),
+          catchError((err: HttpErrorResponse) => {
+            const response: IAcceptResponse = err.error as IAcceptResponse;
+
+            return of(
+              HttpActions.SET_RESPONSE({
+                key: 'RESET_PASSWORD_ACCESS',
+                response,
+              })
+            );
+          })
+        )
+      )
+    )
+  );
+
+  resetPassword$ = createEffect(() =>
+    this._actions$.pipe(
+      ofType(AuthActions.RESET_PASSWORD),
+      mergeMap((action) =>
+        this._authService.resetPassword(action.payload).pipe(
+          tap((response) => {
+            this._utilsService.handleResponseToaster(response);
+
+            this._store.dispatch(STOP_LOADING({ key: 'RESET_PASSWORD_BTN' }));
+
+            this._router.navigate(['/auth/login']);
+
+            return response;
+          }),
+          map((response) =>
+            HttpActions.SET_RESPONSE({
+              key: 'RESET_PASSWORD',
+              response,
+            })
+          ),
+          catchError((err: HttpErrorResponse) => {
+            const response: IAcceptResponse = err.error as IAcceptResponse;
+
+            this._store.dispatch(STOP_LOADING({ key: 'RESET_PASSWORD_BTN' }));
+
+            return of(
+              HttpActions.SET_RESPONSE({
+                key: 'RESET_PASSWORD',
+                response,
+              })
+            );
+          })
+        )
+      )
+    )
+  );
 }

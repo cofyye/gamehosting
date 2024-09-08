@@ -4,6 +4,7 @@ import { IDataAcceptResponse } from '../../../shared/models/response.model';
 import {
   ILoginRequest,
   IRegisterRequest,
+  IResetPasswordRequest,
   ITokenRequest,
 } from '../../models/auth/auth-request.model';
 
@@ -45,5 +46,19 @@ export const CONFIRM_VERIFICATION = createAction(
   '[Auth] Confirm Verification',
   props<{
     payload: ITokenRequest;
+  }>()
+);
+
+export const RESET_PASSWORD_ACCESS = createAction(
+  '[Auth] Reset Password Access',
+  props<{
+    payload: ITokenRequest;
+  }>()
+);
+
+export const RESET_PASSWORD = createAction(
+  '[Auth] Reset Password',
+  props<{
+    payload: IResetPasswordRequest;
   }>()
 );

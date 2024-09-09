@@ -172,6 +172,22 @@ export class AuthService {
         );
       }
 
+      if (
+        !(await this._emailService.sendVerifiedAccount(
+          user.email,
+          user.username,
+          user.firstName,
+          user.lastName,
+          user.pinCode,
+        ))
+      ) {
+        functions.throwHttpException(
+          false,
+          'An error occurred while sending the email. Please verify your account again.',
+          HttpStatus.INTERNAL_SERVER_ERROR,
+        );
+      }
+
       user.verificationToken = null;
       user.verificationExpDate = null;
       user.verified = true;

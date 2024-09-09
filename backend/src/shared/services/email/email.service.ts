@@ -14,15 +14,16 @@ export class EmailService {
   public async sendConfirmation(email: string, verificationToken: string) {
     try {
       await this._mailerService.sendMail({
-        from: `${this._configService.get<string>('APP_NAME')} - ${this._configService.get<string>('SMTP_NOREPLY_MAIL')}`,
+        from: `${this._configService.get<string>('APP_NAME')} ${this._configService.get<string>('SMTP_NOREPLY_MAIL')}`,
         to: email,
-        subject: `[${this._configService.get<string>('APP_NAME')}] Please verify your email address.`,
+        subject: `Please Verify Your Email Address`,
         template: 'confirm-email',
         context: {
-          url: this._configService.get<string>('FRONTEND_URL'),
-          email,
-          verificationToken,
-          year: moment().toDate().getFullYear(),
+          URL: this._configService.get<string>('FRONTEND_URL'),
+          EMAIL: email,
+          VERIFICATION_TOKEN: verificationToken,
+          APP_NAME: this._configService.get<string>('APP_NAME'),
+          YEAR: moment().toDate().getFullYear(),
         },
       });
 
@@ -35,15 +36,45 @@ export class EmailService {
   public async sendResetPassword(email: string, passwordToken: string) {
     try {
       await this._mailerService.sendMail({
-        from: `${this._configService.get<string>('APP_NAME')} - ${this._configService.get<string>('SMTP_NOREPLY_MAIL')}`,
+        from: `${this._configService.get<string>('APP_NAME')} ${this._configService.get<string>('SMTP_NOREPLY_MAIL')}`,
         to: email,
-        subject: `[${this._configService.get<string>('APP_NAME')}] Account recovery.`,
+        subject: `Account Recovery`,
         template: 'reset-password',
         context: {
-          url: this._configService.get<string>('FRONTEND_URL'),
-          email,
-          passwordToken,
-          year: moment().toDate().getFullYear(),
+          URL: this._configService.get<string>('FRONTEND_URL'),
+          EMAIL: email,
+          PASSWORD_TOKEN: passwordToken,
+          APP_NAME: this._configService.get<string>('APP_NAME'),
+          YEAR: moment().toDate().getFullYear(),
+        },
+      });
+
+      return true;
+    } catch (_: unknown) {
+      return false;
+    }
+  }
+
+  public async sendVerifiedAccount(
+    email: string,
+    username: string,
+    firstName: string,
+    lastName: string,
+    pinCode: string,
+  ) {
+    try {
+      await this._mailerService.sendMail({
+        from: `${this._configService.get<string>('APP_NAME')} ${this._configService.get<string>('SMTP_NOREPLY_MAIL')}`,
+        to: email,
+        subject: `Account Successfully Verified`,
+        template: 'confirmed-email',
+        context: {
+          FIRST_NAME: firstName,
+          LAST_NAME: lastName,
+          USERNAME: username,
+          PIN_CODE: pinCode,
+          APP_NAME: this._configService.get<string>('APP_NAME'),
+          YEAR: moment().toDate().getFullYear(),
         },
       });
 

@@ -498,6 +498,19 @@ export class UtilsService {
     try {
       const user = await this._userRepo.findOne({
         where: { id: userId },
+        select: {
+          id: true,
+          firstName: true,
+          lastName: true,
+          username: true,
+          email: true,
+          country: true,
+          countryTag: true,
+          role: true,
+          money: true,
+          avatar: true,
+          registrationDate: true,
+        },
       });
 
       if (!user) {

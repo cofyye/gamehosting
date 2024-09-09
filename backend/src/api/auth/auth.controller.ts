@@ -75,11 +75,9 @@ export class AuthController {
     @Body() body: LoginUserDto,
     @Res({ passthrough: true }) response: Response,
   ): Promise<
-    IDataSendResponse<
-      Pick<UserEntity, 'id' | 'role'> & { expirationDate: Date }
-    >
+    IDataSendResponse<{ user: Partial<UserEntity>; expirationDate: Date }>
   > {
-    const user: UserEntity = await this._authService.loginUser(body);
+    const user: Partial<UserEntity> = await this._authService.loginUser(body);
 
     if (!user) {
       functions.throwHttpException(
@@ -117,8 +115,7 @@ export class AuthController {
       return {
         success: true,
         data: {
-          id: user.id,
-          role: user.role,
+          user: await this._utilsService.getUserById(user.id),
           expirationDate: moment.unix(token.exp).toDate(),
         },
         message: 'You have successfully logged in.',
@@ -279,7 +276,7 @@ export class AuthController {
     @Req() req: Request,
     @Res({ passthrough: true }) response: Response,
   ): Promise<
-    IDataSendResponse<Partial<UserEntity & { expirationDate: Date }>>
+    IDataSendResponse<{ user: Partial<UserEntity>; expirationDate: Date }>
   > {
     try {
       let loggedUser: Partial<UserEntity> = req.user;
@@ -317,8 +314,7 @@ export class AuthController {
         return {
           success: true,
           data: {
-            id: loggedUser.id,
-            role: loggedUser.role,
+            user: await this._utilsService.getUserById(loggedUser.id),
             expirationDate: moment.unix(token.exp).toDate(),
           },
           message: 'Success.',
@@ -326,14 +322,20 @@ export class AuthController {
       } else {
         return {
           success: false,
-          data: {},
+          data: {
+            user: null,
+            expirationDate: null,
+          },
           message: 'Success.',
         };
       }
     } catch (err: unknown) {
       return {
         success: false,
-        data: {},
+        data: {
+          user: null,
+          expirationDate: null,
+        },
         message: 'Success.',
       };
     }

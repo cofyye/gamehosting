@@ -1,7 +1,6 @@
-import { UserRole } from '../../enums/user.enum';
+import { IUser } from '../user.model';
 
 export interface ILoginResponse {
-  id: string;
-  role: UserRole;
+  user: IUser;
   expirationDate: Date;
 }

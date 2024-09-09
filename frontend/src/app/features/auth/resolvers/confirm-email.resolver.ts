@@ -42,7 +42,6 @@ class ConfirmEmailService {
     return this._store
       .select(SELECT_HTTP_RESPONSE('CONFIRM_VERIFICATION'))
       .pipe(
-        first(),
         filter((response) => !!response),
         map((_) => {
           this._router.navigate(['/auth/login']);

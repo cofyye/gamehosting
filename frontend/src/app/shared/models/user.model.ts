@@ -1,9 +1,22 @@
 import { UserRole } from '../enums/user.enum';
 
 export interface ILoginStatus {
-  id: string;
-  role: UserRole;
+  user?: IUser;
   fetched: boolean;
   loggedIn: boolean;
-  expirationDate: Date | null;
+  expirationDate?: Date;
+}
+
+export interface IUser {
+  id: string;
+  firstName: string;
+  lastName: string;
+  username: string;
+  email: string;
+  country: string;
+  countryTag: string;
+  role: UserRole;
+  money: string;
+  avatar: string;
+  registrationDate: Date;
 }

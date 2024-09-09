@@ -7,10 +7,9 @@ export interface AuthState {
 
 export const initialState: AuthState = {
   auth: {
-    id: '',
-    role: UserRole.USER,
+    user: undefined,
     fetched: false,
     loggedIn: false,
-    expirationDate: null,
+    expirationDate: undefined,
   },
 };

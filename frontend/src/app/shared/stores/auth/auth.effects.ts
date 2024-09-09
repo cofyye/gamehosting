@@ -97,8 +97,7 @@ export class AuthEffects {
           map((response) =>
             AuthActions.SAVE_AUTH({
               auth: {
-                id: response.data.id,
-                role: response.data.role,
+                user: response.data.user,
                 expirationDate: response.data.expirationDate,
                 loggedIn: true,
                 fetched: state.auth.fetched,
@@ -192,11 +191,10 @@ export class AuthEffects {
                 of(
                   AuthActions.SAVE_AUTH({
                     auth: {
-                      expirationDate: null,
-                      id: '',
+                      expirationDate: undefined,
+                      user: undefined,
                       loggedIn: false,
                       fetched: state.auth.fetched,
-                      role: UserRole.USER,
                     },
                   })
                 )

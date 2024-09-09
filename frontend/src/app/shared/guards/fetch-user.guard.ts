@@ -49,8 +49,7 @@ class FetchGuardService {
                   this._store.dispatch(
                     SAVE_AUTH({
                       auth: {
-                        id: response.data.id,
-                        role: response.data.role,
+                        user: response.data.user,
                         expirationDate: response.data.expirationDate,
                         fetched: true,
                         loggedIn: true,
@@ -61,9 +60,8 @@ class FetchGuardService {
                   this._store.dispatch(
                     SAVE_AUTH({
                       auth: {
-                        id: '',
-                        role: UserRole.USER,
-                        expirationDate: null,
+                        user: undefined,
+                        expirationDate: undefined,
                         fetched: true,
                         loggedIn: false,
                       },
@@ -79,9 +77,8 @@ class FetchGuardService {
                 this._store.dispatch(
                   SAVE_AUTH({
                     auth: {
-                      id: '',
-                      role: UserRole.USER,
-                      expirationDate: null,
+                      user: undefined,
+                      expirationDate: undefined,
                       fetched: true,
                       loggedIn: false,
                     },

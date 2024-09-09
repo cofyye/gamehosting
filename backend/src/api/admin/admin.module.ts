@@ -6,6 +6,7 @@ import { MachineModule } from './routes/machine/machine.module';
 import { ModModule } from './routes/mod/mod.module';
 import { ServerModule } from './routes/server/server.module';
 import { PlanModule } from './routes/plan/plan.module';
+import { UserModule } from './routes/user/user.module';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { PlanModule } from './routes/plan/plan.module';
     ModModule,
     ServerModule,
     PlanModule,
+    UserModule,
   ],
   controllers: [],
   providers: [],

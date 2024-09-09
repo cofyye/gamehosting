@@ -1,5 +1,4 @@
 import {
-  IsDate,
   IsDateString,
   IsInt,
   IsNotEmpty,
@@ -60,6 +59,7 @@ export class AddServerDto {
   @Max(100000, {
     message: 'The maximum value for the custom price must be 100000.',
   })
+  @Min(0, { message: 'The minimum value for the custom price must be 0.' })
   @IsNotEmpty({ message: 'The custom price field must not be empty.' })
   @IsOptional()
   public readonly customPrice: number;

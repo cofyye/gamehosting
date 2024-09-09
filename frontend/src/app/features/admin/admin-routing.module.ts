@@ -50,6 +50,11 @@ const routes: Routes = [
           import('./features/mod/mod.module').then((m) => m.ModModule),
       },
       {
+        path: 'servers',
+        loadChildren: () =>
+          import('./features/server/server.module').then((m) => m.ServerModule),
+      },
+      {
         path: 'users',
         loadChildren: () =>
           import('./features/user/user.module').then((m) => m.UserModule),

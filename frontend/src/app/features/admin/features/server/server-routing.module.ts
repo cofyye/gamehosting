@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { ServerAllComponent } from './pages/all/server-all.component';
 import { ServerAddComponent } from './pages/add/server-add.component';
+import { getUsersResolver } from '../../shared/resolvers/get-users.resolver';
 
 const routes: Routes = [
   {
@@ -17,6 +18,9 @@ const routes: Routes = [
         path: 'add',
         component: ServerAddComponent,
         pathMatch: 'full',
+        resolve: {
+          users: getUsersResolver,
+        },
       },
       // {
       //   path: 'edit/:planId',

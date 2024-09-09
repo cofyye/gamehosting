@@ -1,9 +1,11 @@
 export interface IServerAddRequest {
   gameId: string;
-  modName: string;
-  dockerImage: string;
-  description: string;
-  dockerFile: File;
-  startupCommand: string;
-  startupVariables: string;
+  modId: string;
+  machineId: string;
+  planId: string;
+  userId: string;
+  name: string;
+  port: string;
+  customPrice: number;
+  expirationDate: Date;
 }

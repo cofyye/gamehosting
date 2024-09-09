@@ -59,14 +59,20 @@
                             generateUserSelectOption(user)
                           "
                         >
-                          {{ user.firstName }} {{ user.lastName }}
+                          {{ user.firstName }} {{ user.lastName }} -
+                          {{ user.username }}
                         </option>
                       </select>
                     </div>
                     <!-- End Form Group User Select -->
 
                     <!-- Form Group Machine Select -->
-                    <div class="relative flex-1">
+                    <div
+                      class="relative flex-1"
+                      [ngClass]="
+                        serverAddForm.get('userId')?.value ? 'block' : 'hidden'
+                      "
+                    >
                       <select
                         (change)="onSelectMachine($event)"
                         data-hs-select='{
@@ -94,7 +100,12 @@
                   </div>
                   <!-- End Form Group Machine Select -->
 
-                  <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 lg:gap-4">
+                  <div
+                    class="grid grid-cols-1 lg:grid-cols-3 gap-4 lg:gap-4"
+                    [ngClass]="
+                      serverAddForm.get('machineId')?.value ? 'block' : 'hidden'
+                    "
+                  >
                     <!-- Form Group Game Select -->
                     <div class="relative flex-1">
                       <select
@@ -126,7 +137,12 @@
                     <!-- End Form Group Game Select -->
 
                     <!-- Form Group Mod Select -->
-                    <div class="relative flex-1">
+                    <div
+                      class="relative flex-1"
+                      [ngClass]="
+                        serverAddForm.get('gameId')?.value ? 'block' : 'hidden'
+                      "
+                    >
                       <select
                         (change)="onSelectMod($event)"
                         data-hs-select='{
@@ -154,9 +170,14 @@
                     <!-- End Form Group Mod Select -->
 
                     <!-- Form Group Plan Select -->
-                    <div class="relative flex-1">
+                    <div
+                      class="relative flex-1"
+                      [ngClass]="
+                        serverAddForm.get('modId')?.value ? 'block' : 'hidden'
+                      "
+                    >
                       <select
-                        (change)="onSelectMod($event)"
+                        (change)="onSelectPlan($event)"
                         data-hs-select='{
                           "placeholder": "Select plan for server...",
                           "toggleTag": "<button type=\"button\" aria-expanded=\"false\" id=\"server-plan-btn\"><span class=\"me-2\" data-icon></span><span class=\"text-gray-800 \" data-title></span></button>",
@@ -184,7 +205,12 @@
 
                   <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-4">
                     <!-- Form Group -->
-                    <div class="relative flex-1">
+                    <div
+                      class="relative flex-1"
+                      [ngClass]="
+                        serverAddForm.get('planId')?.value ? 'block' : 'hidden'
+                      "
+                    >
                       <input
                         type="text"
                         id="hs-floating-input-name-value"
@@ -200,7 +226,12 @@
                     </div>
 
                     <!-- Form Group -->
-                    <div class="relative flex-1">
+                    <div
+                      class="relative flex-1"
+                      [ngClass]="
+                        serverAddForm.get('planId')?.value ? 'block' : 'hidden'
+                      "
+                    >
                       <input
                         type="date"
                         id="hs-floating-input-expirationDate-value"
@@ -218,7 +249,12 @@
 
                   <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-4">
                     <!-- Form Group -->
-                    <div class="relative flex-1">
+                    <div
+                      class="relative flex-1"
+                      [ngClass]="
+                        serverAddForm.get('planId')?.value ? 'block' : 'hidden'
+                      "
+                    >
                       <input
                         type="text"
                         id="hs-floating-input-customPrice-value"
@@ -286,7 +322,12 @@
                       </div>
                     </div>
 
-                    <div class="relative flex-1">
+                    <div
+                      class="relative flex-1"
+                      [ngClass]="
+                        serverAddForm.get('planId')?.value ? 'block' : 'hidden'
+                      "
+                    >
                       <input
                         type="text"
                         id="hs-floating-input-port-value"

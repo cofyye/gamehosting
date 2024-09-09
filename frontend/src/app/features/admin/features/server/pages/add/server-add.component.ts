@@ -21,31 +21,25 @@ import { SELECT_HTTP_RESPONSE } from '../../../../../../shared/stores/http/http.
 import { uuidValidator } from '../../../../../../shared/validators/uuid.validator';
 import { ActivatedRoute } from '@angular/router';
 import { IGameResponse } from '../../../../shared/models/game-response.model';
-import { ToasterService } from '../../../../../../shared/services/toaster.service';
-import {
-  DOCKER_IMAGE_REGEX,
-  STARTUP_DOCKER_ENVIRONMENT_NAME_REGEX,
-} from '../../../../../../shared/utils/regex.constants';
-import { IStartupVariable } from '../../../../../../shared/models/mod.model';
-import { IModAddRequest } from '../../../../shared/models/mod-request.model';
-import { ADD_MOD } from '../../../../shared/stores/mod/mod.actions';
 import { isUnsignedIntValidator } from '../../../../../../shared/validators/unsigned-integer.validator';
 import * as moment from 'moment';
 import { IModResponse } from '../../../../shared/models/mod-response.model';
 import { IPlanResponse } from '../../../../shared/models/plan-response.model';
 import { IUserResponse } from '../../../../shared/models/user-response.model';
 import { IMachineResponse } from '../../../../shared/models/machine-response.model';
+import { IServerAddRequest } from '../../../../shared/models/server-request.model';
+import { unsignedNumericValidator } from '../../../../../../shared/validators/unsigned-numeric.validator';
 
 @Component({
   selector: 'app-server-add',
   templateUrl: './server-add.component.html',
   styleUrl: './server-add.component.css',
 })
-export class ServerAddComponent {
-  // private loadingModAddSub!: Subscription;
-  // private modAddSub!: Subscription;
-  // private routeSub!: Subscription;
-  // public isLoadingModAdd: boolean = false;
+export class ServerAddComponent implements OnInit, OnDestroy {
+  private loadingServerAddSub!: Subscription;
+  private serverAddSub!: Subscription;
+  private routeSub!: Subscription;
+  public isLoadingServerAdd: boolean = false;
   public games: IGameResponse[] = [];
   public mods: IModResponse[] = [];
   public plans: IPlanResponse[] = [];
@@ -57,11 +51,10 @@ export class ServerAddComponent {
     private readonly _renderer: Renderer2,
     private readonly _fb: FormBuilder,
     private readonly _route: ActivatedRoute,
-    private readonly _toaster: ToasterService,
     private readonly _store: Store<AppState>
   ) {}
 
-  public modAddForm: FormGroup = this._fb.group({
+  public serverAddForm: FormGroup = this._fb.group({
     gameId: new FormControl<string>('', [Validators.required, uuidValidator()]),
     modId: new FormControl<string>('', [Validators.required, uuidValidator()]),
     userId: new FormControl<string>('', [Validators.required, uuidValidator()]),
@@ -81,70 +74,79 @@ export class ServerAddComponent {
       Validators.max(65535),
       isUnsignedIntValidator(),
     ]),
-    customPrice: new FormControl<string>('', [
+    customPrice: new FormControl<number>(0, [
       Validators.min(0),
       Validators.max(100000),
-      isUnsignedIntValidator(),
+      unsignedNumericValidator(),
     ]),
     expirationDate: new FormControl<Date>(moment.utc().toDate(), [
       Validators.required,
-      Validators.minLength(2),
-      Validators.maxLength(40),
-      Validators.pattern(DOCKER_IMAGE_REGEX),
     ]),
   });
-  // public ngOnInit(): void {
-  //   this.routeSub = this._route.data.subscribe((data) => {
-  //     this.games = data['games'] as IGameResponse[];
-  //   });
-  //   this.loadingModAddSub = this._store
-  //     .select(IS_LOADING('ADD_MOD_BTN'))
-  //     .subscribe((value) => (this.isLoadingModAdd = value));
-  //   this.modAddSub = this._store
-  //     .select(SELECT_HTTP_RESPONSE('ADD_MOD'))
-  //     .subscribe((response) => {
-  //       if (response?.success) {
-  //         this.onResetMod();
-  //       }
-  //     });
-  // }
-  // public ngOnDestroy(): void {
-  //   if (this.loadingModAddSub) {
-  //     this.loadingModAddSub.unsubscribe();
-  //   }
-  //   if (this.modAddSub) {
-  //     this.modAddSub.unsubscribe();
-  //   }
-  //   if (this.routeSub) {
-  //     this.routeSub.unsubscribe();
-  //   }
-  // }
-  // public onAddMod(): void {
-  //   this.modAddForm.patchValue({
-  //     startupVariables: JSON.stringify(this.startupVariables),
-  //   });
-  //   if (this.modAddFormHasErrors()) {
-  //     return;
-  //   }
-  //   const data: IModAddRequest = {
-  //     gameId: this.modAddForm.get('gameId')?.value,
-  //     modName: this.modAddForm.get('modName')?.value,
-  //     dockerImage: this.modAddForm.get('dockerImage')?.value,
-  //     description: this.modAddForm.get('description')?.value,
-  //     dockerFile: this.modAddForm.get('dockerFile')?.value,
-  //     startupCommand: this.modAddForm.get('startupCommand')?.value,
-  //     startupVariables: this.modAddForm.get('startupVariables')?.value,
-  //   };
-  //   this._store.dispatch(START_LOADING({ key: 'ADD_MOD_BTN' }));
-  //   this._store.dispatch(ADD_MOD({ payload: data }));
-  // }
-  // public onResetMod(): void {
-  //   this.resetSelectGame();
-  //   this.modAddForm.reset();
-  // }
+
+  public ngOnInit(): void {
+    this.routeSub = this._route.data.subscribe((data) => {
+      this.users = data['users'] as IUserResponse[];
+    });
+
+    this.loadingServerAddSub = this._store
+      .select(IS_LOADING('ADD_SERVER_BTN'))
+      .subscribe((value) => (this.isLoadingServerAdd = value));
+
+    this.serverAddSub = this._store
+      .select(SELECT_HTTP_RESPONSE('ADD_SERVER'))
+      .subscribe((response) => {
+        if (response?.success) {
+          this.onResetServer();
+        }
+      });
+  }
+
+  public ngOnDestroy(): void {
+    if (this.loadingServerAddSub) {
+      this.loadingServerAddSub.unsubscribe();
+    }
+    if (this.serverAddSub) {
+      this.serverAddSub.unsubscribe();
+    }
+    if (this.routeSub) {
+      this.routeSub.unsubscribe();
+    }
+  }
+
+  public onAddServer(): void {
+    // if (this.modAddFormHasErrors()) {
+    //   return;
+    // }
+
+    const data: IServerAddRequest = {
+      gameId: this.serverAddForm.get('gameId')?.value,
+      modId: this.serverAddForm.get('modId')?.value,
+      machineId: this.serverAddForm.get('machineId')?.value,
+      planId: this.serverAddForm.get('planId')?.value,
+      userId: this.serverAddForm.get('userId')?.value,
+      name: this.serverAddForm.get('name')?.value,
+      customPrice: this.serverAddForm.get('customPrice')?.value,
+      port: this.serverAddForm.get('port')?.value,
+      expirationDate: this.serverAddForm.get('expirationDate')?.value,
+    };
+
+    // this._store.dispatch(START_LOADING({ key: 'ADD_SERVER_BTN' }));
+    // this._store.dispatch(ADD_MOD({ payload: data }));
+  }
+
+  public onResetServer(): void {
+    this.resetSelectGame();
+    this.resetSelectMod();
+    this.resetSelectPlan();
+    this.resetSelectUser();
+    this.resetSelectMachine();
+    this.serverAddForm.reset();
+  }
+
   public onSelectGame(event: Event) {
     const selectEl = event.target as HTMLSelectElement;
-    this.modAddForm.patchValue({
+    this.serverAddForm.patchValue({
       gameId: selectEl.value,
     });
   }
@@ -183,8 +185,8 @@ export class ServerAddComponent {
 
   public onSelectUser(event: Event) {
     const selectEl = event.target as HTMLSelectElement;
-    this.modAddForm.patchValue({
-      gameId: selectEl.value,
+    this.serverAddForm.patchValue({
+      userId: selectEl.value,
     });
   }
 
@@ -222,14 +224,8 @@ export class ServerAddComponent {
 
   public onSelectMachine(event: Event) {
     const selectEl = event.target as HTMLSelectElement;
-
-    this.modAddForm.patchValue({
-      addMachinePlan: {
-        machineId: selectEl.value,
-        machineName: this._el.nativeElement
-          .querySelector(`option[id='${selectEl.value}'`)
-          ?.textContent?.trim(),
-      },
+    this.serverAddForm.patchValue({
+      machineId: selectEl.value,
     });
   }
 
@@ -256,14 +252,8 @@ export class ServerAddComponent {
 
   public onSelectMod(event: Event) {
     const selectEl = event.target as HTMLSelectElement;
-
-    this.modAddForm.patchValue({
-      addMachinePlan: {
-        machineId: selectEl.value,
-        machineName: this._el.nativeElement
-          .querySelector(`option[id='${selectEl.value}'`)
-          ?.textContent?.trim(),
-      },
+    this.serverAddForm.patchValue({
+      modId: selectEl.value,
     });
   }
 
@@ -290,14 +280,8 @@ export class ServerAddComponent {
 
   public onSelectPlan(event: Event) {
     const selectEl = event.target as HTMLSelectElement;
-
-    this.modAddForm.patchValue({
-      addMachinePlan: {
-        machineId: selectEl.value,
-        machineName: this._el.nativeElement
-          .querySelector(`option[id='${selectEl.value}'`)
-          ?.textContent?.trim(),
-      },
+    this.serverAddForm.patchValue({
+      planId: selectEl.value,
     });
   }
 
@@ -313,7 +297,7 @@ export class ServerAddComponent {
       this._renderer.setProperty(
         planDataTitle,
         'innerHTML',
-        'Select mod for server...'
+        'Select plan for server...'
       );
     }
 

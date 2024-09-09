@@ -29,6 +29,12 @@ import {
 import { IStartupVariable } from '../../../../../../shared/models/mod.model';
 import { IModAddRequest } from '../../../../shared/models/mod-request.model';
 import { ADD_MOD } from '../../../../shared/stores/mod/mod.actions';
+import { isUnsignedIntValidator } from '../../../../../../shared/validators/unsigned-integer.validator';
+import * as moment from 'moment';
+import { IModResponse } from '../../../../shared/models/mod-response.model';
+import { IPlanResponse } from '../../../../shared/models/plan-response.model';
+import { IUserResponse } from '../../../../shared/models/user-response.model';
+import { IMachineResponse } from '../../../../shared/models/machine-response.model';
 
 @Component({
   selector: 'app-server-add',
@@ -40,39 +46,53 @@ export class ServerAddComponent {
   // private modAddSub!: Subscription;
   // private routeSub!: Subscription;
   // public isLoadingModAdd: boolean = false;
-  // public games: IGameResponse[] = [];
-  // public startupVariables: IStartupVariable[] = [];
-  // public dockerFile: string | null = null;
-  // constructor(
-  //   private readonly _el: ElementRef,
-  //   private readonly _renderer: Renderer2,
-  //   private readonly _fb: FormBuilder,
-  //   private readonly _route: ActivatedRoute,
-  //   private readonly _toaster: ToasterService,
-  //   private readonly _store: Store<AppState>
-  // ) {}
-  // public modAddForm: FormGroup = this._fb.group({
-  //   gameId: new FormControl<string>('', [Validators.required, uuidValidator()]),
-  //   modName: new FormControl<string>('', [
-  //     Validators.required,
-  //     Validators.minLength(2),
-  //     Validators.maxLength(40),
-  //   ]),
-  //   dockerImage: new FormControl<string>('', [
-  //     Validators.required,
-  //     Validators.minLength(2),
-  //     Validators.maxLength(40),
-  //     Validators.pattern(DOCKER_IMAGE_REGEX),
-  //   ]),
-  //   description: new FormControl<string>('', [
-  //     Validators.required,
-  //     Validators.minLength(10),
-  //     Validators.maxLength(2500),
-  //   ]),
-  //   dockerFile: new FormControl<File | null>(null, [Validators.required]),
-  //   startupCommand: new FormControl<string>('', [Validators.required]),
-  //   startupVariables: new FormControl<string>('', [Validators.required]),
-  // });
+  public games: IGameResponse[] = [];
+  public mods: IModResponse[] = [];
+  public plans: IPlanResponse[] = [];
+  public users: IUserResponse[] = [];
+  public machines: IMachineResponse[] = [];
+
+  constructor(
+    private readonly _el: ElementRef,
+    private readonly _renderer: Renderer2,
+    private readonly _fb: FormBuilder,
+    private readonly _route: ActivatedRoute,
+    private readonly _toaster: ToasterService,
+    private readonly _store: Store<AppState>
+  ) {}
+
+  public modAddForm: FormGroup = this._fb.group({
+    gameId: new FormControl<string>('', [Validators.required, uuidValidator()]),
+    modId: new FormControl<string>('', [Validators.required, uuidValidator()]),
+    userId: new FormControl<string>('', [Validators.required, uuidValidator()]),
+    machineId: new FormControl<string>('', [
+      Validators.required,
+      uuidValidator(),
+    ]),
+    planId: new FormControl<string>('', [Validators.required, uuidValidator()]),
+    name: new FormControl<string>('', [
+      Validators.required,
+      Validators.minLength(2),
+      Validators.maxLength(40),
+    ]),
+    port: new FormControl<string>('', [
+      Validators.required,
+      Validators.min(1),
+      Validators.max(65535),
+      isUnsignedIntValidator(),
+    ]),
+    customPrice: new FormControl<string>('', [
+      Validators.min(0),
+      Validators.max(100000),
+      isUnsignedIntValidator(),
+    ]),
+    expirationDate: new FormControl<Date>(moment.utc().toDate(), [
+      Validators.required,
+      Validators.minLength(2),
+      Validators.maxLength(40),
+      Validators.pattern(DOCKER_IMAGE_REGEX),
+    ]),
+  });
   // public ngOnInit(): void {
   //   this.routeSub = this._route.data.subscribe((data) => {
   //     this.games = data['games'] as IGameResponse[];
@@ -122,42 +142,186 @@ export class ServerAddComponent {
   //   this.resetSelectGame();
   //   this.modAddForm.reset();
   // }
-  // public onSelectGame(event: Event) {
-  //   const selectEl = event.target as HTMLSelectElement;
-  //   this.modAddForm.patchValue({
-  //     gameId: selectEl.value,
-  //   });
-  // }
-  // public generateGameSelectOption(game: IGameResponse): string {
-  //   return JSON.stringify({
-  //     icon: `<img class="shrink-0 size-5 rounded-md" src="${environment.API_URL}/assets/games/${game.tag}.png" alt="${game.name}" />`,
-  //   });
-  // }
-  // private resetSelectGame(): void {
-  //   const gameDataIcon = this._el.nativeElement.querySelector(
-  //     'button[id="mod-game-btn"] > [data-icon]'
-  //   );
-  //   const gameDataTitle = this._el.nativeElement.querySelector(
-  //     'button[id="mod-game-btn"] > [data-title]'
-  //   );
-  //   const selectedGame = this._el.nativeElement.querySelector(
-  //     'div.data-mod-game > div.selected'
-  //   );
-  //   if (gameDataIcon) {
-  //     this._renderer.addClass(gameDataIcon, 'hidden');
-  //     this._renderer.setProperty(gameDataIcon, 'innerHTML', 'null');
-  //   }
-  //   if (gameDataTitle) {
-  //     this._renderer.setProperty(
-  //       gameDataTitle,
-  //       'innerHTML',
-  //       'Select game for mod...'
-  //     );
-  //   }
-  //   if (selectedGame) {
-  //     this._renderer.removeClass(selectedGame, 'selected');
-  //   }
-  // }
+  public onSelectGame(event: Event) {
+    const selectEl = event.target as HTMLSelectElement;
+    this.modAddForm.patchValue({
+      gameId: selectEl.value,
+    });
+  }
+
+  public generateGameSelectOption(game: IGameResponse): string {
+    return JSON.stringify({
+      icon: `<img class="shrink-0 size-5 rounded-md" src="${environment.API_URL}/assets/games/${game.tag}.png" alt="${game.name}" />`,
+    });
+  }
+
+  private resetSelectGame(): void {
+    const gameDataIcon = this._el.nativeElement.querySelector(
+      'button[id="server-game-btn"] > [data-icon]'
+    );
+    const gameDataTitle = this._el.nativeElement.querySelector(
+      'button[id="server-game-btn"] > [data-title]'
+    );
+    const selectedGame = this._el.nativeElement.querySelector(
+      'div.data-server-game > div.selected'
+    );
+    if (gameDataIcon) {
+      this._renderer.addClass(gameDataIcon, 'hidden');
+      this._renderer.setProperty(gameDataIcon, 'innerHTML', 'null');
+    }
+    if (gameDataTitle) {
+      this._renderer.setProperty(
+        gameDataTitle,
+        'innerHTML',
+        'Select game for server...'
+      );
+    }
+    if (selectedGame) {
+      this._renderer.removeClass(selectedGame, 'selected');
+    }
+  }
+
+  public onSelectUser(event: Event) {
+    const selectEl = event.target as HTMLSelectElement;
+    this.modAddForm.patchValue({
+      gameId: selectEl.value,
+    });
+  }
+
+  public generateUserSelectOption(user: IUserResponse): string {
+    return JSON.stringify({
+      icon: `<img class="shrink-0 size-5 rounded-md" src="${environment.API_URL}/uploads/${user.avatar}" alt="${user.firstName} ${user.lastName} avatar" />`,
+    });
+  }
+
+  private resetSelectUser(): void {
+    const userDataIcon = this._el.nativeElement.querySelector(
+      'button[id="server-user-btn"] > [data-icon]'
+    );
+    const userDataTitle = this._el.nativeElement.querySelector(
+      'button[id="server-user-btn"] > [data-title]'
+    );
+    const selectedUser = this._el.nativeElement.querySelector(
+      'div.data-server-user > div.selected'
+    );
+    if (userDataIcon) {
+      this._renderer.addClass(userDataIcon, 'hidden');
+      this._renderer.setProperty(userDataIcon, 'innerHTML', 'null');
+    }
+    if (userDataTitle) {
+      this._renderer.setProperty(
+        userDataTitle,
+        'innerHTML',
+        'Select user for server...'
+      );
+    }
+    if (selectedUser) {
+      this._renderer.removeClass(selectedUser, 'selected');
+    }
+  }
+
+  public onSelectMachine(event: Event) {
+    const selectEl = event.target as HTMLSelectElement;
+
+    this.modAddForm.patchValue({
+      addMachinePlan: {
+        machineId: selectEl.value,
+        machineName: this._el.nativeElement
+          .querySelector(`option[id='${selectEl.value}'`)
+          ?.textContent?.trim(),
+      },
+    });
+  }
+
+  private resetSelectMachine(): void {
+    const machineDataTitle = this._el.nativeElement.querySelector(
+      'button[id="server-machine-btn"] > [data-title]'
+    );
+    const selectedMachine = this._el.nativeElement.querySelector(
+      'div.data-server-machine > div.selected'
+    );
+
+    if (machineDataTitle) {
+      this._renderer.setProperty(
+        machineDataTitle,
+        'innerHTML',
+        'Select machine for server...'
+      );
+    }
+
+    if (selectedMachine) {
+      this._renderer.removeClass(selectedMachine, 'selected');
+    }
+  }
+
+  public onSelectMod(event: Event) {
+    const selectEl = event.target as HTMLSelectElement;
+
+    this.modAddForm.patchValue({
+      addMachinePlan: {
+        machineId: selectEl.value,
+        machineName: this._el.nativeElement
+          .querySelector(`option[id='${selectEl.value}'`)
+          ?.textContent?.trim(),
+      },
+    });
+  }
+
+  private resetSelectMod(): void {
+    const modDataTitle = this._el.nativeElement.querySelector(
+      'button[id="server-mod-btn"] > [data-title]'
+    );
+    const selectedMod = this._el.nativeElement.querySelector(
+      'div.data-server-mod > div.selected'
+    );
+
+    if (modDataTitle) {
+      this._renderer.setProperty(
+        modDataTitle,
+        'innerHTML',
+        'Select mod for server...'
+      );
+    }
+
+    if (selectedMod) {
+      this._renderer.removeClass(selectedMod, 'selected');
+    }
+  }
+
+  public onSelectPlan(event: Event) {
+    const selectEl = event.target as HTMLSelectElement;
+
+    this.modAddForm.patchValue({
+      addMachinePlan: {
+        machineId: selectEl.value,
+        machineName: this._el.nativeElement
+          .querySelector(`option[id='${selectEl.value}'`)
+          ?.textContent?.trim(),
+      },
+    });
+  }
+
+  private resetSelectPlan(): void {
+    const planDataTitle = this._el.nativeElement.querySelector(
+      'button[id="server-plan-btn"] > [data-title]'
+    );
+    const selectedPlan = this._el.nativeElement.querySelector(
+      'div.data-server-plan > div.selected'
+    );
+
+    if (planDataTitle) {
+      this._renderer.setProperty(
+        planDataTitle,
+        'innerHTML',
+        'Select mod for server...'
+      );
+    }
+
+    if (selectedPlan) {
+      this._renderer.removeClass(selectedPlan, 'selected');
+    }
+  }
+
   // public modAddFormHasErrors(): boolean {
   //   // Game ID Errors
   //   if (this.modAddForm.get('gameId')?.errors?.['required']) {

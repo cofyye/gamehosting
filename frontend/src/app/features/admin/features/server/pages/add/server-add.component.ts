@@ -29,6 +29,7 @@ import { SELECT_MODS } from '../../../../shared/stores/mod/mod.selectors';
 import { LOAD_GAMES_BY_MACHINE_ID } from '../../../../shared/stores/game/game.actions';
 import { LOAD_MODS_BY_GAME_ID } from '../../../../shared/stores/mod/mod.actions';
 import { LOAD_PLANS_BY_GAME_ID } from '../../../../shared/stores/plan/plan.actions';
+import { ADD_SERVER } from '../../../../shared/stores/server/server.actions';
 
 @Component({
   selector: 'app-server-add',
@@ -168,8 +169,8 @@ export class ServerAddComponent implements OnInit, OnDestroy {
         : {}),
     };
 
-    // this._store.dispatch(START_LOADING({ key: 'ADD_SERVER_BTN' }));
-    // this._store.dispatch(ADD_MOD({ payload: data }));
+    this._store.dispatch(START_LOADING({ key: 'ADD_SERVER_BTN' }));
+    this._store.dispatch(ADD_SERVER({ payload: data }));
   }
 
   public onResetServer(): void {

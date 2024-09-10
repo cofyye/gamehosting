@@ -6,6 +6,6 @@ export interface IServerAddRequest {
   userId: string;
   name: string;
   port: string;
-  customPrice: number;
+  customPrice?: number;
   expirationDate: Date;
 }

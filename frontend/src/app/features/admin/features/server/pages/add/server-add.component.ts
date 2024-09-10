@@ -76,11 +76,13 @@ export class ServerAddComponent implements OnInit, OnDestroy {
       Validators.max(65535),
       isUnsignedIntValidator(),
     ]),
-    customPrice: new FormControl<number>(0, [
-      Validators.min(0),
-      Validators.max(100000),
-      unsignedNumericValidator(),
-    ]),
+    customPrice: new FormControl<number>(
+      {
+        value: 0,
+        disabled: true,
+      },
+      [Validators.min(0), Validators.max(100000), unsignedNumericValidator()]
+    ),
     expirationDate: new FormControl<Date>(moment.utc().toDate(), [
       Validators.required,
     ]),
@@ -156,12 +158,14 @@ export class ServerAddComponent implements OnInit, OnDestroy {
       gameId: this.serverAddForm.get('gameId')?.value,
       modId: this.serverAddForm.get('modId')?.value,
       machineId: this.serverAddForm.get('machineId')?.value,
-      planId: this.serverAddForm.get('planId')?.value,
       userId: this.serverAddForm.get('userId')?.value,
+      planId: this.serverAddForm.get('planId')?.value,
       name: this.serverAddForm.get('name')?.value,
-      customPrice: this.serverAddForm.get('customPrice')?.value,
       port: this.serverAddForm.get('port')?.value,
       expirationDate: this.serverAddForm.get('expirationDate')?.value,
+      ...(!this.serverAddForm.get('customPrice')?.disabled
+        ? { customPrice: this.serverAddForm.get('customPrice')?.value }
+        : {}),
     };
 
     // this._store.dispatch(START_LOADING({ key: 'ADD_SERVER_BTN' }));
@@ -170,6 +174,16 @@ export class ServerAddComponent implements OnInit, OnDestroy {
 
   public onResetServer(): void {
     this.serverAddForm.reset();
+  }
+
+  public onChangeCustomPrice(event: Event): void {
+    const input = event.target as HTMLInputElement;
+
+    if (input.checked) {
+      this.serverAddForm.get('customPrice')?.enable();
+    } else {
+      this.serverAddForm.get('customPrice')?.disable();
+    }
   }
 
   public onSelectGame(event: Event) {

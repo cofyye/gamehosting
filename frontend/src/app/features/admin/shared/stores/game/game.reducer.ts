@@ -3,6 +3,7 @@ import { initialState, gameAdapter } from './game.state';
 import {
   DELETE_GAME_RESPONSE,
   DESELECT_GAME,
+  LOAD_GAMES_BY_MACHINE_ID_RESPONSE,
   LOAD_GAMES_RESPONSE,
   SELECT_GAME,
 } from './game.actions';
@@ -10,6 +11,9 @@ import {
 export const gameReducer = createReducer(
   initialState,
   on(LOAD_GAMES_RESPONSE, (state, { data }) => {
+    return gameAdapter.setAll(data, state);
+  }),
+  on(LOAD_GAMES_BY_MACHINE_ID_RESPONSE, (state, { data }) => {
     return gameAdapter.setAll(data, state);
   }),
   on(DELETE_GAME_RESPONSE, (state, { data }) => {

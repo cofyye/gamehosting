@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { ServerAllComponent } from './pages/all/server-all.component';
 import { ServerAddComponent } from './pages/add/server-add.component';
 import { getUsersResolver } from '../../shared/resolvers/get-users.resolver';
+import { getMachinesResolver } from '../../shared/resolvers/get-machines.resolver';
 
 const routes: Routes = [
   {
@@ -20,6 +21,7 @@ const routes: Routes = [
         pathMatch: 'full',
         resolve: {
           users: getUsersResolver,
+          machines: getMachinesResolver,
         },
       },
       // {

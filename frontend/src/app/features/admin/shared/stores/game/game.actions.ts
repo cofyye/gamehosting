@@ -28,6 +28,18 @@ export const LOAD_GAMES_RESPONSE = createAction(
   props<{ data: IGameResponse[] }>()
 );
 
+export const LOAD_GAMES_BY_MACHINE_ID = createAction(
+  '[Game] Load Games By Machine Id',
+  props<{
+    payload: string;
+  }>()
+);
+
+export const LOAD_GAMES_BY_MACHINE_ID_RESPONSE = createAction(
+  '[Game] Load Games By Machine Id Response',
+  props<{ data: IGameResponse[] }>()
+);
+
 export const SELECT_GAME = createAction(
   '[Game] Select Game',
   props<{ id: string }>()

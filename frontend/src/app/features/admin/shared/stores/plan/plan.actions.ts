@@ -28,6 +28,18 @@ export const LOAD_PLANS_RESPONSE = createAction(
   props<{ data: IPlanResponse[] }>()
 );
 
+export const LOAD_PLANS_BY_GAME_ID = createAction(
+  '[Game] Load Plans By Game Id',
+  props<{
+    payload: string;
+  }>()
+);
+
+export const LOAD_PLANS_BY_GAME_ID_RESPONSE = createAction(
+  '[Game] Load Plans By Game Id Response',
+  props<{ data: IPlanResponse[] }>()
+);
+
 export const SELECT_PLAN = createAction(
   '[Plan] Select Plan',
   props<{ id: string }>()

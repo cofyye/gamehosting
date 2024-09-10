@@ -1,10 +1,4 @@
-import {
-  Component,
-  ElementRef,
-  OnDestroy,
-  OnInit,
-  Renderer2,
-} from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import {
   FormBuilder,
   FormControl,
@@ -16,7 +10,6 @@ import { AppState } from '../../../../../../app.state';
 import { Subscription } from 'rxjs';
 import { IS_LOADING } from '../../../../../../shared/stores/loader/loader.selectors';
 import { START_LOADING } from '../../../../../../shared/stores/loader/loader.actions';
-import { environment } from '../../../../../../../environments/environment';
 import { SELECT_HTTP_RESPONSE } from '../../../../../../shared/stores/http/http.selectors';
 import { uuidValidator } from '../../../../../../shared/validators/uuid.validator';
 import { ActivatedRoute } from '@angular/router';
@@ -29,6 +22,13 @@ import { IUserResponse } from '../../../../shared/models/user-response.model';
 import { IMachineResponse } from '../../../../shared/models/machine-response.model';
 import { IServerAddRequest } from '../../../../shared/models/server-request.model';
 import { unsignedNumericValidator } from '../../../../../../shared/validators/unsigned-numeric.validator';
+import { SELECT_MACHINES } from '../../../../shared/stores/machine/machine.selectors';
+import { SELECT_GAMES } from '../../../../shared/stores/game/game.selectors';
+import { SELECT_PLANS } from '../../../../shared/stores/plan/plan.selectors';
+import { SELECT_MODS } from '../../../../shared/stores/mod/mod.selectors';
+import { LOAD_GAMES_BY_MACHINE_ID } from '../../../../shared/stores/game/game.actions';
+import { LOAD_MODS_BY_GAME_ID } from '../../../../shared/stores/mod/mod.actions';
+import { LOAD_PLANS_BY_GAME_ID } from '../../../../shared/stores/plan/plan.actions';
 
 @Component({
   selector: 'app-server-add',
@@ -38,6 +38,10 @@ import { unsignedNumericValidator } from '../../../../../../shared/validators/un
 export class ServerAddComponent implements OnInit, OnDestroy {
   private loadingServerAddSub!: Subscription;
   private serverAddSub!: Subscription;
+  private getMachinesSub!: Subscription;
+  private getGamesSub!: Subscription;
+  private getModsSub!: Subscription;
+  private getPlansSub!: Subscription;
   private routeSub!: Subscription;
   public isLoadingServerAdd: boolean = false;
   public games: IGameResponse[] = [];
@@ -47,8 +51,6 @@ export class ServerAddComponent implements OnInit, OnDestroy {
   public machines: IMachineResponse[] = [];
 
   constructor(
-    private readonly _el: ElementRef,
-    private readonly _renderer: Renderer2,
     private readonly _fb: FormBuilder,
     private readonly _route: ActivatedRoute,
     private readonly _store: Store<AppState>
@@ -87,6 +89,7 @@ export class ServerAddComponent implements OnInit, OnDestroy {
   public ngOnInit(): void {
     this.routeSub = this._route.data.subscribe((data) => {
       this.users = data['users'] as IUserResponse[];
+      this.machines = data['machines'] as IMachineResponse[];
     });
 
     this.loadingServerAddSub = this._store
@@ -100,6 +103,24 @@ export class ServerAddComponent implements OnInit, OnDestroy {
           this.onResetServer();
         }
       });
+
+    this.getMachinesSub = this._store
+      .select(SELECT_MACHINES)
+      .subscribe((machines) => {
+        this.machines = machines;
+      });
+
+    this.getGamesSub = this._store.select(SELECT_GAMES).subscribe((games) => {
+      this.games = games;
+    });
+
+    this.getPlansSub = this._store.select(SELECT_PLANS).subscribe((plans) => {
+      this.plans = plans;
+    });
+
+    this.getModsSub = this._store.select(SELECT_MODS).subscribe((mods) => {
+      this.mods = mods;
+    });
   }
 
   public ngOnDestroy(): void {
@@ -111,6 +132,18 @@ export class ServerAddComponent implements OnInit, OnDestroy {
     }
     if (this.routeSub) {
       this.routeSub.unsubscribe();
+    }
+    if (this.getMachinesSub) {
+      this.getMachinesSub.unsubscribe();
+    }
+    if (this.getModsSub) {
+      this.getModsSub.unsubscribe();
+    }
+    if (this.getPlansSub) {
+      this.getPlansSub.unsubscribe();
+    }
+    if (this.getGamesSub) {
+      this.getGamesSub.unsubscribe();
     }
   }
 
@@ -136,11 +169,6 @@ export class ServerAddComponent implements OnInit, OnDestroy {
   }
 
   public onResetServer(): void {
-    this.resetSelectGame();
-    this.resetSelectMod();
-    this.resetSelectPlan();
-    this.resetSelectUser();
-    this.resetSelectMachine();
     this.serverAddForm.reset();
   }
 
@@ -149,37 +177,15 @@ export class ServerAddComponent implements OnInit, OnDestroy {
     this.serverAddForm.patchValue({
       gameId: selectEl.value,
     });
-  }
 
-  public generateGameSelectOption(game: IGameResponse): string {
-    return JSON.stringify({
-      icon: `<img class="shrink-0 size-5 rounded-md" src="${environment.API_URL}/assets/games/${game.tag}.png" alt="${game.name}" />`,
-    });
-  }
+    if (selectEl.value !== '0') {
+      this._store.dispatch(LOAD_MODS_BY_GAME_ID({ payload: selectEl.value }));
+      this._store.dispatch(LOAD_PLANS_BY_GAME_ID({ payload: selectEl.value }));
 
-  private resetSelectGame(): void {
-    const gameDataIcon = this._el.nativeElement.querySelector(
-      'button[id="server-game-btn"] > [data-icon]'
-    );
-    const gameDataTitle = this._el.nativeElement.querySelector(
-      'button[id="server-game-btn"] > [data-title]'
-    );
-    const selectedGame = this._el.nativeElement.querySelector(
-      'div.data-server-game > div.selected'
-    );
-    if (gameDataIcon) {
-      this._renderer.addClass(gameDataIcon, 'hidden');
-      this._renderer.setProperty(gameDataIcon, 'innerHTML', 'null');
-    }
-    if (gameDataTitle) {
-      this._renderer.setProperty(
-        gameDataTitle,
-        'innerHTML',
-        'Select game for server...'
-      );
-    }
-    if (selectedGame) {
-      this._renderer.removeClass(selectedGame, 'selected');
+      this.serverAddForm.patchValue({
+        modId: '',
+        planId: '',
+      });
     }
   }
 
@@ -190,63 +196,24 @@ export class ServerAddComponent implements OnInit, OnDestroy {
     });
   }
 
-  public generateUserSelectOption(user: IUserResponse): string {
-    return JSON.stringify({
-      icon: `<img class="shrink-0 size-5 rounded-md" src="${environment.API_URL}/uploads/${user.avatar}" alt="${user.firstName} ${user.lastName} avatar" />`,
-    });
-  }
-
-  private resetSelectUser(): void {
-    const userDataIcon = this._el.nativeElement.querySelector(
-      'button[id="server-user-btn"] > [data-icon]'
-    );
-    const userDataTitle = this._el.nativeElement.querySelector(
-      'button[id="server-user-btn"] > [data-title]'
-    );
-    const selectedUser = this._el.nativeElement.querySelector(
-      'div.data-server-user > div.selected'
-    );
-    if (userDataIcon) {
-      this._renderer.addClass(userDataIcon, 'hidden');
-      this._renderer.setProperty(userDataIcon, 'innerHTML', 'null');
-    }
-    if (userDataTitle) {
-      this._renderer.setProperty(
-        userDataTitle,
-        'innerHTML',
-        'Select user for server...'
-      );
-    }
-    if (selectedUser) {
-      this._renderer.removeClass(selectedUser, 'selected');
-    }
-  }
-
   public onSelectMachine(event: Event) {
     const selectEl = event.target as HTMLSelectElement;
     this.serverAddForm.patchValue({
       machineId: selectEl.value,
     });
-  }
 
-  private resetSelectMachine(): void {
-    const machineDataTitle = this._el.nativeElement.querySelector(
-      'button[id="server-machine-btn"] > [data-title]'
-    );
-    const selectedMachine = this._el.nativeElement.querySelector(
-      'div.data-server-machine > div.selected'
-    );
-
-    if (machineDataTitle) {
-      this._renderer.setProperty(
-        machineDataTitle,
-        'innerHTML',
-        'Select machine for server...'
+    if (selectEl.value !== '0') {
+      this._store.dispatch(
+        LOAD_GAMES_BY_MACHINE_ID({ payload: selectEl.value })
       );
-    }
 
-    if (selectedMachine) {
-      this._renderer.removeClass(selectedMachine, 'selected');
+      this.plans = [];
+      this.mods = [];
+
+      this.serverAddForm.patchValue({
+        modId: '',
+        planId: '',
+      });
     }
   }
 
@@ -257,53 +224,11 @@ export class ServerAddComponent implements OnInit, OnDestroy {
     });
   }
 
-  private resetSelectMod(): void {
-    const modDataTitle = this._el.nativeElement.querySelector(
-      'button[id="server-mod-btn"] > [data-title]'
-    );
-    const selectedMod = this._el.nativeElement.querySelector(
-      'div.data-server-mod > div.selected'
-    );
-
-    if (modDataTitle) {
-      this._renderer.setProperty(
-        modDataTitle,
-        'innerHTML',
-        'Select mod for server...'
-      );
-    }
-
-    if (selectedMod) {
-      this._renderer.removeClass(selectedMod, 'selected');
-    }
-  }
-
   public onSelectPlan(event: Event) {
     const selectEl = event.target as HTMLSelectElement;
     this.serverAddForm.patchValue({
       planId: selectEl.value,
     });
-  }
-
-  private resetSelectPlan(): void {
-    const planDataTitle = this._el.nativeElement.querySelector(
-      'button[id="server-plan-btn"] > [data-title]'
-    );
-    const selectedPlan = this._el.nativeElement.querySelector(
-      'div.data-server-plan > div.selected'
-    );
-
-    if (planDataTitle) {
-      this._renderer.setProperty(
-        planDataTitle,
-        'innerHTML',
-        'Select plan for server...'
-      );
-    }
-
-    if (selectedPlan) {
-      this._renderer.removeClass(selectedPlan, 'selected');
-    }
   }
 
   // public modAddFormHasErrors(): boolean {

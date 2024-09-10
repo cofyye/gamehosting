@@ -12,7 +12,7 @@
               >
                 <div>
                   <h2 class="text-lg/[26px] font-semibold mb-0 text-gray-800">
-                    Servers
+                    Servers <br />
                   </h2>
                   <p class="text-xs text-gray-600">
                     Add new servers to enhance network capacity.
@@ -32,336 +32,304 @@
               <!-- End Header -->
 
               <!-- Body -->
-              <div class="p-4 md:p-5">
-                <div class="grid gap-y-4">
-                  <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-4">
-                    <!-- Form Group User Select -->
-                    <div class="relative flex-1">
-                      <select
-                        (change)="onSelectUser($event)"
-                        data-hs-select='{
-                           "placeholder": "Select user for server...",
-                           "toggleTag": "<button type=\"button\" aria-expanded=\"false\" id=\"server-user-btn\"><span class=\"me-2\" data-icon></span><span class=\"text-gray-800 \" data-title></span></button>",
-                           "toggleClasses": "hs-select-disabled:pointer-events-none hs-select-disabled:opacity-50 relative py-4 ps-4 pe-9 flex gap-x-2 text-nowrap w-full cursor-pointer bg-white border border-gray-200 rounded-lg text-start text-sm focus:outline-none focus:ring-2 focus:ring-blue-500",
-                           "dropdownClasses": "data-server-user z-[21] max-h-72 p-1 space-y-0.5 z-20 w-full bg-white border border-gray-200 rounded-lg overflow-hidden overflow-y-auto [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:bg-gray-300",
-                           "optionClasses": "py-2 px-4 w-full text-sm text-gray-800 cursor-pointer hover:bg-gray-100 rounded-lg focus:outline-none focus:bg-gray-100",
-                           "optionTemplate": "<div class=\"flex items-center\"><div class=\"me-2\" data-icon></div><div><div class=\"hs-selected:font-semibold text-sm text-gray-800 \" data-title></div></div><div class=\"ms-auto\"><span class=\"hidden hs-selected:block\"><svg class=\"shrink-0 size-4 text-blue-600\" xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\" fill=\"currentColor\" viewBox=\"0 0 16 16\"><path d=\"M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425a.247.247 0 0 1 .02-.022Z\"/></svg></span></div></div>",
-                           "extraMarkup": "<div class=\"absolute top-1/2 end-3 -translate-y-1/2\"><svg class=\"shrink-0 size-3.5 text-gray-500 \" xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"m7 15 5 5 5-5\"/><path d=\"m7 9 5-5 5 5\"/></svg></div>"
-                         }'
-                        class="hidden"
-                        id="select-server-user"
-                      >
-                        <option value="">Choose User</option>
-                        <option
-                          *ngFor="let user of users"
-                          [value]="user.id"
-                          [attr.data-hs-select-option]="
-                            generateUserSelectOption(user)
-                          "
+              <form [formGroup]="serverAddForm">
+                <div class="p-4 md:p-5">
+                  <div class="grid gap-y-4">
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-4">
+                      <!-- Form Group User Select -->
+                      <div class="relative flex-1">
+                        <select
+                          class="py-4 px-4 pe-9 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
+                          (change)="onSelectUser($event)"
+                          id="select-server-user"
                         >
-                          {{ user.firstName }} {{ user.lastName }} -
-                          {{ user.username }}
-                        </option>
-                      </select>
-                    </div>
-                    <!-- End Form Group User Select -->
-
-                    <!-- Form Group Machine Select -->
-                    <div
-                      class="relative flex-1"
-                      [ngClass]="
-                        serverAddForm.get('userId')?.value ? 'block' : 'hidden'
-                      "
-                    >
-                      <select
-                        (change)="onSelectMachine($event)"
-                        data-hs-select='{
-                          "placeholder": "Select machine for server...",
-                          "toggleTag": "<button type=\"button\" aria-expanded=\"false\" id=\"server-machine-btn\"><span class=\"me-2\" data-icon></span><span class=\"text-gray-800 \" data-title></span></button>",
-                          "toggleClasses": "hs-select-disabled:pointer-events-none hs-select-disabled:opacity-50 relative py-4 ps-4 pe-9 flex gap-x-2 text-nowrap w-full cursor-pointer bg-white border border-gray-200 rounded-lg text-start text-sm focus:outline-none focus:ring-2 focus:ring-blue-500",
-                          "dropdownClasses": "data-server-machine z-[21] max-h-72 p-1 space-y-0.5 z-20 w-full bg-white border border-gray-200 rounded-lg overflow-hidden overflow-y-auto [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:bg-gray-300",
-                          "optionClasses": "py-2 px-4 w-full text-sm text-gray-800 cursor-pointer hover:bg-gray-100 rounded-lg focus:outline-none focus:bg-gray-100",
-                          "optionTemplate": "<div class=\"flex items-center\"><div class=\"me-2\" data-icon></div><div><div class=\"hs-selected:font-semibold text-sm text-gray-800 \" data-title></div></div><div class=\"ms-auto\"><span class=\"hidden hs-selected:block\"><svg class=\"shrink-0 size-4 text-blue-600\" xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\" fill=\"currentColor\" viewBox=\"0 0 16 16\"><path d=\"M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425a.247.247 0 0 1 .02-.022Z\"/></svg></span></div></div>",
-                          "extraMarkup": "<div class=\"absolute top-1/2 end-3 -translate-y-1/2\"><svg class=\"shrink-0 size-3.5 text-gray-500 \" xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"m7 15 5 5 5-5\"/><path d=\"m7 9 5-5 5 5\"/></svg></div>"
-                        }'
-                        class="hidden"
-                        id="select-server-machine"
-                      >
-                        <option value="">Choose Machine</option>
-                        <option
-                          [attr.id]="machine.id"
-                          *ngFor="let machine of machines"
-                          [value]="machine.id"
-                        >
-                          {{ machine.name }}
-                        </option>
-                      </select>
-                    </div>
-                  </div>
-                  <!-- End Form Group Machine Select -->
-
-                  <div
-                    class="grid grid-cols-1 lg:grid-cols-3 gap-4 lg:gap-4"
-                    [ngClass]="
-                      serverAddForm.get('machineId')?.value ? 'block' : 'hidden'
-                    "
-                  >
-                    <!-- Form Group Game Select -->
-                    <div class="relative flex-1">
-                      <select
-                        (change)="onSelectGame($event)"
-                        data-hs-select='{
-                           "placeholder": "Select game for server...",
-                           "toggleTag": "<button type=\"button\" aria-expanded=\"false\" id=\"server-game-btn\"><span class=\"me-2\" data-icon></span><span class=\"text-gray-800 \" data-title></span></button>",
-                           "toggleClasses": "hs-select-disabled:pointer-events-none hs-select-disabled:opacity-50 relative py-4 ps-4 pe-9 flex gap-x-2 text-nowrap w-full cursor-pointer bg-white border border-gray-200 rounded-lg text-start text-sm focus:outline-none focus:ring-2 focus:ring-blue-500",
-                           "dropdownClasses": "data-server-game z-[21] max-h-72 p-1 space-y-0.5 z-20 w-full bg-white border border-gray-200 rounded-lg overflow-hidden overflow-y-auto [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:bg-gray-300",
-                           "optionClasses": "py-2 px-4 w-full text-sm text-gray-800 cursor-pointer hover:bg-gray-100 rounded-lg focus:outline-none focus:bg-gray-100",
-                           "optionTemplate": "<div class=\"flex items-center\"><div class=\"me-2\" data-icon></div><div><div class=\"hs-selected:font-semibold text-sm text-gray-800 \" data-title></div></div><div class=\"ms-auto\"><span class=\"hidden hs-selected:block\"><svg class=\"shrink-0 size-4 text-blue-600\" xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\" fill=\"currentColor\" viewBox=\"0 0 16 16\"><path d=\"M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425a.247.247 0 0 1 .02-.022Z\"/></svg></span></div></div>",
-                           "extraMarkup": "<div class=\"absolute top-1/2 end-3 -translate-y-1/2\"><svg class=\"shrink-0 size-3.5 text-gray-500 \" xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"m7 15 5 5 5-5\"/><path d=\"m7 9 5-5 5 5\"/></svg></div>"
-                         }'
-                        class="hidden"
-                        id="select-server-game"
-                      >
-                        <option value="">Choose Game</option>
-                        <option
-                          *ngFor="let game of games"
-                          [value]="game.id"
-                          [attr.data-hs-select-option]="
-                            generateGameSelectOption(game)
-                          "
-                        >
-                          {{ game.name }}
-                        </option>
-                      </select>
-                    </div>
-                    <!-- End Form Group Game Select -->
-
-                    <!-- Form Group Mod Select -->
-                    <div
-                      class="relative flex-1"
-                      [ngClass]="
-                        serverAddForm.get('gameId')?.value ? 'block' : 'hidden'
-                      "
-                    >
-                      <select
-                        (change)="onSelectMod($event)"
-                        data-hs-select='{
-                          "placeholder": "Select mod for server...",
-                          "toggleTag": "<button type=\"button\" aria-expanded=\"false\" id=\"server-mod-btn\"><span class=\"me-2\" data-icon></span><span class=\"text-gray-800 \" data-title></span></button>",
-                          "toggleClasses": "hs-select-disabled:pointer-events-none hs-select-disabled:opacity-50 relative py-4 ps-4 pe-9 flex gap-x-2 text-nowrap w-full cursor-pointer bg-white border border-gray-200 rounded-lg text-start text-sm focus:outline-none focus:ring-2 focus:ring-blue-500",
-                          "dropdownClasses": "data-server-mod z-[21] max-h-72 p-1 space-y-0.5 z-20 w-full bg-white border border-gray-200 rounded-lg overflow-hidden overflow-y-auto [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:bg-gray-300",
-                          "optionClasses": "py-2 px-4 w-full text-sm text-gray-800 cursor-pointer hover:bg-gray-100 rounded-lg focus:outline-none focus:bg-gray-100",
-                          "optionTemplate": "<div class=\"flex items-center\"><div class=\"me-2\" data-icon></div><div><div class=\"hs-selected:font-semibold text-sm text-gray-800 \" data-title></div></div><div class=\"ms-auto\"><span class=\"hidden hs-selected:block\"><svg class=\"shrink-0 size-4 text-blue-600\" xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\" fill=\"currentColor\" viewBox=\"0 0 16 16\"><path d=\"M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425a.247.247 0 0 1 .02-.022Z\"/></svg></span></div></div>",
-                          "extraMarkup": "<div class=\"absolute top-1/2 end-3 -translate-y-1/2\"><svg class=\"shrink-0 size-3.5 text-gray-500 \" xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"m7 15 5 5 5-5\"/><path d=\"m7 9 5-5 5 5\"/></svg></div>"
-                        }'
-                        class="hidden"
-                        id="select-server-mod"
-                      >
-                        <option value="">Choose Mod</option>
-                        <option
-                          [attr.id]="mod.id"
-                          *ngFor="let mod of mods"
-                          [value]="mod.id"
-                        >
-                          {{ mod.modName }}
-                        </option>
-                      </select>
-                    </div>
-                    <!-- End Form Group Mod Select -->
-
-                    <!-- Form Group Plan Select -->
-                    <div
-                      class="relative flex-1"
-                      [ngClass]="
-                        serverAddForm.get('modId')?.value ? 'block' : 'hidden'
-                      "
-                    >
-                      <select
-                        (change)="onSelectPlan($event)"
-                        data-hs-select='{
-                          "placeholder": "Select plan for server...",
-                          "toggleTag": "<button type=\"button\" aria-expanded=\"false\" id=\"server-plan-btn\"><span class=\"me-2\" data-icon></span><span class=\"text-gray-800 \" data-title></span></button>",
-                          "toggleClasses": "hs-select-disabled:pointer-events-none hs-select-disabled:opacity-50 relative py-4 ps-4 pe-9 flex gap-x-2 text-nowrap w-full cursor-pointer bg-white border border-gray-200 rounded-lg text-start text-sm focus:outline-none focus:ring-2 focus:ring-blue-500",
-                          "dropdownClasses": "data-server-plan z-[21] max-h-72 p-1 space-y-0.5 z-20 w-full bg-white border border-gray-200 rounded-lg overflow-hidden overflow-y-auto [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:bg-gray-300",
-                          "optionClasses": "py-2 px-4 w-full text-sm text-gray-800 cursor-pointer hover:bg-gray-100 rounded-lg focus:outline-none focus:bg-gray-100",
-                          "optionTemplate": "<div class=\"flex items-center\"><div class=\"me-2\" data-icon></div><div><div class=\"hs-selected:font-semibold text-sm text-gray-800 \" data-title></div></div><div class=\"ms-auto\"><span class=\"hidden hs-selected:block\"><svg class=\"shrink-0 size-4 text-blue-600\" xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\" fill=\"currentColor\" viewBox=\"0 0 16 16\"><path d=\"M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425a.247.247 0 0 1 .02-.022Z\"/></svg></span></div></div>",
-                          "extraMarkup": "<div class=\"absolute top-1/2 end-3 -translate-y-1/2\"><svg class=\"shrink-0 size-3.5 text-gray-500 \" xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"m7 15 5 5 5-5\"/><path d=\"m7 9 5-5 5 5\"/></svg></div>"
-                        }'
-                        class="hidden"
-                        id="select-server-plan"
-                      >
-                        <option value="">Choose Plan</option>
-                        <option
-                          [attr.id]="plan.id"
-                          *ngFor="let plan of plans"
-                          [value]="plan.id"
-                        >
-                          {{ plan.name }}
-                        </option>
-                      </select>
-                    </div>
-                    <!-- End Form Group Plan Select -->
-                  </div>
-
-                  <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-4">
-                    <!-- Form Group -->
-                    <div
-                      class="relative flex-1"
-                      [ngClass]="
-                        serverAddForm.get('planId')?.value ? 'block' : 'hidden'
-                      "
-                    >
-                      <input
-                        type="text"
-                        id="hs-floating-input-name-value"
-                        class="peer p-4 block w-full border-gray-200 rounded-lg text-sm placeholder:text-transparent focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none focus:pt-6 focus:pb-2 [&amp;:not(:placeholder-shown)]:pt-6 [&amp;:not(:placeholder-shown)]:pb-2 autofill:pt-6 autofill:pb-2"
-                        placeholder=""
-                        value=""
-                      />
-                      <label
-                        for="hs-floating-input-name-value"
-                        class="absolute top-0 start-0 p-4 h-full text-sm truncate pointer-events-none transition ease-in-out duration-100 border border-transparent origin-[0_0] peer-disabled:opacity-50 peer-disabled:pointer-events-none peer-focus:scale-90 peer-focus:translate-x-0.5 peer-focus:-translate-y-1.5 peer-focus:text-gray-500 peer-[:not(:placeholder-shown)]:scale-90 peer-[:not(:placeholder-shown)]:translate-x-0.5 peer-[:not(:placeholder-shown)]:-translate-y-1.5 peer-[:not(:placeholder-shown)]:text-gray-500"
-                        >Name</label
-                      >
-                    </div>
-
-                    <!-- Form Group -->
-                    <div
-                      class="relative flex-1"
-                      [ngClass]="
-                        serverAddForm.get('planId')?.value ? 'block' : 'hidden'
-                      "
-                    >
-                      <input
-                        type="date"
-                        id="hs-floating-input-expirationDate-value"
-                        class="peer p-4 block w-full border-gray-200 rounded-lg text-sm placeholder:text-transparent focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none focus:pt-6 focus:pb-2 [&amp;:not(:placeholder-shown)]:pt-6 [&amp;:not(:placeholder-shown)]:pb-2 autofill:pt-6 autofill:pb-2"
-                        placeholder=""
-                        value=""
-                      />
-                      <label
-                        for="hs-floating-input-expirationDate-value"
-                        class="absolute top-0 start-0 p-4 h-full text-sm truncate pointer-events-none transition ease-in-out duration-100 border border-transparent origin-[0_0] peer-disabled:opacity-50 peer-disabled:pointer-events-none peer-focus:scale-90 peer-focus:translate-x-0.5 peer-focus:-translate-y-1.5 peer-focus:text-gray-500 peer-[:not(:placeholder-shown)]:scale-90 peer-[:not(:placeholder-shown)]:translate-x-0.5 peer-[:not(:placeholder-shown)]:-translate-y-1.5 peer-[:not(:placeholder-shown)]:text-gray-500"
-                        >Expiration Date</label
-                      >
-                    </div>
-                  </div>
-
-                  <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-4">
-                    <!-- Form Group -->
-                    <div
-                      class="relative flex-1"
-                      [ngClass]="
-                        serverAddForm.get('planId')?.value ? 'block' : 'hidden'
-                      "
-                    >
-                      <input
-                        type="text"
-                        id="hs-floating-input-customPrice-value"
-                        class="peer p-4 block w-full border-gray-200 rounded-lg text-sm placeholder:text-transparent focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none focus:pt-6 focus:pb-2 [&:not(:placeholder-shown)]:pt-6 [&:not(:placeholder-shown)]:pb-2 autofill:pt-6 autofill:pb-2"
-                        placeholder=""
-                        value=""
-                      />
-                      <label
-                        for="hs-floating-input-customPrice-value"
-                        class="absolute top-0 start-0 p-4 h-full text-sm truncate pointer-events-none transition ease-in-out duration-100 border border-transparent origin-[0_0] peer-disabled:opacity-50 peer-disabled:pointer-events-none peer-focus:scale-90 peer-focus:translate-x-0.5 peer-focus:-translate-y-1.5 peer-focus:text-gray-500 peer-[:not(:placeholder-shown)]:scale-90 peer-[:not(:placeholder-shown)]:translate-x-0.5 peer-[:not(:placeholder-shown)]:-translate-y-1.5 peer-[:not(:placeholder-shown)]:text-gray-500"
-                        >Custom Price</label
-                      >
-
-                      <!-- Switcher -->
-                      <div class="absolute inset-y-0 right-3 flex items-center">
-                        <div class="relative inline-block">
-                          <input
-                            type="checkbox"
-                            id="hs-small-switch-with-icons"
-                            class="peer relative w-11 h-6 p-px bg-gray-100 border-transparent text-transparent rounded-full cursor-pointer transition-colors ease-in-out duration-200 focus:ring-blue-600 disabled:opacity-50 disabled:pointer-events-none checked:bg-none checked:text-blue-600 checked:border-blue-600 focus:checked:border-blue-600 before:inline-block before:size-5 before:bg-white checked:before:bg-blue-200 before:translate-x-0 checked:before:translate-x-full before:rounded-full before:shadow before:transform before:ring-0 before:transition before:ease-in-out before:duration-200"
-                          />
-                          <label
-                            for="hs-small-switch-with-icons"
-                            class="sr-only"
-                            >switch</label
+                          <option value="0" selected>Choose User</option>
+                          <option
+                            [attr.id]="user.id"
+                            *ngFor="let user of users"
+                            [value]="user.id"
                           >
-                          <span
-                            class="peer-checked:text-white text-gray-500 size-5 absolute top-[3px] start-0.5 flex justify-center items-center pointer-events-none transition-colors ease-in-out duration-200"
+                            {{ user.firstName }} {{ user.lastName }} -
+                            {{ user.username }}
+                          </option>
+                        </select>
+                      </div>
+                      <!-- End Form Group User Select -->
+
+                      <!-- Form Group Machine Select -->
+                      <div class="relative flex-1">
+                        <select
+                          class="py-4 px-4 pe-9 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
+                          (change)="onSelectMachine($event)"
+                          id="select-server-machine"
+                        >
+                          <option value="0" selected>Choose Machine</option>
+                          <option
+                            [attr.id]="machine.id"
+                            *ngFor="let machine of machines"
+                            [value]="machine.id"
                           >
-                            <svg
-                              class="shrink-0 size-3"
-                              xmlns="http://www.w3.org/2000/svg"
-                              width="24"
-                              height="24"
-                              viewBox="0 0 24 24"
-                              fill="none"
-                              stroke="currentColor"
-                              stroke-width="2.5"
-                              stroke-linecap="round"
-                              stroke-linejoin="round"
-                            >
-                              <path d="M18 6 6 18"></path>
-                              <path d="m6 6 12 12"></path>
-                            </svg>
-                          </span>
-                          <span
-                            class="peer-checked:text-blue-600 text-gray-500 size-5 absolute top-[3px] end-0.5 flex justify-center items-center pointer-events-none transition-colors ease-in-out duration-200"
+                            {{ machine.name }} - {{ machine.ip }}
+                          </option>
+                        </select>
+                      </div>
+                    </div>
+                    <!-- End Form Group Machine Select -->
+
+                    <div
+                      class="grid grid-cols-1 lg:grid-cols-3 gap-4 lg:gap-4"
+                      [ngClass]="
+                        serverAddForm.get('machineId')?.value
+                          ? 'block'
+                          : 'hidden'
+                      "
+                    >
+                      <!-- Form Group Game Select -->
+                      <div class="relative flex-1">
+                        <select
+                          class="py-4 px-4 pe-9 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
+                          (change)="onSelectGame($event)"
+                          id="select-server-game"
+                        >
+                          <option value="0" selected>Choose Game</option>
+                          <option
+                            [attr.id]="game.id"
+                            *ngFor="let game of games"
+                            [value]="game.id"
                           >
-                            <svg
-                              class="shrink-0 size-3"
-                              xmlns="http://www.w3.org/2000/svg"
-                              width="24"
-                              height="24"
-                              viewBox="0 0 24 24"
-                              fill="none"
-                              stroke="currentColor"
-                              stroke-width="2.5"
-                              stroke-linecap="round"
-                              stroke-linejoin="round"
-                            >
-                              <polyline points="20 6 9 17 4 12"></polyline>
-                            </svg>
-                          </span>
-                        </div>
+                            {{ game.name }}
+                          </option>
+                        </select>
+                      </div>
+                      <!-- End Form Group Game Select -->
+
+                      <!-- Form Group Mod Select -->
+                      <div
+                        class="relative flex-1"
+                        [ngClass]="
+                          serverAddForm.get('gameId')?.value
+                            ? 'block'
+                            : 'hidden'
+                        "
+                      >
+                        <select
+                          class="py-4 px-4 pe-9 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
+                          (change)="onSelectMod($event)"
+                          id="select-server-mod"
+                        >
+                          <option value="0" selected>Choose Mod</option>
+                          <option
+                            [attr.id]="mod.id"
+                            *ngFor="let mod of mods"
+                            [value]="mod.id"
+                          >
+                            {{ mod.modName }}
+                          </option>
+                        </select>
+                      </div>
+                      <!-- End Form Group Mod Select -->
+
+                      <!-- Form Group Plan Select -->
+                      <div
+                        class="relative flex-1"
+                        [ngClass]="
+                          serverAddForm.get('gameId')?.value
+                            ? 'block'
+                            : 'hidden'
+                        "
+                      >
+                        <select
+                          class="py-4 px-4 pe-9 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
+                          (change)="onSelectPlan($event)"
+                          id="select-server-plan"
+                        >
+                          <option value="0" selected>Choose Plan</option>
+                          <option
+                            [attr.id]="plan.id"
+                            *ngFor="let plan of plans"
+                            [value]="plan.id"
+                          >
+                            {{ plan.name }}
+                          </option>
+                        </select>
+                      </div>
+                      <!-- End Form Group Plan Select -->
+                    </div>
+
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-4">
+                      <!-- Form Group -->
+                      <div
+                        class="relative flex-1"
+                        [ngClass]="
+                          serverAddForm.get('planId')?.value &&
+                          serverAddForm.get('modId')?.value
+                            ? 'block'
+                            : 'hidden'
+                        "
+                      >
+                        <input
+                          type="text"
+                          id="hs-floating-input-name-value"
+                          class="peer p-4 block w-full border-gray-200 rounded-lg text-sm placeholder:text-transparent focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none focus:pt-6 focus:pb-2 [&amp;:not(:placeholder-shown)]:pt-6 [&amp;:not(:placeholder-shown)]:pb-2 autofill:pt-6 autofill:pb-2"
+                          placeholder=""
+                          value=""
+                        />
+                        <label
+                          for="hs-floating-input-name-value"
+                          class="absolute top-0 start-0 p-4 h-full text-sm truncate pointer-events-none transition ease-in-out duration-100 border border-transparent origin-[0_0] peer-disabled:opacity-50 peer-disabled:pointer-events-none peer-focus:scale-90 peer-focus:translate-x-0.5 peer-focus:-translate-y-1.5 peer-focus:text-gray-500 peer-[:not(:placeholder-shown)]:scale-90 peer-[:not(:placeholder-shown)]:translate-x-0.5 peer-[:not(:placeholder-shown)]:-translate-y-1.5 peer-[:not(:placeholder-shown)]:text-gray-500"
+                          >Name</label
+                        >
+                      </div>
+
+                      <!-- Form Group -->
+                      <div
+                        class="relative flex-1"
+                        [ngClass]="
+                          serverAddForm.get('planId')?.value &&
+                          serverAddForm.get('modId')?.value
+                            ? 'block'
+                            : 'hidden'
+                        "
+                      >
+                        <input
+                          type="date"
+                          id="hs-floating-input-expirationDate-value"
+                          class="peer p-4 block w-full border-gray-200 rounded-lg text-sm placeholder:text-transparent focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none focus:pt-6 focus:pb-2 [&amp;:not(:placeholder-shown)]:pt-6 [&amp;:not(:placeholder-shown)]:pb-2 autofill:pt-6 autofill:pb-2"
+                          placeholder=""
+                          value=""
+                        />
+                        <label
+                          for="hs-floating-input-expirationDate-value"
+                          class="absolute top-0 start-0 p-4 h-full text-sm truncate pointer-events-none transition ease-in-out duration-100 border border-transparent origin-[0_0] peer-disabled:opacity-50 peer-disabled:pointer-events-none peer-focus:scale-90 peer-focus:translate-x-0.5 peer-focus:-translate-y-1.5 peer-focus:text-gray-500 peer-[:not(:placeholder-shown)]:scale-90 peer-[:not(:placeholder-shown)]:translate-x-0.5 peer-[:not(:placeholder-shown)]:-translate-y-1.5 peer-[:not(:placeholder-shown)]:text-gray-500"
+                          >Expiration Date</label
+                        >
                       </div>
                     </div>
 
-                    <div
-                      class="relative flex-1"
-                      [ngClass]="
-                        serverAddForm.get('planId')?.value ? 'block' : 'hidden'
-                      "
-                    >
-                      <input
-                        type="text"
-                        id="hs-floating-input-port-value"
-                        class="peer p-4 block w-full border-gray-200 rounded-lg text-sm placeholder:text-transparent focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none focus:pt-6 focus:pb-2 [&amp;:not(:placeholder-shown)]:pt-6 [&amp;:not(:placeholder-shown)]:pb-2 autofill:pt-6 autofill:pb-2"
-                        placeholder=""
-                        value=""
-                      />
-                      <label
-                        for="hs-floating-input-port-value"
-                        class="absolute top-0 start-0 p-4 h-full text-sm truncate pointer-events-none transition ease-in-out duration-100 border border-transparent origin-[0_0] peer-disabled:opacity-50 peer-disabled:pointer-events-none peer-focus:scale-90 peer-focus:translate-x-0.5 peer-focus:-translate-y-1.5 peer-focus:text-gray-500 peer-[:not(:placeholder-shown)]:scale-90 peer-[:not(:placeholder-shown)]:translate-x-0.5 peer-[:not(:placeholder-shown)]:-translate-y-1.5 peer-[:not(:placeholder-shown)]:text-gray-500"
-                        >Port</label
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-4">
+                      <!-- Form Group -->
+                      <div
+                        class="relative flex-1"
+                        [ngClass]="
+                          serverAddForm.get('planId')?.value &&
+                          serverAddForm.get('modId')?.value
+                            ? 'block'
+                            : 'hidden'
+                        "
                       >
+                        <input
+                          type="text"
+                          id="hs-floating-input-customPrice-value"
+                          class="peer p-4 block w-full border-gray-200 rounded-lg text-sm placeholder:text-transparent focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none focus:pt-6 focus:pb-2 [&:not(:placeholder-shown)]:pt-6 [&:not(:placeholder-shown)]:pb-2 autofill:pt-6 autofill:pb-2"
+                          placeholder=""
+                          value=""
+                        />
+                        <label
+                          for="hs-floating-input-customPrice-value"
+                          class="absolute top-0 start-0 p-4 h-full text-sm truncate pointer-events-none transition ease-in-out duration-100 border border-transparent origin-[0_0] peer-disabled:opacity-50 peer-disabled:pointer-events-none peer-focus:scale-90 peer-focus:translate-x-0.5 peer-focus:-translate-y-1.5 peer-focus:text-gray-500 peer-[:not(:placeholder-shown)]:scale-90 peer-[:not(:placeholder-shown)]:translate-x-0.5 peer-[:not(:placeholder-shown)]:-translate-y-1.5 peer-[:not(:placeholder-shown)]:text-gray-500"
+                          >Custom Price</label
+                        >
+
+                        <!-- Switcher -->
+                        <div
+                          class="absolute inset-y-0 right-3 flex items-center"
+                        >
+                          <div class="relative inline-block">
+                            <input
+                              type="checkbox"
+                              id="hs-small-switch-with-icons"
+                              class="peer relative w-11 h-6 p-px bg-gray-100 border-transparent text-transparent rounded-full cursor-pointer transition-colors ease-in-out duration-200 focus:ring-blue-600 disabled:opacity-50 disabled:pointer-events-none checked:bg-none checked:text-blue-600 checked:border-blue-600 focus:checked:border-blue-600 before:inline-block before:size-5 before:bg-white checked:before:bg-blue-200 before:translate-x-0 checked:before:translate-x-full before:rounded-full before:shadow before:transform before:ring-0 before:transition before:ease-in-out before:duration-200"
+                            />
+                            <label
+                              for="hs-small-switch-with-icons"
+                              class="sr-only"
+                              >switch</label
+                            >
+                            <span
+                              class="peer-checked:text-white text-gray-500 size-5 absolute top-[3px] start-0.5 flex justify-center items-center pointer-events-none transition-colors ease-in-out duration-200"
+                            >
+                              <svg
+                                class="shrink-0 size-3"
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="24"
+                                height="24"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2.5"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                              >
+                                <path d="M18 6 6 18"></path>
+                                <path d="m6 6 12 12"></path>
+                              </svg>
+                            </span>
+                            <span
+                              class="peer-checked:text-blue-600 text-gray-500 size-5 absolute top-[3px] end-0.5 flex justify-center items-center pointer-events-none transition-colors ease-in-out duration-200"
+                            >
+                              <svg
+                                class="shrink-0 size-3"
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="24"
+                                height="24"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2.5"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                              >
+                                <polyline points="20 6 9 17 4 12"></polyline>
+                              </svg>
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div
+                        class="relative flex-1"
+                        [ngClass]="
+                          serverAddForm.get('planId')?.value &&
+                          serverAddForm.get('modId')?.value
+                            ? 'block'
+                            : 'hidden'
+                        "
+                      >
+                        <input
+                          type="text"
+                          id="hs-floating-input-port-value"
+                          class="peer p-4 block w-full border-gray-200 rounded-lg text-sm placeholder:text-transparent focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none focus:pt-6 focus:pb-2 [&amp;:not(:placeholder-shown)]:pt-6 [&amp;:not(:placeholder-shown)]:pb-2 autofill:pt-6 autofill:pb-2"
+                          placeholder=""
+                          value=""
+                        />
+                        <label
+                          for="hs-floating-input-port-value"
+                          class="absolute top-0 start-0 p-4 h-full text-sm truncate pointer-events-none transition ease-in-out duration-100 border border-transparent origin-[0_0] peer-disabled:opacity-50 peer-disabled:pointer-events-none peer-focus:scale-90 peer-focus:translate-x-0.5 peer-focus:-translate-y-1.5 peer-focus:text-gray-500 peer-[:not(:placeholder-shown)]:scale-90 peer-[:not(:placeholder-shown)]:translate-x-0.5 peer-[:not(:placeholder-shown)]:-translate-y-1.5 peer-[:not(:placeholder-shown)]:text-gray-500"
+                          >Port</label
+                        >
+                      </div>
                     </div>
-                  </div>
 
-                  <!-- Buttons -->
-                  <div class="inline-flex justify-end gap-x-2">
-                    <a
-                      class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none focus:outline-none focus:bg-gray-50"
-                      href="#"
-                    >
-                      Reset
-                    </a>
+                    <!-- Buttons -->
+                    <div class="inline-flex justify-end gap-x-2">
+                      <a
+                        class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none focus:outline-none focus:bg-gray-50"
+                        href="#"
+                      >
+                        Reset
+                      </a>
 
-                    <a
-                      class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 focus:outline-none focus:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none"
-                      href="#"
-                    >
-                      Add
-                    </a>
+                      <a
+                        class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 focus:outline-none focus:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none"
+                        href="#"
+                      >
+                        Add
+                      </a>
+                    </div>
+                    <!-- End Buttons -->
                   </div>
-                  <!-- End Buttons -->
                 </div>
-              </div>
+              </form>
               <!-- End Body -->
             </div>
           </div>

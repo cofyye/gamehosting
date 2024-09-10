@@ -132,4 +132,42 @@ export class GameEffects {
       )
     )
   );
+
+  loadGamesByMachineId$ = createEffect(() =>
+    this._actions$.pipe(
+      ofType(GameActions.LOAD_GAMES_BY_MACHINE_ID),
+      mergeMap((action) =>
+        this._gameService.getGamesByMachineId(action.payload).pipe(
+          map((response) => {
+            this._store.dispatch(
+              HttpActions.SET_RESPONSE({
+                key: 'LOAD_GAMES_BY_MACHINE_ID',
+                response,
+              })
+            );
+
+            return GameActions.LOAD_GAMES_BY_MACHINE_ID_RESPONSE({
+              data: response.data,
+            });
+          }),
+          catchError((err: HttpErrorResponse) => {
+            const response: IAcceptResponse = err.error as IAcceptResponse;
+
+            this._store.dispatch(
+              HttpActions.SET_RESPONSE({
+                key: 'LOAD_GAMES_BY_MACHINE_ID',
+                response,
+              })
+            );
+
+            return of(
+              GameActions.LOAD_GAMES_BY_MACHINE_ID_RESPONSE({
+                data: [],
+              })
+            );
+          })
+        )
+      )
+    )
+  );
 }

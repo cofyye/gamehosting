@@ -32,4 +32,12 @@ export class GameService {
       `${environment.API_URL}/admin/game`
     );
   }
+
+  public getGamesByMachineId(
+    id: string
+  ): Observable<IDataAcceptResponse<IGameResponse[]>> {
+    return this._httpClient.get<IDataAcceptResponse<IGameResponse[]>>(
+      `${environment.API_URL}/admin/game/filter/by-machine-id/${id}`
+    );
+  }
 }

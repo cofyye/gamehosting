@@ -132,4 +132,42 @@ export class ModEffects {
       )
     )
   );
+
+  loadModsByGameId$ = createEffect(() =>
+    this._actions$.pipe(
+      ofType(ModActions.LOAD_MODS_BY_GAME_ID),
+      mergeMap((action) =>
+        this._modService.getModsByGameId(action.payload).pipe(
+          map((response) => {
+            this._store.dispatch(
+              HttpActions.SET_RESPONSE({
+                key: 'LOAD_MODS_BY_GAME_ID',
+                response,
+              })
+            );
+
+            return ModActions.LOAD_MODS_BY_GAME_ID_RESPONSE({
+              data: response.data,
+            });
+          }),
+          catchError((err: HttpErrorResponse) => {
+            const response: IAcceptResponse = err.error as IAcceptResponse;
+
+            this._store.dispatch(
+              HttpActions.SET_RESPONSE({
+                key: 'LOAD_MODS_BY_GAME_ID',
+                response,
+              })
+            );
+
+            return of(
+              ModActions.LOAD_MODS_BY_GAME_ID_RESPONSE({
+                data: [],
+              })
+            );
+          })
+        )
+      )
+    )
+  );
 }

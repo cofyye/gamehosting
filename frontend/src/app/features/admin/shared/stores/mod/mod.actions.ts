@@ -28,6 +28,18 @@ export const LOAD_MODS_RESPONSE = createAction(
   props<{ data: IModResponse[] }>()
 );
 
+export const LOAD_MODS_BY_GAME_ID = createAction(
+  '[Game] Load Mods By Game Id',
+  props<{
+    payload: string;
+  }>()
+);
+
+export const LOAD_MODS_BY_GAME_ID_RESPONSE = createAction(
+  '[Game] Load Mods By Game Id Response',
+  props<{ data: IModResponse[] }>()
+);
+
 export const SELECT_MOD = createAction(
   '[Mod] Select Mod',
   props<{ id: string }>()

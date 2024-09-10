@@ -32,4 +32,12 @@ export class PlanService {
       `${environment.API_URL}/admin/plan`
     );
   }
+
+  public getPlansByGameId(
+    id: string
+  ): Observable<IDataAcceptResponse<IPlanResponse[]>> {
+    return this._httpClient.get<IDataAcceptResponse<IPlanResponse[]>>(
+      `${environment.API_URL}/admin/plan/filter/by-game-id/${id}`
+    );
+  }
 }

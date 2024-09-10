@@ -132,4 +132,42 @@ export class PlanEffects {
       )
     )
   );
+
+  loadPlansByGameId$ = createEffect(() =>
+    this._actions$.pipe(
+      ofType(PlanActions.LOAD_PLANS_BY_GAME_ID),
+      mergeMap((action) =>
+        this._planService.getPlansByGameId(action.payload).pipe(
+          map((response) => {
+            this._store.dispatch(
+              HttpActions.SET_RESPONSE({
+                key: 'LOAD_PLANS_BY_GAME_ID',
+                response,
+              })
+            );
+
+            return PlanActions.LOAD_PLANS_BY_GAME_ID_RESPONSE({
+              data: response.data,
+            });
+          }),
+          catchError((err: HttpErrorResponse) => {
+            const response: IAcceptResponse = err.error as IAcceptResponse;
+
+            this._store.dispatch(
+              HttpActions.SET_RESPONSE({
+                key: 'LOAD_PLANS_BY_GAME_ID',
+                response,
+              })
+            );
+
+            return of(
+              PlanActions.LOAD_PLANS_BY_GAME_ID_RESPONSE({
+                data: [],
+              })
+            );
+          })
+        )
+      )
+    )
+  );
 }

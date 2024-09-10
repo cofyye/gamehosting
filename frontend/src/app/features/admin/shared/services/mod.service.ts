@@ -41,4 +41,12 @@ export class ModService {
       `${environment.API_URL}/admin/mod`
     );
   }
+
+  public getModsByGameId(
+    id: string
+  ): Observable<IDataAcceptResponse<IModResponse[]>> {
+    return this._httpClient.get<IDataAcceptResponse<IModResponse[]>>(
+      `${environment.API_URL}/admin/mod/filter/by-game-id/${id}`
+    );
+  }
 }

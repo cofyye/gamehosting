@@ -3,6 +3,7 @@ import { initialState, planAdapter } from './plan.state';
 import {
   DELETE_PLAN_RESPONSE,
   DESELECT_PLAN,
+  LOAD_PLANS_BY_GAME_ID_RESPONSE,
   LOAD_PLANS_RESPONSE,
   SELECT_PLAN,
 } from './plan.actions';
@@ -10,6 +11,9 @@ import {
 export const planReducer = createReducer(
   initialState,
   on(LOAD_PLANS_RESPONSE, (state, { data }) => {
+    return planAdapter.setAll(data, state);
+  }),
+  on(LOAD_PLANS_BY_GAME_ID_RESPONSE, (state, { data }) => {
     return planAdapter.setAll(data, state);
   }),
   on(DELETE_PLAN_RESPONSE, (state, { data }) => {

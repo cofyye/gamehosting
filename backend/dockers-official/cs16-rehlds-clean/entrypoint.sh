@@ -8,4 +8,4 @@ if [ -z "$(ls -A /data | grep -v '^\..*')" ]; then
 fi
 
 # Start the server
-exec /data/hlds_run -game cstrike +ip ${IP} +port ${PORT} -secure -pingboost 3 +sys_ticrate ${TICKRATE} +fps_max ${TICKRATE} +sv_lan 0 +map ${MAP} +maxplayers ${SLOT} +servercfgfile server.cfg
+exec /data/hlds_run -game cstrike +ip ${IP} +port ${PORT} -secure -pingboost 3 +sys_ticrate ${TICKRATE} +fps_max ${FPS_MAX} +sv_lan 0 +map ${MAP} +maxplayers ${SLOT} +servercfgfile server.cfg

@@ -94,14 +94,6 @@ export class ServerService {
         );
       }
 
-      if (body.customPrice < 0) {
-        functions.throwHttpException(
-          false,
-          'The price must not be less than 0.',
-          HttpStatus.BAD_REQUEST,
-        );
-      }
-
       const momentDate = moment(body.expirationDate)
         .tz('Europe/Belgrade')
         .toDate();
@@ -123,9 +115,9 @@ export class ServerService {
         await this._utilsService.getModById(body.modId)
       ).startupVariables;
       server.ftpUsername = `srv_${body.userId.split('-')[0]}_${functions.generateRandomString(4)}`;
-      const tst = functions.generateRandomString(10);
-      console.log(tst);
-      server.ftpPassword = this._encryptionService.encrypt(tst);
+      server.ftpPassword = this._encryptionService.encrypt(
+        functions.generateRandomString(10),
+      );
       server.userId = body.userId;
       server.gameId = body.gameId;
       server.modId = body.modId;

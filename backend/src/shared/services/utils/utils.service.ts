@@ -389,16 +389,6 @@ export class UtilsService {
     try {
       const machine = await this._machineRepo.findOne({
         where: { id: machineId },
-        select: {
-          id: true,
-          name: true,
-          ip: true,
-          ftpPort: true,
-          sshPort: true,
-          locationId: true,
-          username: true,
-          createdAt: true,
-        },
         relations: {
           location: true,
         },

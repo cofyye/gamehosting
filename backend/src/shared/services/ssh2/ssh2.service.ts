@@ -369,6 +369,8 @@ export class Ssh2Service {
         }
       }
 
+      console.log(err);
+
       functions.handleHttpException(
         err,
         false,

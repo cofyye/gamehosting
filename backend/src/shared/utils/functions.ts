@@ -699,7 +699,7 @@ function validateProvidedCustomStartupVariables(
         );
       }
 
-      if (!STARTUP_DOCKER_ENVIRONMENT_NAME_REGEX.test(item.name.toString())) {
+      if (!STARTUP_DOCKER_ENVIRONMENT_NAME_REGEX.test(item.dockerEnvironment)) {
         functions.throwHttpException(
           false,
           'The Docker environment name must contain lowercase letters, uppercase letters, and underscores (_).',

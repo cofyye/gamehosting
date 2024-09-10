@@ -24,6 +24,7 @@ import { MachineEntity } from 'src/shared/entities/machine.entity';
 import { AddMachineDto } from './dtos/add-machine.dto';
 
 import { MachineService } from './machine.service';
+import { plainToInstance } from 'class-transformer';
 
 @Controller('admin/machine')
 @UseGuards(AuthenticatedGuard)
@@ -78,7 +79,10 @@ export class MachineController {
     try {
       return {
         success: true,
-        data: await this._machineService.getMachine(params.id),
+        data: plainToInstance(
+          MachineEntity,
+          await this._machineService.getMachine(params.id),
+        ),
         message: 'Success.',
       };
     } catch (err: unknown) {

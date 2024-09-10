@@ -1,6 +1,6 @@
 import { HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 
 import { LocationEntity } from 'src/shared/entities/location.entity';
 import { functions } from 'src/shared/utils/functions';
@@ -575,6 +575,84 @@ export class UtilsService {
         err,
         false,
         'An error occurred while getting server.',
+      );
+    }
+  }
+
+  public async getModsByGameId(gameId: string): Promise<ModEntity[]> {
+    try {
+      if (!(await this.gameExists(gameId))) {
+        functions.throwHttpException(
+          false,
+          'This game does not exist.',
+          HttpStatus.NOT_FOUND,
+        );
+      }
+
+      return this._modRepo.find({
+        where: {
+          gameId,
+        },
+      });
+    } catch (err: unknown) {
+      functions.handleHttpException(
+        err,
+        false,
+        'An error occurred while getting mods.',
+      );
+    }
+  }
+
+  public async getPlansByGameId(gameId: string): Promise<PlanEntity[]> {
+    try {
+      if (!(await this.gameExists(gameId))) {
+        functions.throwHttpException(
+          false,
+          'This game does not exist.',
+          HttpStatus.NOT_FOUND,
+        );
+      }
+
+      return this._planRepo.find({
+        where: {
+          gameId,
+        },
+      });
+    } catch (err: unknown) {
+      functions.handleHttpException(
+        err,
+        false,
+        'An error occurred while getting plans.',
+      );
+    }
+  }
+
+  public async getGamesByMachineId(machineId: string): Promise<GameEntity[]> {
+    try {
+      if (!(await this.machineExists(machineId))) {
+        functions.throwHttpException(
+          false,
+          'This machine does not exist.',
+          HttpStatus.NOT_FOUND,
+        );
+      }
+
+      const machineGames = await this._machineGamesRepo.find({
+        where: { machineId },
+      });
+
+      const gameIds = machineGames.map((item) => item.gameId);
+
+      return await this._gameRepo.find({
+        where: {
+          id: In(gameIds),
+        },
+      });
+    } catch (err: unknown) {
+      functions.handleHttpException(
+        err,
+        false,
+        'An error occurred while getting games.',
       );
     }
   }

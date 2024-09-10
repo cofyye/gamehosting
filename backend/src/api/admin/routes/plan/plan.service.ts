@@ -116,4 +116,16 @@ export class PlanService {
       );
     }
   }
+
+  public async getPlansByGameId(id: string): Promise<PlanEntity[]> {
+    try {
+      return await this._utilsService.getPlansByGameId(id);
+    } catch (err) {
+      functions.handleHttpException(
+        err,
+        false,
+        'An error occurred while retrieving the plans.',
+      );
+    }
+  }
 }

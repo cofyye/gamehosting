@@ -140,4 +140,25 @@ export class GameController {
       );
     }
   }
+
+  @UseGuards(new RoleGuard([UserRole.FOUNDER, UserRole.ADMIN]))
+  @Get('filter/by-machine-id/:id')
+  @HttpCode(HttpStatus.OK)
+  public async getGamesByMachineId(
+    @Param() params: UuidDto,
+  ): Promise<IDataSendResponse<GameEntity[]>> {
+    try {
+      return {
+        success: true,
+        data: await this._gameService.getGamesByMachineId(params.id),
+        message: 'Success.',
+      };
+    } catch (err: unknown) {
+      functions.handleHttpException(
+        err,
+        false,
+        'An error occurred while retrieving the games.',
+      );
+    }
+  }
 }

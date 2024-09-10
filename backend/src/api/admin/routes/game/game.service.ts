@@ -237,4 +237,16 @@ export class GameService {
       );
     }
   }
+
+  public async getGamesByMachineId(id: string): Promise<GameEntity[]> {
+    try {
+      return await this._utilsService.getGamesByMachineId(id);
+    } catch (err) {
+      functions.handleHttpException(
+        err,
+        false,
+        'An error occurred while retrieving the games.',
+      );
+    }
+  }
 }

@@ -109,4 +109,25 @@ export class PlanController {
       );
     }
   }
+
+  @UseGuards(new RoleGuard([UserRole.FOUNDER, UserRole.ADMIN]))
+  @Get('filter/by-game-id/:id')
+  @HttpCode(HttpStatus.OK)
+  public async getPlansByGameId(
+    @Param() params: UuidDto,
+  ): Promise<IDataSendResponse<PlanEntity[]>> {
+    try {
+      return {
+        success: true,
+        data: await this._planService.getPlansByGameId(params.id),
+        message: 'Success.',
+      };
+    } catch (err: unknown) {
+      functions.handleHttpException(
+        err,
+        false,
+        'An error occurred while retrieving the plans.',
+      );
+    }
+  }
 }

@@ -132,4 +132,16 @@ export class ModService {
       );
     }
   }
+
+  public async getModsByGameId(id: string): Promise<ModEntity[]> {
+    try {
+      return await this._utilsService.getModsByGameId(id);
+    } catch (err) {
+      functions.handleHttpException(
+        err,
+        false,
+        'An error occurred while retrieving the mods.',
+      );
+    }
+  }
 }

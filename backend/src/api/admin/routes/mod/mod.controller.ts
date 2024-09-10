@@ -6,6 +6,7 @@ import {
   HttpStatus,
   Param,
   Post,
+  Query,
   Req,
   UseGuards,
 } from '@nestjs/common';
@@ -90,6 +91,27 @@ export class ModController {
         err,
         false,
         'An error occurred while retrieving the mod.',
+      );
+    }
+  }
+
+  @UseGuards(new RoleGuard([UserRole.FOUNDER, UserRole.ADMIN]))
+  @Get('filter/by-game-id/:id')
+  @HttpCode(HttpStatus.OK)
+  public async getModsByGameId(
+    @Param() params: UuidDto,
+  ): Promise<IDataSendResponse<ModEntity[]>> {
+    try {
+      return {
+        success: true,
+        data: await this._modService.getModsByGameId(params.id),
+        message: 'Success.',
+      };
+    } catch (err: unknown) {
+      functions.handleHttpException(
+        err,
+        false,
+        'An error occurred while retrieving the mods.',
       );
     }
   }

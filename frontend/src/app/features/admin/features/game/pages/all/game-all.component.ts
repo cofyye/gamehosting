@@ -48,7 +48,7 @@ export class GameAllComponent implements OnInit {
 
   public ngOnInit(): void {
     this.routeSub = this._route.data.subscribe((data) => {
-      this.games = data['games'];
+      this.games = data['games'] as IGameResponse[];
     });
 
     this.loadingGameDeleteSub = this._store

@@ -8,17 +8,17 @@ import { catchError, first, Observable, of, switchMap } from 'rxjs';
 import { select, Store } from '@ngrx/store';
 import { AppState } from '../../../../app.state';
 import { Actions, ofType } from '@ngrx/effects';
-import { IMachineResponse } from '../models/machine-response.model';
+import { IServerResponse } from '../models/server-response.model';
 import {
-  LOAD_MACHINES,
-  LOAD_MACHINES_RESPONSE,
-} from '../stores/machine/machine.actions';
-import { SELECT_MACHINES } from '../stores/machine/machine.selectors';
+  LOAD_SERVERS,
+  LOAD_SERVERS_RESPONSE,
+} from '../stores/server/server.actions';
+import { SELECT_SERVERS } from '../stores/server/server.selectors';
 
 @Injectable({
   providedIn: 'root',
 })
-class GetMachinesService {
+class GetServersService {
   constructor(
     private readonly _actions$: Actions,
     private readonly _store: Store<AppState>
@@ -27,15 +27,15 @@ class GetMachinesService {
   resolve(
     _: ActivatedRouteSnapshot,
     __: RouterStateSnapshot
-  ): Observable<IMachineResponse[]> {
-    this._store.dispatch(LOAD_MACHINES());
+  ): Observable<IServerResponse[]> {
+    this._store.dispatch(LOAD_SERVERS());
 
     return this._actions$.pipe(
-      ofType(LOAD_MACHINES_RESPONSE),
+      ofType(LOAD_SERVERS_RESPONSE),
       first(),
       switchMap(() =>
         this._store.pipe(
-          select(SELECT_MACHINES),
+          select(SELECT_SERVERS),
           first(),
           catchError(() => of([]))
         )
@@ -45,9 +45,9 @@ class GetMachinesService {
   }
 }
 
-export const getMachinesResolver: ResolveFn<IMachineResponse[]> = (
+export const getServersResolver: ResolveFn<IServerResponse[]> = (
   route,
   state
 ) => {
-  return inject(GetMachinesService).resolve(route, state);
+  return inject(GetServersService).resolve(route, state);
 };

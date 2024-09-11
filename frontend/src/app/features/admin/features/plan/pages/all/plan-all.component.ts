@@ -52,7 +52,7 @@ export class PlanAllComponent implements OnInit, OnDestroy {
 
   public ngOnInit(): void {
     this.routeSub = this._route.data.subscribe((data) => {
-      this.plans = data['plans'];
+      this.plans = data['plans'] as IPlanResponse[];
     });
 
     this.loadingPlanDeleteSub = this._store

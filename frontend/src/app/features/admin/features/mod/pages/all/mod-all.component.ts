@@ -52,7 +52,7 @@ export class ModAllComponent implements OnInit, OnDestroy {
 
   public ngOnInit(): void {
     this.routeSub = this._route.data.subscribe((data) => {
-      this.mods = data['mods'];
+      this.mods = data['mods'] as IModResponse[];
     });
 
     this.loadingModDeleteSub = this._store

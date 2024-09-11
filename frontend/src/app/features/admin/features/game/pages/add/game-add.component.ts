@@ -84,6 +84,7 @@ export class GameAddComponent implements OnInit, OnDestroy {
     this.loadingGameAddSub = this._store
       .select(IS_LOADING('ADD_GAME_BTN'))
       .subscribe((value) => (this.isLoadingGameAdd = value));
+
     this.gameAddSub = this._store
       .select(SELECT_HTTP_RESPONSE('ADD_GAME'))
       .subscribe((response) => {

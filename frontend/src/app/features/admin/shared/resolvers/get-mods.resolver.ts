@@ -5,7 +5,6 @@ import {
   ResolveFn,
 } from '@angular/router';
 import { catchError, first, Observable, of, switchMap } from 'rxjs';
-
 import { select, Store } from '@ngrx/store';
 import { AppState } from '../../../../app.state';
 import { Actions, ofType } from '@ngrx/effects';

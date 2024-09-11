@@ -20,7 +20,6 @@ import {
   SELECT_SELECTED_MACHINE,
 } from '../../../../shared/stores/machine/machine.selectors';
 import {
-  DELETE_MACHINE,
   DESELECT_MACHINE,
   SELECT_MACHINE,
 } from '../../../../shared/stores/machine/machine.actions';
@@ -52,7 +51,7 @@ export class MachineAllComponent implements OnInit, OnDestroy {
 
   public ngOnInit(): void {
     this.routeSub = this._route.data.subscribe((data) => {
-      this.machines = data['machines'];
+      this.machines = data['machines'] as IMachineResponse[];
     });
 
     this.loadingMachineDeleteSub = this._store

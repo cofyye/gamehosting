@@ -62,6 +62,7 @@ export class LocationAddComponent implements OnInit, OnDestroy {
     this.loadingLocationAddSub = this._store
       .select(IS_LOADING('ADD_LOCATION_BTN'))
       .subscribe((value) => (this.isLoadingLocationAdd = value));
+
     this.locationAddSub = this._store
       .select(SELECT_HTTP_RESPONSE('ADD_LOCATION'))
       .subscribe((response) => {

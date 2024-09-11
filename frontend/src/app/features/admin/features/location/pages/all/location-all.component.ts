@@ -52,7 +52,7 @@ export class LocationAllComponent implements OnInit, OnDestroy {
 
   public ngOnInit(): void {
     this.routeSub = this._route.data.subscribe((data) => {
-      this.locations = data['locations'];
+      this.locations = data['locations'] as ILocationResponse[];
     });
 
     this.loadingLocationDeleteSub = this._store

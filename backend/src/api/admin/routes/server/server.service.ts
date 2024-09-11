@@ -145,7 +145,35 @@ export class ServerService {
 
   public async getServers(): Promise<ServerEntity[]> {
     try {
-      return await this._serverRepo.find();
+      return await this._serverRepo.find({
+        relations: {
+          user: true,
+          mod: true,
+          plan: true,
+          game: true,
+          machine: true,
+        },
+        select: {
+          user: {
+            firstName: true,
+            lastName: true,
+            avatar: true,
+          },
+          mod: {
+            modName: true,
+          },
+          plan: {
+            name: true,
+          },
+          game: {
+            name: true,
+            tag: true,
+          },
+          machine: {
+            ip: true,
+          },
+        },
+      });
     } catch (err) {
       functions.handleHttpException(
         err,

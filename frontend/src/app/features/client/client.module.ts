@@ -9,4 +9,4 @@ import { ClientFeatureModule } from './features/client-feature.module';
   providers: [],
   exports: [],
 })
-export class AdminModule {}
+export class ClientModule {}

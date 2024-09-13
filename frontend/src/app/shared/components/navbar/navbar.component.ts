@@ -1,8 +1,8 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ILoginStatus, IUser } from '../../models/user.model';
+import { ILoginStatus } from '../../models/user.model';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../../app.state';
-import { SELECT_AUTH, SELECT_USER } from '../../stores/auth/auth.selectors';
+import { SELECT_AUTH } from '../../stores/auth/auth.selectors';
 import { Subscription } from 'rxjs';
 import { UserRole } from '../../enums/user.enum';
 import { environment } from '../../../../environments/environment';

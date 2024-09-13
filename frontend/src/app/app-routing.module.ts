@@ -28,6 +28,13 @@ const routes: Routes = [
       import('./features/admin/admin.module').then((m) => m.AdminModule),
   },
   {
+    path: 'client',
+    canActivate: [fetchUserGuard],
+    canActivateChild: [authenticatedGuard],
+    loadChildren: () =>
+      import('./features/client/client.module').then((m) => m.ClientModule),
+  },
+  {
     path: '**',
     canActivate: [fetchUserGuard],
     component: NotFoundComponent,

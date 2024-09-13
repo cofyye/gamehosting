@@ -1,10 +1,11 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { ClientIndexComponent } from './features/client-index.component';
 
 const routes: Routes = [
   {
     path: '',
-    // component: AdminIndexComponent,
+    component: ClientIndexComponent,
     pathMatch: 'prefix',
     children: [
       {

@@ -1,1 +1,248 @@
-<p>dashboard works!</p>
+<div class="flex flex-col">
+  <!-- Header -->
+  <header class="relative py-12 bg-gray-200">
+    <div
+      class="max-w-[80rem] mx-auto flex justify-between items-center px-4 relative"
+    >
+      <div class="text-start">
+        <h1 class="text-xl font-semibold text-gray-800">Dashboard</h1>
+        <p class="text-sm text-gray-600">
+          Manage all your game servers from here.
+        </p>
+      </div>
+      <div class="flex items-center space-x-2">
+        <a
+          routerLink="/"
+          class="py-3 px-4 inline-flex items-center gap-x-1.5 text-xs font-semibold rounded-lg border border-gray-300 bg-white text-gray-800 shadow-sm hover:bg-gray-50 focus:outline-none focus:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none"
+        >
+          <svg
+            class="shrink-0 size-3"
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <circle cx="8" cy="21" r="1" />
+            <circle cx="19" cy="21" r="1" />
+            <path
+              d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"
+            />
+          </svg>
+          Order New Product
+        </a>
+      </div>
+    </div>
+  </header>
+  <div
+    class="max-w-[80rem] mx-auto flex justify-between items-center px-4 relative w-full"
+  >
+    <div class="flex flex-col w-full py-5">
+      <!-- Cards -->
+      <div class="flex flex-col py-6">
+        <div class="-m-1.5">
+          <div
+            class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 max-w-7xl mx-auto"
+          >
+            <!-- Card 1 -->
+            <div
+              routerLink="/client/servers"
+              class="cursor-pointer bg-white border border-gray-200 rounded-xl shadow-sm p-6 flex flex-col items-center"
+            >
+              <div class="flex items-center justify-between w-full">
+                <div>
+                  <div class="text-2xl font-bold">0</div>
+                  <div class="text-gray-500 text-xs uppercase">Servers</div>
+                </div>
+                <svg
+                  class="shrink-0 size-12"
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <rect width="20" height="8" x="2" y="2" rx="2" ry="2" />
+                  <rect width="20" height="8" x="2" y="14" rx="2" ry="2" />
+                  <line x1="6" x2="6.01" y1="6" y2="6" />
+                  <line x1="6" x2="6.01" y1="18" y2="18" />
+                </svg>
+              </div>
+            </div>
+
+            <!-- Card 2 -->
+            <div
+              routerLink="/client/tickets"
+              class="cursor-pointer bg-white border border-gray-200 rounded-xl shadow-sm p-6 flex flex-col items-center"
+            >
+              <div class="flex items-center justify-between w-full">
+                <div>
+                  <div class="text-2xl font-bold">0</div>
+                  <div class="text-gray-500 text-xs uppercase">Tickets</div>
+                </div>
+                <svg
+                  class="shrink-0 size-12"
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path
+                    d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"
+                  />
+                  <path d="M8 10h.01" />
+                  <path d="M12 10h.01" />
+                  <path d="M16 10h.01" />
+                </svg>
+              </div>
+            </div>
+
+            <!-- Card 3 -->
+            <div
+              routerLink="/client/invoices"
+              class="cursor-pointer bg-white border border-gray-200 rounded-xl shadow-sm p-6 flex flex-col items-center"
+            >
+              <div class="flex items-center justify-between w-full">
+                <div>
+                  <div class="text-2xl font-bold">0</div>
+                  <div class="text-gray-500 text-xs uppercase">Invoices</div>
+                </div>
+                <svg
+                  class="shrink-0 size-12"
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path d="M20 7h-3a2 2 0 0 1-2-2V2" />
+                  <path
+                    d="M9 18a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h7l4 4v10a2 2 0 0 1-2 2Z"
+                  />
+                  <path d="M3 7.6v12.8A1.6 1.6 0 0 0 4.6 22h9.8" />
+                </svg>
+              </div>
+            </div>
+
+            <!-- Card 4 -->
+            <div
+              routerLink="/client/billings"
+              class="cursor-pointer bg-white border border-gray-200 rounded-xl shadow-sm p-6 flex flex-col items-center"
+            >
+              <div class="flex items-center justify-between w-full">
+                <div>
+                  <div class="text-2xl font-bold">12&euro;</div>
+                  <div class="text-gray-500 text-xs uppercase">Balance</div>
+                </div>
+                <svg
+                  class="shrink-0 size-12"
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path
+                    d="M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1"
+                  />
+                  <path d="M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4" />
+                </svg>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Announcements -->
+      <div class="flex flex-col">
+        <div class="-m-1.5">
+          <div class="min-w-full inline-block align-middle mb-4">
+            <div class="bg-white border border-gray-200 rounded-xl shadow-sm">
+              <div
+                class="px-6 py-4 grid gap-3 md:flex md:justify-between md:items-center border-b border-gray-200"
+              >
+                <div>
+                  <h2 class="text-lg font-bold text-gray-800">Announcements</h2>
+                  <p class="text-xs font-medium uppercase text-gray-500">
+                    Latest Updates and Announcements
+                  </p>
+                </div>
+                <div></div>
+              </div>
+              <div class="p-4 md:p-5">
+                <p class="mt-2 text-gray-500">
+                  The Game Panel CMS is currently in its beta phase. If you
+                  encounter any bugs or issues, please report them to the
+                  administrator. Thank you in advance for your cooperation and
+                  support. Best regards.
+                </p>
+                <div
+                  id="hs-show-hide-collapse-heading"
+                  class="hs-collapse hidden w-full overflow-hidden transition-[height] duration-300"
+                  aria-labelledby="hs-show-hide-collapse"
+                >
+                  <p class="text-gray-500 mt-2">
+                    This is a collapse body. It is hidden by default, until the
+                    collapse plugin adds the appropriate classes that we use to
+                    style each element. These classes control the overall
+                    appearance, as well as the showing and hiding via CSS
+                    transitions.
+                  </p>
+                </div>
+                <p class="mt-2">
+                  <button
+                    type="button"
+                    class="hs-collapse-toggle inline-flex items-center gap-x-1 text-sm font-semibold rounded-lg border border-transparent text-blue-600 decoration-2 hover:text-blue-700 hover:underline focus:outline-none focus:underline focus:text-blue-700 disabled:opacity-50 disabled:pointer-events-none"
+                    id="hs-show-hide-collapse"
+                    aria-expanded="false"
+                    aria-controls="hs-show-hide-collapse-heading"
+                    data-hs-collapse="#hs-show-hide-collapse-heading"
+                  >
+                    <span class="hs-collapse-open:hidden">Read more</span>
+                    <span class="hs-collapse-open:block hidden">Read less</span>
+                    <svg
+                      class="hs-collapse-open:rotate-180 shrink-0 size-4"
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <path d="m6 9 6 6 6-6"></path>
+                    </svg>
+                  </button>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- End Announcements -->
+      </div>
+    </div>
+  </div>
+</div>

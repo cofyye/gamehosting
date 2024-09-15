@@ -20,6 +20,11 @@ const routes: Routes = [
             (m) => m.DashboardModule
           ),
       },
+      {
+        path: 'servers',
+        loadChildren: () =>
+          import('./features/server/server.module').then((m) => m.ServerModule),
+      },
     ],
   },
 ];

@@ -22,13 +22,11 @@ export function usernameAvailabilityValidator(
       switchMap((value) =>
         _httpClient
           .post<IDataAcceptResponse<boolean>>(
-            `${environment.API_URL}/user/availability/username/${value}`,
+            `${environment.API_URL}/auth/availability/username/${value}`,
             {}
           )
           .pipe(
-            map((response) =>
-              response.data ? { usernameAvailable: false } : null
-            ),
+            map((response) => (response.data ? { usernameTaken: true } : null)),
             catchError(() => of(null))
           )
       ),

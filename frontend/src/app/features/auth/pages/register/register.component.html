@@ -354,7 +354,7 @@
                     registerForm.controls['username'].errors?.['minlength'] && 'The username must contain at least 3 characters.' ||
                     registerForm.controls['username'].errors?.['maxlength'] && 'The username must contain a maximum of 20 characters.' ||
                     registerForm.controls['username'].errors?.['pattern'] && 'The username is not valid. Allowed characters are: a-z, 0-9, _ and . (dot).' ||
-                    registerForm.controls['username'].errors?.['usernameAvailable'] && 'This username is taken.'
+                    registerForm.controls['username'].errors?.['usernameTaken'] && 'This username is taken.'
                   }}
                 </p>
               </div>
@@ -454,7 +454,7 @@
                     registerForm.controls['email'].errors?.['required'] && 'The email address field must not be empty.' ||
                     registerForm.controls['email'].errors?.['maxlength'] && 'The email address must contain a maximum of 100 characters.' ||
                     registerForm.controls['email'].errors?.['pattern'] && 'Please enter a valid email address.' ||
-                    registerForm.controls['email'].errors?.['emailAvailable'] && 'This email address is taken.'
+                    registerForm.controls['email'].errors?.['emailTaken'] && 'This email address is taken.'
                   }}
                 </p>
               </div>

@@ -22,13 +22,11 @@ export function emailAvailabilityValidator(
       switchMap((value) =>
         _httpClient
           .post<IDataAcceptResponse<boolean>>(
-            `${environment.API_URL}/user/availability/email/${value}`,
+            `${environment.API_URL}/auth/availability/email/${value}`,
             {}
           )
           .pipe(
-            map((response) =>
-              response.data ? { emailAvailable: false } : null
-            ),
+            map((response) => (response.data ? { emailTaken: true } : null)),
             catchError(() => of(null))
           )
       ),

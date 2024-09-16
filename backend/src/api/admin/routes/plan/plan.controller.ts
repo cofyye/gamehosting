@@ -93,7 +93,7 @@ export class PlanController {
   @UseGuards(new RoleGuard([UserRole.FOUNDER, UserRole.ADMIN]))
   @Delete(':id')
   @HttpCode(HttpStatus.OK)
-  public async deleteGame(@Param() params: UuidDto): Promise<ISendResponse> {
+  public async deletePlan(@Param() params: UuidDto): Promise<ISendResponse> {
     try {
       await this._planService.deletePlan(params.id);
 

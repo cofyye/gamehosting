@@ -51,7 +51,7 @@ export class MachineController {
     }
   }
 
-  @UseGuards(new RoleGuard([UserRole.FOUNDER]))
+  @UseGuards(new RoleGuard([UserRole.FOUNDER, UserRole.ADMIN]))
   @Get('')
   @HttpCode(HttpStatus.OK)
   public async getMachines(): Promise<IDataSendResponse<MachineEntity[]>> {

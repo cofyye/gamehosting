@@ -54,7 +54,7 @@ export class LocationController {
     }
   }
 
-  @UseGuards(new RoleGuard([UserRole.FOUNDER, UserRole.ADMIN]))
+  @UseGuards(new RoleGuard([UserRole.FOUNDER]))
   @Get('')
   @HttpCode(HttpStatus.OK)
   public async getLocations(): Promise<IDataSendResponse<LocationEntity[]>> {
@@ -73,7 +73,7 @@ export class LocationController {
     }
   }
 
-  @UseGuards(new RoleGuard([UserRole.FOUNDER, UserRole.ADMIN]))
+  @UseGuards(new RoleGuard([UserRole.FOUNDER]))
   @Get(':id')
   @HttpCode(HttpStatus.OK)
   public async getLocation(

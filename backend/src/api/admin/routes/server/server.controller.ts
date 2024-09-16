@@ -50,9 +50,7 @@ export class ServerController {
     }
   }
 
-  @UseGuards(
-    new RoleGuard([UserRole.FOUNDER, UserRole.ADMIN, UserRole.SUPPORT]),
-  )
+  @UseGuards(new RoleGuard([UserRole.FOUNDER, UserRole.ADMIN]))
   @Get('')
   @HttpCode(HttpStatus.OK)
   public async getServers(): Promise<IDataSendResponse<ServerEntity[]>> {
@@ -71,9 +69,7 @@ export class ServerController {
     }
   }
 
-  @UseGuards(
-    new RoleGuard([UserRole.FOUNDER, UserRole.ADMIN, UserRole.SUPPORT]),
-  )
+  @UseGuards(new RoleGuard([UserRole.FOUNDER, UserRole.ADMIN]))
   @Get(':id')
   @HttpCode(HttpStatus.OK)
   public async getServer(
@@ -94,7 +90,7 @@ export class ServerController {
     }
   }
 
-  @UseGuards(new RoleGuard([UserRole.FOUNDER]))
+  @UseGuards(new RoleGuard([UserRole.FOUNDER, UserRole.ADMIN]))
   @Delete(':id')
   @HttpCode(HttpStatus.OK)
   public async deleteServer(@Param() params: UuidDto): Promise<ISendResponse> {

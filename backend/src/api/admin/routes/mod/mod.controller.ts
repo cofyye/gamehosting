@@ -32,7 +32,7 @@ import { ModService } from './mod.service';
 export class ModController {
   constructor(private readonly _modService: ModService) {}
 
-  @UseGuards(new RoleGuard([UserRole.FOUNDER, UserRole.ADMIN]))
+  @UseGuards(new RoleGuard([UserRole.FOUNDER]))
   @Post('')
   @HttpCode(HttpStatus.CREATED)
   public async addMod(

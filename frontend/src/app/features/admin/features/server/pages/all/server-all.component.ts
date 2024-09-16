@@ -20,8 +20,8 @@ import {
 } from '../../../../shared/stores/server/server.selectors';
 import {
   DELETE_SERVER,
-  DESELECT_SERVER,
-  SELECT_SERVER,
+  REMOVE_SELECTED_SERVER,
+  SET_SELECTED_SERVER,
 } from '../../../../shared/stores/server/server.actions';
 import { environment } from '../../../../../../../environments/environment';
 import { ServerStatus } from '../../../../../../shared/enums/server.enum';
@@ -102,18 +102,18 @@ export class ServerAllComponent implements OnInit, OnDestroy {
   }
 
   public onSelectServer(id: string): void {
-    this._store.dispatch(SELECT_SERVER({ id }));
+    this._store.dispatch(SET_SELECTED_SERVER({ id }));
   }
 
   public onDeselectServer(): void {
-    setTimeout(() => this._store.dispatch(DESELECT_SERVER()), 100);
+    setTimeout(() => this._store.dispatch(REMOVE_SELECTED_SERVER()), 100);
   }
 
   public onDeleteServer(): void {
     const id = this.selectedServer?.id;
     if (id) {
       this._store.dispatch(START_LOADING({ key: 'DELETE_SERVER_BTN' }));
-      this._store.dispatch(DELETE_SERVER({ payload: id }));
+      this._store.dispatch(DELETE_SERVER({ id }));
     } else {
       this._toaster.error(
         'No server selected, deletion has been aborted.',

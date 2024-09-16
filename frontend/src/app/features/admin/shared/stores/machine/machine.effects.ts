@@ -59,7 +59,7 @@ export class MachineEffects {
     this._actions$.pipe(
       ofType(MachineActions.DELETE_MACHINE),
       mergeMap((action) =>
-        this._machineService.deleteMachine(action.payload).pipe(
+        this._machineService.deleteMachine(action.id).pipe(
           tap((response) => {
             this._utilsService.handleResponseToaster(response);
 
@@ -73,7 +73,7 @@ export class MachineEffects {
             );
 
             return MachineActions.DELETE_MACHINE_RESPONSE({
-              data: action.payload,
+              id: action.id,
             });
           }),
           catchError((err: HttpErrorResponse) => {
@@ -86,7 +86,7 @@ export class MachineEffects {
 
             return of(
               MachineActions.DELETE_MACHINE_RESPONSE({
-                data: '',
+                id: '',
               })
             );
           })

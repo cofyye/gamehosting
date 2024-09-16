@@ -12,13 +12,13 @@ export const ADD_GAME = createAction(
 export const DELETE_GAME = createAction(
   '[Game] Delete Game',
   props<{
-    payload: string;
+    id: string;
   }>()
 );
 
 export const DELETE_GAME_RESPONSE = createAction(
   '[Game] Delete Game Response',
-  props<{ data: string }>()
+  props<{ id: string }>()
 );
 
 export const LOAD_GAMES = createAction('[Game] Load Games');
@@ -31,7 +31,7 @@ export const LOAD_GAMES_RESPONSE = createAction(
 export const LOAD_GAMES_BY_MACHINE_ID = createAction(
   '[Game] Load Games By Machine Id',
   props<{
-    payload: string;
+    id: string;
   }>()
 );
 
@@ -40,9 +40,9 @@ export const LOAD_GAMES_BY_MACHINE_ID_RESPONSE = createAction(
   props<{ data: IGameResponse[] }>()
 );
 
-export const SELECT_GAME = createAction(
-  '[Game] Select Game',
+export const SET_SELECTED_GAME = createAction(
+  '[Game] Set Selected Game',
   props<{ id: string }>()
 );
 
-export const DESELECT_GAME = createAction('[Game] Deselect Game');
+export const REMOVE_SELECTED_GAME = createAction('[Game] Remove Selected Game');

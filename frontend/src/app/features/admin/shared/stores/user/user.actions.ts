@@ -12,13 +12,13 @@ export const ADD_USER = createAction(
 export const DELETE_USER = createAction(
   '[User] Delete User',
   props<{
-    payload: string;
+    id: string;
   }>()
 );
 
 export const DELETE_USER_RESPONSE = createAction(
   '[User] Delete User Response',
-  props<{ data: string }>()
+  props<{ id: string }>()
 );
 
 export const LOAD_USERS = createAction('[User] Load Users');
@@ -28,9 +28,9 @@ export const LOAD_USERS_RESPONSE = createAction(
   props<{ data: IUserResponse[] }>()
 );
 
-export const SELECT_USER = createAction(
-  '[User] Select User',
+export const SET_SELECTED_USER = createAction(
+  '[User] Set Selected User',
   props<{ id: string }>()
 );
 
-export const DESELECT_USER = createAction('[User] Deselect User');
+export const REMOVE_SELECTED_USER = createAction('[User] Remove Selected User');

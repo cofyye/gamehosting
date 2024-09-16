@@ -12,13 +12,13 @@ export const ADD_MOD = createAction(
 export const DELETE_MOD = createAction(
   '[Mod] Delete Mod',
   props<{
-    payload: string;
+    id: string;
   }>()
 );
 
 export const DELETE_MOD_RESPONSE = createAction(
   '[Mod] Delete Mod Response',
-  props<{ data: string }>()
+  props<{ id: string }>()
 );
 
 export const LOAD_MODS = createAction('[Mod] Load Mods');
@@ -31,7 +31,7 @@ export const LOAD_MODS_RESPONSE = createAction(
 export const LOAD_MODS_BY_GAME_ID = createAction(
   '[Game] Load Mods By Game Id',
   props<{
-    payload: string;
+    id: string;
   }>()
 );
 
@@ -40,9 +40,9 @@ export const LOAD_MODS_BY_GAME_ID_RESPONSE = createAction(
   props<{ data: IModResponse[] }>()
 );
 
-export const SELECT_MOD = createAction(
-  '[Mod] Select Mod',
+export const SET_SELECTED_MOD = createAction(
+  '[Mod] Set Selected Mod',
   props<{ id: string }>()
 );
 
-export const DESELECT_MOD = createAction('[Mod] Deselect Mod');
+export const REMOVE_SELECTED_MOD = createAction('[Mod] Remove Selected Mod');

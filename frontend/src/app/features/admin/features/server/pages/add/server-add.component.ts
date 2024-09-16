@@ -194,8 +194,8 @@ export class ServerAddComponent implements OnInit, OnDestroy {
     });
 
     if (selectEl.value !== '0') {
-      this._store.dispatch(LOAD_MODS_BY_GAME_ID({ payload: selectEl.value }));
-      this._store.dispatch(LOAD_PLANS_BY_GAME_ID({ payload: selectEl.value }));
+      this._store.dispatch(LOAD_MODS_BY_GAME_ID({ id: selectEl.value }));
+      this._store.dispatch(LOAD_PLANS_BY_GAME_ID({ id: selectEl.value }));
 
       this.serverAddForm.patchValue({
         modId: '',
@@ -218,9 +218,7 @@ export class ServerAddComponent implements OnInit, OnDestroy {
     });
 
     if (selectEl.value !== '0') {
-      this._store.dispatch(
-        LOAD_GAMES_BY_MACHINE_ID({ payload: selectEl.value })
-      );
+      this._store.dispatch(LOAD_GAMES_BY_MACHINE_ID({ id: selectEl.value }));
 
       this.plans = [];
       this.mods = [];

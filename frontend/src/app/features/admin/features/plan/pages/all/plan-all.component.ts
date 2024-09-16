@@ -20,8 +20,8 @@ import { SELECT_HTTP_RESPONSE } from '../../../../../../shared/stores/http/http.
 import { IS_LOADING } from '../../../../../../shared/stores/loader/loader.selectors';
 import {
   DELETE_PLAN,
-  DESELECT_PLAN,
-  SELECT_PLAN,
+  REMOVE_SELECTED_PLAN,
+  SET_SELECTED_PLAN,
 } from '../../../../shared/stores/plan/plan.actions';
 import { START_LOADING } from '../../../../../../shared/stores/loader/loader.actions';
 
@@ -98,18 +98,18 @@ export class PlanAllComponent implements OnInit, OnDestroy {
   }
 
   public onSelectPlan(id: string): void {
-    this._store.dispatch(SELECT_PLAN({ id }));
+    this._store.dispatch(SET_SELECTED_PLAN({ id }));
   }
 
   public onDeselectPlan(): void {
-    setTimeout(() => this._store.dispatch(DESELECT_PLAN()), 100);
+    setTimeout(() => this._store.dispatch(REMOVE_SELECTED_PLAN()), 100);
   }
 
   public onDeletePlan(): void {
     const id = this.selectedPlan?.id;
     if (id) {
       this._store.dispatch(START_LOADING({ key: 'DELETE_PLAN_BTN' }));
-      this._store.dispatch(DELETE_PLAN({ payload: id }));
+      this._store.dispatch(DELETE_PLAN({ id }));
     } else {
       this._toaster.error(
         'No plan selected, deletion has been aborted.',

@@ -59,7 +59,7 @@ export class ServerEffects {
     this._actions$.pipe(
       ofType(ServerActions.DELETE_SERVER),
       mergeMap((action) =>
-        this._serverService.deleteServer(action.payload).pipe(
+        this._serverService.deleteServer(action.id).pipe(
           tap((response) => {
             this._utilsService.handleResponseToaster(response);
 
@@ -73,7 +73,7 @@ export class ServerEffects {
             );
 
             return ServerActions.DELETE_SERVER_RESPONSE({
-              data: action.payload,
+              id: action.id,
             });
           }),
           catchError((err: HttpErrorResponse) => {
@@ -86,7 +86,7 @@ export class ServerEffects {
 
             return of(
               ServerActions.DELETE_SERVER_RESPONSE({
-                data: '',
+                id: '',
               })
             );
           })

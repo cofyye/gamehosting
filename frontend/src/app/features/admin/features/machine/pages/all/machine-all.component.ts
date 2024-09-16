@@ -20,8 +20,8 @@ import {
   SELECT_SELECTED_MACHINE,
 } from '../../../../shared/stores/machine/machine.selectors';
 import {
-  DESELECT_MACHINE,
-  SELECT_MACHINE,
+  REMOVE_SELECTED_MACHINE,
+  SET_SELECT_MACHINE,
 } from '../../../../shared/stores/machine/machine.actions';
 
 @Component({
@@ -99,11 +99,11 @@ export class MachineAllComponent implements OnInit, OnDestroy {
   }
 
   public onSelectMachine(id: string): void {
-    this._store.dispatch(SELECT_MACHINE({ id }));
+    this._store.dispatch(SET_SELECT_MACHINE({ id }));
   }
 
   public onDeselectMachine(): void {
-    setTimeout(() => this._store.dispatch(DESELECT_MACHINE()), 100);
+    setTimeout(() => this._store.dispatch(REMOVE_SELECTED_MACHINE()), 100);
   }
 
   public onDeleteMachine(): void {

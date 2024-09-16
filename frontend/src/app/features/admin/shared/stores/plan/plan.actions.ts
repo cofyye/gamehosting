@@ -12,13 +12,13 @@ export const ADD_PLAN = createAction(
 export const DELETE_PLAN = createAction(
   '[Plan] Delete Plan',
   props<{
-    payload: string;
+    id: string;
   }>()
 );
 
 export const DELETE_PLAN_RESPONSE = createAction(
   '[Plan] Delete Plan Response',
-  props<{ data: string }>()
+  props<{ id: string }>()
 );
 
 export const LOAD_PLANS = createAction('[Plan] Load Plans');
@@ -31,7 +31,7 @@ export const LOAD_PLANS_RESPONSE = createAction(
 export const LOAD_PLANS_BY_GAME_ID = createAction(
   '[Game] Load Plans By Game Id',
   props<{
-    payload: string;
+    id: string;
   }>()
 );
 
@@ -40,9 +40,9 @@ export const LOAD_PLANS_BY_GAME_ID_RESPONSE = createAction(
   props<{ data: IPlanResponse[] }>()
 );
 
-export const SELECT_PLAN = createAction(
-  '[Plan] Select Plan',
+export const SET_SELECTED_PLAN = createAction(
+  '[Plan] Set Selected Plan',
   props<{ id: string }>()
 );
 
-export const DESELECT_PLAN = createAction('[Plan] Deselect Plan');
+export const REMOVE_SELECTED_PLAN = createAction('[Plan] Set Selected Plan');

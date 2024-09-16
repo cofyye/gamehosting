@@ -59,7 +59,7 @@ export class GameEffects {
     this._actions$.pipe(
       ofType(GameActions.DELETE_GAME),
       mergeMap((action) =>
-        this._gameService.deleteGame(action.payload).pipe(
+        this._gameService.deleteGame(action.id).pipe(
           tap((response) => {
             this._utilsService.handleResponseToaster(response);
 
@@ -73,7 +73,7 @@ export class GameEffects {
             );
 
             return GameActions.DELETE_GAME_RESPONSE({
-              data: action.payload,
+              id: action.id,
             });
           }),
           catchError((err: HttpErrorResponse) => {
@@ -86,7 +86,7 @@ export class GameEffects {
 
             return of(
               GameActions.DELETE_GAME_RESPONSE({
-                data: '',
+                id: '',
               })
             );
           })
@@ -137,7 +137,7 @@ export class GameEffects {
     this._actions$.pipe(
       ofType(GameActions.LOAD_GAMES_BY_MACHINE_ID),
       mergeMap((action) =>
-        this._gameService.getGamesByMachineId(action.payload).pipe(
+        this._gameService.getGamesByMachineId(action.id).pipe(
           map((response) => {
             this._store.dispatch(
               HttpActions.SET_RESPONSE({

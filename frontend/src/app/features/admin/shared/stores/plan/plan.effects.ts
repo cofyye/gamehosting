@@ -59,7 +59,7 @@ export class PlanEffects {
     this._actions$.pipe(
       ofType(PlanActions.DELETE_PLAN),
       mergeMap((action) =>
-        this._planService.deletePlan(action.payload).pipe(
+        this._planService.deletePlan(action.id).pipe(
           tap((response) => {
             this._utilsService.handleResponseToaster(response);
 
@@ -73,7 +73,7 @@ export class PlanEffects {
             );
 
             return PlanActions.DELETE_PLAN_RESPONSE({
-              data: action.payload,
+              id: action.id,
             });
           }),
           catchError((err: HttpErrorResponse) => {
@@ -86,7 +86,7 @@ export class PlanEffects {
 
             return of(
               PlanActions.DELETE_PLAN_RESPONSE({
-                data: '',
+                id: '',
               })
             );
           })
@@ -137,7 +137,7 @@ export class PlanEffects {
     this._actions$.pipe(
       ofType(PlanActions.LOAD_PLANS_BY_GAME_ID),
       mergeMap((action) =>
-        this._planService.getPlansByGameId(action.payload).pipe(
+        this._planService.getPlansByGameId(action.id).pipe(
           map((response) => {
             this._store.dispatch(
               HttpActions.SET_RESPONSE({

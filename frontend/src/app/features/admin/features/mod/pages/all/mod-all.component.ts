@@ -19,8 +19,8 @@ import {
 } from '../../../../shared/stores/mod/mod.selectors';
 import {
   DELETE_MOD,
-  DESELECT_MOD,
-  SELECT_MOD,
+  REMOVE_SELECTED_MOD,
+  SET_SELECTED_MOD,
 } from '../../../../shared/stores/mod/mod.actions';
 import { SELECT_HTTP_RESPONSE } from '../../../../../../shared/stores/http/http.selectors';
 import { IS_LOADING } from '../../../../../../shared/stores/loader/loader.selectors';
@@ -98,18 +98,18 @@ export class ModAllComponent implements OnInit, OnDestroy {
   }
 
   public onSelectMod(id: string): void {
-    this._store.dispatch(SELECT_MOD({ id }));
+    this._store.dispatch(SET_SELECTED_MOD({ id }));
   }
 
   public onDeselectMod(): void {
-    setTimeout(() => this._store.dispatch(DESELECT_MOD()), 100);
+    setTimeout(() => this._store.dispatch(REMOVE_SELECTED_MOD()), 100);
   }
 
   public onDeleteMod(): void {
     const id = this.selectedMod?.id;
     if (id) {
       this._store.dispatch(START_LOADING({ key: 'DELETE_MOD_BTN' }));
-      this._store.dispatch(DELETE_MOD({ payload: id }));
+      this._store.dispatch(DELETE_MOD({ id }));
     } else {
       this._toaster.error(
         'No mod selected, deletion has been aborted.',

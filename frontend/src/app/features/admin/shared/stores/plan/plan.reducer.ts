@@ -2,10 +2,10 @@ import { createReducer, on } from '@ngrx/store';
 import { initialState, planAdapter } from './plan.state';
 import {
   DELETE_PLAN_RESPONSE,
-  DESELECT_PLAN,
+  REMOVE_SELECTED_PLAN,
   LOAD_PLANS_BY_GAME_ID_RESPONSE,
   LOAD_PLANS_RESPONSE,
-  SELECT_PLAN,
+  SET_SELECTED_PLAN,
 } from './plan.actions';
 
 export const planReducer = createReducer(
@@ -16,14 +16,14 @@ export const planReducer = createReducer(
   on(LOAD_PLANS_BY_GAME_ID_RESPONSE, (state, { data }) => {
     return planAdapter.setAll(data, state);
   }),
-  on(DELETE_PLAN_RESPONSE, (state, { data }) => {
-    return planAdapter.removeOne(data, state);
+  on(DELETE_PLAN_RESPONSE, (state, { id }) => {
+    return planAdapter.removeOne(id, state);
   }),
-  on(SELECT_PLAN, (state, { id }) => ({
+  on(SET_SELECTED_PLAN, (state, { id }) => ({
     ...state,
     selectedPlanId: id,
   })),
-  on(DESELECT_PLAN, (state) => ({
+  on(REMOVE_SELECTED_PLAN, (state) => ({
     ...state,
     selectedPlanId: null,
   }))

@@ -59,7 +59,7 @@ export class UserEffects {
     this._actions$.pipe(
       ofType(UserActions.DELETE_USER),
       mergeMap((action) =>
-        this._userService.deleteUser(action.payload).pipe(
+        this._userService.deleteUser(action.id).pipe(
           tap((response) => {
             this._utilsService.handleResponseToaster(response);
 
@@ -73,7 +73,7 @@ export class UserEffects {
             );
 
             return UserActions.DELETE_USER_RESPONSE({
-              data: action.payload,
+              id: action.id,
             });
           }),
           catchError((err: HttpErrorResponse) => {
@@ -86,7 +86,7 @@ export class UserEffects {
 
             return of(
               UserActions.DELETE_USER_RESPONSE({
-                data: '',
+                id: '',
               })
             );
           })

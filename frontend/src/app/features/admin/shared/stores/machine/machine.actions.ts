@@ -12,13 +12,13 @@ export const ADD_MACHINE = createAction(
 export const DELETE_MACHINE = createAction(
   '[Machine] Delete Machine',
   props<{
-    payload: string;
+    id: string;
   }>()
 );
 
 export const DELETE_MACHINE_RESPONSE = createAction(
   '[Machine] Delete Machine Response',
-  props<{ data: string }>()
+  props<{ id: string }>()
 );
 
 export const LOAD_MACHINES = createAction('[Machine] Load Machines');
@@ -28,9 +28,11 @@ export const LOAD_MACHINES_RESPONSE = createAction(
   props<{ data: IMachineResponse[] }>()
 );
 
-export const SELECT_MACHINE = createAction(
-  '[Machine] Select Machine',
+export const SET_SELECT_MACHINE = createAction(
+  '[Machine] Set Selected Machine',
   props<{ id: string }>()
 );
 
-export const DESELECT_MACHINE = createAction('[Machine] Deselect Machine');
+export const REMOVE_SELECTED_MACHINE = createAction(
+  '[Machine] Remove Selected Machine'
+);

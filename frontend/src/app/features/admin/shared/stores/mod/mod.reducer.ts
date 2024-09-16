@@ -2,10 +2,10 @@ import { createReducer, on } from '@ngrx/store';
 import { initialState, modAdapter } from './mod.state';
 import {
   DELETE_MOD_RESPONSE,
-  DESELECT_MOD,
+  REMOVE_SELECTED_MOD,
   LOAD_MODS_BY_GAME_ID_RESPONSE,
   LOAD_MODS_RESPONSE,
-  SELECT_MOD,
+  SET_SELECTED_MOD,
 } from './mod.actions';
 
 export const modReducer = createReducer(
@@ -16,14 +16,14 @@ export const modReducer = createReducer(
   on(LOAD_MODS_BY_GAME_ID_RESPONSE, (state, { data }) => {
     return modAdapter.setAll(data, state);
   }),
-  on(DELETE_MOD_RESPONSE, (state, { data }) => {
-    return modAdapter.removeOne(data, state);
+  on(DELETE_MOD_RESPONSE, (state, { id }) => {
+    return modAdapter.removeOne(id, state);
   }),
-  on(SELECT_MOD, (state, { id }) => ({
+  on(SET_SELECTED_MOD, (state, { id }) => ({
     ...state,
     selectedModId: id,
   })),
-  on(DESELECT_MOD, (state) => ({
+  on(REMOVE_SELECTED_MOD, (state) => ({
     ...state,
     selectedModId: null,
   }))

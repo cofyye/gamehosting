@@ -59,7 +59,7 @@ export class ModEffects {
     this._actions$.pipe(
       ofType(ModActions.DELETE_MOD),
       mergeMap((action) =>
-        this._modService.deleteMod(action.payload).pipe(
+        this._modService.deleteMod(action.id).pipe(
           tap((response) => {
             this._utilsService.handleResponseToaster(response);
 
@@ -73,7 +73,7 @@ export class ModEffects {
             );
 
             return ModActions.DELETE_MOD_RESPONSE({
-              data: action.payload,
+              id: action.id,
             });
           }),
           catchError((err: HttpErrorResponse) => {
@@ -86,7 +86,7 @@ export class ModEffects {
 
             return of(
               ModActions.DELETE_MOD_RESPONSE({
-                data: '',
+                id: '',
               })
             );
           })
@@ -137,7 +137,7 @@ export class ModEffects {
     this._actions$.pipe(
       ofType(ModActions.LOAD_MODS_BY_GAME_ID),
       mergeMap((action) =>
-        this._modService.getModsByGameId(action.payload).pipe(
+        this._modService.getModsByGameId(action.id).pipe(
           map((response) => {
             this._store.dispatch(
               HttpActions.SET_RESPONSE({

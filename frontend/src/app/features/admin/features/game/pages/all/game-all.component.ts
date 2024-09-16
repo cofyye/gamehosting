@@ -15,8 +15,8 @@ import {
 } from '../../../../shared/stores/game/game.selectors';
 import {
   DELETE_GAME,
-  DESELECT_GAME,
-  SELECT_GAME,
+  REMOVE_SELECTED_GAME,
+  SET_SELECTED_GAME,
 } from '../../../../shared/stores/game/game.actions';
 import { HostBy } from '../../../../../../shared/enums/game.enum';
 
@@ -94,18 +94,18 @@ export class GameAllComponent implements OnInit {
   }
 
   public onSelectGame(id: string): void {
-    this._store.dispatch(SELECT_GAME({ id }));
+    this._store.dispatch(SET_SELECTED_GAME({ id }));
   }
 
   public onDeselectGame(): void {
-    setTimeout(() => this._store.dispatch(DESELECT_GAME()), 100);
+    setTimeout(() => this._store.dispatch(REMOVE_SELECTED_GAME()), 100);
   }
 
   public onDeleteGame(): void {
     const id = this.selectedGame?.id;
     if (id) {
       this._store.dispatch(START_LOADING({ key: 'DELETE_GAME_BTN' }));
-      this._store.dispatch(DELETE_GAME({ payload: id }));
+      this._store.dispatch(DELETE_GAME({ id }));
     } else {
       this._toaster.error(
         'No game selected, deletion has been aborted.',

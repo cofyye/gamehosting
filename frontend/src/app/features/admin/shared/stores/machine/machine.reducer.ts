@@ -2,9 +2,9 @@ import { createReducer, on } from '@ngrx/store';
 import { initialState, machineAdapter } from './machine.state';
 import {
   DELETE_MACHINE_RESPONSE,
-  DESELECT_MACHINE,
+  REMOVE_SELECTED_MACHINE,
   LOAD_MACHINES_RESPONSE,
-  SELECT_MACHINE,
+  SET_SELECT_MACHINE,
 } from './machine.actions';
 
 export const machineReducer = createReducer(
@@ -12,14 +12,14 @@ export const machineReducer = createReducer(
   on(LOAD_MACHINES_RESPONSE, (state, { data }) => {
     return machineAdapter.setAll(data, state);
   }),
-  on(DELETE_MACHINE_RESPONSE, (state, { data }) => {
-    return machineAdapter.removeOne(data, state);
+  on(DELETE_MACHINE_RESPONSE, (state, { id }) => {
+    return machineAdapter.removeOne(id, state);
   }),
-  on(SELECT_MACHINE, (state, { id }) => ({
+  on(SET_SELECT_MACHINE, (state, { id }) => ({
     ...state,
     selectedMachineId: id,
   })),
-  on(DESELECT_MACHINE, (state) => ({
+  on(REMOVE_SELECTED_MACHINE, (state) => ({
     ...state,
     selectedMachineId: null,
   }))

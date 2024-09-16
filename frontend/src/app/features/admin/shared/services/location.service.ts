@@ -32,4 +32,12 @@ export class LocationService {
       `${environment.API_URL}/admin/location`
     );
   }
+
+  public getLocation(
+    id: string
+  ): Observable<IDataAcceptResponse<ILocationResponse>> {
+    return this._httpClient.get<IDataAcceptResponse<ILocationResponse>>(
+      `${environment.API_URL}/admin/location/${id}`
+    );
+  }
 }

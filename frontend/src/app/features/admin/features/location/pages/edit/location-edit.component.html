@@ -20,9 +20,9 @@
                   <div class="inline-flex gap-x-2">
                     <a
                       class="py-2 px-3 inline-flex items-center gap-x-2 text-sm/[15px] font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none focus:outline-none focus:bg-gray-50"
-                      routerLink="/admin/locations/add"
+                      routerLink="/admin/locations"
                     >
-                      Add Location
+                      View All
                     </a>
                   </div>
                 </div>
@@ -30,65 +30,68 @@
               <!-- End Header -->
 
               <!-- Body -->
-              <div class="p-4 md:p-5">
-                <div class="grid gap-y-4">
-                  <!-- Grid with 2 cols -->
-                  <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-4">
-                    <!-- Form Group Country Select -->
-                    <div class="relative flex-1">
-                      <input
-                        type="text"
-                        id="hs-floating-input-email-value"
-                        class="peer p-4 block w-full border-gray-200 rounded-lg text-sm placeholder:text-transparent focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none focus:pt-6 focus:pb-2 [&amp;:not(:placeholder-shown)]:pt-6 [&amp;:not(:placeholder-shown)]:pb-2 autofill:pt-6 autofill:pb-2"
-                        placeholder=" "
-                        value=""
-                      />
-                      <label
-                        for="hs-floating-input-email-value"
-                        class="absolute top-0 start-0 p-4 h-full text-sm truncate pointer-events-none transition ease-in-out duration-100 border border-transparent origin-[0_0] peer-disabled:opacity-50 peer-disabled:pointer-events-none peer-focus:scale-90 peer-focus:translate-x-0.5 peer-focus:-translate-y-1.5 peer-focus:text-gray-500 peer-[:not(:placeholder-shown)]:scale-90 peer-[:not(:placeholder-shown)]:translate-x-0.5 peer-[:not(:placeholder-shown)]:-translate-y-1.5 peer-[:not(:placeholder-shown)]:text-gray-500"
-                        >Country</label
-                      >
+              <form [formGroup]="locationEditForm">
+                <div class="p-4 md:p-5">
+                  <div class="grid gap-y-4">
+                    <!-- Grid with 2 cols -->
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-4">
+                      <!-- Form Group Country Select -->
+                      <div class="relative flex-1">
+                        <app-country-select
+                          (selectionChange)="onCountrySelected($event)"
+                          autocomplete="false"
+                        ></app-country-select>
+                      </div>
+                      <!-- End Form Group Country Select -->
+
+                      <!-- Form Group City -->
+                      <div class="relative flex-1">
+                        <input
+                          type="text"
+                          id="hs-floating-input-city-value"
+                          class="peer p-4 block w-full border-gray-200 rounded-lg text-sm placeholder:text-transparent focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none focus:pt-6 focus:pb-2 [&amp;:not(:placeholder-shown)]:pt-6 [&amp;:not(:placeholder-shown)]:pb-2 autofill:pt-6 autofill:pb-2"
+                          placeholder=""
+                          formControlName="city"
+                          autocomplete="false"
+                        />
+                        <label
+                          for="hs-floating-input-city-value"
+                          class="absolute top-0 start-0 p-4 h-full text-sm truncate pointer-events-none transition ease-in-out duration-100 border border-transparent origin-[0_0] peer-disabled:opacity-50 peer-disabled:pointer-events-none peer-focus:scale-90 peer-focus:translate-x-0.5 peer-focus:-translate-y-1.5 peer-focus:text-gray-500 peer-[:not(:placeholder-shown)]:scale-90 peer-[:not(:placeholder-shown)]:translate-x-0.5 peer-[:not(:placeholder-shown)]:-translate-y-1.5 peer-[:not(:placeholder-shown)]:text-gray-500"
+                          >City</label
+                        >
+                      </div>
+                      <!-- End Form Group City -->
                     </div>
-                    <!-- End Form Group Country Select -->
+                    <!-- End Grid with 2 cols -->
 
-                    <!-- Form Group City -->
-                    <div class="relative flex-1">
-                      <input
-                        type="text"
-                        id="hs-floating-input-email-value"
-                        class="peer p-4 block w-full border-gray-200 rounded-lg text-sm placeholder:text-transparent focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none focus:pt-6 focus:pb-2 [&amp;:not(:placeholder-shown)]:pt-6 [&amp;:not(:placeholder-shown)]:pb-2 autofill:pt-6 autofill:pb-2"
-                        placeholder=" "
-                        value=""
-                      />
-                      <label
-                        for="hs-floating-input-email-value"
-                        class="absolute top-0 start-0 p-4 h-full text-sm truncate pointer-events-none transition ease-in-out duration-100 border border-transparent origin-[0_0] peer-disabled:opacity-50 peer-disabled:pointer-events-none peer-focus:scale-90 peer-focus:translate-x-0.5 peer-focus:-translate-y-1.5 peer-focus:text-gray-500 peer-[:not(:placeholder-shown)]:scale-90 peer-[:not(:placeholder-shown)]:translate-x-0.5 peer-[:not(:placeholder-shown)]:-translate-y-1.5 peer-[:not(:placeholder-shown)]:text-gray-500"
-                        >City</label
+                    <!-- Buttons -->
+                    <div class="inline-flex justify-end gap-x-2">
+                      <button
+                        type="submit"
+                        class="py-2 px-3 inline-flex justify-center items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 focus:outline-none focus:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none"
+                        (click)="onEditLocation()"
+                        [disabled]="isLoadingLocationEdit"
                       >
+                        <div
+                          class="absolute animate-spin inline-block size-4 border-[2px] border-current border-t-transparent text-white rounded-full"
+                          role="status"
+                          aria-label="loading"
+                          *ngIf="isLoadingLocationEdit"
+                        >
+                          <span class="sr-only">Loading...</span>
+                        </div>
+                        <span
+                          [ngClass]="
+                            isLoadingLocationEdit ? 'invisible' : 'visible'
+                          "
+                          >Edit</span
+                        >
+                      </button>
                     </div>
-                    <!-- End Form Group City -->
+                    <!-- End Buttons -->
                   </div>
-                  <!-- End Grid with 2 cols -->
-
-                  <!-- Buttons -->
-                  <div class="inline-flex justify-end gap-x-2">
-                    <a
-                      class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none focus:outline-none focus:bg-gray-50"
-                      href="#"
-                    >
-                      Reset
-                    </a>
-
-                    <a
-                      class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 focus:outline-none focus:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none"
-                      href="#"
-                    >
-                      Save
-                    </a>
-                  </div>
-                  <!-- End Buttons -->
                 </div>
-              </div>
+              </form>
               <!-- End Body -->
             </div>
           </div>

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Actions, ofType, createEffect } from '@ngrx/effects';
-import { catchError, map, mergeMap, of, tap } from 'rxjs';
+import { catchError, EMPTY, map, mergeMap, of, tap } from 'rxjs';
 import * as LocationActions from './location.actions';
 import * as HttpActions from '../../../../../shared/stores/http/http.actions';
 import { HttpErrorResponse } from '@angular/common/http';
@@ -127,6 +127,38 @@ export class LocationEffects {
                 data: [],
               })
             );
+          })
+        )
+      )
+    )
+  );
+
+  loadLocation$ = createEffect(() =>
+    this._actions$.pipe(
+      ofType(LocationActions.LOAD_LOCATION),
+      mergeMap((action) =>
+        this._locationService.getLocation(action.id).pipe(
+          map((response) => {
+            this._store.dispatch(
+              HttpActions.SET_RESPONSE({
+                key: 'LOAD_LOCATION',
+                response,
+              })
+            );
+
+            return LocationActions.LOAD_LOCATION_RESPONSE({
+              data: response.data,
+            });
+          }),
+          catchError((err: HttpErrorResponse) => {
+            const response: IAcceptResponse = err.error as IAcceptResponse;
+
+            HttpActions.SET_RESPONSE({
+              key: 'LOAD_LOCATION',
+              response,
+            });
+
+            return of();
           })
         )
       )

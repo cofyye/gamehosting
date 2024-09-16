@@ -21,8 +21,8 @@ import {
 } from '../../../../shared/stores/location/location.selectors';
 import {
   DELETE_LOCATION,
-  DESELECT_LOCATION,
-  SELECT_LOCATION,
+  REMOVE_SELECTED_LOCATION,
+  SET_SELECTED_LOCATION,
 } from '../../../../shared/stores/location/location.actions';
 
 @Component({
@@ -100,11 +100,11 @@ export class LocationAllComponent implements OnInit, OnDestroy {
   }
 
   public onSelectLocation(id: string): void {
-    this._store.dispatch(SELECT_LOCATION({ id }));
+    this._store.dispatch(SET_SELECTED_LOCATION({ id }));
   }
 
   public onDeselectLocation(): void {
-    setTimeout(() => this._store.dispatch(DESELECT_LOCATION()), 100);
+    setTimeout(() => this._store.dispatch(REMOVE_SELECTED_LOCATION()), 100);
   }
 
   public onDeleteLocation(): void {

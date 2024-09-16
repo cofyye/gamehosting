@@ -16,6 +16,9 @@ export const SELECT_LOCATIONS_ENTITIES = createSelector(
   selectEntities
 );
 
+export const SELECT_LOCATION_BY_ID = (id: string) =>
+  createSelector(SELECT_LOCATIONS_ENTITIES, (entities) => entities[id] ?? null);
+
 export const SELECT_SELECTED_LOCATION_ID = createSelector(
   SELECT_LOCATION_STATE,
   (state: LocationState) => state.selectedLocationId

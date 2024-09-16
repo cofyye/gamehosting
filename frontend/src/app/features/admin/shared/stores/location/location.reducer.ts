@@ -2,9 +2,10 @@ import { createReducer, on } from '@ngrx/store';
 import { initialState, locationAdapter } from './location.state';
 import {
   DELETE_LOCATION_RESPONSE,
-  DESELECT_LOCATION,
+  REMOVE_SELECTED_LOCATION,
   LOAD_LOCATIONS_RESPONSE,
-  SELECT_LOCATION,
+  SET_SELECTED_LOCATION,
+  LOAD_LOCATION_RESPONSE,
 } from './location.actions';
 
 export const locationReducer = createReducer(
@@ -12,14 +13,17 @@ export const locationReducer = createReducer(
   on(LOAD_LOCATIONS_RESPONSE, (state, { data }) => {
     return locationAdapter.setAll(data, state);
   }),
+  on(LOAD_LOCATION_RESPONSE, (state, { data }) => {
+    return locationAdapter.setOne(data, state);
+  }),
   on(DELETE_LOCATION_RESPONSE, (state, { data }) => {
     return locationAdapter.removeOne(data, state);
   }),
-  on(SELECT_LOCATION, (state, { id }) => ({
+  on(SET_SELECTED_LOCATION, (state, { id }) => ({
     ...state,
     selectedLocationId: id,
   })),
-  on(DESELECT_LOCATION, (state) => ({
+  on(REMOVE_SELECTED_LOCATION, (state) => ({
     ...state,
     selectedLocationId: null,
   }))

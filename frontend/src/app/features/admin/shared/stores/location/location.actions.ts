@@ -28,9 +28,21 @@ export const LOAD_LOCATIONS_RESPONSE = createAction(
   props<{ data: ILocationResponse[] }>()
 );
 
-export const SELECT_LOCATION = createAction(
-  '[Location] Select Location',
+export const LOAD_LOCATION = createAction(
+  '[Location] Load Location',
   props<{ id: string }>()
 );
 
-export const DESELECT_LOCATION = createAction('[Location] Deselect Location');
+export const LOAD_LOCATION_RESPONSE = createAction(
+  '[Location] Load Location Response',
+  props<{ data: ILocationResponse }>()
+);
+
+export const SET_SELECTED_LOCATION = createAction(
+  '[Location] Set Selected Location',
+  props<{ id: string }>()
+);
+
+export const REMOVE_SELECTED_LOCATION = createAction(
+  '[Location] Remove Selected Location'
+);

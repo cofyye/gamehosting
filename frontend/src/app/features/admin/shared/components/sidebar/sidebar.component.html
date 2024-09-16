@@ -42,7 +42,11 @@
           </li>
 
           <!-- Locations -->
-          <li class="hs-accordion" id="locations-accordion">
+          <li
+            *ngIf="auth.user?.role === role.FOUNDER"
+            class="hs-accordion"
+            id="locations-accordion"
+          >
             <button
               type="button"
               class="hs-accordion-toggle w-full text-start flex items-center gap-x-2 py-3 px-2.5 text-sm text-white rounded-lg hover:bg-white/10 focus:outline-none focus:bg-white/10"
@@ -127,7 +131,11 @@
           </li>
 
           <!-- Games -->
-          <li class="hs-accordion" id="games-accordion">
+          <li
+            *ngIf="auth.user?.role === role.FOUNDER"
+            class="hs-accordion"
+            id="games-accordion"
+          >
             <button
               type="button"
               class="hs-accordion-toggle w-full text-start flex items-center gap-x-2 py-3 px-2.5 text-sm text-white rounded-lg hover:bg-white/10 focus:outline-none focus:bg-white/10"
@@ -213,7 +221,11 @@
           </li>
 
           <!-- Machines -->
-          <li class="hs-accordion" id="machines-accordion">
+          <li
+            *ngIf="auth.user?.role === role.FOUNDER"
+            class="hs-accordion"
+            id="machines-accordion"
+          >
             <button
               type="button"
               class="hs-accordion-toggle w-full text-start flex items-center gap-x-2 py-3 px-2.5 text-sm text-white rounded-lg hover:bg-white/10 focus:outline-none focus:bg-white/10"
@@ -298,7 +310,13 @@
           </li>
 
           <!-- Plans -->
-          <li class="hs-accordion" id="plans-accordion">
+          <li
+            *ngIf="
+              auth.user?.role === role.FOUNDER || auth.user?.role === role.ADMIN
+            "
+            class="hs-accordion"
+            id="plans-accordion"
+          >
             <button
               type="button"
               class="hs-accordion-toggle w-full text-start flex items-center gap-x-2 py-3 px-2.5 text-sm text-white rounded-lg hover:bg-white/10 focus:outline-none focus:bg-white/10"
@@ -387,7 +405,11 @@
           </li>
 
           <!-- Mods -->
-          <li class="hs-accordion" id="mods-accordion">
+          <li
+            *ngIf="auth.user?.role === role.FOUNDER"
+            class="hs-accordion"
+            id="mods-accordion"
+          >
             <button
               type="button"
               class="hs-accordion-toggle w-full text-start flex items-center gap-x-2 py-3 px-2.5 text-sm text-white rounded-lg hover:bg-white/10 focus:outline-none focus:bg-white/10"
@@ -474,7 +496,13 @@
           </li>
 
           <!-- Servers -->
-          <li class="hs-accordion" id="servers-accordion">
+          <li
+            *ngIf="
+              auth.user?.role === role.FOUNDER || auth.user?.role === role.ADMIN
+            "
+            class="hs-accordion"
+            id="servers-accordion"
+          >
             <button
               type="button"
               class="hs-accordion-toggle w-full text-start flex items-center gap-x-2 py-3 px-2.5 text-sm text-white rounded-lg hover:bg-white/10 focus:outline-none focus:bg-white/10"
@@ -569,7 +597,15 @@
           </li>
 
           <!-- Users -->
-          <li class="hs-accordion" id="users-accordion">
+          <li
+            *ngIf="
+              auth.user?.role === role.FOUNDER ||
+              auth.user?.role === role.ADMIN ||
+              auth.user?.role === role.SUPPORT
+            "
+            class="hs-accordion"
+            id="users-accordion"
+          >
             <button
               type="button"
               class="hs-accordion-toggle w-full text-start flex items-center gap-x-2 py-3 px-2.5 text-sm text-white rounded-lg hover:bg-white/10 focus:outline-none focus:bg-white/10"
@@ -636,7 +672,7 @@
                 <li>
                   <a
                     class="flex items-center gap-x-2 py-2 px-2.5 text-sm text-white rounded-lg hover:bg-white/10 focus:outline-none focus:bg-white/10"
-                    href="#"
+                    routerLink="./"
                   >
                     Add User
                   </a>
@@ -644,7 +680,7 @@
                 <li>
                   <a
                     class="flex items-center gap-x-2 py-2 px-2.5 text-sm text-white rounded-lg hover:bg-white/10 focus:outline-none focus:bg-white/10"
-                    href="#"
+                    routerLink="./"
                   >
                     List of Users
                   </a>
@@ -654,7 +690,13 @@
           </li>
 
           <!-- Plugins -->
-          <li class="hs-accordion" id="plugins-accordion">
+          <li
+            *ngIf="
+              auth.user?.role === role.FOUNDER || auth.user?.role === role.ADMIN
+            "
+            class="hs-accordion"
+            id="plugins-accordion"
+          >
             <button
               type="button"
               class="hs-accordion-toggle w-full text-start flex items-center gap-x-2 py-3 px-2.5 text-sm text-white rounded-lg hover:bg-white/10 focus:outline-none focus:bg-white/10"
@@ -720,7 +762,7 @@
                 <li>
                   <a
                     class="flex items-center gap-x-2 py-2 px-2.5 text-sm text-white rounded-lg hover:bg-white/10 focus:outline-none focus:bg-white/10"
-                    href="#"
+                    routerLink="./"
                   >
                     Add Plugin
                   </a>
@@ -728,7 +770,7 @@
                 <li>
                   <a
                     class="flex items-center gap-x-2 py-2 px-2.5 text-sm text-white rounded-lg hover:bg-white/10 focus:outline-none focus:bg-white/10"
-                    href="#"
+                    routerLink="./"
                   >
                     List of Plugins
                   </a>
@@ -738,7 +780,15 @@
           </li>
 
           <!-- Tickets -->
-          <li class="hs-accordion" id="tickets-accordion">
+          <li
+            *ngIf="
+              auth.user?.role === role.FOUNDER ||
+              auth.user?.role === role.ADMIN ||
+              auth.user?.role === role.SUPPORT
+            "
+            class="hs-accordion"
+            id="tickets-accordion"
+          >
             <button
               type="button"
               class="hs-accordion-toggle w-full text-start flex items-center gap-x-2 py-3 px-2.5 text-sm text-white rounded-lg hover:bg-white/10 focus:outline-none focus:bg-white/10"
@@ -805,7 +855,7 @@
                 <li>
                   <a
                     class="flex items-center gap-x-2 py-2 px-2.5 text-sm text-white rounded-lg hover:bg-white/10 focus:outline-none focus:bg-white/10"
-                    href="#"
+                    routerLink="./"
                   >
                     Create Ticket
                   </a>
@@ -813,7 +863,7 @@
                 <li>
                   <a
                     class="flex items-center gap-x-2 py-2 px-2.5 text-sm text-white rounded-lg hover:bg-white/10 focus:outline-none focus:bg-white/10"
-                    href="#"
+                    routerLink="./"
                   >
                     List of Tickets
                   </a>
@@ -823,7 +873,13 @@
           </li>
 
           <!-- Announcements -->
-          <li class="hs-accordion" id="announcements-accordion">
+          <li
+            *ngIf="
+              auth.user?.role === role.FOUNDER || auth.user?.role === role.ADMIN
+            "
+            class="hs-accordion"
+            id="announcements-accordion"
+          >
             <button
               type="button"
               class="hs-accordion-toggle w-full text-start flex items-center gap-x-2 py-3 px-2.5 text-sm text-white rounded-lg hover:bg-white/10 focus:outline-none focus:bg-white/10"
@@ -892,7 +948,7 @@
                 <li>
                   <a
                     class="flex items-center gap-x-2 py-2 px-2.5 text-sm text-white rounded-lg hover:bg-white/10 focus:outline-none focus:bg-white/10"
-                    href="#"
+                    routerLink="./"
                   >
                     Create Announcements
                   </a>
@@ -900,7 +956,7 @@
                 <li>
                   <a
                     class="flex items-center gap-x-2 py-2 px-2.5 text-sm text-white rounded-lg hover:bg-white/10 focus:outline-none focus:bg-white/10"
-                    href="#"
+                    routerLink="./"
                   >
                     List of Announcements
                   </a>
@@ -909,10 +965,10 @@
             </div>
           </li>
 
-          <li>
+          <li *ngIf="auth.user?.role === role.FOUNDER">
             <a
               class="w-full flex items-center gap-x-2 py-3 px-2.5 text-sm text-white rounded-lg hover:bg-white/10"
-              href="#"
+              routerLink="./"
             >
               <svg
                 class="shrink-0 size-4"
@@ -934,7 +990,11 @@
           </li>
 
           <!-- Settings -->
-          <li class="hs-accordion" id="settings-accordion">
+          <li
+            *ngIf="auth.user?.role === role.FOUNDER"
+            class="hs-accordion"
+            id="settings-accordion"
+          >
             <button
               type="button"
               class="hs-accordion-toggle w-full text-start flex items-center gap-x-2 py-3 px-2.5 text-sm text-white rounded-lg hover:bg-white/10 focus:outline-none focus:bg-white/10"
@@ -1006,7 +1066,7 @@
                 <li>
                   <a
                     class="flex items-center gap-x-2 py-2 px-2.5 text-sm text-white rounded-lg hover:bg-white/10 focus:outline-none focus:bg-white/10"
-                    href="#"
+                    routerLink="./"
                   >
                     General Settings
                   </a>
@@ -1014,7 +1074,7 @@
                 <li>
                   <a
                     class="flex items-center gap-x-2 py-2 px-2.5 text-sm text-white rounded-lg hover:bg-white/10 focus:outline-none focus:bg-white/10"
-                    href="#"
+                    routerLink="./"
                   >
                     Payment Gateway
                   </a>
@@ -1022,7 +1082,7 @@
                 <li>
                   <a
                     class="flex items-center gap-x-2 py-2 px-2.5 text-sm text-white rounded-lg hover:bg-white/10 focus:outline-none focus:bg-white/10"
-                    href="#"
+                    routerLink="./"
                   >
                     System Logs
                   </a>

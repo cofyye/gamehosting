@@ -384,4 +384,40 @@ export class AuthService {
       );
     }
   }
+
+  public async usernameAvailability(username: string): Promise<boolean> {
+    try {
+      const user = await this._userRepo.findOne({
+        where: {
+          username,
+        },
+      });
+
+      return user ? true : false;
+    } catch (err) {
+      functions.handleHttpException(
+        err,
+        false,
+        'An error occurred while checking the username.',
+      );
+    }
+  }
+
+  public async emailAvailability(email: string): Promise<boolean> {
+    try {
+      const user = await this._userRepo.findOne({
+        where: {
+          email,
+        },
+      });
+
+      return user ? true : false;
+    } catch (err) {
+      functions.handleHttpException(
+        err,
+        false,
+        'An error occurred while checking the email address.',
+      );
+    }
+  }
 }

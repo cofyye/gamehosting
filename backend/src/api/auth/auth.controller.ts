@@ -340,4 +340,28 @@ export class AuthController {
       };
     }
   }
+
+  @Post('/availability/username/:username')
+  @HttpCode(HttpStatus.OK)
+  public async usernameAvailability(
+    @Param('username') username: string,
+  ): Promise<IDataSendResponse<boolean>> {
+    return {
+      success: true,
+      data: await this._authService.usernameAvailability(username),
+      message: 'Success.',
+    };
+  }
+
+  @Post('/availability/email/:email')
+  @HttpCode(HttpStatus.OK)
+  public async emailAvailability(
+    @Param('email') email: string,
+  ): Promise<IDataSendResponse<boolean>> {
+    return {
+      success: true,
+      data: await this._authService.emailAvailability(email),
+      message: 'Success.',
+    };
+  }
 }

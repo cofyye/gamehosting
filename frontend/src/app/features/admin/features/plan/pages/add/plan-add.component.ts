@@ -272,7 +272,9 @@ export class PlanAddComponent implements OnInit, OnDestroy {
     this.machinesPlans.push(this.planAddForm.get('addMachinePlan')?.value);
     this.machinesPlansRequest.push({
       id: this.planAddForm.get('addMachinePlan.machineId')?.value,
-      maxServers: this.planAddForm.get('addMachinePlan.maxServers')?.value,
+      maxServers: Number(
+        this.planAddForm.get('addMachinePlan.maxServers')?.value
+      ),
     });
     this.resetMachinePlan();
   }

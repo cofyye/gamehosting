@@ -1,0 +1,796 @@
+<div class="flex flex-col">
+  <!-- Header -->
+  <header
+    class="relative bg-gray-800 z-1 text-white py-12 w-full inset-0 before:absolute before:inset-0 before:bg-[url('https://cdn2.steamgriddb.com/hero/ecd812da02543c0269cfc2c56ab3c3c0.png')] before:bg-no-repeat before:bg-cover before:bg-center before:opacity-30 before:z-1"
+  >
+    <div
+      class="max-w-[80rem] mx-auto flex justify-between items-center px-4 relative"
+    >
+      <div class="text-start">
+        <span
+          class="py-0.5 px-3 inline-flex items-center gap-x-1 text-xs font-semibold bg-teal-600 text-teal-800 rounded-full"
+        >
+          Online
+        </span>
+        <p class="mt-1 text-white font-bold">LandCraft PVP</p>
+      </div>
+      <div class="flex items-center space-x-2">
+        <!-- Start -->
+        <button
+          type="button"
+          class="py-2 md:py-1 px-2 md:px-4 inline-flex items-center text-xs/[22px] font-semibold rounded-lg border border-transparent bg-green-600 text-gray-50 hover:bg-green-700 hover:text-white focus:outline-none focus:bg-green-700 disabled:opacity-50 disabled:pointer-events-none"
+        >
+          <svg
+            class="shrink-0 size-3 me-px"
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M12 2v10" />
+            <path d="M18.4 6.6a9 9 0 1 1-12.77.04" />
+          </svg>
+          <span class="hidden md:inline">Start</span>
+        </button>
+
+        <!-- Restart -->
+        <button
+          type="button"
+          class="py-2 md:py-1 px-2 md:px-4 inline-flex items-center text-xs/[22px] font-semibold rounded-lg border border-transparent bg-yellow-600 text-gray-50 hover:bg-yellow-700 hover:text-white focus:outline-none focus:bg-yellow-700 disabled:opacity-50 disabled:pointer-events-none"
+        >
+          <svg
+            class="shrink-0 size-3 me-px"
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
+            <path d="M3 3v5h5" />
+            <path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16" />
+            <path d="M16 16h5v5" />
+          </svg>
+          <span class="hidden md:inline">Restart</span>
+        </button>
+        <!-- Stop -->
+        <button
+          type="button"
+          class="py-2 md:py-1 px-2 md:px-4 inline-flex items-center text-xs/[22px] font-semibold rounded-lg border border-transparent bg-red-600 text-gray-50 hover:bg-red-700 hover:text-white focus:outline-none focus:bg-red-700 disabled:opacity-50 disabled:pointer-events-none"
+        >
+          <svg
+            class="shrink-0 size-3 me-px"
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <circle cx="12" cy="12" r="10" />
+            <path d="m4.9 4.9 14.2 14.2" />
+          </svg>
+          <span class="hidden md:inline">Stop</span>
+        </button>
+
+        <button
+          type="button"
+          class="md:hidden text-sm relative size-7 flex justify-center items-center gap-x-2 rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 focus:outline-none focus:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none"
+          aria-haspopup="dialog"
+          aria-expanded="false"
+          aria-controls="hs-offcanvas-example"
+          data-hs-overlay="#hs-offcanvas-example"
+        >
+          <svg
+            class="hs-collapse-open:hidden shrink-0 size-4"
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <line x1="3" x2="21" y1="6" y2="6" />
+            <line x1="3" x2="21" y1="12" y2="12" />
+            <line x1="3" x2="21" y1="18" y2="18" />
+          </svg>
+          <svg
+            class="hs-collapse-open:block hidden shrink-0 size-4"
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M18 6 6 18" />
+            <path d="m6 6 12 12" />
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <div class="flex flex-1 max-w-[80rem] mx-auto w-full py-5">
+    <!-- Sidebar / Navigation -->
+    <nav class="hidden md:block w-60 bg-white px-4">
+      <ul class="space-y-1.5">
+        <li>
+          <a
+            routerLink="./"
+            class="px-4 py-3 rounded-lg text-sm font-semibold bg-white border border-gray-200 text-gray-800 inline-flex items-center w-full"
+          >
+            <svg
+              class="shrink-0 size-4 me-0.5 relative top-px"
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8" />
+              <path
+                d="M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"
+              />
+            </svg>
+            Home
+          </a>
+        </li>
+        <li>
+          <a
+            routerLink="./"
+            class="px-4 py-3 rounded-lg text-sm font-semibold bg-white border border-gray-200 text-gray-800 inline-flex items-center w-full"
+          >
+            <svg
+              class="shrink-0 size-4 me-0.5 relative top-px"
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M20 7h-3a2 2 0 0 1-2-2V2" />
+              <path
+                d="M9 18a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h7l4 4v10a2 2 0 0 1-2 2Z"
+              />
+              <path d="M3 7.6v12.8A1.6 1.6 0 0 0 4.6 22h9.8" />
+            </svg>
+            File Manager
+          </a>
+        </li>
+        <li>
+          <a
+            routerLink="./"
+            class="px-4 py-3 rounded-lg text-sm font-semibold bg-white border border-gray-200 text-gray-800 inline-flex items-center w-full"
+          >
+            <svg
+              class="shrink-0 size-4 me-0.5 relative top-px"
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path
+                d="M17 21v-2a1 1 0 0 1-1-1v-1a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v1a1 1 0 0 1-1 1"
+              />
+              <path d="M19 15V6.5a1 1 0 0 0-7 0v11a1 1 0 0 1-7 0V9" />
+              <path d="M21 21v-2h-4" />
+              <path d="M3 5h4V3" />
+              <path
+                d="M7 5a1 1 0 0 1 1 1v1a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a1 1 0 0 1 1-1V3"
+              />
+            </svg>
+            Console
+          </a>
+        </li>
+        <li>
+          <a
+            routerLink="./"
+            class="px-4 py-3 rounded-lg text-sm font-semibold bg-white border border-gray-200 text-gray-800 inline-flex items-center w-full"
+          >
+            <svg
+              class="shrink-0 size-4 me-0.5 relative top-px"
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path
+                d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"
+              />
+              <path d="m3.3 7 8.7 5 8.7-5" />
+              <path d="M12 22V12" />
+            </svg>
+            Mods
+          </a>
+        </li>
+        <li>
+          <a
+            routerLink="./"
+            class="px-4 py-3 rounded-lg text-sm font-semibold bg-white border border-gray-200 text-gray-800 inline-flex items-center w-full"
+          >
+            <svg
+              class="shrink-0 size-4 me-0.5 relative top-px"
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <rect width="18" height="12" x="3" y="8" rx="1" />
+              <path d="M10 8V5c0-.6-.4-1-1-1H6a1 1 0 0 0-1 1v3" />
+              <path d="M19 8V5c0-.6-.4-1-1-1h-3a1 1 0 0 0-1 1v3" />
+            </svg>
+            Plugins
+          </a>
+        </li>
+        <li>
+          <a
+            routerLink="./"
+            class="px-4 py-3 rounded-lg text-sm font-semibold bg-white border border-gray-200 text-gray-800 inline-flex items-center w-full"
+          >
+            <svg
+              class="shrink-0 size-4 me-0.5 relative top-px"
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path
+                d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"
+              />
+              <path d="M14 2v4a2 2 0 0 0 2 2h4" />
+              <path d="M8 12h8" />
+              <path d="M10 11v2" />
+              <path d="M8 17h8" />
+              <path d="M14 16v2" />
+            </svg>
+            Config Files
+          </a>
+        </li>
+        <li>
+          <a
+            routerLink="./"
+            class="px-4 py-3 rounded-lg text-sm font-semibold bg-white border border-gray-200 text-gray-800 inline-flex items-center w-full"
+          >
+            <svg
+              class="shrink-0 size-4 me-0.5 relative top-px"
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path
+                d="M9 20H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h3.9a2 2 0 0 1 1.69.9l.81 1.2a2 2 0 0 0 1.67.9H20a2 2 0 0 1 2 2v.5"
+              />
+              <path d="M12 10v4h4" />
+              <path d="m12 14 1.535-1.605a5 5 0 0 1 8 1.5" />
+              <path d="M22 22v-4h-4" />
+              <path d="m22 18-1.535 1.605a5 5 0 0 1-8-1.5" />
+            </svg>
+            Backups
+          </a>
+        </li>
+        <li>
+          <a
+            routerLink="./"
+            class="px-4 py-3 rounded-lg text-sm font-semibold bg-white border border-gray-200 text-gray-800 inline-flex items-center w-full"
+          >
+            <svg
+              class="shrink-0 size-4 me-0.5 relative top-px"
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <ellipse cx="12" cy="5" rx="9" ry="3" />
+              <path d="M3 5V19A9 3 0 0 0 21 19V5" />
+              <path d="M3 12A9 3 0 0 0 21 12" />
+            </svg>
+            Databases
+          </a>
+        </li>
+      </ul>
+    </nav>
+
+    <main class="flex-1 bg-white border border-gray-200 p-6 rounded-xl">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- Server Info -->
+        <div class="bg-white border border-gray-200 p-4 rounded-xl">
+          <h2 class="text-xl font-semibold mb-4">Minecraft Server</h2>
+          <p class="text-sm text-gray-600 flex items-center">
+            Server Name: CraftDev Server
+            <button
+              type="button"
+              class="ms-2 p-2 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 focus:outline-none focus:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none"
+              aria-haspopup="dialog"
+              aria-expanded="false"
+              aria-controls="hs-basic-modal"
+              data-hs-overlay="#hs-basic-modal"
+            >
+              <svg
+                class="size-4"
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path
+                  d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z"
+                />
+                <path d="m15 5 4 4" />
+              </svg>
+            </button>
+          </p>
+          <!-- Modal -->
+          <div
+            id="hs-basic-modal"
+            class="hs-overlay hs-overlay-open:opacity-100 hs-overlay-open:duration-500 hidden size-full fixed top-0 start-0 z-[80] opacity-0 overflow-x-hidden transition-all overflow-y-auto pointer-events-none"
+            role="dialog"
+            tabindex="-1"
+            aria-labelledby="hs-basic-modal-label"
+          >
+            <div class="sm:max-w-lg sm:w-full m-3 sm:mx-auto">
+              <div
+                class="flex flex-col bg-white border shadow-sm rounded-xl pointer-events-auto"
+              >
+                <div
+                  class="flex justify-between items-center py-3 px-4 border-b"
+                >
+                  <h3 id="hs-basic-modal-label" class="font-bold text-gray-800">
+                    Edit Server Name
+                  </h3>
+                  <button
+                    type="button"
+                    class="size-8 inline-flex justify-center items-center gap-x-2 rounded-full border border-transparent bg-gray-100 text-gray-800 hover:bg-gray-200 focus:outline-none focus:bg-gray-200 disabled:opacity-50 disabled:pointer-events-none"
+                    aria-label="Close"
+                    data-hs-overlay="#hs-basic-modal"
+                  >
+                    <span class="sr-only">Close</span>
+                    <svg
+                      class="shrink-0 size-4"
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <path d="M18 6 6 18"></path>
+                      <path d="m6 6 12 12"></path>
+                    </svg>
+                  </button>
+                </div>
+                <div class="p-4 overflow-y-auto">
+                  <input
+                    type="text"
+                    id="serverNameInput"
+                    class="w-full p-2 border border-gray-300 rounded-md"
+                    value="CraftDev Server"
+                  />
+                </div>
+                <div
+                  class="flex justify-end items-center gap-x-2 py-3 px-4 border-t"
+                >
+                  <button
+                    type="button"
+                    class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 focus:outline-none focus:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none"
+                    data-hs-overlay="#hs-basic-modal"
+                  >
+                    Close
+                  </button>
+                  <button
+                    type="button"
+                    id="saveButton"
+                    class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 focus:outline-none focus:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none"
+                  >
+                    Save changes
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <p class="text-sm text-gray-600">Game: Minecraft</p>
+          <p class="text-sm text-gray-600">Location: Germany</p>
+          <p class="text-sm text-gray-600">Players: 8/16 players online</p>
+          <p class="text-sm text-gray-600">IP Adress: 192.168.0.1</p>
+          <p class="text-sm text-gray-600">Status: Active</p>
+        </div>
+
+        <!-- Active Instance -->
+        <div class="bg-white border border-gray-200 p-4 rounded-xl">
+          <h2 class="text-xl font-semibold mb-4">Web FTP</h2>
+          <p class="text-sm text-gray-600">IP Adress: 192.168.0.1</p>
+          <p class="text-sm text-gray-600">Username: root</p>
+          <p class="text-sm text-gray-600">Password: 123456</p>
+          <p class="text-sm text-gray-600">Port: 21</p>
+        </div>
+
+        <!-- Usage Section -->
+        <div class="col-span-2 bg-white border border-gray-200 p-4 rounded-xl">
+          <h2 class="text-xl font-semibold mb-4">Usage</h2>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <p class="text-sm text-gray-600">CPU</p>
+              <div class="h-2 bg-gray-200 rounded-full overflow-hidden">
+                <div class="bg-blue-600 h-full" style="width: 58%"></div>
+              </div>
+              <p class="text-sm text-gray-600 mt-1">58%</p>
+            </div>
+            <div>
+              <p class="text-sm text-gray-600">RAM</p>
+              <div class="h-2 bg-gray-200 rounded-full overflow-hidden">
+                <div class="bg-purple-600 h-full" style="width: 37%"></div>
+              </div>
+              <p class="text-sm text-gray-600 mt-1">756/2048 MB</p>
+            </div>
+            <!--
+                        <div>
+                            <p class="text-sm text-gray-600">Storage</p>
+                            <div class="h-2 bg-gray-200 rounded-full overflow-hidden">
+                                <div class="bg-red-600 h-full" style="width: 100%;"></div>
+                            </div>
+                            <p class="text-sm text-red-600 mt-1">Storage Full</p>
+                        </div>-->
+          </div>
+        </div>
+
+        <!-- Quick Shortcut -->
+        <div class="bg-white border border-gray-200 p-4 rounded-xl">
+          <h2 class="text-xl font-semibold mb-4">Quick Shortcut</h2>
+          <div class="flex space-x-2">
+            <button
+              class="bg-gray-200 text-gray-600 text-xs px-3 py-1.5 rounded-md shadow-md hover:bg-gray-300"
+            >
+              Configs
+            </button>
+            <button
+              class="bg-gray-200 text-gray-600 text-xs px-3 py-1.5 rounded-md shadow-md hover:bg-gray-300"
+            >
+              Cstrike
+            </button>
+            <button
+              class="bg-gray-200 text-gray-600 text-xs px-3 py-1.5 rounded-md shadow-md hover:bg-gray-300"
+            >
+              server.cfg
+            </button>
+            <button
+              class="bg-gray-200 text-gray-600 text-xs px-3 py-1.5 rounded-md shadow-md hover:bg-gray-300"
+            >
+              users.ini
+            </button>
+            <button
+              class="bg-gray-200 text-gray-600 text-xs px-3 py-1.5 rounded-md shadow-md hover:bg-gray-300"
+            >
+              plugins.ini
+            </button>
+          </div>
+        </div>
+
+        <!-- Active Players -->
+        <div class="bg-white border border-gray-200 p-4 rounded-xl">
+          <h2 class="text-xl font-semibold mb-4">Graphics</h2>
+          <p class="text-sm text-gray-600">grafik</p>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+
+<!-- Offcanvas Menu -->
+<div
+  id="hs-offcanvas-example"
+  class="hs-overlay hs-overlay-open:translate-x-0 hidden -translate-x-full fixed top-0 start-0 transition-all duration-300 transform h-full max-w-xs w-full z-[80] bg-white border-e"
+  role="dialog"
+  tabindex="-1"
+  aria-labelledby="hs-offcanvas-example-label"
+>
+  <div class="flex justify-between items-center py-3 px-4 border-b">
+    <h3 id="hs-offcanvas-example-label" class="font-bold text-gray-800">
+      Navigation
+    </h3>
+    <button
+      type="button"
+      class="size-8 inline-flex justify-center items-center gap-x-2 rounded-full border border-transparent bg-gray-100 text-gray-800 hover:bg-gray-200 focus:outline-none focus:bg-gray-200 disabled:opacity-50 disabled:pointer-events-none"
+      aria-label="Close"
+      data-hs-overlay="#hs-offcanvas-example"
+    >
+      <span class="sr-only">Close</span>
+      <svg
+        class="shrink-0 size-4"
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <path d="M18 6 6 18"></path>
+        <path d="m6 6 12 12"></path>
+      </svg>
+    </button>
+  </div>
+  <div class="p-4">
+    <ul class="space-y-2">
+      <li>
+        <a
+          routerLink="./"
+          class="px-4 py-3 rounded-lg text-sm font-semibold bg-white border border-gray-200 text-gray-800 inline-flex items-center w-full"
+        >
+          <svg
+            class="shrink-0 size-4 me-0.5 relative top-px"
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8" />
+            <path
+              d="M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"
+            />
+          </svg>
+          Home
+        </a>
+      </li>
+      <li>
+        <a
+          routerLink="./"
+          class="px-4 py-3 rounded-lg text-sm font-semibold bg-white border border-gray-200 text-gray-800 inline-flex items-center w-full"
+        >
+          <svg
+            class="shrink-0 size-4 me-0.5 relative top-px"
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M20 7h-3a2 2 0 0 1-2-2V2" />
+            <path
+              d="M9 18a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h7l4 4v10a2 2 0 0 1-2 2Z"
+            />
+            <path d="M3 7.6v12.8A1.6 1.6 0 0 0 4.6 22h9.8" />
+          </svg>
+          File Manager
+        </a>
+      </li>
+      <li>
+        <a
+          routerLink="./"
+          class="px-4 py-3 rounded-lg text-sm font-semibold bg-white border border-gray-200 text-gray-800 inline-flex items-center w-full"
+        >
+          <svg
+            class="shrink-0 size-4 me-0.5 relative top-px"
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path
+              d="M17 21v-2a1 1 0 0 1-1-1v-1a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v1a1 1 0 0 1-1 1"
+            />
+            <path d="M19 15V6.5a1 1 0 0 0-7 0v11a1 1 0 0 1-7 0V9" />
+            <path d="M21 21v-2h-4" />
+            <path d="M3 5h4V3" />
+            <path
+              d="M7 5a1 1 0 0 1 1 1v1a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a1 1 0 0 1 1-1V3"
+            />
+          </svg>
+          Console
+        </a>
+      </li>
+      <li>
+        <a
+          routerLink="./"
+          class="px-4 py-3 rounded-lg text-sm font-semibold bg-white border border-gray-200 text-gray-800 inline-flex items-center w-full"
+        >
+          <svg
+            class="shrink-0 size-4 me-0.5 relative top-px"
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path
+              d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"
+            />
+            <path d="m3.3 7 8.7 5 8.7-5" />
+            <path d="M12 22V12" />
+          </svg>
+          Mods
+        </a>
+      </li>
+      <li>
+        <a
+          routerLink="./"
+          class="px-4 py-3 rounded-lg text-sm font-semibold bg-white border border-gray-200 text-gray-800 inline-flex items-center w-full"
+        >
+          <svg
+            class="shrink-0 size-4 me-0.5 relative top-px"
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <rect width="18" height="12" x="3" y="8" rx="1" />
+            <path d="M10 8V5c0-.6-.4-1-1-1H6a1 1 0 0 0-1 1v3" />
+            <path d="M19 8V5c0-.6-.4-1-1-1h-3a1 1 0 0 0-1 1v3" />
+          </svg>
+          Plugins
+        </a>
+      </li>
+      <li>
+        <a
+          routerLink="./"
+          class="px-4 py-3 rounded-lg text-sm font-semibold bg-white border border-gray-200 text-gray-800 inline-flex items-center w-full"
+        >
+          <svg
+            class="shrink-0 size-4 me-0.5 relative top-px"
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path
+              d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"
+            />
+            <path d="M14 2v4a2 2 0 0 0 2 2h4" />
+            <path d="M8 12h8" />
+            <path d="M10 11v2" />
+            <path d="M8 17h8" />
+            <path d="M14 16v2" />
+          </svg>
+          Config Files
+        </a>
+      </li>
+      <li>
+        <a
+          routerLink="./"
+          class="px-4 py-3 rounded-lg text-sm font-semibold bg-white border border-gray-200 text-gray-800 inline-flex items-center w-full"
+        >
+          <svg
+            class="shrink-0 size-4 me-0.5 relative top-px"
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path
+              d="M9 20H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h3.9a2 2 0 0 1 1.69.9l.81 1.2a2 2 0 0 0 1.67.9H20a2 2 0 0 1 2 2v.5"
+            />
+            <path d="M12 10v4h4" />
+            <path d="m12 14 1.535-1.605a5 5 0 0 1 8 1.5" />
+            <path d="M22 22v-4h-4" />
+            <path d="m22 18-1.535 1.605a5 5 0 0 1-8-1.5" />
+          </svg>
+          Backups
+        </a>
+      </li>
+      <li>
+        <a
+          routerLink="./"
+          class="px-4 py-3 rounded-lg text-sm font-semibold bg-white border border-gray-200 text-gray-800 inline-flex items-center w-full"
+        >
+          <svg
+            class="shrink-0 size-4 me-0.5 relative top-px"
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <ellipse cx="12" cy="5" rx="9" ry="3" />
+            <path d="M3 5V19A9 3 0 0 0 21 19V5" />
+            <path d="M3 12A9 3 0 0 0 21 12" />
+          </svg>
+          Databases
+        </a>
+      </li>
+    </ul>
+  </div>
+</div>

@@ -11,8 +11,8 @@ import { ServerModule } from './server/server.module';
   imports: [
     CommonModule,
     RouterModule,
-    DashboardModule,
     NavBarModule,
+    DashboardModule,
     ServerModule,
   ],
   providers: [],

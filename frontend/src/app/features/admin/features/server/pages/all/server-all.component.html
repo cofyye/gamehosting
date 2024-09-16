@@ -110,7 +110,7 @@
                                 scope="col"
                                 class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase"
                               >
-                                Custom Price
+                                Price
                               </th>
                               <th
                                 scope="col"
@@ -177,16 +177,17 @@
                                 {{ server.mod?.modName }}
                               </td>
                               <td
-                                data-label="Custom Price"
+                                data-label="Price"
                                 class="px-6 py-4 whitespace-nowrap text-sm text-gray-800"
                               >
-                                {{ server.customPrice ?? "Not set" }}
+                                {{ server.customPrice ?? server.plan?.price }}
+                                &euro;
                               </td>
                               <td
                                 data-label="Expiration Date"
                                 class="px-6 py-4 whitespace-nowrap text-sm text-gray-800"
                               >
-                                {{ server.expirationDate }}
+                                {{ server.expirationDate | dateFormat }}
                               </td>
                               <td
                                 data-label="Status"

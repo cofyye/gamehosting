@@ -47,20 +47,18 @@ export class Ssh2Service {
 
       await this.client.connect(config);
 
-      if (!(await this.client.exists('/root/gamehosting'))) {
-        await this.client.mkdir('/root/gamehosting');
+      if (!(await this.client.exists('/root/falconx'))) {
+        await this.client.mkdir('/root/falconx');
       }
 
-      if (!(await this.client.exists('/root/gamehosting/add_vsftpd_user.sh'))) {
+      if (!(await this.client.exists('/root/falconx/add_vsftpd_user.sh'))) {
         await this.client.fastPut(
           path.join(__dirname, '..', '..', '..', 'bash', 'add_vsftpd_user.sh'),
-          '/root/gamehosting/add_vsftpd_user.sh',
+          '/root/falconx/add_vsftpd_user.sh',
         );
       }
 
-      if (
-        !(await this.client.exists('/root/gamehosting/delete_vsftpd_user.sh'))
-      ) {
+      if (!(await this.client.exists('/root/falconx/delete_vsftpd_user.sh'))) {
         await this.client.fastPut(
           path.join(
             __dirname,
@@ -70,14 +68,12 @@ export class Ssh2Service {
             'bash',
             'delete_vsftpd_user.sh',
           ),
-          '/root/gamehosting/delete_vsftpd_user.sh',
+          '/root/falconx/delete_vsftpd_user.sh',
         );
       }
 
       if (
-        !(await this.client.exists(
-          '/root/gamehosting/install_vsftpd_server.sh',
-        ))
+        !(await this.client.exists('/root/falconx/install_vsftpd_server.sh'))
       ) {
         await this.client.fastPut(
           path.join(
@@ -88,13 +84,11 @@ export class Ssh2Service {
             'bash',
             'install_vsftpd_server.sh',
           ),
-          '/root/gamehosting/install_vsftpd_server.sh',
+          '/root/falconx/install_vsftpd_server.sh',
         );
       }
 
-      if (
-        !(await this.client.exists('/root/gamehosting/required_packages.sh'))
-      ) {
+      if (!(await this.client.exists('/root/falconx/required_packages.sh'))) {
         await this.client.fastPut(
           path.join(
             __dirname,
@@ -104,22 +98,19 @@ export class Ssh2Service {
             'bash',
             'required_packages.sh',
           ),
-          '/root/gamehosting/required_packages.sh',
+          '/root/falconx/required_packages.sh',
         );
       }
 
-      await this.client.chmod('/root/gamehosting/add_vsftpd_user.sh', '755');
-      await this.client.chmod('/root/gamehosting/delete_vsftpd_user.sh', '755');
-      await this.client.chmod('/root/gamehosting/required_packages.sh', '755');
-      await this.client.chmod(
-        '/root/gamehosting/install_vsftpd_server.sh',
-        '755',
-      );
+      await this.client.chmod('/root/falconx/add_vsftpd_user.sh', '755');
+      await this.client.chmod('/root/falconx/delete_vsftpd_user.sh', '755');
+      await this.client.chmod('/root/falconx/required_packages.sh', '755');
+      await this.client.chmod('/root/falconx/install_vsftpd_server.sh', '755');
 
       await this.ssh2.connect(config);
 
       const installRequiredPackagesResult = await this.ssh2.execCommand(
-        'cd /root/gamehosting && sudo ./required_packages.sh',
+        'cd /root/falconx && sudo ./required_packages.sh',
       );
 
       if (installRequiredPackagesResult.code !== 0) {
@@ -131,7 +122,7 @@ export class Ssh2Service {
       }
 
       const installVsftpdResult = await this.ssh2.execCommand(
-        'cd /root/gamehosting && sudo ./install_vsftpd_server.sh',
+        'cd /root/falconx && sudo ./install_vsftpd_server.sh',
       );
 
       if (installVsftpdResult.code !== 0) {
@@ -175,12 +166,12 @@ export class Ssh2Service {
 
         await this.client.connect(config);
 
-        if (!(await this.client.exists('/opt/gamehosting'))) {
-          await this.client.mkdir('/opt/gamehosting');
+        if (!(await this.client.exists('/opt/falconx'))) {
+          await this.client.mkdir('/opt/falconx');
         }
 
-        if (!(await this.client.exists(`/opt/gamehosting/${dockerImage}`))) {
-          await this.client.mkdir(`/opt/gamehosting/${dockerImage}`);
+        if (!(await this.client.exists(`/opt/falconx/${dockerImage}`))) {
+          await this.client.mkdir(`/opt/falconx/${dockerImage}`);
         }
 
         await this.client.fastPut(
@@ -193,13 +184,13 @@ export class Ssh2Service {
             `${dockerImage}`,
             'Dockerfile.zip',
           ),
-          `/opt/gamehosting/${dockerImage}/Dockerfile.zip`,
+          `/opt/falconx/${dockerImage}/Dockerfile.zip`,
         );
 
         await this.ssh2.connect(config);
 
         const unzipResult = await this.ssh2.execCommand(
-          `cd /opt/gamehosting/${dockerImage} && unzip Dockerfile.zip && rm -rf Dockerfile.zip`,
+          `cd /opt/falconx/${dockerImage} && unzip Dockerfile.zip && rm -rf Dockerfile.zip`,
         );
 
         if (unzipResult.code !== 0) {
@@ -211,7 +202,7 @@ export class Ssh2Service {
         }
 
         const buildResult = await this.ssh2.execCommand(
-          `cd /opt/gamehosting/${dockerImage} && sudo docker build -t ${dockerImage} .`,
+          `cd /opt/falconx/${dockerImage} && sudo docker build -t ${dockerImage} .`,
         );
 
         if (buildResult.code !== 0) {
@@ -252,7 +243,7 @@ export class Ssh2Service {
           readyTimeout: 3000,
         });
 
-        await this.client.rmdir(`/opt/gamehosting/${dockerFolder}`, true);
+        await this.client.rmdir(`/opt/falconx/${dockerFolder}`, true);
 
         await this.ssh2.connect({
           host: machine.ip,
@@ -329,7 +320,7 @@ export class Ssh2Service {
       await this.ssh2.connect(config);
 
       const addFtpUserResult = await this.ssh2.execCommand(
-        `/root/gamehosting/add_vsftpd_user.sh ${server.ftpUsername} ${this._encryptionService.decrypt(server.ftpPassword)}`,
+        `/root/falconx/add_vsftpd_user.sh ${server.ftpUsername} ${this._encryptionService.decrypt(server.ftpPassword)}`,
       );
 
       if (addFtpUserResult.code !== 0) {
@@ -400,7 +391,7 @@ export class Ssh2Service {
       await this.ssh2.connect(config);
 
       const deleteFtpUserResult = await this.ssh2.execCommand(
-        `/root/gamehosting/delete_vsftpd_user.sh ${server.ftpUsername}`,
+        `/root/falconx/delete_vsftpd_user.sh ${server.ftpUsername}`,
       );
 
       if (deleteFtpUserResult.code !== 0) {

@@ -164,6 +164,7 @@ export class ServerService {
           },
           plan: {
             name: true,
+            price: true,
           },
           game: {
             name: true,

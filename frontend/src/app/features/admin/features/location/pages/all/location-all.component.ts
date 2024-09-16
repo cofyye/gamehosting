@@ -111,7 +111,7 @@ export class LocationAllComponent implements OnInit, OnDestroy {
     const id = this.selectedLocation?.id;
     if (id) {
       this._store.dispatch(START_LOADING({ key: 'DELETE_LOCATION_BTN' }));
-      this._store.dispatch(DELETE_LOCATION({ payload: id }));
+      this._store.dispatch(DELETE_LOCATION({ id }));
     } else {
       this._toaster.error(
         'No location selected, deletion has been aborted.',

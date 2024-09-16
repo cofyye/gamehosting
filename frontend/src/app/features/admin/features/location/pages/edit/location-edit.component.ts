@@ -1,4 +1,10 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  OnDestroy,
+  OnInit,
+  Renderer2,
+} from '@angular/core';
 import {
   FormBuilder,
   FormControl,
@@ -13,9 +19,11 @@ import { START_LOADING } from '../../../../../../shared/stores/loader/loader.act
 import { ILocationEditRequest } from '../../../../shared/models/location-request.model';
 import { ISelectedCountry } from '../../../../../../shared/models/country.model';
 import { ToasterService } from '../../../../../../shared/services/toaster.service';
-import { ADD_LOCATION } from '../../../../shared/stores/location/location.actions';
+import { EDIT_LOCATION } from '../../../../shared/stores/location/location.actions';
 import { ILocationResponse } from '../../../../shared/models/location-response.model';
 import { ActivatedRoute } from '@angular/router';
+import { environment } from '../../../../../../../environments/environment';
+import { SELECT_HTTP_RESPONSE } from '../../../../../../shared/stores/http/http.selectors';
 
 @Component({
   selector: 'app-location-edit',
@@ -24,11 +32,14 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class LocationEditComponent implements OnInit, OnDestroy {
   private loadingLocationEditSub!: Subscription;
+  private locationEditSub!: Subscription;
   private routeSub!: Subscription;
   public isLoadingLocationEdit: boolean = false;
   public location!: ILocationResponse;
 
   constructor(
+    private readonly _el: ElementRef,
+    private readonly _renderer: Renderer2,
     private readonly _fb: FormBuilder,
     private readonly _toaster: ToasterService,
     private readonly _route: ActivatedRoute,
@@ -56,17 +67,49 @@ export class LocationEditComponent implements OnInit, OnDestroy {
   public ngOnInit(): void {
     this.routeSub = this._route.data.subscribe((data) => {
       this.location = data['location'] as ILocationResponse;
+
+      this.onResetLocation();
     });
 
     this.loadingLocationEditSub = this._store
       .select(IS_LOADING('EDIT_LOCATION_BTN'))
       .subscribe((value) => (this.isLoadingLocationEdit = value));
+
+    this.locationEditSub = this._store
+      .select(SELECT_HTTP_RESPONSE('EDIT_LOCATION'))
+      .subscribe((response) => {
+        if (response?.success) {
+          this.location = {
+            id: this.location.id,
+            country: this.locationEditForm.get('country')?.value,
+            countryTag: this.locationEditForm.get('countryTag')?.value,
+            city: this.locationEditForm.get('city')?.value,
+          };
+        }
+      });
   }
 
   public ngOnDestroy(): void {
+    if (this.routeSub) {
+      this.routeSub.unsubscribe();
+    }
     if (this.loadingLocationEditSub) {
       this.loadingLocationEditSub.unsubscribe();
     }
+    if (this.locationEditSub) {
+      this.locationEditSub.unsubscribe();
+    }
+  }
+
+  public onResetLocation(): void {
+    setTimeout(() => {
+      this.resetSelectLocation();
+      this.locationEditForm.patchValue({
+        country: this.location.country,
+        tag: this.location.countryTag,
+        city: this.location.city,
+      });
+    }, 100);
   }
 
   public onCountrySelected(selectedCountry: ISelectedCountry): void {
@@ -87,19 +130,42 @@ export class LocationEditComponent implements OnInit, OnDestroy {
     }
   }
 
+  public resetSelectLocation(): void {
+    const countryDataIcon = this._el.nativeElement.querySelector('[data-icon]');
+    const countryDataTitle =
+      this._el.nativeElement.querySelector('[data-title]');
+
+    if (countryDataIcon) {
+      this._renderer.removeClass(countryDataIcon, 'hidden');
+      this._renderer.setProperty(
+        countryDataIcon,
+        'innerHTML',
+        `<img class='inline-block size-4 rounded-full' src='${environment.API_URL}/assets/flags/1x1/${this.location.countryTag}.svg' alt='${this.location.country}' />`
+      );
+    }
+    if (countryDataTitle) {
+      this._renderer.setProperty(
+        countryDataTitle,
+        'innerHTML',
+        `${this.location.country}`
+      );
+    }
+  }
+
   public onEditLocation(): void {
     if (this.locationEditFormHasErrors()) {
       return;
     }
 
     const data: ILocationEditRequest = {
+      id: this.location.id,
       country: this.locationEditForm.get('country')?.value,
       countryTag: this.locationEditForm.get('countryTag')?.value,
       city: this.locationEditForm.get('city')?.value,
     };
 
     this._store.dispatch(START_LOADING({ key: 'EDIT_LOCATION_BTN' }));
-    this._store.dispatch(ADD_LOCATION({ payload: data }));
+    this._store.dispatch(EDIT_LOCATION({ payload: data }));
   }
 
   private locationEditFormHasErrors(): boolean {

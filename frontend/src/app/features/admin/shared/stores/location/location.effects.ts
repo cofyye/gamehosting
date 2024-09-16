@@ -55,11 +55,51 @@ export class LocationEffects {
     )
   );
 
+  editLocation$ = createEffect(() =>
+    this._actions$.pipe(
+      ofType(LocationActions.EDIT_LOCATION),
+      mergeMap((action) =>
+        this._locationService.editLocation(action.payload).pipe(
+          tap((response) => {
+            this._utilsService.handleResponseToaster(response);
+
+            this._store.dispatch(STOP_LOADING({ key: 'EDIT_LOCATION_BTN' }));
+
+            return response;
+          }),
+          map((response) => {
+            this._store.dispatch(
+              HttpActions.SET_RESPONSE({ key: 'EDIT_LOCATION', response })
+            );
+
+            return LocationActions.EDIT_LOCATION_RESPONSE({
+              data: action.payload,
+            });
+          }),
+          catchError((err: HttpErrorResponse) => {
+            const response: IAcceptResponse = err.error as IAcceptResponse;
+
+            this._store.dispatch(STOP_LOADING({ key: 'EDIT_LOCATION_BTN' }));
+            this._store.dispatch(
+              HttpActions.SET_RESPONSE({ key: 'EDIT_LOCATION', response })
+            );
+
+            return of(
+              LocationActions.EDIT_LOCATION_RESPONSE({
+                data: null,
+              })
+            );
+          })
+        )
+      )
+    )
+  );
+
   deleteLocation$ = createEffect(() =>
     this._actions$.pipe(
       ofType(LocationActions.DELETE_LOCATION),
       mergeMap((action) =>
-        this._locationService.deleteLocation(action.payload).pipe(
+        this._locationService.deleteLocation(action.id).pipe(
           tap((response) => {
             this._utilsService.handleResponseToaster(response);
 
@@ -73,7 +113,7 @@ export class LocationEffects {
             );
 
             return LocationActions.DELETE_LOCATION_RESPONSE({
-              data: action.payload,
+              id: action.id,
             });
           }),
           catchError((err: HttpErrorResponse) => {
@@ -86,7 +126,7 @@ export class LocationEffects {
 
             return of(
               LocationActions.DELETE_LOCATION_RESPONSE({
-                data: '',
+                id: '',
               })
             );
           })
@@ -158,7 +198,11 @@ export class LocationEffects {
               response,
             });
 
-            return of();
+            return of(
+              LocationActions.LOAD_LOCATION_RESPONSE({
+                data: null,
+              })
+            );
           })
         )
       )

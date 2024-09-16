@@ -1,5 +1,8 @@
 import { createAction, props } from '@ngrx/store';
-import { ILocationAddRequest } from '../../../shared/models/location-request.model';
+import {
+  ILocationAddRequest,
+  ILocationEditRequest,
+} from '../../../shared/models/location-request.model';
 import { ILocationResponse } from '../../../shared/models/location-response.model';
 
 export const ADD_LOCATION = createAction(
@@ -9,16 +12,28 @@ export const ADD_LOCATION = createAction(
   }>()
 );
 
+export const EDIT_LOCATION = createAction(
+  '[Location] Edit Location',
+  props<{
+    payload: ILocationEditRequest;
+  }>()
+);
+
+export const EDIT_LOCATION_RESPONSE = createAction(
+  '[Location] Edit Location Response',
+  props<{ data: ILocationResponse | null }>()
+);
+
 export const DELETE_LOCATION = createAction(
   '[Location] Delete Location',
   props<{
-    payload: string;
+    id: string;
   }>()
 );
 
 export const DELETE_LOCATION_RESPONSE = createAction(
   '[Location] Delete Location Response',
-  props<{ data: string }>()
+  props<{ id: string }>()
 );
 
 export const LOAD_LOCATIONS = createAction('[Location] Load Locations');
@@ -35,7 +50,7 @@ export const LOAD_LOCATION = createAction(
 
 export const LOAD_LOCATION_RESPONSE = createAction(
   '[Location] Load Location Response',
-  props<{ data: ILocationResponse }>()
+  props<{ data: ILocationResponse | null }>()
 );
 
 export const SET_SELECTED_LOCATION = createAction(

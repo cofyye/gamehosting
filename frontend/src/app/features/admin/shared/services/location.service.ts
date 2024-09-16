@@ -1,13 +1,15 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-
 import { environment } from '../../../../../environments/environment';
 import {
   IAcceptResponse,
   IDataAcceptResponse,
 } from '../../../../shared/models/response.model';
-import { ILocationAddRequest } from '../models/location-request.model';
+import {
+  ILocationAddRequest,
+  ILocationEditRequest,
+} from '../models/location-request.model';
 import { ILocationResponse } from '../models/location-response.model';
 
 @Injectable()
@@ -17,6 +19,13 @@ export class LocationService {
   public addLocation(data: ILocationAddRequest): Observable<IAcceptResponse> {
     return this._httpClient.post<IAcceptResponse>(
       `${environment.API_URL}/admin/location`,
+      data
+    );
+  }
+
+  public editLocation(data: ILocationEditRequest): Observable<IAcceptResponse> {
+    return this._httpClient.put<IAcceptResponse>(
+      `${environment.API_URL}/admin/location/${data.id}`,
       data
     );
   }

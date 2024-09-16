@@ -5,6 +5,7 @@ export interface ILocationAddRequest {
 }
 
 export interface ILocationEditRequest {
+  id: string;
   country: string;
   countryTag: string;
   city: string;

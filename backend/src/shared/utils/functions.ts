@@ -504,8 +504,24 @@ function validateProvidedMachinesForPlan(
       );
     }
 
+    _machines = trimArrayObject<IProvidedMachinesForPlan>(_machines);
+
+    if (!hasUniqueFields(_machines, ['id'])) {
+      functions.throwHttpException(
+        false,
+        'You have entered two identical machines.',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
     _machines.forEach((item) => {
-      if (!item?.id) {
+      if (
+        !('id' in item) ||
+        !item.id ||
+        typeof item.id !== 'string' ||
+        item.id === '' ||
+        item.id.length < 1
+      ) {
         functions.throwHttpException(
           false,
           'The machine ID field must not be empty.',
@@ -513,7 +529,7 @@ function validateProvidedMachinesForPlan(
         );
       }
 
-      if (!UUID_V4_REGEX.test(item?.id)) {
+      if (!UUID_V4_REGEX.test(item.id)) {
         functions.throwHttpException(
           false,
           'The machine ID is not valid.',
@@ -521,7 +537,7 @@ function validateProvidedMachinesForPlan(
         );
       }
 
-      if (!item?.maxServers) {
+      if (!('maxServers' in item) || typeof item.maxServers !== 'number') {
         functions.throwHttpException(
           false,
           'The maximum servers field must not be empty.',
@@ -529,7 +545,7 @@ function validateProvidedMachinesForPlan(
         );
       }
 
-      if (item?.maxServers < 1) {
+      if (item.maxServers < 1) {
         functions.throwHttpException(
           false,
           'The minimum value for the maximum servers field must be 1.',
@@ -537,7 +553,7 @@ function validateProvidedMachinesForPlan(
         );
       }
 
-      if (item?.maxServers > 65535) {
+      if (item.maxServers > 65535) {
         functions.throwHttpException(
           false,
           'The maximum value for the maximum servers field must be 65535.',
@@ -545,7 +561,7 @@ function validateProvidedMachinesForPlan(
         );
       }
 
-      if (!UNSIGNED_INTEGER_REGEX.test(item?.maxServers.toString())) {
+      if (!UNSIGNED_INTEGER_REGEX.test(item.maxServers.toString())) {
         functions.throwHttpException(
           false,
           'The maximum servers field must be a number.',

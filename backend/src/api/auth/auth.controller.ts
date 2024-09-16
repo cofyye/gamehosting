@@ -220,7 +220,7 @@ export class AuthController {
 
       return {
         success: true,
-        message: 'Success.',
+        message: 'You have successfully logged out.',
       };
     } catch (err: unknown) {
       functions.handleHttpException(

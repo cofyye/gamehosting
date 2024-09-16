@@ -4,11 +4,14 @@ import {
   catchError,
   concatMap,
   EMPTY,
+  filter,
   map,
   mergeMap,
   of,
   retry,
   switchMap,
+  take,
+  takeUntil,
   tap,
   timer,
   withLatestFrom,
@@ -19,7 +22,6 @@ import { Store } from '@ngrx/store';
 import { AppState } from '../../../app.state';
 import { UtilsService } from '../../../shared/services/utils.service';
 import { SELECT_AUTH_STATE } from './auth.selectors';
-import { UserRole } from '../../../shared/enums/user.enum';
 import { Router } from '@angular/router';
 import { ToasterService } from '../../../shared/services/toaster.service';
 import { AuthService } from '../../services/auth.service';
@@ -30,6 +32,7 @@ import {
   IDataAcceptResponse,
 } from '../../models/response.model';
 import * as HttpActions from '../http/http.actions';
+import { SELECT_HTTP_RESPONSE } from '../http/http.selectors';
 
 @Injectable()
 export class AuthEffects {
@@ -94,16 +97,20 @@ export class AuthEffects {
 
             return response;
           }),
-          map((response) =>
-            AuthActions.SAVE_AUTH({
+          map((response) => {
+            this._store.dispatch(
+              HttpActions.SET_RESPONSE({ key: 'LOGIN', response })
+            );
+
+            return AuthActions.SAVE_AUTH({
               auth: {
                 user: response.data.user,
                 expirationDate: response.data.expirationDate,
                 loggedIn: true,
                 fetched: state.auth.fetched,
               },
-            })
-          ),
+            });
+          }),
           catchError((err: HttpErrorResponse) => {
             const response: IDataAcceptResponse<{ verified: boolean }> =
               err.error as IDataAcceptResponse<{ verified: boolean }>;
@@ -117,6 +124,48 @@ export class AuthEffects {
             return of(
               HttpActions.SET_RESPONSE({
                 key: 'LOGIN',
+                response,
+              })
+            );
+          })
+        )
+      )
+    )
+  );
+
+  logout$ = createEffect(() =>
+    this._actions$.pipe(
+      ofType(AuthActions.LOGOUT),
+      withLatestFrom(this._store.select(SELECT_AUTH_STATE)),
+      mergeMap(([_, state]) =>
+        this._authService.logout().pipe(
+          tap((response) => {
+            this._utilsService.handleResponseToaster(response);
+
+            this._router.navigate(['/']);
+
+            return response;
+          }),
+          map((response) => {
+            this._store.dispatch(
+              HttpActions.SET_RESPONSE({ key: 'LOGOUT', response })
+            );
+
+            return AuthActions.SAVE_AUTH({
+              auth: {
+                expirationDate: undefined,
+                user: undefined,
+                loggedIn: false,
+                fetched: state.auth.fetched,
+              },
+            });
+          }),
+          catchError((err: HttpErrorResponse) => {
+            const response: IAcceptResponse = err.error as IAcceptResponse;
+
+            return of(
+              HttpActions.SET_RESPONSE({
+                key: 'LOGOUT',
                 response,
               })
             );
@@ -151,6 +200,13 @@ export class AuthEffects {
         }
 
         return timer(timerDuration).pipe(
+          takeUntil(
+            this._store.select(SELECT_HTTP_RESPONSE('LOGOUT')).pipe(
+              filter((response) => !!response),
+              map((response) => response?.success === true),
+              take(1)
+            )
+          ),
           map(() => AuthActions.REGENERATE_TOKEN())
           // tap(() => console.log('call API'))
         );

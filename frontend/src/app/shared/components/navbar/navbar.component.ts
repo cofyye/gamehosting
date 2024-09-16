@@ -6,6 +6,7 @@ import { SELECT_AUTH } from '../../stores/auth/auth.selectors';
 import { Subscription } from 'rxjs';
 import { UserRole } from '../../enums/user.enum';
 import { environment } from '../../../../environments/environment';
+import { LOGOUT } from '../../stores/auth/auth.actions';
 
 @Component({
   selector: 'app-navbar',
@@ -30,5 +31,9 @@ export class NavbarComponent implements OnInit, OnDestroy {
     if (this.userSub) {
       this.userSub.unsubscribe();
     }
+  }
+
+  public onLogout(): void {
+    this._store.dispatch(LOGOUT());
   }
 }

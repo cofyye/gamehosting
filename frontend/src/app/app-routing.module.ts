@@ -5,6 +5,8 @@ import { HomeComponent } from './home/home.component';
 import { fetchUserGuard } from './shared/guards/fetch-user.guard';
 import { notAuthenticatedGuard } from './shared/guards/not-authenticated.guard';
 import { authenticatedGuard } from './shared/guards/authenticated.guard';
+import { roleGuard } from './shared/guards/role.guard';
+import { UserRole } from './shared/enums/user.enum';
 
 const routes: Routes = [
   {
@@ -23,7 +25,10 @@ const routes: Routes = [
   {
     path: 'admin',
     canActivate: [fetchUserGuard],
-    canActivateChild: [authenticatedGuard],
+    canActivateChild: [
+      authenticatedGuard,
+      roleGuard([UserRole.FOUNDER, UserRole.ADMIN, UserRole.SUPPORT]),
+    ],
     loadChildren: () =>
       import('./features/admin/admin.module').then((m) => m.AdminModule),
   },

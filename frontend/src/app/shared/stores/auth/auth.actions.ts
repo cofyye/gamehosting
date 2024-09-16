@@ -23,6 +23,8 @@ export const LOGIN = createAction(
   props<{ payload: ILoginRequest }>()
 );
 
+export const LOGOUT = createAction('[Auth] Logout');
+
 export const REGENERATE_TOKEN = createAction(
   '[Auth] Regenerate Token',
   props<{ response: IDataAcceptResponse<Date> }>

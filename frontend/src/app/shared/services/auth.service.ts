@@ -32,6 +32,13 @@ export class AuthService {
     );
   }
 
+  public logout(): Observable<IDataAcceptResponse<IAcceptResponse>> {
+    return this._httpClient.post<IDataAcceptResponse<IAcceptResponse>>(
+      `${environment.API_URL}/auth/signout`,
+      {}
+    );
+  }
+
   public regenerateToken(): Observable<IDataAcceptResponse<Date>> {
     return this._httpClient.post<IDataAcceptResponse<Date>>(
       `${environment.API_URL}/auth/relogin`,

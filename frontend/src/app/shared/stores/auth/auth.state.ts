@@ -1,4 +1,3 @@
-import { UserRole } from '../../../shared/enums/user.enum';
 import { ILoginStatus } from '../../../shared/models/user.model';
 
 export interface AuthState {

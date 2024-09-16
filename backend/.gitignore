@@ -2,8 +2,8 @@
 /dist
 /node_modules
 /build
-/uploads
-/dockers-custom
+#/uploads
+#/dockers-custom
 
 # Logs
 logs
